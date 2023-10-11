@@ -1,0 +1,133 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}                                                                    
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Algebra - Notatki z wykladu}  
+\date{INA 1 Sem.}
+
+\begin{document}
+
+\maketitle
+
+\section{Wyklad Pierwszy}
+
+\subsection{Symbole}
+
+\paragraph{Logika}
+
+$\neg, \land, \lor, \implies, \iff$
+
+\paragraph{Zbiory}
+
+$x\in A, A \cap B, A \cup B, A - B, A\backslash B, A^C, B^C, A\subseteq B, A\times B$
+
+\paragraph{Funkcje}
+
+$f: X\rightarrow Y, f: X\times Y\rightarrow A$ funkcja dwuargumentowa
+
+\paragraph{Własność}
+
+$\\\text{Dla } \mathbb{N}$
+$W(n) \forall_{x} (x|n)\implies x=1 \lor x=n$
+\\Jest to definicja liczb pierwszych.
+
+\subsection{Definicje}
+
+\begin{de}
+Niech $X$ - Zbiór. Działaniem na $X$ nazywamy każdą funkcję $f:X\cdot X\rightarrow X$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+Rozważmy następujące przykłady:
+
+\item $f(x,y)=x\cdot y$ Jest działaniem na $\mathbb{R}$ - tak
+\item $f(x,y)=x-y$ Jest działaniem na $\mathbb{N}$? - nie, ponieważ $\exists_{x,y} f(x,y)\notin \mathbb{N}$
+\end{itemize}
+\end{pk}
+
+\paragraph{Oznaczenie}
+
+$f(x,y)\iff x+y, x\cdot y, x\circ y$ - Działanie ogólne
+
+\begin{de}
+Niech $X$ - Zbiór. Działanie $\circ$ nazywamy łącznym, gdy:
+$\forall_{x,y,z\in X} (x\circ y)\circ z = x\circ (y\circ z)$
+Działanie $\circ$ nazywamy przemiennym, gdy:
+$\forall_{x,y\in X} x\circ y = y\circ x$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+.
+\item $+$ na $\mathbb{R}$ jest łączne i przemienne
+\item $-$ na $\mathbb{R}$ nie jest ani łączne, ani nieprzemienne
+\end{itemize}
+\end{pk}
+
+\begin{de}
+Niech $\circ$ - działanie na zbiorze $X$. Element $e\in X$ nazywamy elementem neutralnym (dla $\circ$), gdy:
+$\forall_{x\in X} e\circ x = x\circ e = x$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+.
+\item $0$ jest elementem neutralnym dla $+$ na $\mathbb{N}$
+\item $1$ jest elementem neutralnym dla $\cdot$ na $\mathbb{R}$
+\end{itemize}
+\end{pk}
+
+\begin{fakt}
+Niech $\circ$ - działanie na zbiorze $X$. Jeżeli $\circ$ ma element neutralny, to jest on jedyny.
+D-d. Niech $a,b$ oznaczają elementy neutralne. Działanie $\circ$ na $X$:
+\begin{itemize}
+\item $a\circ b = b$
+\item $a\circ b = a$
+\end{itemize}
+Zatem: $a=b\qed$
+\end{fakt}
+
+\begin{de}
+Niech $\circ$ - działanie na zbiorze $X$. Element $a\in X$ nazywamy elementem odwrotnym (dla $\circ$), gdy:
+$\forall_{x\in X} a\circ x = x\circ a = e$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+.
+\item $-x$ jest elementem odwrotnym dla $+$ na $\mathbb{R}$
+\item $\frac{1}{x}$ jest elementem odwrotnym dla $\cdot$ na $\mathbb{R}$
+\item $x^2$ nie ma elementu odwrotnego dla $\cdot$ na $\mathbb{R}$
+\item $x^2$ ma element odwrotny dla $\cdot$ na $\mathbb{R}^+$
+\end{itemize}
+\end{pk}
+
+\end{document}
