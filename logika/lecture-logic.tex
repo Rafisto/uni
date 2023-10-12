@@ -1,0 +1,141 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}                                                                    
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Logika i struktury formalne}  
+\date{INA 1 Sem. 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Rachunek zdań - logika bez kwantyfikatorów}
+\begin{center}
+$(p\land q)\implies (r\lor \lnot q)$
+\end{center}
+
+\subsection{Konstrukcja języka rachunku zdań}
+\begin{itemize}
+    \item Mamy ustaloną rodzinę \underline{zmiennych zdaniowych}.\\
+    $P=\{p,q,r,s\}$ lub $P=\{p_1,p_2,p_3,\dots\}$
+    \item Mamy ustaloną rodzinę \underline{spójników logicznych}.\\
+    $\neg,\land,\lor,\implies,\iff$
+    \item Mamy $( , )$ - nawiasy
+    \item Mamy symbole $\top, \bot$ - prawda, fałsz
+    \item Konstrukcja języka $\mathcal{L}(\mathcal{P})$
+\end{itemize}
+
+\begin{enumerate}
+    \item Zmienne zdaniowe oraz symbole $\top, \bot$ są zdaniami (języka predykatów $\mathcal{L}(\mathcal{P})$)
+    \item Jeśli $\varphi, \psi$ są zdaniami, to również napisy $\neg \varphi, (\varphi \land \psi), (\varphi \lor \psi), (\varphi \implies \psi), (\varphi \iff \psi)$ są zdaniami.
+    \item Wyrażenie $\varphi$ nazywamy zdaniem jeśli w skończonej liczbie kroków może być skonstruowane za pomocą reguł (1) i (2)
+\end{enumerate}
+
+\begin{pk}
+    Niech $P={p,q,r}$. Przykłady zdań w $\mathcal{L}(\mathcal{P})$:
+    \begin{itemize}
+        \item $p;q;r; \top$; $\bot$
+        \item $(p\land \top), (p\lor q), (p\implies \top)$
+        \item $(r\land (p\lor q)), ((p\lor q)\lor (p\implies \top))$
+    \end{itemize}
+\end{pk}
+
+\begin{pk}
+Rozważmy następujące działanie: $x=(10\cdot 8)/(7\cdot 3)$. Skąpilowane C zwraca $3$.
+\end{pk}
+
+\begin{de}
+Jeśli $\varphi$ jest z $\mathcal{L}(\mathcal{P})$, to wtedy $\varphi$ ma parzystą liczbę nawiasów.
+\begin{proof}
+Niech $X$ oznacza kolekcje napisów o parzystej liczbie nawiasów.
+\begin{enumerate}
+    \item zmienne zdaniowe - 0 nawiasów, $\top, \bot$
+    \item załóżmy, że $\varphi, \psi$ są w $X$. Wtedy\\
+    $(\varphi \land \psi), ... (\varphi \iff \psi)$ są w $X$.
+\end{enumerate}
+\end{proof}
+\end{de}
+
+\subsection{Zadanie}
+Naucz się alfabetu greckiego.
+
+SYNTAKTYKA - badanie wyrażeń.
+
+SEMANTYKA - badanie wartości.
+
+\subsection{Wartości logiczne}
+\begin{itemize}
+    \item Wartości logiczne: $0, 1$ - fałsz, prawda
+    \item Funktory logiczne: $\neg, \land, \lor, \implies, \iff$
+    \item Tablice prawdy:\\
+\begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    X & Y & $\neg X$ & $X\land Y$ & $X\lor Y$ & $X\implies Y$\\
+    \hline
+    0 & 0 & 1 & 0 & 0 & 1\\
+    0 & 1 & 1 & 0 & 1 & 1\\
+    1 & 0 & 0 & 0 & 1 & 0\\
+    1 & 1 & 0 & 1 & 1 & 1\\
+    \hline
+\end{tabular}
+\end{itemize}
+
+\begin{de}
+    Waluacją nazywamy dowolne przyporządowanie $\pi$, które zmiennym zdamiowym przyporządkowuje wartości $0,1$.
+\end{de}
+
+\begin{pk}
+    Rozważmy następujący przykład waluacji $\pi$:
+    \begin{align*}
+        P=\{&p_0,p_1,p_2,...\}&\\
+        \pi=\{&0,0,0,...\}&\\
+        p=\{&0,1,0,1,...\}&
+    \end{align*}
+    $val(\pi: \text{waluacja}, \varphi: \text{zdanie})$\\
+    LOGICAL $0 \lor 1$
+\end{pk}
+
+\begin{pk}
+Dla $\varphi \in \mathcal{L}(\mathcal{P})$:
+\begin{itemize}
+    \item $val(\pi, p_i)=\pi(p_i)$
+    \item $val(\pi, \top)=1$
+    \item $val(\pi, \bot)=0$
+    \item $val(\pi, (\varphi \land \psi))=val(\pi, \varphi)\land val(\pi, \psi)$
+    \item $val(\pi, \neg \varphi)=\neg val(\pi, \varphi)$
+\end{itemize}
+\end{pk}
+
+\begin{de}
+    $\varphi$ jest tautologią, jeśli dla dowolnej waluacji $\pi$ mamy $val(\pi, \varphi)=1$.
+    \\\\($\models \varphi$) - Zapis
+\end{de}
+
+\end{document}
