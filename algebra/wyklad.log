@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  11 OCT 2023 22:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  12 OCT 2023 10:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -396,25 +396,45 @@ LaTeX Font Info:    External font `plex10' loaded for size
 (Font)              <5> on input line 45.
  [1
 
-{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [2] (./wyklad.aux)
+{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 246--248
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 296--298
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 314--318
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 318--321
+
+ []
+
+[5] [6] (./wyklad.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 5502 strings out of 474504
- 87559 string characters out of 5752696
- 1930040 words of memory out of 5000000
- 27357 multiletter control sequences out of 15000+600000
+ 5504 strings out of 474504
+ 87621 string characters out of 5752696
+ 1936040 words of memory out of 5000000
+ 27359 multiletter control sequences out of 15000+600000
  574946 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  68i,8n,67p,245b,355s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on wyklad.pdf (2 pages, 133206 bytes).
+Output written on wyklad.pdf (6 pages, 164460 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
- 52 compressed objects within 1 object stream
+ 96 PDF objects out of 1000 (max. 8388607)
+ 60 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

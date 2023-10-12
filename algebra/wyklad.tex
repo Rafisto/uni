@@ -66,8 +66,7 @@ Niech $X$ - Zbiór. Działaniem na $X$ nazywamy każdą funkcję $f:X\cdot X\rig
 
 \begin{pk}
 \begin{itemize}
-Rozważmy następujące przykłady:
-
+\item[]
 \item $f(x,y)=x\cdot y$ Jest działaniem na $\mathbb{R}$ - tak
 \item $f(x,y)=x-y$ Jest działaniem na $\mathbb{N}$? - nie, ponieważ $\exists_{x,y} f(x,y)\notin \mathbb{N}$
 \end{itemize}
@@ -86,7 +85,7 @@ $\forall_{x,y\in X} x\circ y = y\circ x$
 
 \begin{pk}
 \begin{itemize}
-.
+\item[]
 \item $+$ na $\mathbb{R}$ jest łączne i przemienne
 \item $-$ na $\mathbb{R}$ nie jest ani łączne, ani nieprzemienne
 \end{itemize}
@@ -99,7 +98,7 @@ $\forall_{x\in X} e\circ x = x\circ e = x$
 
 \begin{pk}
 \begin{itemize}
-.
+\item[]
 \item $0$ jest elementem neutralnym dla $+$ na $\mathbb{N}$
 \item $1$ jest elementem neutralnym dla $\cdot$ na $\mathbb{R}$
 \end{itemize}
@@ -122,12 +121,220 @@ $\forall_{x\in X} a\circ x = x\circ a = e$
 
 \begin{pk}
 \begin{itemize}
-.
-\item $-x$ jest elementem odwrotnym dla $+$ na $\mathbb{R}$
-\item $\frac{1}{x}$ jest elementem odwrotnym dla $\cdot$ na $\mathbb{R}$
-\item $x^2$ nie ma elementu odwrotnego dla $\cdot$ na $\mathbb{R}$
-\item $x^2$ ma element odwrotny dla $\cdot$ na $\mathbb{R}^+$
+    \item[]
+    \item $-x$ jest elementem odwrotnym dla $+$ na $\mathbb{R}$
+    \item $\frac{1}{x}$ jest elementem odwrotnym dla $\cdot$ na $\mathbb{R}$
+    \item $x^2$ nie ma elementu odwrotnego dla $\cdot$ na $\mathbb{R}$
+    \item $x^2$ ma element odwrotny dla $\cdot$ na $\mathbb{R}^+$
 \end{itemize}
 \end{pk}
+
+\begin{fakt}
+Niech $\circ$ - działanie na $X, e\in X$ - element neutralny $x\in X$ - dowolny $x$. W działaniu łącznym liczba odwrotna może być co najwyżej jedna.
+Istnieje maksymalnie jeden element odwrotny do $x$.\\
+D-d. Niech $a,b$ ozn. el. odwrotne do $x$\\
+$(a\circ x)\circ b = a\circ (x\circ b)$ (z łączności)\\
+$e\circ b=a\circ e$\\
+$b=a\qed$
+\end{fakt}
+
+\begin{de}
+Grupą nazywamy parę elementów $(G,\circ)$, gdzie $G$ - zbiór. $\circ$ działanie na $G$, takie że:
+\begin{enumerate}
+\item $\circ$ jest działaniem na $G$
+\item $\forall_{a,b,c\in G} (a\circ b)\circ c = a\circ (b\circ c)$ - Łączność
+\item $\exists_{e\in G} \forall_{a\in G} a\circ e = e\circ a = a$ - Element neutralny
+\item $\forall_{a\in G} \exists_{b\in G} a\circ b = b\circ a = e$ - Element odwrotny
+\end{enumerate}
+\end{de}
+
+\section{Wykład drugi}
+... tbd
+\section{Wykład trzeci}
+... tbd
+\section{Wykład czwarty - Pierścienie}
+
+\begin{pk}
+$(\mathbb{Z},+,-)$ - rozszerza grupę
+\end{pk}
+
+\begin{de}
+Pierścieniem nazywamy trójkę $(P,\oplus, \odot)$, gdzie $P$ - zbiór, $\oplus, \odot$ - działania na $P$, takie że:
+\begin{enumerate}
+\item $(P,\oplus)$ - grupa przemienna (abelowa)
+\item działanie na $\odot$ jest łączne na $P$
+\item $\forall_{x} \forall_{a,b} x\odot(a\oplus b) = (x\odot a)\oplus (x\odot b)$ oraz
+$(a\oplus b)\odot x = a\odot x \oplus b\odot x$
+\end{enumerate}
+\end{de}
+
+\begin{pk}
+$(\mathbb{Z},+,-)$ jest pierścieniem, ponieważ:
+\begin{itemize}
+\item $(\mathbb{Z},+)$ - grupa przemienna
+\item $\cdot$ jest łączne na $\mathbb{Z}$
+\item Rozdzielność mnożenia względem dodawania
+\end{itemize}
+Rozważmy inne przykłady:
+\begin{itemize}
+\item $(\mathbb{R},+, \cdot), (\mathbb{Q},+,\cdot)$ - pierścienie
+\item $(\mathbb{N},+, \cdot)$ - nie jest pierścieniem
+\item $(\mathbb{R}[x],+,\cdot)$ - (el neu. $W(x)=0$, el odw. $-W(x)$) - zbiór wielomianów o współczynnikach $\mathbb{R}$
+\end{itemize}
+\end{pk}
+
+\subsection{Oznaczenia}
+Działania na $P$ oznaczamy $+, \cdot$, nazywamy dodawaniem i mnożeniem.
+\begin{itemize}
+\item Element neutralny $+$ oznaczamy $0$ i nazywamy zerem.
+\item Element przeciwny (odwrotny) do $a$ to $-a$, bo $(a+(-a))=0$
+\item Element neutralny $\cdot$ (nie musi istnieć) oznaczamy $1$ i nazywamy jedynką
+\item Element odwrotny do $a$ to $a^{-1}$
+\end{itemize}
+Analogicznie do $(\mathbb{Z},+,\cdot)$
+
+\begin{pk}
+\begin{itemize}
+\item[]
+\item Pierścień bez 1 to np. $(2\mathbb{Z},+,\cdot)$
+\item Istnieje pierścień z nieprzemiennym $\cdot$ - mnożeniem (pierścień macierzy) 
+\end{itemize}
+\end{pk}
+
+\subsection{Własności}
+
+\begin{fakt}
+Niech $(P,+,\cdot)$ - pierścień. Wtedy:
+\begin{enumerate}
+\item $\forall_{a\in P} a\cdot 0=0\cdot a = a$\\
+D-d. $a\cdot 0=a\cdot(0+0)=^{rd} a\cdot 0 + a\cdot 0 | +(-(a\cdot 0))$\\
+$a\cdot 0 - (a\cdot 0) = a\cdot 0 + a\cdot 0 - a\cdot 0$\\
+$0=a\cdot 0 \qed$
+\item $\forall_{a,b\in P} (-a)\cdot b=-(a\cdot b)$\\
+D-d. $(-a)\cdot b=-(a\cdot b) | + (a\cdot b)$\\
+$(-a)\cdot b + a\cdot b =^{rd} (-a + a)\cdot b = 0\cdot b=^{1} 0$\\
+$(-a)\cdot b+ a\cdot b=0 |+(-(ab))$\\
+$(-a)\cdot b = -(ab)$
+\item $\forall_{a,b\in P} (-a)\cdot (-b) = a\cdot b$\\
+D-d. ćwiczenie
+\item $\forall_{a,-a\in P} (-1)\cdot a = -a$\\
+D-d. ćwiczenie
+\end{enumerate}
+\end{fakt}
+
+\begin{de}
+Niech $(P,+,\cdot)$ - pierścień oraz niech $A\subseteq P$. Zbiór niepusty $A$ nazywamy podpierścieniem, gdy:
+\begin{enumerate}
+\item $\forall_{a,b\in A} (a+b)\in A \land (-a)\in A$
+\item $\forall_{a,b\in A} (a\cdot b)\in A$ (odwrotność mnożenia nie jest wymagana)
+\end{enumerate}
+\end{de}
+
+\begin{pk}
+Niech $P=(\mathbb{R}, +, \cdot), A=\mathbb{Z}$. $\mathbb{Z}$ jest podpieścieniem, ponieważ:
+\begin{enumerate}
+\item $a,b \in \mathbb{Z} \implies a+b\in \mathbb{Z} \land (-a)\in \mathbb{Z}$
+\item $a,b \in \mathbb{Z} \implies a\cdot b\in \mathbb{Z}$
+\end{enumerate}
+$2\mathbb{Z}$ jest podpierścieniem $(P,+,\cdot)$\\
+$((0,\infty),+,\cdot)$ nie jest podpierścieniem bo $7\in (0,\infty), -7\notin (0,\infty)$
+\end{pk}
+
+\paragraph{Oznaczenie}
+$A\leq P$ oznaczamy, że $A$ jest podpierścieniem $P$
+
+\paragraph{Własności} Jeśli $(P,+,\cdot)$ - pierścień oraz $A\leq P$
+to $(A,+,\cdot)$ jest pierścieniem.\\
+
+D-d. $\leftarrow$ ćwiczenie.
+$(P,+,\cdot)$ posiada dwa podpierścienie $P\leq P$ i $\{0\}\leq P$
+
+\subsection{Produkt}
+Niech $(P,+,\cdot), (R,\oplus,\odot)$ - pierścienie\\
+Na zbiorze $P\times R$ definiujemy działania:
+\begin{enumerate}
+\item $(p_1, r_1) +_b (p_2, r_2) = (p_1+p_2,r_1 \oplus r_2)$ 
+\item $(p_1, r_1) \cdot_b (p_2,r_2) = (p_1\cdot p_2, r_1\odot r_2)$
+\end{enumerate}
+D-d. Sprawdzić listę własności z definicji pierścienia.
+
+\begin{pk}
+$\mathbb{Z}\times \mathbb{Z}$\\
+$(3,5) + (7,8) = (3+7, 5+8) = (10,13)$\\
+Element neutralny $(0,0)\in \mathbb{Z}\times \mathbb{Z}$\\
+Element przeciwny $-(a,b) = (-a,-b)$
+\end{pk}
+
+\begin{de}
+Niech $n\in \mathbb(N)^{+}$ $\mathbb{Z}_n=(\{0,1,2,\dots ,n-1\}, +_n, \cdot_n)$. 
+\end{de}
+
+\begin{fakt}
+$\mathbb{Z}_n$ jest pierścieniem skończonym.\\
+D-d.
+\begin{enumerate}
+\item $(\{0,1,\dots ,n-1\},+_n)$ - grupa przeciwna $(\mathbb{C}_n)$
+\item Łączność - $(a\cdot_n(b\cdot_n c))=(a\cdot b\cdot c) mod (n)$
+\item Rozdzielność - $L= a\cdot_n (x +_n y)=(a(x+y))mod (n)$\\
+$P=a\cdot_n x +_n a \cdot_n y =(ax+ay)mod (n)$\\
+$L=P$ z rodzielności dodatania w $(\mathbb{Z},+,\cdot)$
+\end{enumerate}
+\end{fakt}
+
+\begin{de}
+Niech $(P,+,\cdot), (R, \oplus, \odot)$ - pierścienie. Funkcję $f_{P\rightarrow R}$ nazywamy homomorfizmem, gdy:
+\begin{enumerate}
+\item $\forall_{a,b\in P} f(a+b)=f(a)\oplus f(b)$
+\item $\forall_{a,b\in P} f(a\cdot b)=f(a)\odot f(b)$
+\end{enumerate}
+\end{de}
+
+\begin{pk}
+\begin{enumerate}
+\item[]
+\item $(P,+,\cdot)$ oraz $f(a)=a :P\rightarrow P$ to $f$ jest homomorfizmem.
+\item $(P,+,\cdot)$ oraz $g(a)=- :P\rightarrow P$ to $g$ jest homomorfizmem.\\\\
+D-d. $g(a+b)=0=0+0=g(a)+g(b) \land g(a\cdot b)=0\cdot 0 = g(a)\cdot g(b)$
+\end{enumerate}
+\end{pk}
+
+\begin{pk}
+$\varphi_n(k)=k (mod(n)) : \mathbb(Z) \rightarrow {0,1,\dots, n-1}$\\
+$\varphi_n$ jest homomorficzna dla pierścieni $(\mathbb{Z},+,\cdot), (\mathbb(Z)_n,+_n,\cdot_n)$, ponieważ:
+\begin{enumerate}
+\item $\varphi_n (a+b)=(a+b) mod (n)$\\
+$(a (mod (n)) + b (mod (n))) mod (n)=\varphi_n(a) +_n \varphi_n(b)$
+\item ćwiczenie (dla mnożenia)
+\end{enumerate}
+\end{pk}
+
+\begin{fakt}
+Niech $(P,+,\cdot), (R, \oplus, \odot)$ - pierścienie. Oraz $f_{P\rightarrow R}$ homomorfizm. Wtedy:
+\begin{enumerate}
+\item $f(0_P)=0_R$\\\\
+D-d. $f(0_P)=f(0_P+0_P)=f(0_P)+f(0_P)$\\
+$f(0_P)=f(0_P)+f(0_P) | +(-f(0_P))$\\
+$0_R=f(0_P)\qed$
+\item $f(-a)=-f(a)$\\\\
+D-d. $f(-a)+f(a)=^{hom.} f((-a)+a)=f(0)=^{1}0 | + (-f(a))$\\
+$f(-a)=-f(a)$
+\item $f(1_P)=1_R$, o ile istnieje
+\item $f(a^{-1})=f(a)^{-1}$, o ile istnieje
+\end{enumerate}
+\end{fakt}
+
+\subsection{Zastosowanie}
+
+\paragraph{Reguła podzielności przez 3}
+Notacja. $a,b,c$ - cyfry $0,\dots, 9$, $a|b$ - $a$ dzieli $b$ \\ 
+$\overline{abc}=100a + 10b + c$\\
+$\overline{933}=933$\\
+Przypadek: $3|\overline{abc} \iff 3| (a+b+c)$\\
+$3|\overline(abcd) \iff \overline{abcd} (mod (3)) = 0$\\
+$\varphi_3(\overline{abcd})=0$\\
+$\varphi_3(1000a+100b+10c+d)=^{hom}$\\
+$\varphi_3(1000a)+\varphi(100b)+\varphi(10c)+\varphi(d)$\\
+$\varphi_3(10)^3+\varphi_3(10)^2+\varphi(10)^1+\varphi(a)+\varphi(b)+\varphi(c)+\varphi(d)=$\\
+$\varphi_3(a)+\varphi(b)+\varphi(c)+\varphi(d)=\varphi_3(a+b+c+d)$
 
 \end{document}
