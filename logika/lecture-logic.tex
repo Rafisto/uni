@@ -138,4 +138,169 @@ Dla $\varphi \in \mathcal{L}(\mathcal{P})$:
     \\\\($\models \varphi$) - Zapis
 \end{de}
 
+\section{Wykład drugi}
+... tbd
+
+\section{Wykład trzeci}
+... tbd
+
+\section{Wykład czwarty}
+
+\subsection{Własności implikacji}
+$\models ((p\implies q)\land (q\implies r)) \implies (p\implies r)$ - przechodniość implikacji\\
+Weźmy dowolną waluację $\pi$ oraz załóżmy, że $val(\pi,\varphi)=0$, wtedy:
+\begin{align*}
+val(&\pi,((p\implies q)\land (q\implies r)) \implies (p\implies r))=1\\
+val(&\pi,p\implies r)=0\\
+\end{align*}
+Wtedy:
+\begin{itemize}
+    \item $\pi(p)=1, \pi(r)=0$
+    \item $val(\pi, p\implies q)=1$ oraz $val(\pi, q\implies r)=1$
+    \item $\pi(q)=1$
+    \item $\pi(r)=1$
+\end{itemize}
+Otrzymaliśmy sprzeczność, zatem tautologia zachodzi.
+
+\paragraph{Własności}
+\begin{enumerate}
+    \item $\models (p_1\implies p_2)\land(p_2\implies p_3)\land (p_3\implies p_4)\implies (p_1\implies p_4)$
+    \item $\models (p\implies q) \iff (\neg q\implies \neg p)$ <- Rozumowanie nie wprost\\
+    D-d. $(\neg q)\implies (\neg p) \equiv  (\neg(\neg q)\lor (\neg p) \equiv (q\lor \neg p))$\\
+    $\equiv (\neg p\lor q)\equiv(p\implies q)$
+    \item $\models ((p\implies q)\land (q\implies p) \iff (p\iff q))$, czyli\\
+    $((p\implies q)\land (q\implies p) \equiv (p\iff q))$
+\end{enumerate}
+
+\subsection{Rozumowania matematyczne}
+\begin{enumerate}
+    \item Rozumowania wprost.\\
+    P. Jeżeli $a,b\in \mathbb{Z}$ są parzyste to $a+b$ jest parzyste.\\
+    D-d. Załóżmy, że $a=2k\land b=2l$ dla pewnych $k,l\in \mathbb{Z}$\\
+    $a+b=2k+2l=2\cdot(k+l)$, więc $a+b$ jest parzyste, bo $k+l\in \mathbb{Z} \qed$
+    \item Rozumowania nie wprost. $(p\implies q) \iff (\neg q\implies \neg p)$ \\
+    P. Jeśli $\frac{x+y}{2}\geq a$, to $x\geq a \lor y\geq a$\\
+    D-d.  $\frac{x+y}{2}\geq a \implies x\geq a \lor y\geq a$\\
+    Mamy $\neg(x\geq a \lor y\geq a)\equiv (x\leq a\land y\leq a)$\\
+    $x< a \land y< a$\\
+    $x+y< 2a\equiv \frac{x+y}{2}< a \equiv \neg(\frac{x+y}{2}\geq a)\qed$\\
+    (Korzystając z własności $\neg(x\geq a)\equiv(x< a)$).\\\\
+    P. Pracujemy w $\mathbb{R}$. Jeśli $x\in \mathbb{R}^{+}, a,b\in \mathbb{R}^{+}$ oraz $a\cdot b=x$\\
+    to $a\leq \sqrt{x}\lor b\leq \sqrt{x}$.\\
+    D-d. $\neg(a\leq \sqrt{x}\lor b\leq \sqrt{x}) \equiv (a>\sqrt{x}\land b>\sqrt{x})$\\
+    $a\cdot b > \sqrt{x}\cdot \sqrt{x} = x$\\
+    $a\cdot b \neq x\qed$\\\\
+    P. Jeśli liczba $p\in \mathbb{N}$ nie jest pierwsza, to istnieje $d\leq\sqrt{p}$, taka że $d|p$.
+    \item Rozumowanie przez rozważenie przypadków. $\models ((p\implies q)\land(\neg p\implies q) \implies q)$\\
+    P. Dla dowolnych liczb rzeczywistych zachodzi $|x+y|\leq |x| + |y|$ $(\equiv q)$\\
+    \begin{enumerate}
+        \item $p="x+y\geq 0" \implies |x+y|=x+y\leq |x|+|y|$
+        \item $p="x+y<0" \implies |x+y|=-x-y=|-x|+|-y|\leq |x|+|y|$ 
+    \end{enumerate}
+    Zachodzą wszystkie przypadki zatem teza jest prawdziwa. $\qed$
+\end{enumerate}
+
+\subsection{Rozważania cykliczne}
+\begin{tw}
+    Następujące zdania $z_1,z_2,z_3,z_4,z_5$ są równoważne:\\
+    $\models (p_1\implies p_2)\land(p_2\implies p_3)\land(p_3\implies p_1)\implies(p_1\iff p_2)\land(p_2\iff p_3)\land(p_3\iff p_1)$\\
+    Narysuj kółeczko strzałek z $(p_1,\dots,p_3)$...\\
+    Narysuj kółeczko strzałek z $(p_1,\dots,p_4)$...\\
+    Korzystamy następnie z przechodniości implikacji.\\
+    Oszczędność $n$ - implikacji, zamiast $\frac{n(n-1)}{2}$ implikacji.
+\end{tw}
+
+\subsection{Pojęcie dedukcji}
+CEL. "Ze zdań $\varphi_1,\dots,\varphi_n$ mogę wywnioskować $\psi$\\
+P. Ze zdań $p, p\implies q, q\implies r$ mogę wywnioskować $r$
+
+\begin{de}
+    Niech $\varphi_0, \dots, \varphi_n$ będą zdaniami $R.Z$.\\
+    \begin{center}
+    $\{\varphi_1,\dots, \varphi_n\}\models \psi$
+    \end{center}
+    Jeśli dla dowolnej waluacji $\pi$, że:
+    \begin{center}
+    $val(\pi, \varphi_1)=...=val(\pi,\varphi_n)=1$
+    \end{center}
+    Mamy również:
+    \begin{center}
+    $val(\pi,\psi)=1$
+    \end{center}
+\end{de}
+
+\paragraph{Przykłady}
+P. Rozważmy następujący przykład:\\
+$\{p\}\models p$\\
+$\{p\}\models p\lor q$\\
+Weźmy waluację $\pi$ taką, że $val(\pi,p)=\pi(p)=1$, wtedy:\\
+$val(\pi,p\lor q)=val(\pi,p)\lor val(\pi,q)=1\lor val(\pi,q)=1$\\
+P. $\{p\land q\}\models p$\\
+Bierzemy $\pi$ taką, że $val(\pi, p\land q)=1$, wtedy:\\
+$1=val(\pi,p)\land val(\pi, q)$, więc $val(\pi, p)=1$
+
+\begin{tw}
+$\{\varphi_1,\dots,\varphi_n\}\models \psi$, czyli
+$\models (\land_{l=1}^{n} \varphi_i) \implies \psi$\\
+D-d. Załóżmy, że $\{\varphi_1,\dots,\varphi_n\}\models \psi$. Weźmy dowolną waluację $\pi$
+\begin{enumerate}
+    \item $val(\pi, (\land_{l=1}^{n} \varphi_i) )=0$, wtedy:\\
+    $val(\pi, (\land_{l=1}^{n} \varphi_i \implies \psi)) = val(\pi, (\land_{l=1}^{n} \varphi_i)) \implies val(\pi, \psi) = 0 \implies val(\pi, \psi) = 1$
+    \item Załóżmy, że $val(\pi, (\land_{l=1}^{n} \varphi_i) )=1$, wtedy:\\
+    $val(\pi, \varphi_1)=...=val(\pi,\varphi_n)=1$, ale:\\
+    $\{\varphi_1,\dots,\varphi_n\}\models \psi$, więc $val(\pi,\psi)=1$
+\end{enumerate}
+2 do 1
+Załóżmy, że $(\land_{l=1}^{n} \varphi_i)\implies \psi$\\
+Rozważmy dowolną $\pi$ taką, że $val(\pi,\varphi_1)=...=val(\pi,\varphi_n)=1$\\
+Wtedy $(\land_{l=1}^{n} \varphi_i)=1$\\
+Ale $1=val((\land_{l=1}^{n} \varphi_i)\implies \psi)=val(\pi, \land_{l=1}^{n} \varphi_i) \implies val(\pi,\psi)$\\
+Zatem $val(\pi,\psi)=1\qed$
+\end{tw}
+
+\paragraph{Semantyczna dedukcja} $\models$
+
+\begin{de}
+    $\{\varphi_1,\dots,\varphi_n\}$ jest sprzeczny jak:\\
+    $\{\varphi_1,\dots,\varphi_n\}\models \bot$
+\end{de}
+Wnioski:\\
+P. $\{p, \neg p\}\models \bot (\equiv \models(p\land \neg p\implies \bot))$\\
+W. $\{\varphi_1,\dots,\varphi_n\}$ - sprzeczny. Wtedy dla dowolnego zdania $\psi$ mamy:\\
+$\{\varphi_1,\dots,\varphi_n\}\models \psi$
+
+\paragraph{Uwaga}
+Założmy, że $\{\varphi_1, \dots, \varphi_n\}\models \alpha$\\
+Wtedy dla dowolnego $\psi$ następujące wzory są równoważne:
+\begin{enumerate}
+    \item $\{\varphi_1,\dots,\varphi_n\}\models \psi$
+    \item $\{\varphi_1,\dots,\varphi_n,\alpha\}\models \psi$
+    \item $(1)\implies(2)$ - trywialne
+    \item $(2)\implies(1)$ 
+\end{enumerate}
+
+\begin{pk}
+    Reguła rezolucji:\\
+    $\{\psi\lor\alpha,\neg\psi\lor\beta\} \models \alpha\lor\beta$
+    równoważnie: $\frac{\{\psi\lor\alpha,\neg\psi\lor\beta\}}{\alpha\lor\beta}$\\
+    D-d: Załóżmy waluację $\pi$ taką, że $val(\pi, \varphi\lor\alpha)=val(\pi,\neg\varphi\lor\beta)=1$
+    \begin{enumerate}
+        \item $val(\pi,\varphi)=1$, wtedy: \\
+        $1=val(\pi,\neg\varphi\lor\beta)=val(\pi,\neg\varphi)\lor val(\pi,\beta)=0\lor val(\pi,\beta)=val(\pi,\beta)$
+        \item $val(\pi, \varphi)=0$, wtedy: \\
+        $1=val(\pi,\varphi\lor\alpha)=val(\pi,\varphi)\lor val(\pi,\alpha)=0\lor val(\pi,\alpha)=val(\pi, \alpha)$\\
+        $val(\alpha\lor\beta)=1\qed$
+    \end{enumerate}
+\end{pk}
+
+\begin{pk}
+    Dowodzenie za pomocą metody rezolucji:\\
+    $\{p\implies q, q\implies r, r\implies s\}\models p\implies s$\\
+    Przekształćmy zdania $\{(\neg p \lor q),(\neg q \lor r),(\neg r \lor s)\}$
+    \begin{enumerate}
+        \item $\neg p \lor q, \neg q \lor r \implies \neg p\lor r$
+        \item $\neg p \lor r, \neg r \lor s \implies \neg p\lor s \equiv p\implies s$
+    \end{enumerate}
+\end{pk}
+
 \end{document}
