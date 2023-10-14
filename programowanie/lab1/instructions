@@ -1,0 +1,2 @@
+clang -Wextra --pedantic -std=c11 -o zadanie1 zadanie1.c
+clang -Wall -lm zadanie2.c -o zadanie2
