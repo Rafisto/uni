@@ -9,7 +9,7 @@ int main(void)
     {
         for (int k = 0; k < i; k++)
         {
-            printf("  ");
+            printf(" ");
         }
         for (int j = 0; j < message_length - i; j++)
         {
