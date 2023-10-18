@@ -1,0 +1,262 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}                                                                    
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Analiza Matematyczna}  
+\date{INA 1 Sem. 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Wykład pierwszy}
+tbd
+
+\section{Wykład drugi}
+tbd
+
+\section{Wykład trzeci}
+
+\begin{tw}
+Twierdzenie (o ciągu monotonicznym i ograniczonym)\\
+a) Ciąg rosnący i ograniczony z góry jest zbieżny.\\
+$\forall_{n>n_0} a_n\leq a_{n+1}$ i $\forall_{n\in \mathbb{N} a_n< M}$ $\implies \exists \lim_{n\rightarrow \infty} a_n$\\
+b) Ciąg malejący i ograniczony z dołu jest zbieżny.\\
+$\forall_{n>n_0} a_n\geq a_{n+1}$ i $\forall_{n\in \mathbb{N} a_n> m}$ $\implies \exists \lim_{n\rightarrow \infty} a_n$\\
+Idea dowodu:\\
+$A=\{a_{n_0+1},a_{n_0+2},\dots,a_n,\dots\} \in \mathbb{R}$\\
+A - ograniczony, istnieje kres górny zbioru A\\
+Każdy ograniczony podzbiór liczb rzeczywistych ma kres\\
+czyli $sup(A)$ (??) $sup(A)=lim_{n\rightarrow \infty a_n}$
+\end{tw}
+
+\begin{pk}
+Rozważmy następujący ciąg rekurencyjny:
+$a_1=\sqrt{2}$ $a_{n+1}=\sqrt{2+a_n}$\\
+Idea dowodu indukcyjnego:\\
+1. $a_n\leq 2$, indukcja po $n$\\
+2. $a_n\leq a_{n+1}$, indukcja po $n$. $a_n\leq a_{n+1}\implies a_{n+1}\leq a_{n+2}$\\
+3. $\sqrt{2+a_n}\leq \sqrt{2+a_{n+1}}$ kwadrat stronami rozwiązuje krok indukcyjny\\
+
+$\forall_{n\geq 1} a_n \leq 2 \implies a_{n+1}\leq 2$\\
+$a_{n+1}=\sqrt{2+a_n}\leq_{z. ind} \sqrt{2+2}=2$\\
+
+Na mocy twierdzenia o ciągu monotonicznym i ograniczonym istnieje:\\
+$lim_{n\rightarrow \infty} a_n = g$\\
+
+\begin{center}
+$a_{n+1}=\sqrt{2+a_n}$, $lim_{n\rightarrow \infty} a_n = g = lim_{n\rightarrow \infty} a_{n+1} = g$\\
+$g=\sqrt{2+g}$\\
+$g^2-g-2=0$\\
+$\Delta=9=3^2$\\
+$g_1=\frac{1+3}{2}=2$ lub $g_2=\frac{1-3}{2}=-1$, które nie zachodzi, zatem $lim a_n=g_1$
+\end{center}
+\end{pk}
+
+\begin{de}
+Podciąg ciągu\\
+Niech $a_n$ będzie dowolnym ciągiem. Niech $n_1, n_2, ... n_k$ będzie pewnym rosnącym ciągiem liczb naturalnych.
+Wówczas ciąg $a_{nk}=(a_{n1}, a_{n2}, a_{n3}, ...)$ Nazywamy podciągiem ciągu.
+\end{de}
+
+\begin{pk}
+Rozważmy następujące przykłady ($\mathbb{N}=\{1,2,3,4,\dots\}$):\\
+a) $a_n=(-1)^{n}$, $n\in\mathbb{N}$\\
+$a_{2k}=(-1)^{n}=1$, $k\in\mathbb{N}$\\
+$(a_2, a_4, a_6, ...)$ - podciąg o wyrazach parzystych.\\
+b) $a_{2k-1}=(-1)^{2k-1}=-1, n\in\mathbb{N}$\\
+$(a_1, a_3, a_5, ...)$ - podciąg o wyrazach nieparzystych.\\
+$S=\{1,-1\}$\\
+c) $(1, \frac{1}{2}, 3, \frac{1}{4}, 5, \frac{1}{6},\dots)$\\
+$a_{2k-1}=2k-1$ - podciąg o wyr. nieparzystych.\\
+$a_{2k}=\frac{1}{2k}$ - podciąg o wyr. parzystych.\\
+$S=\{0, \infty\}$
+d) $sin(\frac{n\pi}{3})$ - $plot(sin(\frac{n\pi}{3}),(n,1,17)) \leftarrow$ wolframalpha
+\end{pk}
+
+\begin{de}
+Liczba $s$ jest punktem skupienia ciągu $a_n\iff s$ jest granicą właściwą lub niewłaściwą pewnego podciągu.
+Oznaczenie $S$ - zbiór punktów skupienia.\\
+
+Jeśli $lim_{n\rightarrow \infty} a_n = \infty \implies a_n$ ma granicę niewłaściwą $+\infty$
+\end{de}
+
+\begin{itemize}
+\item $sup()$ - superior - kres górny
+\item $inf()$ - inferior - kres dolny
+\end{itemize}
+
+\begin{de}
+Granica górna ciągu $a_n$ to kres górny granic podciągu $a_n$.\\
+$\lim_{n\rightarrow \infty} sup(a_n) = \lim_{n\rightarrow\infty} a_n$
+\end{de}
+
+\begin{de}
+Granica dolna ciągu $a_n$ to kres dolny granic podciągu $a_n$.\\
+$\lim_{n\rightarrow \infty} inf(a_n) = \lim_{n\rightarrow\infty} a_n$
+\end{de}
+
+$\lim inf(a_n)\leq \lim sup(a_n)$, równość dla granicy ciągu.
+
+\begin{tw}
+Twierdzenie (Bolzano - Weierstrassa). Każdy ciąg ograniczony ma podciąg zbieżny.
+\href{https://en.wikipedia.org/wiki/Bolzano%E2%80%93Weierstrass_theorem}{(English Wikipedia)}\\
+D-d. $\forall_{n\in\mathbb{N}} m \leq a_n \leq M$ Dzielimy przedział $[m_1,M_1]$ na dwa podprzedziały:
+$[m_1, \frac{m_1+M_1}{2}]$, $[\frac{m_1+M_1}{2},M_1]$. Przynajmniej w jednym z przedziałów jest nieskończenie wiele wyrazów ciągu.
+Oznaczmy tę połówkę przez $[m_2, M_2]$. Postępujemy tak dalej i mamy:\\
+$\forall_{k\in\mathbb{N}} m_1\leq m_k\leq a_{nk} \leq M_k \leq M_1$\\
+$M_k$ malejący i ograniczony $\implies$ zbieżny $g_1$\\
+$m_k$ rosnący i ograniczony $\implies$ zbieżny $g_2$\\
+$g_1=g_2=g$\\
+$M_k-m_k=\frac{M_1-m_1}{2}$\\
+$M_k\rightarrow g_1; m_k\rightarrow g_2$, ponieważ $\frac{M_1-m_1}{2^k}\rightarrow 0$
+
+\end{tw}
+
+\begin{de}
+Ciąg $a_n$ nazywamy ciągiem Cauchy'ego, wtedy i tylko wtedy, gdy:\\
+$\forall_{\varepsilon > 0}\exists_{n_0}\forall_{n,m>n_0} |a_n-a_m|<\varepsilon$.
+\end{de}
+
+\begin{tw}
+Ciąg liczb rzeczywistych jest zbieżny $\iff$ jest ciągiem Cauchy'ego.
+\end{tw}
+
+\begin{pk}
+$x_n = \frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \frac{1}{4!} + ...$\\
+$x_1 = 1, x_2 = 2, x_3 = 2 + 1/2$.
+\begin{enumerate}
+    \item $x_n$ jest rosnący $x_{n+1}-x_n=\frac{1}{(n+1)!}>0 \iff x_{n_1}>x_n$
+    \item $x_n$ jest ograniczony (pamiętając, że $\forall_{n>3} 2^n\leq n!$
+    czyli $\frac{1}{4!} < \frac{1}{2^4}$, $\frac{1}{5!} < \frac{1}{2^5}$)...\\
+    Dla $n>3$ $x_n=\frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \frac{1}{4!} + ...\leq$\\
+    $2+\frac{1}{2}+\frac{1}{6}+\frac{1}{2^4}+\frac{1}{2^5}+...+\frac{1}{2^n}$\\
+    $\frac{1}{2^4}\cdot\frac{1}{1-\frac{1}{2}}=\frac{1}{2^3}$\\
+    Istnieje $lim_{n\rightarrow \infty} x_n = e = 2.7182...$\\
+    $sum(1/k!, (k,0,300))\leftarrow$ wolframalpha
+\end{enumerate}
+\end{pk}
+
+\begin{tw}
+    Liczba eulera wyraża się wzorem:
+    \begin{center}
+    $\lim_{n\rightarrow \infty} (1+\frac{1}{n})^n = e$
+    \end{center}
+\end{tw}
+
+\begin{tw}
+    Niech $a_n$ będzie dowolnym ciągiem takim, że:
+    $lim_{n\implies \infty} a_n = \infty$. Wówczas:\\
+    \begin{center}
+    $lim_{n\implies \infty} (1+\frac{1}{a_n})^{a_n} = e, (1-\frac{1}{a_n})^{a_n} = e$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    $\lim ((1+\frac{1}{2n})^{2n})^{\frac{1}{2}}=e^{\frac{1}{2}}=\sqrt{e}$
+\end{pk}
+
+Własność: $lim_{n\rightarrow \infty} a_n = g_1 \land lim_{n\rightarrow \infty} b_n = g_2 \implies lim_{n\rightarrow \infty} (a_n^{b_n})=g_1^{g_2}$
+
+\begin{pk}
+    $lim (1-\frac{1}{n})^{n/2}=lim \left((1-\frac{1}{n})^n\right)^{\frac{\frac{n}{2}}{n}}=(\frac{1}{e})^{\frac{1}{2}}=\frac{1}{\sqrt{e}}$
+\end{pk}
+
+Wskazówka: $limit\left((1+\frac{1}{2^n})^{n+1},n\rightarrow infty\right)$
+
+\begin{de}
+Szereg o wyrazach nieujemnych. Dla dowolnego ciągu $a_1, a_2, \dots, a_n$ o wyrazach nieujemnych,
+tworzymy ciąg sum częściowych:
+\begin{center}
+$S_1=a_1, S_2=a_1+a_2, S_3=a_1+a_2+a_3, \dots, S_N=a_1+a+2+...+a_N$
+\end{center}
+
+Przykładowo dla $e$ $S_0=\frac{1}{0!}, S_1=\frac{1}{0!}+\frac{1}{1!}\dots$.\\
+Jeżeli ciąg $S_n$ jest zbieżny to piszemy, że:
+\begin{center}
+$\sum_{n=1}^{\infty} a_n = \lim_{n\rightarrow \infty} S_N$
+\end{center}
+(granica to suma szeregu)
+\begin{center}
+    $S_1\leq S_2\leq S_3\leq S_N < M$
+\end{center}
+\end{de}
+
+\begin{pk}
+    $apart(1/(n\cdot(n+1)),n)\leftarrow$ wolframalpha
+    \begin{center}
+    $\frac{1}{1\cdot 2} + \frac{1}{2\cdot 3}+ \dots + \frac{1}{n(n+1)}=S_N$\\
+    $S_1=\frac{1}{2}, S_2=\frac{1}{1\cdot 2}+\frac{1}{2\cdot 3}$, zatem:\\
+    $\frac{1}{1\cdot 2} + \frac{1}{2\cdot 3}+ \dots + \frac{1}{n(n+1)}=$\\
+    $=\frac{1}{1} - \frac{1}{2} + \frac{1}{2} - \frac{1}{3} + ... + \frac{1}{n} - \frac{1}{n+1}=$\\
+    $=1-\frac{1}{n+1}$, finalnie:\\
+    $\sum_{n=1}^{\infty} \frac{1}{n(n+1)} = lim_{n\rightarrow \infty} S_N = lim_{n\rightarrow \infty} (1 - \frac{1}{n+1}) = 1$
+    \end{center}
+\end{pk}
+
+\begin{pk}
+    $a+aq+...+aq^n=a\cdot \frac{1-q^{n+1}}{1-q}$, dla $|q|<1$:
+    \begin{center}
+    $\sum_{n=0}^{\infty} aq^n = lim_{n\rightarrow \infty} a\cdot \frac{1-q^{n+1}}{1-q} = \frac{a}{1-q}$
+    \end{center}
+\end{pk}
+
+\begin{pk}
+    $\sum_{n=0}^{\infty} \frac{1}{n!} = e$
+\end{pk}
+
+\begin{pk}
+Szereg harmoniczny.
+$H_N = \sum_{n=1}^{N} \frac{1}{n}$, $\lim_{N\rightarrow \infty}=\infty$, wolny wzrost do $\infty$\\
+$H_{2^{n+1}}=\frac{1}{1} + \frac{1}{2} + \frac{1}{2+1} + \frac{1}{2+2} + \frac{1}{2^2 + 1} + \frac{1}{2^2+2} + \frac{1}{2^2+3} + \frac{1}{2^3} + \frac{1}{2^3+1} + \frac{1}{2^3 + 2} + \frac{1}{2^3 + 3} + \dots + \frac{1}{2^3 + 2^3} + \frac{1}{2^n + 1} + \frac{1}{2^n + 2} + \dots + \frac{1}{2^n+2^n}$\\\\
+$\frac{1}{1}+\frac{1}{2}=\frac{3}{2}$\\
+$\frac{1}{2+1}+\frac{1}{2+2}\geq 2\cdot \frac{1}{2+2}=\frac{1}{2}$\\
+$\frac{1}{2^2+1}+\frac{1}{2^2+2} + ... \geq 4\cdot \frac{1}{2^2 + 2^2}=\frac{1}{2}$\\
+$\frac{1}{2^3+1}+\frac{1}{2^3+2} + ... \geq 8\cdot \frac{1}{2^3 + 2^3}=\frac{1}{2}$\\
+$\frac{1}{2^n+1}+\frac{1}{2^n+2} + ... \geq 2^{n}\cdot \frac{1}{2^n + 2^n}=\frac{1}{2}$\\
+$H_{2^{n+1}}\geq \frac{3}{2} + \frac{1}{2} \cdot n = 1 + \frac{1}{2} (n+1)$\\
+$H_{2^{n+1}}\geq 1 + \frac{n+1}{2}$\\
+$H_{2^n}\geq 1 + \frac{n}{2}$\\\\
+Założmy, że $2^N=k \implies N=log_2()$\\
+$H_{k}\geq 1 + \frac{\log_2(k)}{2} \rightarrow \infty$\\
+Na mocy twierdenia o dwóch ciągach $H_k \rightarrow \infty$
+\end{pk}
+
+Następny wykład - kryteria zbieżności szeregów: kryterium kondensacyjne.
+
+\begin{de}
+    Warunek konieczny zbieżności szeregów. Jeżeli $\sum_{n=1}^{\infty} a_n$ jest zbieżny, to $lim_{n\rightarrow \infty} a_n = 0$. (dla $\sum_{n=1}^{\infty} a_n < \infty$).
+\end{de}
+
+Szereg $\sum_{n=1}^{\infty} \frac{n}{n+1}$ jest rozbieżny, bo nie jest spełniony warunek konieczny\\ $lim_{n\rightarrow \infty} \frac{n}{n+1}=1$\\
+Warunek konieczny nie jest wystarczający.
+
+\end{document}
