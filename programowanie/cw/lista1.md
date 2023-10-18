@@ -43,7 +43,9 @@ Algorytm oceniający, w którym decyzja musi być natychmiastowa. Istnieje algor
 
 Rozwiązanie: Wybierz z iloma kandydatkami będziesz rozmawiał, potem wybierz pierwszą najlepszą z pośród wcześniejszych z którymi rozmawiałeś.
 
-"Ja jestem za stary, niereformowalny" ~ Major
+> "Problem wyboru sekretarki, szowinistyczny, wiem"
+
+> "Ja jestem za stary, niereformowalny" ~ Major
 
 #### Zadanie 3
 
@@ -84,3 +86,18 @@ $lim_{n\rightarrow \infty} f(x,y) = \sqrt{y}$
 D-d:
 
 Metoda babilońska
+
+Floating point -> nie zawsze średnia dwóch liczb znajduje się pomiędzy nimi. Ze względu na błąd w aproksymacji mantys reprezentacji liczby rzeczywistej.
+
+Kol:
+
+Uzasadnij że pojedyńcza pętla liczy silnie
+Pętla z różnicą dwóch zmiennych rośnie, stała oraz malejąca -> różnica rośnie, co można dowieść indukcyjnie.
+
+Inne:
+
+Problem stracenia w dany dzień tygodnia, przykład błędnego założenienia indukcyjnego.
+
+> "Wchodą smutni panowie w środę i go wieszają" ~
+
+> "Dlaczego Żyd czytający święte pisma ma długą brodę?" ~
