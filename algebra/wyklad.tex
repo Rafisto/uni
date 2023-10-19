@@ -338,6 +338,117 @@ $\varphi_3(10)^3+\varphi_3(10)^2+\varphi(10)^1+\varphi(a)+\varphi(b)+\varphi(c)+
 $\varphi_3(a)+\varphi(b)+\varphi(c)+\varphi(d)=\varphi_3(a+b+c+d)$
 
 \section{Wykład piąty}
+tbd... 
+
+\section{Wykład szósty}
+
+\subsection{Liczby naturalne}
+$\mathbb{N}=\{0,1,2,3,...\}$
+
+\begin{de}
+Zasada dobrego uporządkowania (WO)
+Dla dowolnego $\emptyset \neq X \in \mathbb{N}$:
+\begin{center}
+    $(\exists_{a\in X} \forall_{b\in X}) a\leq b$    
+\end{center}
+Każdy niepusty podzbiór $\mathbb{N}$ ma element najmniejszy.\\
+$\mathbb{R} (0,1)$ NIE spełnia $WO$
+\end{de}
+
+\begin{de}
+    Zasada Indukcji:\\
+    Dla dowolnego $A\in \mathbb{N}$ zachodzi:
+    \begin{center}
+        $[(0\in A) \land ((\forall_K) K\in A \implies k + 1 \in A)] \implies A=\mathbb{N}$
+    \end{center}
+\end{de}
+
+\begin{tw}
+    Zasada indukcji wynika z zasady dobrego uporządkowania.\\
+    D-d. Nie wprost założmy że zasada indukcji nie jest prawdziwa. To znaczy, że poprzednik jest fałszywy a następnik prawdziwy.
+    \begin{center}
+        $0\in A \and (\forall_K k\in A \implies k+1 \in A) \land A \neq \mathbb{N}$\\
+    \end{center}
+    Wtedy niech $X=\mathbb{N}-A=A^c$\\
+    - $X\neq \emptyset, X\leq \mathbb{N}$\\
+    Z zasady WO $\exists_a \in X$, element najmniejszy w $X$\\
+    $a\neq 0$, bo $0\in A, a\in X$\\
+    $a\in X$, to $a\notin A$\\
+    $a-1\in A \implies a=a-1+1\in A$\\
+    Dwa ostatnie punkty dają sprzeczność, zatem założenie nie wprost jest fałszywe, a twierdzenie prawdziwe.   
+\end{tw}
+
+\begin{pk}
+    $\forall_n 1+3+5+\dots+2n+1=(n+1)^2$\\
+    D-d. Niech $A=\{n\in\mathbb{N}, 1+3+...+2n+1=(n+1)^2\}$\\
+    Dla $n=0, L=2\cdot0+1=(0+1)^2=P$\\
+    Niech $k\in a$ $\forall_{k>a}$, wtedy z założenia indukcyjnego:\\
+    $1+3+...+2k+1=(k+1)^2$\\
+    $1+3+...+2k+1+2(k+1)+1=(k+1)^2+2k+3=k^2+2k+1+2k+3=(k+2)^2$\\
+    Wtedy z zasady indukcji matematycznej wynika że $A=\mathbb{N}$\\
+    Wobec tego $\forall{n\in\mathbb{N}}$ $1+3+\dots+2n+1=(n+1)^2\qed$
+\end{pk}
+
+\begin{tw}
+    W liczbach naturalnych nie ma nieskończonego malejącego ciągu.\\
+    D-d. Zakładamy nie wprost, że istnieje ciąg l. naturalnych:\\
+    $\{a_n\}_{n\in \mathbb{N}}$ tak, że $\forall_{k\in\mathbb{N}} a_k\in\mathbb{N}$\\
+    $a_k>a_{k+1}$\\
+    Niech $X=\{a_1,a_2,...\}$, Mamy 
+    \begin{enumerate}
+        \item $X\leq N$
+        \item $X\neq 0$
+        \item $X$ nie ma elementu najmniejszego, bo\\
+        niech $a\in X$ to $a=a_k, k\in\mathbb{N}$, ale wtedy\\
+        $a_{k+1}<a_k=a$, zatem a nie jest najmniejszy. 
+    \end{enumerate}
+    1,2,3 są sprzeczne z zasadą dobrego uporządkowania.$\qed$
+\end{tw}
+
+\begin{de}
+    Niech $a,b\in \mathbb{N}$. Największym wspólnym dzielnikiem $a$ i $b$ nazywamy liczbę:
+    \begin{center}
+        $NWD(a,b)=max\{k\in\mathbb{N} : k|a \land k|b\}$
+    \end{center}
+    NWD(15,12)=3\\
+    Algorytm euklidesa, rokzład liczb na czynniki pierwsze.
+\end{de}
+
+\begin{pk}
+    Algorytm Euklidesa:\\
+    Większą zapisujemy resztą z dzielenia przez mniejszą:\\
+    Np. $(45,12)\implies(12, 45 mod 12)=(12,9)\implies(9,12 mod 9)=(9,3)\implies(3,0)$\\
+    W momencie kiedy dowolna z liczb to $0$ algorytm się kończy.\\
+    Wynikiem jest druga liczba, w tym wypadku $3$.
+\end{pk}
+
+\begin{fakt}
+    Aby obliczyć $NWD(a,b)$, wykonujemy do momentu gdy $a=0 \lor b=0$:\\
+    $(a,b)=([min(a,b)],[max(a,b)] \% [min(a,b)])$
+\end{fakt}
+
+\begin{fakt}
+    Dla dowolnych $a,b\in\mathbb{N}$ algorytm Euklidesa, 
+    zaczynający od pary $(a,b)$ zatrzymuje się.\\
+    D-d. Zakładamy nie wprost, że algorytm nie zatrzymuje się. 
+    Więc istnieje nieskończony ciąg par:\\
+    $(a_0,b_1)\implies(a_1,b_1)\implies(a_2,b_2)\implies\dots$\\
+    Wtedy $a_0+b_0, a_1+b_1, a_2+b_2, ...$ jest nieskończonym malejącym ciągiem liczb naturalnych.\\
+    Jest to sprzeczne z twierdzeniem 6.1.2, które mówi że w $\mathbb{N}$ nie ma nieskończonego malejącego ciągu.
+    A zatem fakt jest prawdziwy $\qed$.
+\end{fakt}
+
+Obserwacja. $a,b\in\mathbb{N}$, $r=a \mod b$, to $a=b\omega + r$\\
+D-d: Niech $k\in{1,...,n-1}$, wtedy należy dowieść, że:\\
+$\forall_{m} (m|a_k \land m| b_k) \iff m|a_{k+1} \land m|b_{k+1}$\\
+$\rightarrow$: Niech $m|a_k,b_k$, wtedy:\\
+$m|b_k=a_k+1$\\
+$b_{k+1}=a_k\mod b_k$. Istnieje liczba naturalna $w$, taka że:\\
+$a_k=b_k\cdot w + b_{k+1}$\\
+$\leftarrow$: Ćwiczenie.\\
+
+Niech $Z_0$ - zbiór wspólnych dzielników liczb $a_0,b_0$\\
+(*) $Z_0=Z_n$ - $NWD(a,b)=max(Z_0)=max(Z_n)=NWD(a_n,0)=a_n$
 
 
 \end{document}
