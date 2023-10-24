@@ -38,7 +38,151 @@
 \maketitle
 
 \section{Wykład pierwszy}
-tbd
+
+Liczby naturalne $\mathbb{N}=\{1,2,3,\dots\}$
+
+\begin{de}
+    Zasada indukcji matematycznej. Niech będzie dana własność liczb naturalnych, która czyni zadość warunkom:
+    \begin{enumerate}
+        \item Liczba 1 posiada tę własność.
+        \item Jeżeli liczba $n$ posiada tę własność, to posiada ją również liczba $n+1$.
+    \end{enumerate}
+    Zasada indukcji matematycznej mówi, że przy tych założeniach każda liczba naturalna posiada tę własność.
+\end{de}
+
+\begin{pk}
+    $1+2+\dots+n=\frac{n(n+1)}{2}$.
+    \begin{enumerate}
+        \item $n=1$ $L=1$ $P=\frac{1(1+1)}{2}$
+        \item $\forall_{n\geq 1} 1+2+\dots+n=\frac{n(n+1)}{2} \implies 1+2+\dots+n+n+1=\frac{(n+1)(n+2)}{2}$.\\
+        Z założenia indukcyjnego mamy:\\
+        $1+2+...+n+(n+1)=\frac{n(n+1)}{2}+n+1=(n+1)(\frac{n}{2}+1)=\frac{(n+1)(n+2)}{2}$\\
+        Na mocy zasady indukcji matematycznej teza zachodzi $\square$.
+    \end{enumerate}
+\end{pk}
+
+\begin{pk}
+    Nierówność Bernoulli'ego. Niech $a\geq 1$, wówczas dla dowolnego $n$ naturalnego zachodzi nierówność:
+    $(1+a)^n \geq 1 + na$
+    \begin{enumerate}
+        \item $n=1$, $L=(1+a)^1 = 1+a$, $P=1+1\cdot a = 1+ a$, $L=P$, własność zachodzi
+        \item $\forall_{n>1} (1+a)^n \geq 1 + na \implies (1+a)^{n+1} \geq 1 + (n+1)\cdot a$\\
+        $(1+a)^{n+1}=(1+a)^n\cdot(1+a)\geq^{ind.} (1+na)(1+a)$\\
+        $(1+a)^{n+1} \geq 1 + a + na + na^2 = 1 + (n+1)a + na^2 \geq 1 + (n+1)\cdot a$\\
+        Na mocy zasady indukcji matematycznej nierówność jest prawdziwa.
+    \end{enumerate}
+\end{pk}
+
+Liczby Całkowite $\mathbb{Z}=\{0,1,-1,2,-2,3,-3,...\}$
+
+\begin{de}
+    Liczby wymierne $\mathbb{Q}$ to liczby postaci:\\
+    \begin{center}
+        $\frac{p}{q}$, gdzie $p,q\in\mathbb{Z}$ oraz $q\neq0$
+    \end{center}
+    Zbiór liczb wymiernych jest liniowo uporządkowany, to znaczy każde dwie liczby wymierne można połączyć jednym ze znaków:\\
+    $a<b, a>b, a=b$.\\
+    Dodawanie $\mathbb{Q}$\\
+    $\frac{p_1}{q_1}+\frac{p_2}{q_2}=\frac{p_1q_2 + p_2q_1}{q_1q_2}$\\
+    Mnożenie $\mathbb{Q}$\\
+    $\frac{p_1}{q_1} \cdot \frac{p_2}{q_2} = \frac{p_1p_2}{q_1q_2}$\\
+    Własności:\\
+    \begin{enumerate}
+        \item Przemienność $a+b=b+a$
+        \item Łączność $a+(b+c)=(a+b)+c$
+        \item Rozdizelność $(a+b)c=ac+bc$
+    \end{enumerate}
+\end{de}
+
+Uwaga. Jeżeli ($a<c \land c<b) \iff a<c<b$. Mówimy wtedy, że c leży między liczbami a i b.\\
+Z twierdzenia Pitagorasa $1^2+1^2=x^2 \implies x=\sqrt{2}$. D-d niewymierności $\sqrt{2}$ jako ćwiczenie.\\
+
+Własność - zbiór $\mathbb{Q}$ jest zbiorem gęstym.\\
+Niech $a,b$ będą dowolnymi liczbami wymiernymi, takimi że $a<b$. Wówczas istnieje liczba $c$ leżąca między liczbami $a$ i $b$.\\
+np.: $c=\frac{a+b}{2}$\\
+
+Liczby rzeczywiste $\mathbb{R}$
+
+\begin{de}
+    Mówimy, że \underline{zbiór jest ograniczony} jeżeli istnieją takie dwie liczby $m, M$, że:
+    \begin{center}
+        $\forall_{x\in X} m\leq x\leq M, X\in[m,M]$
+    \end{center}
+    Uwaga analogicznie ograniczoność z dołu i góry osobno.
+\end{de}
+
+\begin{de}
+    Kres górny zbioru. Niech $X$ będzie zbiorem ograniczonym z góry.
+    \begin{center}
+        $\forall_{x\in X} \exists_M x\leq M$
+    \end{center}
+    Kresem górnym zbioru nazywamy najmniejszą liczbę ograniczającą zbiór $X$ z góry.\\
+    $(-\infty, 1)$: kres $1$\\
+    $(-\infty, 1) \cup (1,2]$: kres $2$\\
+\end{de}
+
+\subsection{Aksjomat Zupełności}
+Każdy ograniczony z góry podzbiór liczb rzeczywistych ma kres górny.\\
+
+\begin{de}
+    Kres dolny zbioru nazywamy największą liczbą ograniczjącą zbiór $X$ z dołu.
+    \begin{center}
+        $\forall_{x\in X} \exists_m m\leq X$
+    \end{center}
+    $(-1, +\infty)$: kres $-1$\\
+    $(2, +\infty)$: kres $2$\\
+    Kres górny zbioru i kres dolny zbioru to pojęcia dualne.
+\end{de}
+
+\subsection{Wartość bezwzględna}
+
+$|a|=\begin{cases}
+    a, a\geq 0\\
+    -a, a<0
+\end{cases}$
+
+\begin{pk}
+    Własności:
+    \begin{itemize}
+        \item $|a|=|-a|$
+        \item $|ab|=|a|\cdot|b|$
+        \item $|a+b|\leq|a|+|b|$
+        \item $|a-b|\leq|a|+|b|$
+        \item $|a|-|b| \leq |a-b|$
+    \end{itemize}
+\end{pk}
+
+\begin{de}
+    Współczynnik Newtona. Zakładamy że $n,k$ są liczbami naturalnymi,
+    takimi że $n\geq k$. Współczynnik Newtona określam wzorem:
+    \begin{center}
+        $\binom{n}{k}=\frac{n!}{k!(n-k)!}$
+    \end{center}
+    Własności:
+    \begin{enumerate}
+        \item $\binom{n}{0}=\binom{n}{n}=1$
+        \item $\binom{n}{k}=\binom{n}{n-k}$
+        \item $\binom{n+1}{k}=\binom{n}{k-1}+\binom{n}{k}$
+        \item $\binom{n}{k+1}=\binom{n}{k}\cdot \frac{n-k}{k+1}$
+    \end{enumerate}
+\end{de}
+
+\begin{itemize}
+    \item Symbol sumy $\sum$
+    \item Symbol iloczynu $\Pi$
+\end{itemize}
+
+\begin{de}
+    Nierówność Cauchy'ego - Schwarza. Niech $a_1, a_2, \dots, a_n$ oraz $b_1, b_2, \dots, b_n$ będą dowolnymi liczbami rzeczywistymi.
+    Wówczas zachodzi nierówność:
+    \begin{center}
+        $(a_1^2+a_2^2+\dots+a_n^2)(b_1^2+b_2^2+\dots+b_n^2)\geq(a_1b_1+a_2b_2+\dots+a_nb_n)^2$
+    \end{center}
+    lub równoważnie:
+    \begin{center}
+        $\sum_{i=1}^{n} a_i^2 \cdot \sum_{i=1}^{n} b_i^2 \geq \left(\sum_{i=1}^{n} a_ib_i\right)^2$
+    \end{center}
+\end{de}
 
 \section{Wykład drugi}
 tbd

@@ -451,4 +451,133 @@ Niech $Z_0$ - zbiór wspólnych dzielników liczb $a_0,b_0$\\
 (*) $Z_0=Z_n$ - $NWD(a,b)=max(Z_0)=max(Z_n)=NWD(a_n,0)=a_n$
 
 
+\section{Wykład}
+
+Algorytm Euklidesa:\\
+$NWD(a,b), a>b$\\
+$(a,b),(b, a \mod b)=(a_1,b_1)...(a_n,0), a_n=NWD(a,b)$
+
+\subsection{Równania Diofantyczne}
+
+\begin{tw}
+    Niech $a,b \in \mathbb{Z}$. Równanie:
+    \begin{center}
+        $ax+by=c$
+    \end{center}
+    ma rozwiązanie $x,y\in \mathbb{Z}$
+    $\iff NWD(a,b)|c$
+\end{tw}
+
+\begin{pk}
+    Rozwiązanie RD za pomocą AE:
+\begin{center}
+    $42x + 15y = 3$\\
+    AE. $(42,12)\rightarrow(15,42\mod 15)\rightarrow(15,12)\rightarrow(12,3)\rightarrow(3,0), 3 = NWD(42,15)$\\
+    $15\cdot \square + 12\cdot \square = 3$\\
+    $15\cdot 1 + 15\cdot -1 = 3$, wiemy że:\\
+    $42\mod 15 = 12$\\
+    $42 = 15\cdot 2 + 12$\\
+    $12=42-15\cdot 2$, zatem:\\
+    $15\cdot 1 + (42-15\cdot 2)\cdot(-1)=3$\\
+    $15\cdot 1 - 42 + 15\cdot 2 = 3$\\
+    $15\cdot 3 + (-1) \cdot 42 = 3$\\
+    $x=-1 \land y = 3$\\
+    Idea polega na tym aby liczbę z końca algorytmu wyrazić za pomocą dwóch liczb.
+\end{center}
+\end{pk}
+
+D.d $\rightarrow$:
+Zakładamy, że równanie $ax+by=c$ ma rozwiązanie.
+\begin{center}
+    $NWD(a,b)|a \land NWD(a,b)|b$\\
+    $NWD(a,b)|ax \land NWD(a,b)|by$\\
+    $NWD(a,b)|(ax+by=c)\qed$
+\end{center}
+
+D.d $\leftarrow$:
+Pokażemy, że równanie $ax+by=NWD(a,b)$ ma rozwiązanie w liczbach całkowitych. 
+Niech $(a,b)=(a_0,b_0)\implies(a_1,b_1)\implies\dots\implies(a_n, b_n)=(a_n,0)$ to algorytm Euklidesa na parze $a, b$.\\
+Indukcja względem $n$:\\
+Dla: $n=0$ $NWD(a,b)=a_0=a$\\
+$ax+by=NWD(a,b)=a, x=1, y=0$ równanie ma rozwiązanie\\
+Dla: $n \rightarrow n+1$. Zakładamy, że dla każdej pary AE zatrzymuje się po $n$ krokach, dla każdej takiej pary równanie $ax+by=NWD(a,b)$ ma rozwiązanie.\\
+Teza: Dla każdej pary $(a,b)$, dla której algorytm Euklidesa zatrzymuje się po $n+1$ kroach, $\dots$ istnieje rozwiązanie równania.\\
+D-d kroku ind. Niech $(a,b)$ takie, że AE na $(a,b)$ zatrzymuje się po $n+1$ krokach:\\
+$(a_0,b_0)\implies(a_1,b_1)\implies\dots \implies(a_n,b_n)\implies(a_{n+1},b_{n+1})$\\
+Zauważmy, że AE na parze $(a_1,b_1)$ zatrzymuje się po $n$ krokach. Z założenia indukcyjnego musi on mieć rozwiązanie, tj. $\exists_{x', y' \in \mathbb{Z}} a_1\cdot x' + b_1\cdot y' = NWD(a_1,b_1)$.\\
+Zauważmy, że $NWD(a_1,b_1)=NWD(a,b)$\\
+$a_1=b, b_1=a \mod b \implies a = b \cdot z + b_1, z\in\mathbb{Z}$, więc:\\
+$NWD(a,b)=NWD(a_1,b_1)=a_1 x' + b_1 y' = b x' + (a-b\cdot z) y' = a y' + (x' - zy') b$\\
+Skrajne strony tej równości $ay' + b(x'-zy')=NWD(a,b)$. Skoro $y', x', zy' \in \mathbb{Z}$, to istnieje
+rozwiązanie dla pary $n+1$. Zatem na mocy zasady indukcji matematycznej twierdzenie jest prawdziwe dla każdego $n$.\\
+
+Elementy odwracalne pierścienia:
+W pierścieniu nie każdy element musi być odwracalny.\\
+Niech. $(P, +, \cdot)$ - pierścień z 1.
+$a\in P$ nazywamy odwracalnym, gdy $\exists_{b\in P} ab = 1$\\
+Np. w $(\mathbb{Z},+,\cdot)$ - tylko $1, -1$ są odwracalne.
+
+\begin{de}
+    Niech $(P,+,\cdot)$ - pierścień. Zbiorem elementów odwracalnych oznaczamy przez $P*$.
+    \begin{center}
+        $P* = {a\in P : \exists_{b\in P}: a\cdot b = 1}$
+    \end{center}
+\end{de}
+
+\begin{pk}
+    Rozważmy następujące pierścienie
+    \begin{itemize}
+        \item $(\mathbb{Z,+,\cdot}) \mathbb{Z}^*=\{1,2\}$
+        \item $(\mathbb{Z}_{6}, +_{6}, \cdot_{6}) \mathbb{Z}_6^*=\{1,5\}$ Odwracalna $a$ ma $NWD(a,6)=1$
+    \end{itemize}
+\end{pk}
+
+\begin{tw}
+    Niech $(P, +, \cdot)$ - pierścień z $1$. Wtedy $(P^*, \cdot)$ jest grupą.\\
+    D-d. 
+    \begin{enumerate}
+        \item $(\cdot)$ - jest działaniem na $P^*$. 
+        Niech $a,p\in P^*$, wtedy istnieją $b, q\in P$, takie że:
+        $a\cdot b = p\cdot q = 1$, wtedy:
+        $(a\cdot p)(q\cdot b) = a \cdot (p \cdot q) \cdot b = a \cdot 1 \cdot b = 1$,
+        więc $a\cdot p \in P^*$.
+        \item Działanie $\cdot$ jest łączne na $P^*$, ponieważ jest łączne na $P$.
+        \item $1\in P^*$, bo $1\cdot 1 = 1$ - element neutralny.
+        \item Niech $a\in P^*$, więc z def. $\exists_{b \in P} a\cdot b = 1$. Zauważmy, że:\\
+        również $b\in P^*$, ponieważ $b\cdot a = 1_{\square}$.
+    \end{enumerate}
+\end{tw}
+
+Grupa $Z_n^*$. Pierścień $Z_n = (\{0,1,...,n-1\},+_n, \cdot_n)$
+
+\begin{fakt}
+    $a\in\{0,1,...,n-1\}$ jest odwracalny wtedy i tylko wtedy gdy $NWD(a,n)=1$\\
+    D-d: $\leftarrow$\\
+    Niech $NWD(a,n)=1$, to znaczy że równanie $ax+ny=1$ ma rozwiązanie $x,y\in\mathbb{Z}$\\
+    Niech $b=x\mod n$, mamy:\\
+    $a\cdot_n b = a\cdot b \mod n = ax\mod n= (ax+ny)\mod n$\\
+    D-d: $\rightarrow$ Niewprost\\
+    Niech $NWD(a,b)=k > 1$, zatem $k|a \land k|n$, więc:\\
+    $\forall_{b\in\{0,1,...,n-1\}} k|ab$\\
+    $k(a\cdot b) \mod n$\\
+    $k | (ab) \mod n$, zatem:\\
+    $a\cdot_n b \neq 1$
+\end{fakt}
+
+Wniosek:
+\begin{center}
+$Z_n^* = \{k\in \{0,1,...,n-1\}: NWD(k,n)=1\}$
+\end{center}
+
+$(\{k\in \{0,1,...,n-1\}: NWD(k,n)=1\},\cdot_n)$ jest grupą.
+
+\begin{pk}
+    \item $\mathbb{Z}_6^*=(\{1,5\}, \cdot_6)$
+    \item $\mathbb{Z}_7^*=(\{1,2,3,4,5,6\}, \cdot_7)$ 
+\end{pk}
+
+Uwaga. Grupy $\mathbb{Z}_n^*$ są przemienne.
+ 
+$p\in P$ to $\mathbb{Z}_p^* = (\{1,2,\dots,p-1\}, \cdot_p)$
+
 \end{document}
