@@ -185,7 +185,39 @@ $|a|=\begin{cases}
 \end{de}
 
 \section{Wykład drugi}
-tbd
+
+\begin{de}
+    Ciąg liczbowy to funkcja z $\mathbb{N}$ w $\mathbb{R}$. Stosujemy zapis $a_1,a_2,\dots,a_n$. Przykłady:
+    \begin{itemize}
+        \item $a_n=c+(n-1)d$ - arytmetyczny
+        \item $b_n=cq^{n-1}$ - geometryczny
+        \item $c_n=n!$
+        \item $d_{n+1}=2^{d_n}$ - rekurencyjny
+    \end{itemize}
+\end{de}
+
+\begin{de}
+    Ciąg monotoniczny. 
+    \begin{enumerate}
+        \item $a_n$ jest rosnący $\iff \forall_{n\in\mathbb{N}} a_n<a_{n+1}$
+        \item $a_n$ jest malejący $\iff \forall_{n\in\mathbb{N}} a_n>a_{n+1}$
+        \item $a_n$ jest niemalejący $\iff \forall_{n\in\mathbb{N}} a\leq a_{n+1}$
+        \item $a_n$ jest nierosnący $\iff \forall_{n\in\mathbb{N}} a\geq a_{n+1}$
+    \end{enumerate}
+    Analogicznie definiujemy ciąg monotoniczny od pewnego miejsca:
+    \begin{enumerate}
+        \item $a_n$ jest rosnący od $n_0 \iff \forall_{n>n_0} a_n<a_{n+1}$
+    \end{enumerate}
+\end{de}
+
+\begin{de}
+    Liczbą graniczną ciągu $a_n$ nazywamy liczbę $g$, taką że:
+    \begin{center}
+        $\forall_{\varepsilon>0}\exists_{n_0}\forall_{n>n_0} |a_n-g|<\varepsilon$
+    \end{center}
+    Piszemy wtedy: $lim_{n\rightarrow \infty} a_n = g$ lub $a_n\rightarrow g$.\\
+    $|a_n-g|<\varepsilon \iff -\varepsilon < a_n -g < \varepsilon \iff g-\varepsilon < a_n < g+\varepsilon$
+\end{de}
 
 \section{Wykład trzeci}
 
@@ -402,5 +434,241 @@ Następny wykład - kryteria zbieżności szeregów: kryterium kondensacyjne.
 
 Szereg $\sum_{n=1}^{\infty} \frac{n}{n+1}$ jest rozbieżny, bo nie jest spełniony warunek konieczny\\ $lim_{n\rightarrow \infty} \frac{n}{n+1}=1$\\
 Warunek konieczny nie jest wystarczający.
+
+\section{Wykład czwarty}
+
+\subsection{Kryteria zbieżności szeregów}
+
+\begin{tw}
+    Szereg o wyrazach dodatnich jest zbieżny $\iff$ jest ograniczony.\\
+    \begin{center}
+        $\sum_{n=1}^{\infty} a_n, a_n>0$, czy $S_n = \sum_{n=1}^{\infty} a_n$
+    \end{center}
+    $S_{N+1}-S_{N}=a_{n+1} > 0, S_N$ - rosnący. Jeżeli $S_N$ jest ograniczony to jest zbieżny.\\
+    Wniosek:\\
+    $\sum_{n=1}^{\infty} \frac{1}{n^2}$, dla $n\geq 2$:\\
+    $S_N=\sum_{n=1}^{N} \frac{1}{n^2}=1+\sum_{n=2}^{N} \frac{1}{n^2}\leq 1 + \sum_{n=2}^{N} \frac{1}{n(n-1)} = 1 + \sum_{n=2}^{N} (\frac{1}{n-1} - \frac{1}{n}) = 2 - \frac{1}{N} \leq 2$
+\end{tw}
+
+\begin{tw}
+    Kryterium porównawcze. $\sum_{n=1}^{\infty} a_n$, $\sum_{n=1}^{\infty} b_n$ oraz $a_n, b_n > 0$:
+    \begin{center}
+    Jeżeli $\exists_{n_0}\forall_{n>n_0} a_n\leq b_n$ i $\sum_{n=1}^{\infty} b_n$ jest zbieżny, to $\sum_{n=1}^{\infty} a_n$ jest zbieżny.\\
+    \end{center}
+\end{tw}
+
+\begin{tw}
+    Jeżeli $\sum_{n>n_0}^{\infty} \leq \sum_{n>n_0}^{\infty}$ i $\sum_{n>n_0}^{\infty} a_n = \infty$ ($a_n$ rozbieżny),
+    to wówczas $\sum_{n>n_0}^{\infty} b_n = \infty$ ($b_n$ rozbieżny).
+\end{tw}
+
+Wniosek: $\sum_{n=1}^{\infty} \frac{1}{n^p} = \infty$ dla $p\leq 1$, bo $\frac{1}{n^p} \geq \frac{1}{n}, \sum_{n=1}^{\infty} \frac{1}{n} = \infty$\\
+
+\begin{tw}
+    \begin{center}
+    Twierdzenie o zagęszczaniu. Zakładamy, że $a_n\geq 0$ i $a_{n+1} \leq a_n$. Wówczas $\sum_{n=1}^{\infty} a_n$ jest zbieżny $\iff \sum_{n=1}^{\infty} 2^n a_{2^n}$ jest zbieżny.
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Rozważmy poniższy przykład ciągu:\\
+    $a_1+a_2+a_3+a_4+a_5+a_6+a_7+a_8 \implies^{tw. zag} $\\
+    $2\cdot a_2 + 4\cdot a_4 + 8\cdot a_8$
+\end{pk}
+
+\begin{pk}
+    Zastosowanie Tw. o zagęszczaniu.\\
+    $\sum_{n=1}^{\infty} \frac{1}{n^p}, p\in\mathbb{R}$ zbieżny $\iff \sum_{n=1}^{\infty} 2^n (\frac{1}{2^n})^p$ jest zbieżny.\\
+    $\sum_{n=1}^{\infty} 2^n (\frac{1}{2^n})^p = \sum_{n=1}^{\infty} 2^n \frac{1}{2^{np}} = \sum_{n=1}^{\infty} \frac{1}{2^{np-n}} = \sum_{n=1}^{\infty} \frac{1}{2^{n(p-1)}}$\\
+    $\sum_{n=1}^{\infty} \frac{1}{2^{n(p-1)}}$ jest zbieżny dla $p>1$\\
+    Wniosek 1: $\sum_{n=1}^{\infty} \frac{1}{n^p}$ jest zbieżny dla $p>1$ i rozbieżny dla $p\leq 1$\\
+\end{pk}
+
+\begin{de}
+    Kryterium d'Alemberta:
+    $\sum_{n=1}^{\infty} a_n, a_n\geq 0$:
+    \begin{itemize}
+        \item Jeżeli $\exists_{n_0}\forall_{n>n_0} \frac{a_{n+1}}{a_n} \leq q < 1$, to $\sum_{n=1}^{\infty} a_n$ jest zbieżny.
+        \item Jeżeli $\exists_{n_0}\forall_{n>n_0} \frac{a_{n+1}}{a_n} \geq 1$, to $\sum_{n=1}^{\infty} a_n$ jest rozbieżny.
+        \item Jeżeli $\exists_{n_0}\forall_{n>n_0} \frac{a_{n+1}}{a_n} = 1$, to kryterium d'Alemberta nie rozstrzyga zbieżności.
+    \end{itemize}
+    Idea d-d: \\
+    $lim_{n\rightarrow \infty} sup |\frac{a_{n+1}}{a_n}| = q, q < 1$\\
+    $|\frac{a_{n+1}}{a_n}|<q$\\
+    $a_{n+1} < a_n q$\\
+    $a_n < a_0 q^{n-1}$\\
+    $\sum_{n=1}^{\infty} a_n < \sum_{n=1}^{\infty} a_0 q^{n-1}$ - zbieżne
+\end{de}
+
+\begin{pk}
+    Przykład: $\sum_{n=1}^{\infty}, a_n=\frac{n!}{n^n}$:\\
+    $\frac{a_{n+1}}{a_n}=\frac{\frac{(n+1)!}{(n+1)^{n+1}}}{\frac{n!}{n^n}}=\frac{n^n}{(n+1)^n}=\frac{1}{\frac{(n+1)^n}{n^n}}=\frac{1}{(1+\frac{1}{n})^n}$\\
+    $\lim_{n\rightarrow \infty} \frac{a_{n+1}}{a_n} = \lim_{n\rightarrow\infty} \frac{1}{(1+\frac{1}{n})^n}=\frac{1}{e}<1$\\
+    Z kryterium d'Alemberta szereg jest zbieżny.
+\end{pk}
+
+\begin{pk}
+    Przykład: $\sum_{n=1}^{\infty} \frac{n!}{2^n}$ jest rozbieżny. ($\sum_{n=1}^{\infty} \frac{n!}{2^n}=\infty$)
+\end{pk}
+
+\begin{pk}
+    Przykład:
+    $\sum_{n=1}^{\infty} \frac{1}{n} = \infty$\\
+    $\frac{a_{n+1}}{a_n} = \frac{\frac{1}{n+1}}{\frac{1}{n}}=\frac{n}{n+1}\rightarrow 1$ Kryterium d'Alamberta nic nie powie.
+\end{pk}
+
+\begin{pk}
+    Przykład: $\sum_{n=1}^{\infty} \frac{1}{n(n+1)}$\\
+    $\sum_{n=1}^{N} \frac{1}{n(n+1)} = \sum_{n=1}^{N} (\frac{1}{n}-\frac{1}{n+1})=1-\frac{1}{N+1}\rightarrow 1$\\
+    $\frac{a_{n+1}}{a_n} = \dots = \frac{n^2+n}{n^2+3n+2}=1$ Kryterium d'Alamberta nic nie powie.
+\end{pk}
+
+Simplify (wolframalpha):\\
+$\frac{(n+1)!}{(n+1)^{n+1}}\cdot\frac{n^n}{n!}=\frac{n^n}{(n+1)^n}$\\
+
+discreteplot$(n^2,(n,1,20))$ (wolframalpha)\\
+
+discreteplot$(n^2,{n,1,20})$ (mathematica)
+
+\begin{de}
+    Kryterium Cauchy'ego. $\sum_{n=1}^{\infty}, a_n\geq 0$
+    \begin{enumerate}
+        \item Jeżeli $\exists_{n_0}\forall_{n>n_0} \sqrt[n]{a_n} \leq q < 1$, to $\sum_{n=1}^{\infty} a_n$ jest zbieżny.
+        \item Jeżeli $\exists_{n_0}\forall_{n>n_0} \sqrt[n]{a_n} \geq 1$, to $\sum_{n=1}^{\infty} a_n$ jest rozbieżny.
+        \item Jeżeli $\exists_{n_0}\forall_{n>n_0} \sqrt[n]{a_n} = 1$, to kryterium Cauchy'ego nie rozstrzyga zbieżności.
+    \end{enumerate}
+    Idea:\\
+    $\sqrt[n]{|a_n|}<q$, $0<q<1$ czyli
+    $|a_n|<q^n$ więc
+    $a_n<q^n$ zatem
+    $\sum_{n=1}^{\infty} q^r$ zbieżny.
+\end{de}
+
+\begin{pk}
+    $\sum_{n=1}^{\infty} \frac{n^2}{2^n}, a_n=\frac{n^2}{2^n}$\\
+    z kryterium Cauchy'ego: $\sqrt[n]{a_n} = \frac{\sqrt[n]{n}^2}{2} = \frac{1}{2} < 1$ - zbieżny
+\end{pk}
+
+\begin{pk}
+    $\sum_{n=1}^{\infty} \frac{7^n}{2^n+5^n}, a_n=\frac{7^n}{2^n+5^n}$\\
+    z kryterium Cauchy'ego: $\sqrt[n]{a_n} = \frac{7}{\sqrt[n]{2^n+5^n}} = \frac{7}{5} > 1$ - rozbieżny
+\end{pk}
+
+\begin{pk}
+    $\sum_{n=1}^{\infty} \frac{5^n}{5^n+3^n}$\\
+    kryterium Cauchy'ego nie działa: $\sqrt[n]{a_n}=\frac{5}{\sqrt[n]{5^n+3^n}} \implies 1$\\
+    $a_n=\frac{5^n}{5^n+3^n}$, sprawdźmy warunek konieczny zbieżności:\\
+    $lim_{n\rightarrow \infty} a_n = lim_{n\rightarrow \infty} \frac{5^n}{5^n+3^n} = 1 \neq 0$\\
+    Ciąg jest rozbieżny.
+\end{pk}
+
+\begin{de}
+    Zbieżność bezwzględna. Rozważmy szereg $\sum_{n=1}^{\infty} a_n$ o wyrazach dowolnych. 
+    Mówimy, że szereg $\sum_{n=1}^{\infty} a_n$ jest zbieżny bezwzględnie jeśli:
+    $\sum_{n=1}^{\infty} |a_n|$ jest zbieżny.
+\end{de}
+
+\begin{pk}
+    $\sum_{n=1}^{\infty} \frac{(-1)^n n^2}{2^n}$ jest zbieżny bezwzględnie.\\
+    $\sum_{n=1}^{\infty} |\frac{(-1)^n n^2}{2^n}| = \sum_{n=1}^{\infty} \frac{n^2}{2^n} < \infty$\\
+    $\sum_{n=1}^{\infty} \frac{n^2}{2^n}$ jest zbieżny (kryterium d'Alemberta)
+\end{pk}
+
+\begin{fakt}
+    Badanie zbieżności bezwzględnej szeregu sprowadza się do badania zbieżności szeregu o wyrazach nieujemnych.
+\end{fakt}
+
+\begin{tw}
+    Zbieżność bezwzględna implikuje zwykłą zbieżność.
+    \begin{center}
+        $\sum_{n=1}^{\infty} |a_n|$ jest zbieżny $\implies \sum_{n=1}^{\infty} a_n$ zbieżny.
+    \end{center}
+    \underline{Uwaga}: twierdzenie w drugą stronę nie działa.
+\end{tw}
+
+\begin{pk}
+    $\sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ nie jest zbieżny bezwzględnie, bo:\\
+    $\sum_{n=1}^{\infty} \left|\frac{(-1)^n}{n}\right| = \sum_{n=1}^{\infty} \frac{1}{n} = \infty$\\
+\end{pk}
+
+\begin{tw}
+    Kryterium Abela (Dirichleta). Niech zachodzą następujące warunki:
+    \begin{enumerate}
+        \item $a_n\geq 0$
+        \item $a_1\geq a_2\geq ... \geq a_n \geq ...$
+        \item $lim_{n\rightarrow\infty} a_n = 0$
+    \end{enumerate}
+    Wówczas:
+    \begin{center}
+        $\sum_{n=1}^{\infty} a_n(-1)^n$ jest zbieżny
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Pokażmy, że szereg $\sum_{n=1}^{\infty} \frac{(-1)^n}{n}$ jest zbieżny. Z kryterium Abela:\\
+    $a_n=\frac{1}{n}\geq 0 \land a_1\geq a_2\geq ... \geq a_n \geq ... \land lim_{n\rightarrow\infty} a_n = 0$
+    Szereg jest zatem zbieżny.
+\end{pk}
+
+\begin{pk}
+    $\sum_{n=1}^{\infty} a_n (-1)^{n+1}= \sum_{n=1}^{\infty} (-1)(-1)^n a_n = -1 \cdot \sum_{n=1}^{\infty} (-1)^n a_n$\\
+    Dalej z kryterium Abela...
+\end{pk}
+
+Ciągi to funkcje $\mathbb{N}\rightarrow\mathbb{R}$
+
+\subsection{Funkcje}
+
+Analizujemy funkcje $\mathbb{R}\rightarrow\mathbb{R}$
+
+\begin{de}
+    Dziedzina funkcji (domain): $dom(f)$ - zbiór wszystkich $x$ dla których funkcja jest określona.
+\end{de}
+
+\begin{de}
+    Zbiór wartości (range): $rng(f) = \{f(x): x\in dom(f)\}$
+\end{de}
+
+\begin{de}
+    Wykres funkcji (graph): $G(f) = \{(x,f(x)): x\in dom(f)\}$
+\end{de}
+
+\begin{de}
+    Funkcja różnowartościowa (one-to-one function):
+    \begin{center}
+         $\forall_{x,y\in A} x\neq y \implies f(x)\neq f(y)$
+    \end{center}
+    Uwaga. Jeśli $f: A\rightarrow B$ jest różnowartościowa, to istnieje dokładnie jedna funkcja\\ $f^{-1}: rng(f)\rightarrow A$, taka że:
+    $\forall_{x\in A} f^{-1}(f(x))=x$ oraz $\forall_{y\in rng(f)} f(f^{-1}(y))=y$.
+\end{de}
+
+\begin{de}
+    Funkcje monotoniczne $f: A\rightarrow B$:
+    \begin{enumerate}
+        \item $\forall{x,y\in A} (x<y \implies f(x)<f(y))$ - rosnąca
+        \item $\forall{x,y\in A} (x<y \implies f(x)>f(y))$ - malejąca
+        \item $\forall{x,y\in A} (x<y \implies f(x)\leq f(y))$ - niemalejąca (słabo rosnąca)
+        \item $\forall{x,y\in A} (x<y \implies f(x)\geq f(y))$ - nierosnąca (słabo malejąca)
+    \end{enumerate}
+\end{de}
+
+\begin{de}
+    Złożenie funkcji $f: A\rightarrow B$, $g: B\rightarrow C$ wówczas:
+    \begin{center}
+    $g\circ f: A\rightarrow C$\\
+    $(g\circ f)(x)=g(f(x))$
+    \end{center}
+\end{de}
+
+\begin{pk}
+    Rozważmy następujące funkcje i ich złożenia:\\
+    $f: \mathbb{R}\rightarrow\mathbb{R}, g: \mathbb{R}\rightarrow[-1,1]$\\
+    $f(x) = x^3 + 1, g(y) = sin(y)$\\
+    $g\circ f(x) = g(f(x)) = sin(f(x)) = sin(x^3+1)$\\
+    Przykład drugi:\\
+    $g: \mathbb{R}\rightarrow[-1,1], f: [-1,1]\rightarrow\mathbb{R}$\\
+    $f\circ g(x) = f(g(x)) = f(sin(x)) = sin^3(x)+1$
+\end{pk}
+
 
 \end{document}
