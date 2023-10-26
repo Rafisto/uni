@@ -451,7 +451,7 @@ Niech $Z_0$ - zbiór wspólnych dzielników liczb $a_0,b_0$\\
 (*) $Z_0=Z_n$ - $NWD(a,b)=max(Z_0)=max(Z_n)=NWD(a_n,0)=a_n$
 
 
-\section{Wykład}
+\section{Wykład VII}
 
 Algorytm Euklidesa:\\
 $NWD(a,b), a>b$\\
@@ -579,5 +579,142 @@ $(\{k\in \{0,1,...,n-1\}: NWD(k,n)=1\},\cdot_n)$ jest grupą.
 Uwaga. Grupy $\mathbb{Z}_n^*$ są przemienne.
  
 $p\in P$ to $\mathbb{Z}_p^* = (\{1,2,\dots,p-1\}, \cdot_p)$
+
+\section{Wykład VIII}
+$+, \cdot$ na $\mathbb{N}$ - łączne, przemienne\\
+$a\leq b \implies a+x\leq b+x$
+
+\subsection{Liczby Pierwsze}
+
+\begin{de}
+    Liczbę naturalną $p$ nazywamy pierwszą, gdy $p\geq 2$ oraz:
+    \begin{center}
+        $\forall_{n} n|p \implies (n=1 \lor n=p)$
+    \end{center}
+\end{de}
+
+Zbiór wszystkich liczb pierwszych zaznaczamy $\mathbb{P}$
+\begin{center}
+    $\mathbb{P}=\{2,3,5,7,\dots\}$
+\end{center}
+
+\begin{fakt}
+    Każda liczba naturalna większa od $1$
+    dzieli się przez pewną liczbę pierwszą.\\\\
+    D-d. (WO) Nie istnieje nieskończony malejący ciąg liczb naturalnych.\\
+    Załóżmy nie wprost że istnieje liczba $n\in\mathbb{N} > 1$,
+    taka że $n$ nie dzieli się przez żadną liczbę pierwszą.\\
+    Wtedy:
+    \begin{enumerate}
+        \item $n$ nie może być liczbą pierwszą, bo z założenia nie dzieli się przez żadną liczbę pierwszą.
+        \item zatem $\exists_{n_1,n_2-\{0,1\}} n=n_1\cdot n_2$
+        \item zauważmy, że ani $n_1$ ani $n_2$ nie dzielą się przez żadną liczbę pierwszą. 
+        Bo gdyby tak było to $p|n_1 \implies p|n$
+        \item W szczególności $n_2<n$. 
+        \item Następnie podobnie dla $n_2$, która nie jest liczbą pierwszą, więc $\exists_{n_3,n_4-\{0,1\}} n_2=n_3\cdot n_4$
+        \item Wtedy $n_4$ nie dzieli się przez żadną liczbę pierwszą, ale oprócz tego $n_4<n_2$
+        \item Powtarzając ten krok otrzymamy nieskończenie malejący ciąg liczb naturalnych:\\
+        $n_1, n_2, n_4, \dots$, co jest sprzeczne z WO. 
+    \end{enumerate}
+    Zatem założenie nie wprost jest fałszywe, a fakt prawdziwy.
+\end{fakt}
+
+\begin{tw}
+    \underline{Euklides}. Istnieje nieskończenie wiele liczb pierwszych. Zbiór $\mathbb{P}$ ma nieskończenie wiele elementów.\\
+    D-d. Nie wprost, gdyby $\mathbb{P}$ było skończone, to $\exists_{p_1,p_2,\dots,p_n} \mathbb{P}=\{p_1,p_2,\dots,p_n\}, n\in\mathbb{N}$\\
+    Niech $m=p_1\cdot p_2\cdot \dots \cdot p_n + 1$. Zauważmy że wówczas $m\notin\mathbb{P}$, bo $m>1$ i $m$ nie dzieli się przez żadną liczbę pierwszą.
+    \begin{center}
+        $|\mathbb{P}|=\infty_\square$
+    \end{center}
+\end{tw}
+
+\begin{fakt}
+    Dla dowolnej liczby naturalnej $n>1$ istnieje rozkład na czynniki pierwsze. 
+    Istnieją (niekoniecznie różne) liczby $p_1,p_2,\dots,p_k \in \mathbb{P}$, takie że:
+    \begin{center}
+        $n=p_1\cdot p_2\cdot \dots p_k$
+    \end{center}
+    D-d. Z tw. Euklidesa $\exists_{p_1} \in \mathbb{P}$\\
+    $p_1|n$, więc $\exists_{n_1\in\mathbb{N}}$ $n=p_1\cdot n_1$, wtedy:\\
+    I. $n_1\in\mathbb{P}, n=p_1\cdot n_1$ jest szukanym rozkładem\\
+    II. $n_1\notin\mathbb{P} \exists_{p_2\in\mathbb{P}} p_2|n_1 n_1=p_2\cdot n_2 \dots$\\
+    Ten algorytm zatrzymuje się (inaczej $n, n_1, n_2, \dots, \infty$ ciąg $\mathbb{N}$)text\\
+    $n=p_1\cdot p_2\cdot \dots \cdot p_k \qed$
+\end{fakt}
+
+\begin{tw}
+    Niech $p$ - liczba naturalna. Wtedy $p$ jest liczbą pierwszą wtedy i tylko wtedy, gdy:
+    \begin{center}
+        $\forall_{x,y\in\mathbb{N}} p|xy \implies (p|x \lor p|y)$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Rozważmy następujące przykłady:
+    \begin{itemize}
+    \item Dla n pierwszego np $n=3$
+    $3|xy \implies (3|x \lor 3|y)$
+    \item Ale dla n złożonego np $n=6$
+    $6|4\cdot 3$, ale $\neg 6|4 \land \neg 6|3$
+    \end{itemize}
+\end{pk}
+
+\begin{fakt}
+    Zasadnicze twierdzenie arytmetyki.
+    \begin{enumerate}
+        \item Każda liczba naturalna $n>1$ jest iloczynem liczb pierwszych.
+        \item Rozkład liczby $n$ na czynniki pierwsze jest jednoznaczny. Każda liczba $n>1$ ma jednoznaczny rozkład na czynniki pierwsze.
+        Jeżeli $n=p_1\cdot p_2\cdot \dots \cdot p_k$ oraz $n=q_1\cdot q_2\cdot \dots \cdot q_l$ to $k=l$ oraz
+        istnieje taka permutacja $\sigma$ zbioru $\{1,2,\dots,k\}$, że $p_i=q_{\sigma(i)}$ dla $i=1,2,\dots,k$. 
+    \end{enumerate}
+    D-d.
+    \begin{enumerate}
+        \item Każda liczba naturalna jest iloczynem liczb pierwszych. (Poprzedni fakt)
+        \item Założmy nie wprost, że rozkład nie jest jednoznaczny. 
+    \end{enumerate}
+        To znaczy istnieje jakaś liczba $n$ która ma dwa "istotnie różne" rozkłady na czynniki pierwsze:\\
+        $n=p_1\cdot p_2\cdot ... \cdot p_k$ oraz $n=q_1\cdot q_2\cdot ... \cdot q_l$, zatem:\\
+        $L=p_1\cdot p_2\cdot ... \cdot p_k = q_1\cdot q_2\cdot ... \cdot q_l=P$\\
+        Jeśli dla pewnego $i,j$ $p_i=q_j$ to możemy te je skrócić. BZO.\\
+        Po wykonaniu wszystkich takich skróceń, wiedząc że rozkłady są istotnie różne,
+        otrzymamy iloczyny liczb, które są względnie pierwsze.\\
+        Zatem otrzymamy $\forall_{i,j} q_i\neq p_j$ Mamy:\\
+        $p_1 | p_1\cdot p_2 ... p_k \implies p_1 | q_1 \cdot  (q_2 \cdot ... q_l)$\\
+        $p_1\in\mathbb{P}$ i $p_1 | q_1 \lor p_1 | (q_2\cdot q_3\cdot ... q_l)$\\
+        Nie jest możliwe żeby $p_1 | q_1$ i te liczby nie były sobie równe, zatem $p_1 | (q_2\cdot q_3\cdot ... q_l)$\\
+        zatem albo $p_1 | q_2 \lor p_1 | (q_3 \cdot ... q_l)$ ... $p_1 | q_l \leftarrow$ sprzeczność, a zatem dowód.
+\end{fakt}
+
+Niech $n=p_1^{\alpha_1}\cdot p_2^{\alpha_2}\cdot \dots \cdot p_n^{\alpha_n}$, $n\in\mathbb{P}, \alpha\in\mathbb{N}.$\\
+$m=p_1^{\beta_1}\cdot p_2^{\beta_2}\cdot \dots \cdot p_n^{\beta_n}$
+
+\begin{fakt}
+    Niech $k,m\in\mathbb{N}$ jw. wtedy: $m|k \iff \forall_{i=1,...,n}$ $\beta_i \leq \alpha_i$\\
+    D-d. $\leftarrow$ Zakładamy, że $\forall_{i=1,...,n}$ $\beta_i \leq \alpha_i$, wtedy:\\
+    $k=p_1^{\alpha_1}\cdot p_2^{\alpha_2}\cdot \dots \cdot p_n^{\alpha_n}$, skoro $\beta_i \leq \alpha_i$, to:\\
+    $k=p_1^{\beta_1}\cdot p_1^{\alpha_1-\beta_1} \dots \cdot p_n^{\beta_n}\cdot p_n^{\alpha_n-\beta_n}$, to:\\
+    $k=(p_1^{\beta_1}\cdot p_2^{\beta_2}\cdot p_n^{\beta_n}) \cdot (p_1^{\alpha_1-\beta_1} \dots \cdot p_n^{\alpha_n-\beta_n})$\\
+    $k=m\cdot l$, $\alpha_n - \beta_n \geq 0 \implies l\in\mathbb{N}$, więc $m|k$.\\
+    D-d. $\rightarrow$ Jako ćwiczenie.
+\end{fakt}
+
+\begin{itemize}
+\item Wniosek I: Jeśli $k,m$ jw. $NWD(k,m)=p_1^{min(\alpha_1, \beta_1)} \cdot p_2^{min(\alpha_2, \beta_2)} \cdot \dots \cdot p_n^{min(\alpha_n, \beta_n)}$\\
+D-d. ćwiczenie.
+
+\item Wniosek II: $NWW(k,m)=p_1^{max(\alpha_1,\beta_1)} \cdot p_2^{max(\alpha_2,\beta_2)} \cdot \dots \cdot p_n^{max(\alpha_n,\beta_1p_1^{max(\alpha_1,\beta_n)})}$\\
+D-d. jw. ćwiczenie
+\end{itemize}
+
+\begin{pk}
+    $NWD(k,m)\cdot NWW(k,m) = k\cdot m$\\
+    D-d: $NWD(k,m)\cdot NWW(k,m)=$\\
+    $p_1^{min(\alpha_1, \beta_1)} \cdot p_2^{min(\alpha_2, \beta_2)} \cdot \dots \cdot p_n^{min(\alpha_n, \beta_n)} \cdot$
+    $p_1^{max(\alpha_1,\beta_1)} \cdot p_2^{max(\alpha_2,\beta_2)} \cdot \dots \cdot p_n^{max(\alpha_n,\beta_1p_1^{max(\alpha_1,\beta_n)})}=$\\
+    Korzystając z zależności $min(k,m)+max(k,m)=k+m$, widzimy, że:
+    \begin{center}
+    $=p_1^{\alpha_1+\beta_1} + p_2^{\alpha_2+\beta_2} + \dots + p_n^{\alpha_n+\beta_n} = k\cdot m$
+    \end{center}
+\end{pk}
 
 \end{document}
