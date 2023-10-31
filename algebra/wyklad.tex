@@ -717,4 +717,143 @@ D-d. jw. ćwiczenie
     \end{center}
 \end{pk}
 
+\section{Wykład IX}
+
+\subsection{Liczby zespolone}
+
+Pojęcie liczby:\\
+- $\mathbb{N}\subseteq \mathbb{Z} \subseteq \mathbb{Q} \subseteq \mathbb{R} \subseteq \mathbb{C}$\\
+- $\exists_{x\in \mathbb{C}} W(x)=0$ - Liczby zespolone są algebraicznie domknięte.
+
+\begin{de}
+    Liczbą zespoloną nazywamy wyrażenie postaci:
+    \begin{center}
+        $a+bi, a,b\in\mathbb{R}$
+    \end{center}
+\end{de}
+
+\begin{pk}
+    Zobaczmy przykłady liczb zespolonych:
+    \begin{itemize}
+        \item $1+2i$
+        \item $3+(-2)i = 3-2i$
+        \item $5+0i = 5$
+    \end{itemize}
+\end{pk}
+
+\begin{de}
+    Liczba zespolona to wyrażenie postaci $z=a+bi$
+    \begin{itemize}
+        \item $Re(z)=a$ to część rzeczywista
+        \item $Im(z)=b$ to część urojona
+        \item $i$ to jednostka urojona
+        \item Zbiór wszystkich liczb zespolonych ozn. $\mathbb{C} = \{a+bi: a,b\in\mathbb{R}\}$
+    \end{itemize}
+\end{de}
+
+Działania na liczbach zespolonych wykonujemy jak na wyrażeniach algebraicznych, uwzględniając że $i\cdot i=i^2=-1$.\\
+
+\begin{pk}
+    Przykłady działań na liczbach zespolonych.
+    \begin{itemize}
+        \item $(7+3i) + (5+2i) = (7+5) + (3i + 2i) = 12 + 5i$
+        \item $(5+3i) - (2-7i) = (5-2) + (3i + 7i) = 3 + 10i$
+        \item $(2+i)(1+2i)=2+4i+i+2(i^2)=2+4i+i-2=0+5i=5i$
+        \item $(2+3i)(2-3i)=2\cdot 2 - 2\cdot 3i + 3i \cdot 2 - (3i)^2 = 4 - 9i^2 = 4 + 9 = 13$ (skróc. mn. działa)\\
+        Obserwacja: $(a+bi)(a-bi)=a^2-(bi)^2=a^2+b^2 \in \mathbb{R}$ 
+        \item $\frac{4+6i}{2}=2+3i$
+        \item $\frac{2+3i}{1+i}=\frac{(2+3i)(1-i)}{(1+i)(1-i)} = \frac{2-2i+3i+3}{2}= \frac{5+i}{2} = \frac{5}{2} + \frac{1}{2} i$  (mn. sprzężenie)
+        \item $\sqrt{-1}=i$, bo $i^2 = -1$
+        \item $\sqrt{-9}=\sqrt{9}\cdot\sqrt{-1}=3i$
+    \end{itemize}
+\end{pk}
+
+\begin{tw}
+    Na zbiorze $\mathbb{C}=\{a+bi, a,b\in\mathbb{R}\}$ wprowadzamy działania:
+    \begin{itemize}
+        \item $(a+bi)+(c+di)=(a+c)+(b+d)i$
+        \item $(a+bi)(c+di)=(ac-bd)+(ad+bc)i$
+    \end{itemize}
+\end{tw}
+
+\begin{tw}
+    $(\mathbb{C},+,\cdot)$ jest ciałem:\\
+    D-d. $\leftarrow$ ćw. - spr włas z def. ciała.
+\end{tw}
+
+Obliczenia:
+\begin{itemize}
+    \item $\frac{1}{1+i}=\frac{(1-i)}{(1+i)(1-i)}=\frac{1-i}{2}=\frac{1}{2} - \frac{1}{2} i$
+    \item $(1+i)z +2+i=1+2i$\\
+    $(1+i)z=-1+i$\\
+    $z=\frac{-1+i}{1+i}=...$\\
+    \item $\begin{cases}
+        x+y=1\\
+        ix-y=2
+    \end{cases}\implies (1+i)x=3 \implies x = \frac{3}{1+i}, y=\frac{1+2i}{1-i}$
+\end{itemize}
+
+\subsection{Równanie kwadratowe}
+$x^2+2x+10=0$\\
+$\Delta=b^2-4ac=4-4\cdot 10 = -36, \sqrt{\Delta}=6i$\\
+$x_{1,2}=\frac{-b \pm \sqrt{\Delta}}{2a}=-1\pm3i$
+
+\subsection{Moduł i sprzężenie liczby zespolonej}
+
+\begin{de}
+    Niech $z=a+bi \in \mathbb{C}; a,b \in \mathbb{R}$:
+    \begin{itemize}
+        \item Sprzężeniem $z$ nazywamy $\overline{z}=a-bi$
+        \item Modułem $z$ nazywamy $|z|=\sqrt{a^2+b^2}$
+    \end{itemize}
+\end{de}
+
+\begin{pk}
+    $z=3-7i$, $\overline{z}=3+7$, $|z|=\sqrt(3^2+(-7)^2)=\sqrt{3^2+7^2}$
+\end{pk}
+
+\begin{enumerate}
+    \item Własność. Niech $z,s\in\mathbb{C}$, wtedy:\\
+    1.1) $\overline{z+s}=\overline{z}+\overline{s}$\\
+    1.2) $\overline{z\cdot s}=\overline{z}\cdot \overline{s}$\\
+    D-d. Niech $z=a+bi, s=c+di$:\\
+    1.1d) $\overline{z+s}=\overline{a+bi+c+di}=\overline{a+c+(b+d)i}=(a+c)-(b+d)i$\\
+    $\overline{z}+\overline{s} = \overline{a+bi}+\overline{c+di}=(a+c)-(b+d)i$\\
+    Uwaga: $\overline{z-s}=\overline{z}-\overline{s}$\\
+    Uwaga: $\overline{\frac{z}{s}}=\frac{\overline{z}}{\overline{s}}$\\
+    Uwaga: $\overline{z^n}=(\overline{z})^n$\\
+    Uwaga: $r\in\mathbb{R}, \overline{r}=r$\\
+    Wniosek $f(z)=\overline{z}$ oraz $\mathbb{C}\rightarrow\mathbb{C}$ jest izomorfizmem.
+    \item $|z+s|\leq|z|+|s|$
+    \item $|z\cdot s|=|z|\cdot|s|$
+    \item $z\cdot \overline{z} = |z|^2$\\
+    D-d. Niech $z=a+bi$, wtedy:\\
+    $z\cdot \overline{z}=(a+bi)(a-bi)=a^2+b^2=\sqrt{a^2+b^2}^2=|z|^2$
+\end{enumerate}
+
+Liczby rzeczywiste możemy uporządkować liniowo - oś liczbowa.\\
+Jeżeli $a\leq b \land b\leq c \implies a\leq c$, $a\leq a$, $a\leq b, b\leq a \implies a=b$ - porządek liniowy.
+
+\begin{tw}
+    Nie istnieje liniowe uporządkowanie $\mathbb{C}$ spełniające:
+    \begin{enumerate}
+        \item $\forall_{a,b,x\in\mathbb{C}}: a\leq b \implies a+x \leq b+x$
+        \item $\forall_{a,b\in\mathbb{C}} \forall_{x\geq0}: a\leq b \implies ax \leq bx$
+        \item $\forall_{a,b\in\mathbb{C}} \forall_{x<0}: a\leq b \implies ax \geq bx$
+    \end{enumerate}
+    D-d. 
+    \begin{enumerate}
+        \item Koniecznie $0\leq 1$, bo inaczej (3) $1\leq0\implies0=1$ sprzeczność.
+        \item Koniecznie $-1\leq 0$, bo inaczej (1) sprzeczność.
+        \item Jeśli $i\leq 0 (|\cdot i)$ to $i\cdot i \geq 0 \implies -1 \geq 0$ sprzeczność.
+        \item Jeśli $i> 0 (|\cdot i)$ to $i\cdot i > 0 \implies -1 > 0$ sprzeczność.
+    \end{enumerate}
+\end{tw}
+
+Następne zaj. płaszczyzna zespolona.
+
+
+
+
+
 \end{document}
