@@ -6,24 +6,18 @@ if len(sys.argv) != 3:
     sys.exit(0)
 
 a, b = int(sys.argv[1]), int(sys.argv[2])
-x1, x2 = 0, 1
-y1, y2 = 1, 0
+prev_x, x = 0, 1
+prev_y, y = 1, 0
 
 if a < 0 or b < 0:
     print("a and b must be positive")
     sys.exit(1)
 
-while b > 0:
-    q = a // b
-    r = a % b 
+while b != 0:
+    quotient = a // b
+    a, b = b, a % b
+    x, prev_x = prev_x - quotient * x, x
+    y, prev_y = prev_y - quotient * y, y
 
-    x = x1 - q * x2
-    y = y1 - q * y2
-
-    x2, x1 = x1, x
-    y2, y1 = y1, y
-    a, b = b, r
-
-print(f"{sys.argv[1]}x + {sys.argv[2]}y = NWD({sys.argv[1]},{sys.argv[2]})={a}")
-print(f"Result: x={x} y={y}")
-
+print(f"[{sys.argv[1]}]x + [{sys.argv[2]}]y = GCD({sys.argv[1]},{sys.argv[2]}) = {a}")
+print(f"x = {prev_x}, y = {prev_y}")
