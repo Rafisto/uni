@@ -1,0 +1,408 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}                                                                    
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Algebra - Wykład VI}  
+\date{CBD 1 Sem.}
+
+\begin{document}
+
+\maketitle
+
+\section{Macierz Odwrotna}
+
+Sprowadzamy macierz blokową $[A|I]$ od postaci $[I|B]$, Wtedy $A^{-1}=B$
+
+\begin{center}
+    $[A|I]\rightarrow ... \rightarrow [I|A^{-1}]$
+\end{center}
+
+Bezwyznacznikowe znajdowanie macierzy odwrotnej:
+\begin{enumerate}
+    \item zamiana kolejności wierszy
+    \item pomnożenie dowolnego wiersza przez liczbę $k\in\mathbb{R}$ różną od zera
+    \item dodanie wielokrotności dowolnego wiersza do innego wiersza
+\end{enumerate}
+Metoda ta nazywana jest metodą elementarną.
+
+\begin{pk}
+    Rozważmy następujący przykład:\\\\
+    $ A=\left[\begin{array}{ccc}
+        2 & 0 & 1 \\
+        0 & 1 & 0 \\
+        0 & 3 & 3 
+        \end{array}\right]  $;
+    $ det (A) = 6+0+0-0-0-0=6\neq 0$\\
+    $ [A|I]=\left[\begin{array}{ccc|ccc}
+        2 & 0 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 0 & 0 & 1 & 0 \\
+        0 & 3 & 3 & 0 & 0 & 1 
+        \end{array}\right] =$
+    $ \left[\begin{array}{ccc|ccc}
+        2 & 0 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 0 & 0 & 1 & 0 \\
+        0 & 0 & 3 & 0 & -3 & 1 
+        \end{array}\right] =$
+    $ \left[\begin{array}{ccc|ccc}
+        2 & 0 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 0 & 0 & 1 & 0 \\
+        0 & 0 & 1 & 0 & -1 & \frac{1}{3} 
+        \end{array}\right] =$\\
+    $ =\left[\begin{array}{ccc|ccc}
+        2 & 0 & 0 & 1 & 1 & \frac{-1}{3} \\
+        0 & 1 & 0 & 0 & 1 & 0 \\
+        0 & 0 & 1 & 0 & -1 & \frac{1}{3} 
+        \end{array}\right]  =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & 0 & 0 & \frac{1}{2} & \frac{1}{2} & -\frac{1}{6} \\
+        0 & 1 & 0 & 0 & 1 & 0 \\
+        0 & 0 & 1 & 0 & -1 & \frac{1}{3} 
+        \end{array}\right]  $\\
+
+    Odpowiedź:\\
+
+    $ A^{-1}= \left[\begin{array}{ccc}
+        \frac{1}{2} & \frac{1}{2} & -\frac{1}{6} \\
+        0 & 1 & 0 \\
+        0 & -1 & \frac{1}{3} 
+        \end{array}\right]  $
+    
+\end{pk}
+
+\begin{pk}
+    Rozważmy kolejny przykład:\\
+    Obliczenia:\\\\
+    $ A = \left[\begin{array}{ccc}
+        2 & 2 & 3 \\
+        1 & -1 & 0 \\
+        -1 & 2 & 1 
+    \end{array}\right]  $;
+    $ det (A) = -2 + 0 + 6 -3 -0 -2 = -1 \neq 0$\\
+    $ [A|I]=\left[\begin{array}{ccc|ccc}
+        2 & 2 & 3 & 1 & 0 & 0 \\
+        1 & -1 & 0 & 0 & 1 & 0 \\
+        -1 & 2 & 1 & 0 & 0 & 1
+    \end{array}\right] =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & -1 & 0 & 0 & 1 & 0 \\
+        2 & 2 & 3 & 1 & 0 & 0 \\
+        -1 & 2 & 1 & 0 & 0 & 1 
+        \end{array}\right] =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & -1 & 0 & 0 & 1 & 0 \\
+        0 & 4 & 3 & 1 & -2 & 0 \\
+        0 & 1 & 1 & 0 & 1 & 1 
+        \end{array}\right] =$\\
+    $ =\left[\begin{array}{ccc|ccc}
+        1 & -1 & 0 & 0 & 1 & 0 \\
+        0 & 1 & 1 & 0 & 1 & 1 \\
+        0 & 4 & 3 & 1 & -2 & 0 
+        \end{array}\right] =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & -1 & 0 & 0 & 1 & 0 \\
+        0 & 1 & 1 & 0 & 1 & 1 \\
+        0 & 0 & -1 & 1 & -6 & -4 
+        \end{array}\right]  =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & -1 & 0 & 0 & 1 & 0 \\
+        0 & 1 & 1 & 0 & 1 & 1 \\
+        0 & 0 & 1 & -1 & 6 & 4 
+        \end{array}\right]  =$\\
+    $ =\left[\begin{array}{ccc|ccc}
+        1 & -1 & 0 & 0 & 1 & 0 \\
+        0 & 1 & 0 & 1 & -5 & -3 \\
+        0 & 0 & 1 & -1 & 6 & 4 
+        \end{array}\right] =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & 0 & 0 & 1 & -4 & -3 \\
+        0 & 1 & 0 & 1 & -5 & -3 \\
+        0 & 0 & 1 & -1 & 6 & 4 
+        \end{array}\right]  $\\
+
+    Odpowiedź:\\
+
+    $ A^{-1}= \left[\begin{array}{ccc}
+        1 & -4 & -3 \\
+        1 & -5 & -3 \\
+        -1 & 6 & 4 
+        \end{array}\right]  $
+    
+\end{pk}
+
+\begin{pk}
+    Policz sam $>\_<$\\
+    $A= \left[\begin{array}{ccc}
+        1 & 1 & 1 \\
+        0 & 1 & 1 \\
+        1 & 0 & 1 
+        \end{array}\right]  $;
+    $det(A) = 1 + 0 + 1 - 1 - 0 - 0 = 1 \neq 0$\\
+    $[A|I]= \left[\begin{array}{ccc|ccc}
+        1 & 1 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 1 & 0 & 1 & 0 \\
+        1 & 0 & 1 & 0 & 0 & 1 
+        \end{array}\right] =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & 1 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 1 & 0 & 1 & 0 \\
+        0 & -1 & 0 & -1 & 0 & 1 
+        \end{array}\right]  =$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & 1 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 1 & 0 & 1 & 0 \\
+        0 & 0 & 1 & -1 & 1 & 1 
+        \end{array}\right]  =$\\
+    $ =\left[\begin{array}{ccc|ccc}
+        1 & 1 & 0 & 2 & -1 & -1 \\
+        0 & 1 & 0 & 1 & 0 & -1 \\
+        0 & 0 & 1 & -1 & 1 & 1 
+        \end{array}\right]=$
+    $ \left[\begin{array}{ccc|ccc}
+        1 & 0 & 0 & 1 & -1 & 0 \\
+        0 & 1 & 0 & 1 & 0 & -1 \\
+        0 & 0 & 1 & -1 & 1 & 1 
+        \end{array}\right]  $\\
+
+    Odpowiedź:\\
+
+    $ A^{-1}= \left[\begin{array}{ccc}
+        1 & -1 & 0 \\
+        1 & 0 & 1 \\
+        -1 & 1 & 1 
+        \end{array}\right]  $
+    
+\end{pk}
+
+\section{Równania macierzowe}
+Równanie złożone z macierzy, której niewiadomą jest macierz nazywamy równaniem macierzowym.
+Przykładami równań macierzowych mogą być:\\
+
+$A\cdot X = B$
+\begin{itemize}
+    \item $A, B$ - dane macierzowe
+    \item $X$ - szukana macierz
+\end{itemize}
+
+\begin{pk}
+Rozważmy alternatywne rozwiązanie:\\
+$A^{-1}\cdot A\cdot X = A^{-1}\cdot B$\\
+$I\cdot X = A^{-1} \cdot B$\\
+$X=A^{-1} = B$\\\\
+---\\
+$X\cdot A = B$\\
+$X\cdot A\cdot A^{-1} = B\cdot A^{-1}$\\
+$X\cdot I = B\cdot A^{-1}$\\
+$X = B\cdot A^{-1}$\\
+---\\
+$A\cdot X\cdot B =C$\\
+$A^{-1}\cdot A \cdot X \cdot B = A^{-1} \cdot C$\\
+$I\cdot X \cdot B = A^{-1} \cdot C$\\
+$X\cdot B = A^{-1} \cdot C$\\
+$X\cdot B\cdot B^{-1} = A^{-1} \cdot C \cdot B^{-1}$\\
+$X\cdot I=A^{-1}\cdot C\cdot B^{-1}$\\
+$X=A^{-1} \cdot C \cdot B^{-1}$
+\end{pk}
+
+\begin{pk}
+Rozwiązać równanie macierzowe:\\
+
+$ \begin{bmatrix}
+    1 & 0 \\
+    2 & 3 
+    \end{bmatrix}  \cdot X \cdot $
+$ \begin{bmatrix}
+    3 & 2 \\
+    0 & 1 
+    \end{bmatrix} = $
+$ \begin{bmatrix}
+    1 & 2 \\
+    0 & 3 
+    \end{bmatrix}  $\\\\
+
+$ [A_1|I]=\begin{bmatrix}
+    1 & 0 & 1 & 0 \\
+    2 & 3 & 0 & 1 
+    \end{bmatrix} =$
+$ \begin{bmatrix}
+    1 & 0 & 1 & 0 \\
+    0 & 3 & -2 & 1 
+    \end{bmatrix} =$
+$ \begin{bmatrix}
+    1 & 0 & 1 & 0 \\
+    0 & 1 & -\frac{2}{3} & \frac{1}{3} 
+    \end{bmatrix}  $\\
+
+$[A_2|I]=\begin{bmatrix}
+    3 & 2 & 1 & 0 \\
+    0 & 1 & 0 & 1 
+    \end{bmatrix} =$
+$ \begin{bmatrix}
+    3 & 0 & 1 & -2 \\
+    0 & 1 & 0 & 1 
+    \end{bmatrix}  =$
+$ \begin{bmatrix}
+    1 & 0 & \frac{1}{3} & -\frac{2}{3} \\
+    0 & 1 & 0 & 1 
+    \end{bmatrix}  $\\
+
+$X=\left( \begin{bmatrix}
+    1 & 0 \\
+    -\frac{2}{3} & \frac{1}{3} 
+    \end{bmatrix} 
+ \begin{bmatrix}
+    1 & 2 \\
+    0 & 3 
+    \end{bmatrix} \right)$
+$ \begin{bmatrix}
+    \frac{1}{3} & -\frac{2}{3} \\
+    0 & 1 
+    \end{bmatrix}  $\\
+
+$X=\begin{bmatrix}
+    1 & 2 \\
+    -\frac{2}{3} & -\frac{1}{3} 
+    \end{bmatrix}  $
+$ \begin{bmatrix}
+    \frac{1}{3} & -\frac{2}{3} \\
+    0 & 1 
+    \end{bmatrix}  $\\
+
+$X=\begin{bmatrix}
+    \frac{1}{3} & \frac{4}{3} \\
+    -\frac{2}{3} & \frac{1}{9} 
+    \end{bmatrix}  $
+
+\end{pk}
+\begin{pk}
+Rozwiązać równanie macierzowe:\\
+
+$ X\cdot \begin{bmatrix}
+    1 & 2 \\
+    2 & 4 
+    \end{bmatrix}  =$
+$ \begin{bmatrix}
+    0 & 3 \\
+    1 & 2 
+    \end{bmatrix}  $
+
+$ \begin{bmatrix}
+    a & b \\
+    c & d 
+    \end{bmatrix} \cdot \begin{bmatrix}
+        1 & 2 \\
+        2 & 4 
+        \end{bmatrix}  =$
+$ \begin{bmatrix}
+    0 & 3 \\
+    1 & 2 
+    \end{bmatrix}  $\\
+
+$ \begin{bmatrix}
+    a+2b & 2a+4b \\
+    a+2d & 2c+4d 
+    \end{bmatrix} =$
+$ \begin{bmatrix}
+    0 & 3 \\
+    1 & 2 
+    \end{bmatrix}  $\\
+
+$\begin{cases}
+    a+2b=0\\
+    2a+4b=3\\
+    c+2d=1\\
+    2c+4d=2
+\end{cases}=$
+$\begin{cases}
+    a+2b=0\\
+    a+2b=\frac{3}{2}\\
+    c+2d=1\\
+    c+2d=1
+\end{cases}$
+$0\neq \frac{3}{2}$ sprzeczność\\
+Odp. Równanie macierzowe nie ma rozwiązania.
+\end{pk}
+
+\begin{pk}
+Rozwiązać równanie macierzowe:\\
+
+$ \begin{bmatrix}
+    1 & 2 & 0 \\
+    3 & -1 & 1 
+    \end{bmatrix}  \cdot X =$
+$ \begin{bmatrix}
+    10 \\
+    20 
+    \end{bmatrix}  $\\
+
+$ \begin{bmatrix}
+    1 & 2 & 0 \\
+    3 & -1 & 1 
+    \end{bmatrix}  \cdot$
+$ \begin{bmatrix}
+    a \\
+    b \\
+    c \\
+    \end{bmatrix}  $
+$ =\begin{bmatrix}
+    10 \\
+    20 
+    \end{bmatrix}  $\\
+
+$\begin{cases}
+    a+2b=10\\
+    3a-b+c=20
+\end{cases}=$
+$\begin{cases}
+    a=10-2b\\
+    3(10-2b)-b+c=20
+\end{cases}=$
+$\begin{cases}
+    a=10-b\\
+    30-6b-b-c=20
+\end{cases}=$\\
+$\begin{cases}
+    a=10-b\\
+    -7b+c=-10
+\end{cases}=$
+$\begin{cases}
+    a=10-b\\
+    c=7b-10
+\end{cases}$\\\\
+
+Odpowiedź:
+$X=\begin{bmatrix}
+    10-2b \\
+    b \\
+    7b-10 
+\end{bmatrix}  $\\\\
+Równanie ma nieskończenie wiele rozwiązań.
+\end{pk}
+
+\end{document}
