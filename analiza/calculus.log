@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  25 OCT 2023 10:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  8 NOV 2023 10:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -608,27 +608,62 @@ Underfull \hbox (badness 10000) in paragraph at lines 590--592
 
  []
 
-[9] [10] (./calculus.aux)
+[9] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 715--716
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 719--720
+
+ []
+
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 734--735
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 747--748
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 773--774
+
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 825--827
+
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 907--908
+
+ []
+
+[14] [15] (./calculus.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus.out' has not changed.
-(rerunfilecheck)             Checksum: 85D82834E1225ED80F8928FC8E590EE6;1095.
+(rerunfilecheck)             Checksum: 3B2467E99CC2CCF5864235F8F3F9119E;3633.
  ) 
 Here is how much of TeX's memory you used:
- 12533 strings out of 474504
- 195663 string characters out of 5752696
+ 12595 strings out of 474504
+ 196342 string characters out of 5752696
  1951040 words of memory out of 5000000
- 34173 multiletter control sequences out of 15000+600000
+ 34187 multiletter control sequences out of 15000+600000
  573412 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,8n,79p,567b,676s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus.pdf (10 pages, 227168 bytes).
+Output written on calculus.pdf (15 pages, 255888 bytes).
 PDF statistics:
- 308 PDF objects out of 1000 (max. 8388607)
- 254 compressed objects within 3 object streams
- 112 named destinations out of 1000 (max. 500000)
- 65 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 424 PDF objects out of 1000 (max. 8388607)
+ 364 compressed objects within 4 object streams
+ 160 named destinations out of 1000 (max. 500000)
+ 177 words of extra memory for PDF output out of 10000 (max. 10000000)
 

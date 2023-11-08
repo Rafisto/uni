@@ -670,5 +670,283 @@ Analizujemy funkcje $\mathbb{R}\rightarrow\mathbb{R}$
     $f\circ g(x) = f(g(x)) = f(sin(x)) = sin^3(x)+1$
 \end{pk}
 
+\section{Wykład piąty}
+
+Funkcje elementarne.
+\begin{enumerate}
+    \item $f(x)=ax+b$ - funkcja liniowa
+    \item $f(x)=ax^2+bx+c$ - funkcja kwadratowa
+    \item $W(x)$ - wielomian (wymierna)
+    \item $f(x)=a^x$, $a>0$ - funkcja wykładnicza\\
+    $a^b\cdot a^c=a^{b+c};'' (a^b)^c=a^{b\cdot c}$
+    \item $f(x)=log_a(x)$, $a>0$ - funkcja logarytmiczna, odwrotna do $f(x)=a^x$\\
+    $log_a(x\cdot y)=log_a(x)+log_a(y);\\ log_a(x^y)=ylog_(x)$\\
+    Wzór na zamianę podstawy logarytmu:\\
+    $log_a(x)=\frac{log_b(x)}{log_b(a)}$
+    \item $e$ - Liczba Eulera - $e\approx 2.7172$\\
+    $log_e(x)=ln(x)$\\
+    $log_a(x)=ln(x)\cdot log_a(e)$
+\end{enumerate}
+
+\subsection{Trygonometria}
+\begin{center}
+$e^{it}=cost + isint$\\
+$cost = Re(e^{it})$\\
+$sint = Im(e^{it})$
+\end{center}
+
+Szeregi liczby Eulera:
+\begin{itemize}
+    \item $\sum_{k=0}^{\infty} \frac{(i-t)^k}{k!}=e^{it}$
+    \item $e^x = \sum_{k=0}^{\infty} \frac{x^k}{k!}$
+    \item $\sum_{k=0}^{\infty} \frac{1}{k!} [sum(1\/k!, (k,0,1000))]$
+\end{itemize}
+
+Zobaczmy wzór:
+
+$cos(x+y)=cos(x)cos(y)-sin(x)sin(y)$
+
+$e^{ix}\cdot e^{iy} = e^{ix + iy}=e^{i(x+y)}=_{def}=cos(x+y)+isin(x+y)$
+
+$(cosx + isinx)(cosy + isiny)=(cosx) (cosy) + (cosx) (sinx) i + (sinx) (cosy) + i^2 sinx siny$
+
+$((cosx)+(cosy)-(sinx)(siny))+i((cosx)(siny)+(sinx)(cosy))$
+
+$Re = Re, Im=Im$, a zatem d-d.\\
+
+Funkcje $tg(x)$, $ctg(x)$, $tg(x)=\frac{sin(x)}{cos(x)}, ctg(x)=\frac{cos(x)}{sin(x)}$
+
+$plot(tan(x),(x,-20,20))$\\
+
+\subsection{Funkcje odwrotne do trygonometrycznych}
+
+$sin(x)$ w $x\in[\frac{-\pi}{2},\frac{\pi}{2}]$ jest bijekcją, dzięki czemu można zdefiniować funkcję odwrotną.
+
+\begin{itemize}
+    \item $arcsin(x): [-1,1]\rightarrow[\frac{-\pi}{2},\frac{\pi}{2}]$
+    \item $arccos(x): [-1,1]\rightarrow[0,\pi]$
+    \item $arctg(x): \mathbb{R}\rightarrow (\frac{-\pi}{2},\frac{\pi}{2})$
+    \item $arcctg(x): \mathbb{R}\rightarrow (0,\pi)$
+\end{itemize}
+
+\subsection{Funkcje hiperboliczne}
+
+$sinh(x)=\frac{e^x-e^{-x}}{2}$, $cosh(x)=\frac{e^x+e^{-x}}{2}$\\
+
+Jedynka hiperboliczna:
+
+\begin{center}
+    $cos^2h-sin^2h(x)=1$
+\end{center}
+
+D-d:
+$cosh^2{x}-sinh^2{x}=(\frac{e^x+e^{-x}}{2})^2-(\frac{e^x-e^{-x}}{2})^2=$
+
+$\frac{e^x\cdot e^x + e^{-x}\cdot e^{-x} + 2e^x\cdot e^{-x}}{4}-\frac{e^x\cdot e^x + e^{-x}\cdot e^{-x} - 2e^x\cdot e^{-x}}{4}=$
+
+$\frac{4 e^x \cdot e^{-x}}{4}=1$\\
+
+Definicja $tgh, ctgh$:
+\begin{itemize}
+    \item $tgh(x)=\frac{sinh(x)}{cosh(x)}$
+    \item $ctgh(x)=\frac{cosh(x)}{sinh(x)}$
+\end{itemize}
+
+\subsection{Funkcje sigmoidalne}
+
+\begin{enumerate}
+    \item funkcja logistyczna $\sigma(x)=\frac{1}{1+e^{-x}}$, $\sigma(x): \mathbb{R}\rightarrow[0,1]$\\
+    Uogólniona:
+
+    \begin{center}
+        $f(x)=\frac{1}{(1+e^x)^\alpha}, \alpha>0$
+    \end{center}    
+    \item tangens hiperboliczny $f(x)=tgh(x)$
+    \item arcus tangens hiperboliczny $f(x)=arctg(x)$
+    \item error function - funkcja błędu
+\end{enumerate}
+
+$\sigma(x)=\frac{1}{2} + \frac{1}{2}\cdot tgh(\frac{x}{2})$
+
+\subsection{Funkcje okresowe}
+
+Definicja $A$ - dziedzina $f$: $\exists_T$ takie, że $\forall_{x\in A} f(x+T)=f(x)$\\
+
+\subsection{Funkcje egzotyczne}
+
+\begin{enumerate}
+\item $[x]= \max \{k\in\mathbb{Z}, k\leq x\}$ - cz. całkowita $x$. Najw. całkowita nieprzekraczająca $x$.
+
+\item $\lfloor x \rfloor = \max \{k\in\mathbb{Z}, k\leq x\}$ - podłoga liczby $x$ (to samo co część całkowita)
+
+\item $\lceil x \rceil = \min \{k\in\mathbb{Z}, k\leq x\}$ - sufit liczby $x$
+
+\item $sgn(x)=\begin{cases}
+    1, x>0\\
+    0, x=0\\
+    -1, x<0
+\end{cases}
+$
+\end{enumerate}
+
+$[5.5]=5$, $[4.7]=4$, $[-3.4]=-4$
+
+\subsection{(Heine) Granica funkcji}
+
+Zakładamy, że istnieje $\Delta>0$ taka, że $f$ jest określona na $(a-\Delta,a)\cup(a,a+\Delta)$ (sąsiedztwie punktu $a$).
+\begin{center}
+    $\lim_{x\rightarrow a} f(x) = g \iff \forall_{x_n\implies a, x_n\neq a} lim_{n\rightarrow \infty} f(x_n) = g$
+\end{center}
+
+\begin{pk}
+    Policzmy granicę następującej funkcji:\\
+    $\lim_{x\rightarrow 0} x^2 = 0$\\
+    Weźmy $x_n \rightarrow 0; x_n \neq 0$:
+    $\lim_{n\rightarrow \infty} x_n^{2} = lim_{n\rightarrow \infty}\cdot lim_{n\rightarrow \infty} = 0\cdot 0 = 0$
+\end{pk}
+
+\begin{pk}
+    Policzmy granicę następującej funkcji:\\
+    $\lim_{x\rightarrow 1} \frac{x^2-1}{x-1} = \left[\frac{0}{0}\right] =$
+    $=\lim_{x\rightarrow 1} \frac{(x-1)(x+1)}{x-1} = \lim_{x\rightarrow 1} \frac{x+1}{1} = 2$
+\end{pk}
+
+\begin{pk}
+    $\lim_{x\rightarrow 0} \frac{sin(x)}{x} = 1$ - dowód z tw. o trzech funkcjach.
+\end{pk}
+
+\subsection{(Cauchy) Granica funkcji}
+
+\begin{center}
+    $\lim_{x\rightarrow a} f(x)=g \iff \forall_{\varepsilon>0} \exists_{\delta>0}\forall_{x\in A}$
+    $ 0<|x-a|<\delta \implies |f(x)-g|< \varepsilon$
+\end{center}
+
+Symbolu $\lim_{x\rightarrow a} f(x)$ - używamy również na oznaczenie granicy niewłaściwej.\\\\
+Przykłady:
+\begin{itemize}
+    \item $\lim_{x\rightarrow 0} \frac{0}{x^2} = \left[\frac{1}{0^{+}}\right] = \infty$
+    \item $\lim_{x\rightarrow 0} \frac{1}{x}$ nie istnieje
+    $x'_n = \frac{1}{n} \rightarrow 0, x''_n = \frac{-1}{n} \rightarrow 0$, ale
+    $f(x'_n) \rightarrow \infty, f(x''_n) \rightarrow -\infty$
+    \item $\lim_{x\rightarrow 0} sin(\frac{1}{x})$ nie istnieje
+    $x'_n = \frac{1}{2\pi n} \rightarrow 0, x''_n = \frac{1}{2\pi n + \frac{\pi}{2}} \rightarrow 0$, ale
+    $f(x'_n) = 0, f(x''_n) = 1$
+\end{itemize}
+
+\subsection{Granice Jednostronne}
+
+Granica prawostronna:
+\begin{center}
+    $\lim_{x\rightarrow a^{+}} f(x)=g \iff \forall_{x_n\rightarrow a, x_n\neq a, x_n>a} \lim_{n\rightarrow \infty} f(x_n)=g$
+\end{center}
+Granica lewostronna:
+\begin{center}
+    $\lim_{x\rightarrow a^{-}} f(x)=g \iff \forall_{x_n\rightarrow a, x_n\neq a, x_n<a} \lim_{n\rightarrow \infty} f(x_n)=g$
+\end{center}
+$\lim_{x\rightarrow 1^{+}} |x^2-x|$ - $limit(abs(x^2-x),x\rightarrow 1,assumptions\rightarrow rightarrow x>1)\leftarrow$ wolfram\\
+$Limit\{Abs[x^2-x],x\rightarrow 1, assumptions\rightarrow x>1\}\leftarrow$ mathematica
+
+\subsection{Granica w nieskończoności}
+
+$x_n\rightarrow \infty \lim_{n\rightarrow \infty} f(x_n)$\\
+$\lim_{x\rightarrow \infty} f(x)=g \iff \forall_{n\rightarrow \infty} f(x_n)=g$
+
+\begin{pk}
+    Zobaczmy granice w nieskończoności:
+    \begin{itemize}
+        \item $\lim_{x\rightarrow \infty} e^x = e^{\infty} = \infty$
+        \item $\lim_{x\rightarrow \infty} a^x = \infty$, o ile $a>1$
+        \item $\lim_{x\rightarrow \infty} ln(x) = \infty$
+    \end{itemize}
+\end{pk}
+
+\begin{pk}
+    $\lim_{x\rightarrow -\infty} e^x = \begin{cases}
+        x=-t\\
+        t\rightarrow \infty
+    \end{cases}=
+    \lim_{t\rightarrow \infty} e^{-t} = \lim_{t\rightarrow \infty} \frac{1}{e^t} = 0
+    $
+\end{pk}
+
+\subsection{Twierdzenie o arytmetyce granic}
+
+\begin{enumerate}
+    \item $\lim_{x\rightarrow a} (f(x)+g(x))=\lim_{x\rightarrow a} f(x) + \lim_{x\rightarrow a} g(x)$
+    \item $\lim_{x\rightarrow a} (f(x)\cdot g(x))=\lim_{x\rightarrow a} f(x) \cdot \lim_{x\rightarrow a} g(x)$
+\end{enumerate}
+
+\subsection{Twierdzenie o trzech funkcjach}
+Zakładamy, że $f(x)\leq g(x)\leq h(x)$ oraz $\lim_{x\rightarrow a} f(x) = \lim_{x\rightarrow a} h(x) = g$, wtedy:
+\begin{center}
+    $\lim_{x\rightarrow a} g(x) = g$
+\end{center}
+
+\begin{pk}
+    $\lim \left(x\cdot sin\left(\frac{1}{x}\right)\right)=0$\\
+    $0\leq |x\sin\left(\frac{1}{x}\right)|\leq|x|\cdot 1$
+\end{pk}
+
+\begin{tw}
+Definicja z granic ciągów $\lim_{n\rightarrow \infty} a_n = 0 \iff \lim_{n\rightarrow \infty} |a_n| = 0$,
+przenosi się na granice funkcji:
+\begin{center}
+    $\lim_{x\rightarrow a} f(x) = 0 \iff \lim_{x\rightarrow a} |f(x)| = 0$
+\end{center}
+\end{tw}
+
+\subsection{Notacja duże O, notacja asymptotyczna}
+
+Mamy dwa ciągi $a(n)$, $b(n)$. Mówimy że:
+\begin{center}
+     $a(n)=O\left(b\left(n\right)\right)\iff \exists_C \exists_{n_0} \forall_{n>n_0} \left|a(n)\right|\leq C\left|b(n)\right|$
+\end{center}
+
+\begin{pk}
+    Przykłady notacji big O:\\
+    \begin{itemize}
+        \item $a(n)=n^2 - \frac{1}{2} n = O(n^2)$
+        \item $b(n)=\left(\frac{1}{2}\right) n^2 + n = O(n^2)$\\
+        $\forall_{n\geq 1} \frac{1}{2} n^2 + n \leq \frac{1}{2} n^2 + n^2 = \frac{3}{2} n^2, C=\frac{3}{2}$
+        \item $c(n)=a_2\cdot n^2 + a_1\cdot n + a_0$, $a_0,a_1,a_2 \in \mathbb{R}, a_2\neq 0$\\
+        $c(n)=O(n^2), c=|a_2|+|a_1|+|a_0|$   
+    \end{itemize}
+\end{pk}
+
+\begin{tw}
+    $f(n) = O(g(n)) \iff \lim \sup_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right|<\infty$
+\end{tw}
+Zastosowania:\\
+$n^3-n^2+1=O(n^3)$, ponieważ:\\
+$\lim \sup_{n\rightarrow \infty} \left|\frac{n^3-n^2+1}{n^3}\right|=1<\infty$
+
+\begin{pk}
+    Przykład ambitny:\\
+    Ustalmy $k$ - stała:
+    $\binom{n}{k}=O(n^k)$ - dowód jako zadanie z (*).
+\end{pk}
+
+Kolejno:\\
+$n^2+n=O(n^2), n^2+n=O(n^3)$ - na interesuje najmniejsze O
+
+\begin{de}
+    Mówimy, że:
+    \begin{center}
+        $f(n) = \Theta(g(n))\iff f(n)=O(g(n)) \land g(n)=O(f(n))$
+    \end{center}
+\end{de}
+
+\begin{pk}
+    $\frac{1}{2} n^2 + n = \Theta(n^2)$
+\end{pk}
+
+\begin{tw}
+$\left(\lim \left|\frac{f(n)}{g(n)}\right|=g \land 0<g<\infty \right)\implies f(n)=\Theta(g(n))$
+\end{tw}
+
+Oraz kolejno (bardzo zaawansowane):\\
+$\binom{n}{k}=\Theta (n^k)$\\
+$\binom{n}{k}=\frac{1}{k!} n^k + \Theta(n^{k-1})$
 
 \end{document}
