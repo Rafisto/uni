@@ -73,3 +73,6 @@ Całość zachodzi ponieważ rozważając 2 przypadki $x\in[-2,0]$ oraz $x\in[0,
 Polecenia operacji do [wolframalpha](https://www.wolframalpha.com):
 1. `find inverse of f(x)=(x+1)/(x-1)`
 2. `find inverse of f(x)=3-sqrt(4-x^2)`
+
+Graficzna interpretacja drugiego przykładu:
+![obraz](https://github.com/Rafisto/uni/assets/88141065/128be444-6c7a-44a5-ad0d-38a859fc529a)
