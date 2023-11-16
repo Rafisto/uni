@@ -1,0 +1,4 @@
+- Funkcja **charakterystyczna** danego zbioru - funkcja, która "wie" czy sprawdzany element do niej należy.
+- Null terminator stringa nie pozwoli przechować `20` znaków przy definiowaniu `char name[20];` Pozwoli przechowywać `19`.
+- Spacja w `scanf` łańcucha znaków kończy czytanie. Program nie kończy czytania na `\n`, co jest dziwne.
+- Struktura może być większa niż suma rozmiarów jej pól.
