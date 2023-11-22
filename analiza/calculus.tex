@@ -945,8 +945,219 @@ $n^2+n=O(n^2), n^2+n=O(n^3)$ - na interesuje najmniejsze O
 $\left(\lim \left|\frac{f(n)}{g(n)}\right|=g \land 0<g<\infty \right)\implies f(n)=\Theta(g(n))$
 \end{tw}
 
-Oraz kolejno (bardzo zaawansowane):\\
+Oraz kolejno (zaawansowane):\\
 $\binom{n}{k}=\Theta (n^k)$\\
 $\binom{n}{k}=\frac{1}{k!} n^k + \Theta(n^{k-1})$
+
+\section{Wykład szósty}
+
+\begin{pk}
+    Policzmy granicę:\\\\
+    $\lim_{x\rightarrow 0^+} \frac{1}{x}$, podstawiając $\frac{1}{x}=t, t\rightarrow\infty$ zatem $\lim_{t\rightarrow \infty} t $\\\\
+    $\lim_{x\rightarrow 0^-} \frac{1}{x}$, podstawiając $\frac{1}{x}=t, t\rightarrow -\infty$ zatem $\lim_{t\rightarrow -\infty} t $
+\end{pk}
+
+\begin{pk}
+    Pokażmy, że $\lim_{x\rightarrow 0} (1+x)^{\frac{1}{x}} = e$\\
+    Granica prawostronna:\\
+    $\lim_{x\rightarrow 0+} (1+x)^{\frac{1}{x}}$, podstawienie $x=\frac{1}{t}$,
+    $\lim_{t\rightarrow \infty} (1+\frac{1}{t})^{t}=e$\\
+    Granica lewostronna: \\
+    $\lim_{x\rightarrow 0-} (1+x)^{\frac{1}{x}}$, podstawienie $x=\frac{1}{t}$,
+    $\lim_{t\rightarrow -\infty} (1+\frac{1}{t})^{t}$, podstawienie $t=-s$,\\
+    $\lim_{s\rightarrow \infty} (1-\frac{1}{s})^{-s}=\frac{1}{e^{-1}}=e$
+\end{pk}
+
+\subsection{Asymptoty}
+
+\begin{de}
+    Prosta $x=a$ jest asymptotą pionową lewostronną funkcji $f$ w punkcie $a$,
+    jeżeli zajdzie jeden z warunków:
+    \begin{center}
+        $\lim_{x\rightarrow a^-} f(x)=-\infty$ lub $\lim_{x\rightarrow a^-} f(x)=+\infty$
+    \end{center}
+    Analogicznie definiujemy asymptotę pionową prawostronną dla $x\rightarrow a^+$.
+\end{de}
+
+\begin{de}
+    Prosta jest asymptotą pionową jeżeli jest jednocześnie asymptotą pionową lewostronną i prawostronną.
+\end{de}
+
+\begin{pk}
+    Asymptoty pionowe mogą wystąpić w punktach poza dziedziną funkcji:\\
+    $f(x)=\frac{1}{x+1}, \lim_{x\rightarrow -1^+} f(x) = \infty, \lim_{x\rightarrow -1^-} f(x) = -\infty \implies$ prosta $x=-1$ jest asymptotą pionową obustronną funkcji $f(x)$.
+\end{pk}
+
+\begin{de}
+    Prosta $y=ax+b$ jest asymptotą ukośną funkcji $f$ w $\infty$ wtedy i tylko wtedy, gdy:
+    \begin{center}
+        $\lim_{x\rightarrow \infty} (f(x)-(ax+b))=0$. 
+    \end{center}
+\end{de}
+
+\begin{tw}
+    Prosta $y=ax+b$ jest asymptotą ukośną funkcji $f$ w $\infty$ wtedy i tylko wtedy, gdy:
+    \begin{center}
+        $a=\lim_{x\rightarrow \infty} \frac{f(x)}{x}$\\
+        $b=\lim_{x\rightarrow \infty} f(x)-ax$
+    \end{center}
+    Jeżeli te granice nie istnieją to funkcja nie posiada asymptoty ukośnej w $\infty$.\\\\
+    Idea dowodu:\\
+    \begin{center}
+    $\lim_{x\rightarrow \infty} (f(x)-(ax+b))=0 \implies \lim_{x\rightarrow \infty} \frac{(f(x)-(ax+b))}{x}=\frac{0}{\infty}=0$\\
+    $\lim_{x\rightarrow \infty} (\frac{f(x)}{x}-a-\frac{b}{x})\implies a = \lim_{f\rightarrow \infty} \frac{f(x)}{x}$\\
+    $b=\lim_{x\rightarrow \infty} (f(x)-(ax))$
+    \end{center}
+\end{tw}
+
+\begin{tw}
+    Prosta $y=ax+b$ jest asymptotą ukośną funkcji $f$ w $- \infty$ wtedy i tylko wtedy, gdy:
+    \begin{center}
+        $a=\lim_{x\rightarrow -\infty} \frac{f(x)}{x}$\\
+        $b=\lim_{x\rightarrow -\infty} f(x)-ax$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Narysujmy wyres funkcji: $f(x)=\frac{x^2+1}{x-1}$, pokażmy, że prosta $y=x+1$ jest asymptotą ukośną $f(x)$ w $\pm \infty$.\\
+    $a_{+}= \lim_{x\rightarrow \infty} \frac{f(x)}{x}=\lim_{x\rightarrow \infty} \frac{x+\frac{1}{x}}{x-1}=1$\\
+    $a_{-}= \lim_{x\rightarrow -\infty} \frac{f(x)}{x}=\lim_{x\rightarrow -\infty} \frac{x+\frac{1}{x}}{x-1}=1$\\
+    $b_{+}= \lim_{x\rightarrow \infty} (f(x)-ax) = \lim_{x\rightarrow \infty} \frac{x^2+1}{x-1} - x = \lim_{x\rightarrow \infty} \frac{x^2+1-x^2+x}{x-1} = 1$\\
+    $b_{-}= \lim_{x\rightarrow -\infty} (f(x)-ax) = \lim_{x\rightarrow -\infty} \frac{x^2+1}{x-1} - x = \lim_{x\rightarrow -\infty} \frac{x^2+1-x^2+x}{x-1} = 1$\\
+\end{pk}
+
+\subsection{Ciągłość funkcji}
+
+\begin{de}
+    Ciągłość funkcji (Heinego). Zakładamy, że $f$ jest określona na pewnym otoczeniu punktu $a$,
+    tzn. na przedziale $(a-\Delta, a+\Delta)$ dla pewnego ustalonego $\Delta>0$. Mówimy, że $f$ jest ciągła w punkcie $a$ wtedy i tylko wtedy, gdy:
+    \begin{center}
+        $f(a)=lim_{x\rightarrow a} f(x)$
+    \end{center}
+\end{de}
+
+\begin{pk}
+    Zobaczmy jak w praktyce można zastosować te definicje:\\
+    $\lim_{x\rightarrow a} f(x) = f(\lim_{x\rightarrow a} x) = f(a)$\\
+    $\lim_{x\rightarrow 1} (x+1)^2 = (\lim_{x\rightarrow 1} (x)+1)^2 = (1+1)^2=2^2=4$
+\end{pk}
+
+\begin{pk}
+    Przykłady:
+    \begin{itemize}
+        \item $f(x)=x^2$, $dom(f)=\mathbb{R}$ jest ciągła w każdym punkcie dziedziny.
+        \item $f(x)=sin(1/x)$, $dom(f)=\mathbb{R}-\{0\}$ jest ciągła w każdym punkcie dziedziny.
+    \end{itemize}
+\end{pk}
+
+\begin{tw}
+    Ciągłość prawostronna (Heinego). Zakładamy, że $f$ jest określona na pewnym prawostronnym otoczeniu punktu $a$,
+    tzn. na przedziale $(a,a+\Delta)$ dla pewnego ustalonego $\Delta>0$. Mówimy, że $f$ jest prawostronnie ciągła w punkcie $a$,
+    wtedy i tylko wtedy, gdy:
+    \begin{center}
+        $f(a) = \lim_{x\rightarrow a^{+}} f(x)$
+    \end{center}
+    Analogicznie definiujemy ciągłość lewostronną dla $x\rightarrow a^{-}, [a-\Delta,a]$
+\end{tw}
+
+\begin{tw}
+    Funkcja jest ciągła w punkcie $a$ jeżeli jest jednocześnie ciągła prawostronnie i lewostronnie.
+\end{tw}
+
+\begin{pk}
+    Zbadaj ciągłość podanej funkcji w $0$ w zależności od parametru $a$:\\
+    $f(x)=
+    \begin{cases}
+        x+a, \text{dla } x\geq 0\\
+        x^2+1, \text{dla } x < 0
+    \end{cases}$\\\\
+    Liczymy:
+    $\lim_{x\rightarrow 0^{-}} f(x) = \lim_{x\rightarrow 0^{-}} (x^2+1) = 1$\\
+    $\lim_{x\rightarrow 0^{+}} f(x) = \lim_{x\rightarrow 0^{+}} (x+a) = a$\\
+    $a=1$
+\end{pk}
+
+\begin{de}
+    Ciągłość funkcji (Cauchy'ego). Funkcja $f$ jest ciągła w punkcie $a$ $\iff$
+    \begin{center}
+        $\forall_{\varepsilon>0} \exists_{\delta>0} \forall_{x} |x-a|<\delta \implies |f(x)-f(a)|<\varepsilon$
+    \end{center}
+\end{de}
+
+\begin{tw}
+    Jeżeli $f, g$ są ciągłe w punkcie $x_0=a$, to wówczas:
+    \begin{enumerate}
+        \item $f(x)\pm g(x)$
+        \item $f(x) \cdot g(x)$
+        \item $\frac{f(x)}{g(x)}$, o ile $g(a)\neq 0$
+    \end{enumerate}
+    są ciągłe w punkcie $x_0=a$.
+\end{tw}
+Wniosek. Wielomiany i funkcje wymierne są ciągłe w swojej dziedzine.
+Funkcje trygonometryczne są ciągłe w swojej dziedzine.
+
+\begin{tw}
+    Złożenie funkcji ciągłych $f,g$ jest funkcją ciągłą.
+    \begin{center}
+        $f$ ciągła $\land$ $g$ ciągła $\implies$ $f\circ g$ ciągła
+    \end{center}
+\end{tw}
+
+Zobaczmy przykład:
+$\lim_{x\rightarrow a} \left(cos\left(\frac{1}{x}\right)\right)=cos\left(\lim_{x_\rightarrow a} \frac{1}{x}\right) = cos\left(\frac{1}{a}\right)$
+
+\subsection{Mnożenie szeregów}
+
+$(1+2x+x^2)(-1+3x+x^2+x^3)=(1+2\cdot 1 + 1\cdot 3)x^3 + (1\cdot 1 + 2\cdot 1) x^4 + (1\cdot 1) x^5$
+$(a_0+a_1x+a_2x^2)(b_0+b_1x+b_2x^2+b_3x^3)=a_0b_01 + (a_0b_1 + a_1b_0) x + (a_0b_2+a_1b_1 + a_2b_0) x^2 + ...$
+$=c_0\cdot 1 + c_1\cdot x + c_2\cdot x^2$\\
+
+$c_0= \sum_{k=0}^0 a_k b_{0-k}$; $c_1= \sum_{k=0}^1 a_k b_{1-k}$; $c_2= \sum_{k=0}^2 a_k b_{2-k}$
+
+\begin{tw}
+    Twierdzenie Cauchy'ego o mnożeniu szeregów. \\
+    Zakładamy, że $\sum_{n=0}^{\infty} |a_n| < \infty, \sum_{n=0}^{\infty} |b_n | < \infty$, wtedy$c_0 \sum_{k=0}^0 a_k b_{0-k}$:
+    \begin{center}
+        $\sum_{n=0}^{\infty} a_n \cdot \sum_{n=0}^{\infty} b_n = \sum_{n=0}^{\infty} c_n$, gdzie
+        $c_n=\sum_{k=0}{n} a_k b_{n-k}$ - dyskretny splot
+    \end{center}
+\end{tw}
+
+\subsection{Funkcja exp(x)}
+
+\begin{de}
+    Niech $x\in\mathbb{R}$:
+    \begin{center}
+        $\exp(x)=\sum_{n=0}^{\infty} \frac{x^n}{n!}$
+    \end{center}
+    $\exp(x)$ jest poprawnie zdefiniowna.
+    $a_n=\frac{x^n}{n!}, \lim_{n\rightarrow \infty} | \frac{a_{n+1}}{a_n} | =$
+    $\lim_{n\rightarrow \infty} | \frac{x^{n+1}}{(n+1)!} \cdot \frac{(n)!}{x^n} = \lim_{n\rightarrow \infty} |\frac{x}{n+1} | = 0\rightarrow$ jest zbieżność bezwzględna $x\in\mathbb{R}$.
+\end{de}
+
+\begin{pk}
+Dyskretny splot $\exp$:\\
+$\exp(x)+\exp(y)=\exp(x+y)$\\
+$\sum_{n=0}^{\infty} \frac{x^n}{n!} + \sum_{n=0}^{\infty} \frac{y^n}{n!} = \sum_{n=0}^{\infty} c_n$\\\\
+$c_n=\sum_{k=0}^{n} a_k \cdot b_{n-k}$ dyskretny splot szeregów $a_n, b_n$\\
+zatem:\\\\
+$c_n = \sum_{n=0}^{\infty} \frac{x^k}{k!} \cdot \frac{y^{n-k}}{(n-k)!} = \sum_{n=0}^{\infty} \binom{n}{k} \frac{1}{n!} x^k y^{n-k}=$
+$=\frac{1}{n!} \sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k} = \frac{1}{n!} (x+y)^n$\\
+\end{pk}
+
+\begin{pk}
+    $\forall_{x\in\mathbb{R}}  exp(x) > 0$
+    \begin{enumerate}
+        \item $x>0$ $\exp(x)=\sum_{n=0}^{\infty} \frac{x^n}{n!} > 0$, poniweaż  $(1+\sum_{n=1}^{\infty} \frac{x^n}{n!}=1)$
+        \item $\exp(x)\cdot \exp(-x) = \exp(x+(-x)) = \exp(0) = 1$\\
+        $\exp(-x) =\frac{1}{\exp(x)} > 0$
+    \end{enumerate}
+\end{pk}
+
+\begin{pk}
+    Funkcja $\exp(x)$ jest ciągła:\\
+    $\lim_{x\rightarrow x_0}=\lim_{h\rightarrow 0} \exp(x_0+h) = \lim_{h\rightarrow 0} \exp(x_0)\exp(h)$\\
+    $= \exp(x_0)\lim_{h\rightarrow 0} \exp(h) = \exp(x_0) \cdot 1$
+\end{pk}
 
 \end{document}
