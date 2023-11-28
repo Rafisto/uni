@@ -1,3 +1,4 @@
+// Zadanie 1, zadanie1.c Rafał Włodarczyk
 #include <stdio.h>
 
 int main(void){
@@ -5,7 +6,7 @@ int main(void){
     printf("Wprowadź rok:\n");
     scanf("%d",&R);
     
-    if ((R % 400 == 0) ||  (R % 4 == 0 && R % 100 != 0)) {
+    if ((R % 400 == 0) || (R % 4 == 0 && R % 100 != 0)) {
         printf("Rok %d jest przestępny.\n",R);
     }
     else{

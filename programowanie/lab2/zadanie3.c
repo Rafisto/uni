@@ -1,3 +1,4 @@
+// Zadanie 3, zadanie3.c Rafał Włodarczyk
 #include <stdio.h>
 #include <math.h>
 

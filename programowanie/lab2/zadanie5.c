@@ -1,3 +1,4 @@
+// Zadanie 5, zadanie5.c Rafał Włodarczyk
 #include <stdio.h>
 
 #define range 1000
@@ -5,7 +6,7 @@
 int results[range];
 int main(void)
 {
-    for (int i = 1; i <= 1000; i++)
+    for (int i = 1; i < 1000; i++)
     {
         int divisors = 0;
         for (int j = 1; j < i; j++){
@@ -24,4 +25,5 @@ int main(void)
             }
         }
     }
+    return 0;
 }
