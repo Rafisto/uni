@@ -7,10 +7,10 @@ int isLeapYear(int year) {
 }
 
 int daysTillDate(int day, int month, int year) {
-    int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int days = day - 1;
 
-    for (int i = 1; i < month; i++) {
+    for (int i = 0; i < month-1; i++) {
         days += daysInMonth[i];
     }
 
