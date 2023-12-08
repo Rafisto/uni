@@ -1160,4 +1160,170 @@ $=\frac{1}{n!} \sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k} = \frac{1}{n!} (x+y)^n$\\
     $= \exp(x_0)\lim_{h\rightarrow 0} \exp(h) = \exp(x_0) \cdot 1$
 \end{pk}
 
+\section{Wykład VII}
+
+Konfa ... 
+
+\section{Wykład VIII}
+
+\subsection{Suma i iloczyn pochodnych}
+
+\begin{tw}
+    Pochodna sumy jest sumą pochodnych:
+    \begin{center}
+        $(f(x)+g(x))'=f'(x)+g'(x)$
+    \end{center}
+    D-d.
+    $(f(x)+g(x))'=$
+    $lim_{h\rightarrow 0} \frac{f(x+h)+g(x+h)-f(x)-g(x)}{h}=$
+    $lim_{h\rightarrow 0} \frac{f(x+h)-f(x)}{h} - \frac{g(x+h)-g(x)}{h}=^*$
+    $f'(x)+g'(x)$ ($*$ granica sumy jest sumą granic)
+\end{tw}
+
+\begin{tw}
+    CHAIN RULE. Pochodna iloczynu funkcji wyraża się wzorem:
+    \begin{center}
+        $(f(x)\cdot g(x))'=f'(x)\cdot g(x) + f(x)\cdot g'(x)$
+    \end{center}
+    D-d.
+    $(f(x)\cdot g(x))'=$
+    $lim_{h\rightarrow 0} \frac{f(x+h)\cdot g(x+h)-f(x)\cdot g(x)}{h}=$
+    $lim_{h\rightarrow 0} \frac{(f(x+h)-f(x)+f(x))\cdot g(x+h)-f(x)\cdot g(x)}{h}=$
+    $lim_{h\rightarrow 0} \frac{(f(x+h)-f(x))g(x+h)}{h} + \frac{f(x)g(x+h)-f(x)g(x)}{h}=$
+    $lim_{h\rightarrow 0} \frac{f(x+h)-f(x)}{h}\cdot g(x+h) + f(x)\cdot \frac{g(x+h)-g(x)}{h}=$
+    $f'(x)\cdot g(x) + f(x)\cdot g'(x)$ (g jest różniczkowalna $\implies$ g ciągła)
+\end{tw}
+Wniosek: $(c\cdot f(x))' = (c)'\cdot f(x) + c\cdot f'(x) = 0\cdot f(x) + c\cdot f'(x) = c\cdot f'(x)$ (Liniowość pochodnej)
+
+\subsection{Odwołanie - odwzorowanie liniowe}
+
+$A: X\rightarrow Y$\\
+$A(x_1+x_2)=A(x_1)+A(x_2)$\\
+$A(c\cdot x)=c\cdot A(x)$
+
+\subsection{Odwrotność pochodnej}
+
+Pokaż, że: $\left(\frac{1}{g(x)}\right)'=\frac{-g'(x)}{g(x)^2}$ (lista zadań)\\
+$\left(\frac{1}{g(x)}\right)' = \frac{\frac{1}{g(x+h)}-\frac{1}{g(x)}}{h}$
+
+\subsection{Pochodna ilorazu}
+
+\begin{tw}
+    Pochodna ilorazu dwóch funkcji $f(x), g(x)$ wynosi:
+    \begin{center}
+        $\left(\frac{f(x)}{g(x)}\right)'=\frac{f'(x)\cdot g(x)-f(x)\cdot g'(x)}{\left(g(x)\right)^2}$
+    \end{center}
+    D-d. $\left(\frac{f(x)}{g(x)}\right)'=\left(f(x)\cdot \frac{1}{g(x)}\right)'=$
+    $f'(x)\cdot\frac{1}{g(x)} + f(x)\left(\frac{1}{g(x)}\right)'=$
+    $f'(x)\cdot\frac{1}{g(x)} + f(x)\left(\frac{-g'(x)}{g(x)^2}\right)=$
+    $\frac{f'(x)g(x)-f(x)g'(x)}{\left(g(x)\right)^2}$
+\end{tw}
+
+\begin{pk}
+    Rozważmy poniższy wzór:
+    \begin{center}
+        $\forall_{n\in\mathbb{N}-\{0\}} (x^n)' = n\cdot x^{n-1}$
+    \end{center}
+    D-d. Wykorzystujemy wzór dwumianowy Newtona:\\
+    $(x^n)'=\lim_{h\rightarrow 0} \frac{(x+h)^n-x^n}{h}=$
+    $\lim_{h\rightarrow 0} \frac{\left(\sum_{k=0}^{n} \binom{n}{k} h^k x^{n-k}\right) - x^{n}}{h}$
+    , Założmy, że $n\geq 2$:\\
+    $\lim_{h\rightarrow 0} \frac{\left(\sum_{k=0}^{n} \binom{n}{k} h^k x^{n-k}\right) - x^{n}}{h}=$
+    $\lim_{h\rightarrow 0} \frac{h^0 x^n \binom{n}{0}+h^1 x^{n-1} \binom{n}{1} + \left(\sum_{k=2}^{n} \binom{n}{k} h^k x^{n-k}\right) - x^n}{h}=$\\
+    $\lim_{h\rightarrow 0} \frac{x^n + h x^{n-1} n + \left(\sum_{k=2}^{n} \binom{n}{k} h^k x^{n-k}\right) - x^n}{h}=$
+    $\lim_{h\rightarrow 0} n x^{n-1} + \left(\sum_{k=2}^{n} \binom{n}{k} h^k x^{n-k}\right) = n x^{n-1}$
+\end{pk}
+
+\begin{pk}
+    $\frac{d}{dx} \left(a_0 + a_1 x + \dots + a_n x^n\right)=a_1 + 2a_2 x + 3a_3 x^2 + \dots + n a_n x^{n-1}$
+\end{pk}
+
+\begin{pk}
+    Sinus, cosinus:\\
+    $sin'(x)=cos(x)$ tydzień temu\\
+    $cos'(x)=-sin(x)$ ćw\\
+\end{pk}
+
+\begin{pk}
+    Policzmy $tan'(x)$:\\
+    $tan'(x)=(\frac{sinx}{cosx})'=\frac{sin'(x)cos(x)-sin(x)cos'(x)}{cos(x)^2}=$
+    $\frac{cos^2(x)+sin^2(x)}{cos^2(x)}=\frac{1}{(cos(x))^2}$
+\end{pk}
+
+\begin{pk}
+    Policzmy $cot'(x)$:\\
+    $cot'(x)=(\frac{cosx}{sinx})'=\frac{-sin^2(x)-cos^2(x)}{\left(sin(x)\right)^2}=\frac{-1}{\left(sin(x)\right)^2}$
+\end{pk}
+
+\subsection{Pochodne [e]}
+
+\begin{pk}
+    Lemat techniczny:
+    $\forall_{n\in\mathbb{R}} |e^n-1-h| \leq \frac{|h^2|}{2}e^{|h|} = \frac{h^2}{2}e^{|h|}$\\
+    $e^n=\sum_{k=0}^{\infty} \frac{h^k}{k!}= 1+h+\sum_{k=2}^{\infty} \frac{h^k}{k!}$\\
+    $e^n-1-h=\sum_{k=2}^{\infty} \frac{h^k}{k!} = \sum_{k=0}^{\infty} \frac{h^{k+2}}{(k+2)!}=$
+    $\frac{h^2}{2} \sum_{k=0}^{\infty} \frac{2h^k}{(k+2)!\cdot 2}$\\
+    $|e^n-1-h| \leq \frac{|h|^2}{2} \sum_{k=0}^{\infty} \frac{2|h|^k}{(k+2)!}=$
+    $\frac{h^2}{2}\sum_{k=0}^{\infty} \frac{|h|^k\cdot 2}{(k+2)!}=$
+    $\frac{h^2}{2}\sum_{k=0}^{\infty} \frac{|h|^k}{k!} \cdot \frac{2}{(k+1)(k+2)}<$\\
+    $\frac{h^2}{2}\sum_{k=0}^{\infty} \frac{|h|^k}{k!}=\frac{h^2}{2}e^{|h|}$
+\end{pk}
+
+\begin{tw}
+    $\lim_{h\rightarrow 0} \frac{e^h-1}{h}=1 \iff \lim_{h\rightarrow 0} \left(\frac{e^h-1}{h}-1\right)=0$\\
+    $\lim_{h\rightarrow 0} \frac{e^h-1-h}{h}=0 \iff \lim \left|\frac{e^h - 1 -h}{h}\right|$\\
+    $0<\frac{|e^h-1-h|}{|h|}<\frac{\frac{|h|^2}{2}e^{|h|}}{h}=0$
+    Z twierdzenia o trzech ciągach mamy dowód.
+\end{tw}
+
+\begin{pk}
+    $(e^x)'=\lim_{h\rightarrow 0} \frac{e^{x+h}-e^x}{h} = \lim_{h\rightarrow 0} e^x\cdot \frac{e^h-1}{h} = e^x$   
+\end{pk}
+
+\begin{pk}
+    $(a^x)'=(e^{ln(a)\cdot x})'=\lim_{h\rightarrow 0} \frac{e^{\ln(a)\cdot(x+h)}-e^{\ln(a)\cdot x}}{h}=$
+    $\lim_{h\rightarrow 0} e^{\ln(a)\cdot x} \frac{e^{\ln(a) h}- e^{1}}{h}=$\\
+    $=\lim_{h\rightarrow 0} a^x \frac{e^{\ln(a)h}-1}{\ln(a) h} ln(a) = a^x \cdot \ln(a)$
+\end{pk}
+
+\subsection{Pochodna funkcji odwrotnej}
+
+\begin{tw}
+    Twierdzenie o pochodnej funkcji odwrotnej\\
+    $y=f(x)$, różniczkowalna i rosnąca (lub majlejąca) na $[a,b]$.
+    Niech $f(x_0)=y_0$. Wówczas istnieje funkcja odwrotna $x=f^{-1}(y)$
+    oraz zachodzi wzór:
+    \begin{center}
+        $\left[f^{-1}(y)\right]'_{y=y_0} = \frac{1}{\left[f(x)\right]'}_{x=x_0}$
+    \end{center}
+\end{tw}
+D-d.\\
+Weźmy: $f(x_0 + k) = y_0 + h$\\
+$\left[f^{-1}(x)\right]_{y=y_0}=\lim_{h\rightarrow 0} \frac{f^{-1}(y_0+h) - f^{-1}(y_0)}{h}=$
+$\lim_{h\rightarrow 0} \frac{f^{-1}(f(x_0+k))-f^{-1}(f(x_0))}{y_0+h-y_0}=$\\
+$\lim_{k\rightarrow 0} \frac{x_0 + k - x_0}{f(x_0 +k)-f(x_0)}=$
+$\lim_{k\rightarrow 0} \frac{1}{\frac{f(x_0+k)-f(x_0)}{k}}=\frac{1}{\frac{1}{f'(x_0)}}=\frac{1}{\left[f(x)\right]'}_{x=x_0}$
+
+\begin{pk}
+    $f(x)=e^x$, $e^{x_0}=y_0, f^{-1}(y)=ln(y)$\\
+    $\left[ln(y)\right]'_{y=y_0}=\frac{1}{e^x}'_{x=x_0} = \frac{1}{e^{x_0}} = \frac{1}{y_0}$
+    $\left(ln(y)\right)' = \frac{1}{y}$
+\end{pk}
+
+\begin{pk}
+    $\log_a(y)'=\left(\frac{ln(y)}{ln(a)}\right)'=\frac{1}{ln(a)} \cdot \frac{1}{y}$
+\end{pk}
+
+\begin{pk}
+    Sprawdźmy zrozumienie tw. o pochodnej funkcji odwrotnej:\\
+    $f(x)=sin(x), x\in[-\frac{\pi}{2},\frac{pi}{2}], y=sin(x)$\\
+    $\left(arcsin(y)\right)'=\frac{1}{(sin(x))'} = \frac{1}{cos(x)}=\frac{1}{\sqrt{1-sin^2(x)}}=\frac{1}{\sqrt{1-y^2}}$\\
+    Następnie:\\
+    $f(x)=cos(x), x\in[0,\pi], y=cos(x)$\\
+    $\left(arccos(y)\right)'=\frac{1}{(cos(x))'} = \frac{1}{-sin(x)} = \frac{-1}{\sqrt{1-cos^2(y)}}=\frac{-1}{\sqrt{1-y^2}}$\\
+    Kolejno:\\
+    $f(x)=tan(x), x\in[-\frac{\pi}{2},\frac{pi}{2}], y=tan(x)$\\
+    $\left(arctan(y)\right)'=\frac{1}{(tan(x))'}=cos^2(x)=\frac{1}{1+tan^2(x)}=\frac{1}{1+y^2}$
+\end{pk}
+
 \end{document}
