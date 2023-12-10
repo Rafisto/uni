@@ -1,3 +1,5 @@
+// Zadanie 4, main.c Rafał Włodarczyk
+
 #include <stdio.h>
 #include "agents.h"
 
