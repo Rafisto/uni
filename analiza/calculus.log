@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  22 NOV 2023 10:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  6 DEC 2023 10:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -693,27 +693,42 @@ Underfull \hbox (badness 10000) in paragraph at lines 1139--1146
 
  []
 
-[18] (./calculus.aux)
+
+Overfull \hbox (17.97087pt too wide) in paragraph at lines 1188--1195
+\T1/cmr/m/n/10 D-d. $\OT4/cmr/m/n/10 (\OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x\OT4/cmr/m/n/10 ) \OMS/plsy/m/n/10 ^^A \OML/plm/m/it/10 g\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x\OT4/cmr/m/n/10 ))[] =$ $\OML/plm/m/it/10 lim[][] \OT4/cmr/m/n/10 =$ $\OML/plm/m/it/10 lim[][] \OT4/cmr/m/n/10 =$
+ []
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 1242--1245
+
+ []
+
+[19]
+Overfull \hbox (2.32497pt too wide) in paragraph at lines 1284--1287
+[][]\T1/cmr/bx/n/10 Przykªad 8.5.3. []$\OT4/cmr/m/n/10 (\OML/plm/m/it/10 a[]\OT4/cmr/m/n/10 )[] = (\OML/plm/m/it/10 e[]\OT4/cmr/m/n/10 )[] = [][] [] =$ $[][] \OML/plm/m/it/10 e[][] \OT4/cmr/m/n/10 =$ 
+ []
+
+[20] (./calculus.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus.out' has not changed.
-(rerunfilecheck)             Checksum: 42E8BA01113B2C1B809885EAF489F5CE;4296.
+(rerunfilecheck)             Checksum: C44000A63AB6C382652EF9BF3C7AD770;5546.
  ) 
 Here is how much of TeX's memory you used:
- 12640 strings out of 474504
- 196762 string characters out of 5752696
+ 12674 strings out of 474504
+ 197124 string characters out of 5752696
  1951040 words of memory out of 5000000
- 34194 multiletter control sequences out of 15000+600000
+ 34202 multiletter control sequences out of 15000+600000
  574946 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,10n,79p,567b,676s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus.pdf (18 pages, 271632 bytes).
+Output written on calculus.pdf (20 pages, 289052 bytes).
 PDF statistics:
- 492 PDF objects out of 1000 (max. 8388607)
- 428 compressed objects within 5 object streams
- 196 named destinations out of 1000 (max. 500000)
- 217 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 556 PDF objects out of 1000 (max. 8388607)
+ 490 compressed objects within 5 object streams
+ 222 named destinations out of 1000 (max. 500000)
+ 281 words of extra memory for PDF output out of 10000 (max. 10000000)
 
