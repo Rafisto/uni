@@ -18,5 +18,5 @@ double rozwiazanie(double a, double b, double eps)
         }
         m = (a + b) / 2;
     }
-    return m;
+    return a;
 }

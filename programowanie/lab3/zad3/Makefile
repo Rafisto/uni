@@ -1,6 +1,6 @@
 all: main
 
-main: main.o phi.o
+main: main.o phi.o gcd.o
 	clang -lm -o main main.o phi.o gcd.o
 
 main.o: main.c
