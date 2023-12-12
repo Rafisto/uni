@@ -5,7 +5,16 @@
 
 int main(void)
 {
-    palindrom("kajak") ? printf("Tak\n") : printf("Nie\n");
-    palindrom("palindrom") ? printf("Tak\n") : printf("Nie\n");
-    palindrom("kobylamamalybok") ? printf("Tak\n") : printf("Nie\n");
+    char* tests[] = {"kajak", "palindrom", "kobylamamalybok"};
+    for (int i = 0; i < 3; i++)
+    {
+        if (palindrom(tests[i]))
+        {
+            printf("+ %s is a palindrome\n", tests[i]);
+        }
+        else
+        {
+            printf("- %s is not a palindrome\n", tests[i]);
+        }
+    }
 }
