@@ -2,6 +2,6 @@
 
 #include <math.h>
 
-int main();
+int main(void);
 double rozwiazanie(double a, double b, double eps);
 double f(double x);

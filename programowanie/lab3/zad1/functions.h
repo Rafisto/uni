@@ -2,5 +2,5 @@
 
 #include <stdbool.h>
 
-int main();
+int main(void);
 bool palindrom(char napis[]);
