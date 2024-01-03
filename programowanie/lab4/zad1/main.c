@@ -11,6 +11,9 @@ struct test_case
 };
 
 struct test_case tests[] = {
+    {"*", "", true},
+    {"a*", "aaaaaa", true},
+    {"a*a", "aaaaaab", false},
     {"*.doc", "document.doc", true},
     {"*.doc", "document.docx", false},
     {"*.doc", "document.do", false},
@@ -25,7 +28,8 @@ struct test_case tests[] = {
     {"a*b*b*c", "aaaac", false},
     {"a*b*b*c", "abaaac", false},
     {"a*b*a", "abababababababababababa", true},
-    {"a*b*a", "ababababababababababab", false}};
+    {"a*b*a", "ababababababababababab", false},
+};
 
 int main(void)
 {
