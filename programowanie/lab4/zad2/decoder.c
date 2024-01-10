@@ -26,7 +26,7 @@ void generateCombinations(int set[1296][4])
 }
 
 int possible = 1296;
-int guess()
+int guess(void)
 {
     int set_of_combinations[1296][4];
     generateCombinations(set_of_combinations);
