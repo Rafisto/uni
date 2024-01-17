@@ -412,7 +412,10 @@ $\sum_{n=1}^{\infty} a_n = \lim_{n\rightarrow \infty} S_N$
 \begin{pk}
 Szereg harmoniczny.
 $H_N = \sum_{n=1}^{N} \frac{1}{n}$, $\lim_{N\rightarrow \infty}=\infty$, wolny wzrost do $\infty$\\
-$H_{2^{n+1}}=\frac{1}{1} + \frac{1}{2} + \frac{1}{2+1} + \frac{1}{2+2} + \frac{1}{2^2 + 1} + \frac{1}{2^2+2} + \frac{1}{2^2+3} + \frac{1}{2^3} + \frac{1}{2^3+1} + \frac{1}{2^3 + 2} + \frac{1}{2^3 + 3} + \dots + \frac{1}{2^3 + 2^3} + \frac{1}{2^n + 1} + \frac{1}{2^n + 2} + \dots + \frac{1}{2^n+2^n}$\\\\
+$H_{2^{n+1}}=\frac{1}{1} + \frac{1}{2} + \frac{1}{2+1} + \frac{1}{2+2} + \frac{1}{2^2 + 1} +$
+$\frac{1}{2^2+2} + \frac{1}{2^2+3} + \frac{1}{2^3} + \frac{1}{2^3+1} + \frac{1}{2^3 + 2} +$
+$\frac{1}{2^3 + 3} + \dots + \frac{1}{2^3 + 2^3} + \frac{1}{2^n + 1} + \frac{1}{2^n + 2} +$
+$\dots + \frac{1}{2^n+2^n}$\\\\
 $\frac{1}{1}+\frac{1}{2}=\frac{3}{2}$\\
 $\frac{1}{2+1}+\frac{1}{2+2}\geq 2\cdot \frac{1}{2+2}=\frac{1}{2}$\\
 $\frac{1}{2^2+1}+\frac{1}{2^2+2} + ... \geq 4\cdot \frac{1}{2^2 + 2^2}=\frac{1}{2}$\\
@@ -1328,7 +1331,80 @@ $\lim_{k\rightarrow 0} \frac{1}{\frac{f(x_0+k)-f(x_0)}{k}}=\frac{1}{\frac{1}{f'(
 
 \section{Wykład IX}
 
+\begin{de}
+    Maksimum Lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
+    Jeśli:
+    \begin{center}
+        $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\leq f(a)$
+    \end{center} to $f$  ma w punkcie $a$ maksimum lokalne.
+    \end{de}
+    Maksimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)<f(a)$
+    
+    \begin{de}
+    Minimum lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
+    Jeśli:
+    \begin{center}
+        $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\geq f(a)$
+    \end{center} to $f$  ma w punkcie $a$ minimum lokalne.
+    \end{de}
+    Minimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)>f(a)$\\\\
+    Maksima lokalne, maksima lokalne właściwe, minima lokalne i minima lokalne właściwe to ekstrema funkcji!
+    
+    \begin{tw}
+    Jeśli $f$ jest różniczkowalna w punkcie $c$ io posiada w tym punkcie ekstremum to $f'(c)=0$.\\
+    D-d (dla maksimum, dla min. analogicznie):\\
+    Niech $h>0$:\\
+    $f(c+h)\leq f(c), f(c-h)\leq f(c)$\\
+    $f(c+h)-f(c)\leq 0, f(c-h) - f(c) \leq 0$\\
+    $\frac{f(c+h)-f(c)}{h}\leq 0, \frac{f(c+h)-f(c)}{-h}\geq 0$\\
+    $f+'(c)=\lim_{h\rightarrow 0^+} \frac{f(c+h)-f(c)}{h}\leq 0$\\
+    $f-'(c)=\lim_{h\rightarrow 0^+} \frac{f(c-h)-f(c)}{-h}\geq 0$\\
+    $f+'(c)=f-'(c)\iff f+'(c)=f-'(c)=0 \equiv f'(c)=0$\\\\
+    Warunek $f'(c)=0$ ma ekstremum jest tylko warunkiem koniecznym!
+    \end{tw}
+    
+    \begin{tw}
+        Twierdzenie Rolle'a. Niech $f$ będzie ciągła w przedziale domkniętym $[a,b]$, różniczkowalan wewnątrz $(a,b)$. Jeśli $f(a)=f(b)=0$, to istnieje takie $c$, że $a<c<b$ oraz $f'(c)=0$.\\
+        D-d.\\
+        Jeśli $f$ jest stała, $f'(x)=0$. Wówczas dla wszystkich $x\in(a,b)$ istnieje $c\in(a,b) : f'(c)=0$.\\
+        Jeśli $f$ nie jest stała, to istnieje dodatnia lub ujemna wartość funkcji $f$.\\
+        Niech istnieje wartość dodatnia $M=sup f(x)$. Z twierdzenia Weierstraßa:
+        \begin{center}
+            $\exists c\in(a,b) f(x) : M>0, a<c<b, f(a)=f(b)=0$
+        \end{center}
+        Zatem funkcja $f$ osiąga kres górny w punkcie $c$. To jest maksimum lokalne w punkcie $c$. $f'(c)=0$ itd.
+    \end{tw}
+    
+    \begin{tw}
+        $f$ - ciągła na $[a,b]$ i różniczkowalan wewnątrz przedziału $(a,b)$. Wówczas istnieje $0<\theta<1$, takie że:
+        \begin{center}
+            $\frac{f(b)-f(a)}{b-a} = f'(a+\theta(b-a))$
+        \end{center}
+        D-d (pomysł):\\
+        Rozważ fukcję $g(x)=f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a}$ i zastosuj tw. Rolle'a.\\
+        $g(a)=0, g(b)=0, \exists_{c\in(a,b)} : g'(c)=0$\\
+        $c=a+\theta(b-a), \theta\in(0,1)$\\
+        $g'(x)=\left(f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a})\right)'=-f'(x)+\frac{f(b)-f(a)}{b-a}$\\
+        $g'(a+\theta(b-a))=0 \iff f'(a+\theta(b-a)) = \frac{f(b)-f(a)}{b-a}\qed$
+    \end{tw}
+    Wnioski:
+    \begin{enumerate}
+        \item Jeśli $f'(x)=0$ dla wszystkich $x\in[a,b]$ to $f$ jest stała na $[a,b]$.\\
+        D-d.\\
+        $x_1<x_2\in[a,b], \frac{f(x_2)-f(x_1)}{x_2-x_1} = f'(x_1+\theta(x_2-x_1))=0$\\
+        $f(x_2)-f(x_1) = 0 \iff f(x_2) = f(x_1), f(x)$ jest stała na $[a,b]$
+        \item Jeśli $\forall_{a<x<b} f'(x)=g'(x) \implies f(x)=g(x) + $ stała.\\
+        D-d.\\
+        $f'(x)=g'(x)\iff f'(x)-g'(x)=0 \iff (f(x)-g(x))'=0 \implies f(x)-g(x) =$ stała $\iff f(x)=g(x) + $ stała.
+    \end{enumerate}
+    
+    \begin{tw}
+        Reguła de L'Hospitala
+    \end{tw}
+
 \section{Wykład X}
+
+\section{Wykład XI}
 
 \subsection{Techniki całkowania}
 
@@ -1491,6 +1567,224 @@ Funkcje wymierną właściwą rozkładamy na ułamki proste. (apart wolframalpha
     $I_m = \int \frac{1}{(t^2+1)^m} dt$\\
     $I_{m+1} = \frac{1}{2m} \frac{t}{(t^2+1)^m} + \frac{2m-1}{m} I_m$\\
     $I_1 = \arctan(t)$
+\end{pk}
+
+\section{Wykład XII}
+
+$\int cos^2 t dt = \int \frac{1+cos(2t)}{2} dt =$\\
+$\int \frac{1}{2} dt + \int \frac{cos(2t)}{2} dt = \frac{1}{2}t + \frac{sin(2t)}{4} + C$\\
+$\int \sqrt{a^2-x^2} dx = \int a cost a cost dt = \int a^2 \int cos^2dt...$
+
+\subsection{Przez części dla całek oznaczonych}
+
+$\int f'(x)g(x) dx = |(f(x)g(x))|^a_b - \int_a^bf(x)g'(x)dx$
+
+\begin{pk}
+    $\int_1^e \ln(x) dx$, przyjmujemy: $f'(x)=1, g(x)=\ln(x) \rightarrow f(x)=x, g'(x)=\frac{1}{x}=$
+    $(x \ln(x))|_1^e - \int_1^e 1 dx = e\ln(e) - 1\ln(1) - x|_1^e = e-(e-1)=1$ 
+\end{pk}
+
+\subsection{Zamiana zmiennych w całkach oznaczonych}
+
+\begin{tw}
+    Twierdzenie o zamianie zmiennych w całach oznaczonych.\\
+    $\varphi: [\alpha, \beta] \rightarrow_{na} [a,b], t \in [\alpha, \beta]$,
+    $\varphi(\alpha)=a, \varphi(\beta)=b$, to:
+    \begin{center}
+        $\int_a^b f(x) dx = \int_\alpha^\beta f(\varphi(t))\varphi'(t) dt$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    $\int_0^1 (3x+1)^{10} dx$, przyjmujemy $3x+1=t, dx=\frac{1}{3}dt$, mamy:
+    $\int_1^4 t^{10} \frac{1}{3} dt = \frac{1}{3} \int_1^4 t^{10} = \frac{1}{3} |\frac{1}{11}\cdot t^11|_1^4=$
+    $\frac{1}{3}\frac{4^{11}}{11}-\frac{1}{3}\frac{1}{11}$
+\end{pk}
+
+\begin{pk}
+    $\int_0^R \sqrt{R^2-x^2} dx$, przyjmujemy $x=R\cdot sin(t), \frac{dx}{dt} R\cdot cos(t)$\\
+    $x=sin(t)$, to więc $x\in[0,1]\rightarrow t\in[0,\frac{\pi}{2}]$\\
+    $\left(\forall x\in[0,1]\right) \left(\exists t\in[0,\frac{\pi}{2}]\right) sin(t)=x, t=arcsin(x)$, mamy:\\
+    $\int_0^{\frac{\pi}{2}} \sqrt{R^2-R^2 \sin^2 t}\cdot R\cdot \cos(t) dt=$\\
+    $\int_0^{\frac{\pi}{2}} R\sqrt{1-sin^2t}\cdot R\cdot cos(t)dt=$\\
+    $\int_0^{\frac{\pi}{2}} R^2 \sqrt{cos^2(t)} cos(t) dt=$\\
+    $\int_0^{\frac{\pi}{2}} R^2 cos(t) cos(t) dt=$\\
+    $\int_0^{\frac{\pi}{2}} R^2 cos^2(t) dt=$\\
+    $R^2 \int_0^{\frac{\pi}{2}} cos^2(t) dt=$\\
+    $R^2 (\frac{1}{2}t + \frac{sin(2t)}{4})|_0^{\frac{\pi}{2}}=$\\
+    $\frac{R^2\pi}{4}$
+\end{pk}
+
+\subsection{Zastosowania całek}
+
+\subsection{Pole pod wykresem}
+
+\begin{fakt}
+Pole pod wykresem. Dla funkcji $f\geq 0$ określonej na $[a,b]$ pole pod jej wykresem
+na przedziale $[a,b]$ wynosi $S=\int_a^b f(x) dx$
+\end{fakt}
+
+\begin{pk}
+    Pole między wykresami $f(x)=x^2, g(x)=\sqrt{x}$ na przedziale $[0,1]$ wynosi:
+    $\int_0^1 \sqrt{x} - \int_0^1 x^2 dx = \int_0^1 (\sqrt{x}-x^2) dx$
+\end{pk}
+
+\begin{pk}
+    Pole koła. $x^2+y^2=R^2\rightarrow y^2=R^2-x^2$. Weźmy $x\in[0,R]$, wtedy:
+    $y(x)=\sqrt{R^2-x^2}$. Pole koła: $S=4\cdot\int_0^R \sqrt{R^2-x^2}dx=4\frac{R^2\pi}{4} = \pi R^2$
+\end{pk}
+
+\subsection{Długość łuku krzywej}
+
+\begin{fakt}
+    Długość łuku krzywej funkcji ciągłej $f$ określonej na przedziale $[a,b]$:
+    \begin{center}
+        $L=\int_a^b \sqrt{1+\left(\frac{dy}{dx}\right)^2} dx$
+    \end{center} 
+\end{fakt}
+
+\begin{pk}
+    Policzmy długość krzywej $f(x)=x^2$ na $[0,1]$. Mamy:
+    $\int_0^1 \sqrt{1+(2x)^2}dx = \int_0^1 \sqrt{1+4x^2} dx = F(1)-F(0) = ...$
+\end{pk}
+
+\begin{fakt}
+    Ogólna długość łuku krzywej $(x(t),y(t))$ dla $a\leq t\leq b$:
+    \begin{center}
+        $\int_a^b \sqrt{(x'(t))^2+(y'(t))^2} dt$
+    \end{center}
+    Dla funkcji $(x,f(x))$ mamy $(x',f'(x))=(1,f'(x))$ uzyskując poprzedni wzór.
+\end{fakt}
+
+\begin{pk}
+    Parametryzacja przy użyciu współrzędnych biegunowych:\\
+    Okrąg $(R\cdot \cos(t), R\cdot \sin(t)), t\in[0,2\pi]$ - okrąg o promieniu $r$\\
+    Zatem obwód okręgu wynosi:\\
+    $\int_0^{2\pi} \sqrt{(R(-sin(t)))^2+(R\cdot cos(t)^2)} dt =$\\
+    $\int_{0}^{2\pi} \sqrt{R^2(sin^2(t)+cos^2(t))} dt=$\\
+    $\int_{0}^{2\pi} R dt=$\\
+    $(Rt)|_0^{2\pi}=$\\
+    $2\pi R$
+\end{pk}
+
+\subsection{Pola powierzchni i objętości brył obrotowych}
+
+\begin{pk}
+    Obrót proporcjonalności prostej $y=ax$ wokół OX tworzy stożek
+\end{pk}
+
+\begin{fakt}
+    Objętość bryły obrotowej jest dana wzorem:
+    \begin{center}
+        $V=\pi \int_0^b f^2(x) dx$
+    \end{center}
+\end{fakt}
+
+\begin{pk}
+    Weźmy $f(x)=x$, zatem $R=1$ a tworząca $l=\sqrt{2}$. Objętość stożka:\\
+    $V=\pi \int_{0}^{1} x^2 dx = \pi \frac{x^3}{3}|_0^1 = \frac{\pi}{3}$\\
+    Sprawdźmy, że $V=\frac{\pi R^2 h}{3} = \frac{\pi \cdot 1 }{3} = \frac{\pi}{3}$
+\end{pk}
+
+\begin{fakt}
+    Pole powierzchni bocznej bryły obrotowej dane jest wzorem:
+    \begin{center}
+        $P=2\pi \int_{a}^{b} f(x) \sqrt{1+(f'(x))^2}dx$
+    \end{center}
+\end{fakt}
+
+\subsection{Całki niewłaściwe pierwszego rodzaju}
+
+Rozważmy $\forall_{x>a} f(t)$ jest ciągła na $[a,x]$, wtedy:
+\begin{center}
+    $\int_{a}^{x} f(t) dt = F(x)-F(a)$, dla $F'(x)=f(x)$
+\end{center}
+Pytanie - czy istnieje $\lim_{x\rightarrow \infty} F(x)=\int_{a}^{\infty} f(t)dt$?
+
+\begin{pk}
+    Pytania:
+    \begin{enumerate}
+        \item Oblicz $\int_{0}^{\infty} f(t) dt$  
+        \item Zbadaj zbieżność $\int_{0}^{\infty} f(t) dt$ 
+    \end{enumerate}
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{0}^{\infty} \frac{1}{1+t^2} dt=$\\
+    $\lim_{x\rightarrow\infty} arctan(t) |_0^x=$\\
+    $\lim_{x\rightarrow\infty} arctan(x) - arctan(0)=$\\
+    $\pi - 0 =\pi$
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{1}^{\infty} \frac{1}{t} dt=$\\
+    $\lim_{x\rightarrow \infty} \int_{1}^{x} \frac{1}{t} dt=$\\
+    $\lim_{x\rightarrow \infty} \ln(t)|_1^x=$\\
+    $\lim_{x\rightarrow \infty} \ln(x) - \ln(1)=$\\
+    $\lim_{x\rightarrow \infty} \ln(x) = \infty$
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{0}^{\infty} cos(t) dt=$\\
+    $lim_{x\rightarrow \infty} \int_{0}^{x} cos(t)dt=$\\
+    $\lim_{x\rightarrow \infty} sin(t)|_0^x=$\\
+    $\lim_{x\rightarrow \infty} sin(x) - sin(0)$\\
+    $\lim_{x\rightarrow \infty} sin(x)$ NIE ISTNIEJE, zatem całka jest rozbieżna
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{0}^{\infty} \frac{1}{1+t^2+\sqrt[5]{t^2+1}} dt$\\
+    $f(x) = \frac{1}{1+t^2+\sqrt[5]{t^2+1}} \leq \frac{1}{1+t^2} = g(x)$\\
+    $\int_{0}^{\infty} g(t) dt < \infty \implies \int_{0}^{\infty} f(t) dt < \infty$
+\end{pk}
+
+\begin{tw}
+    Kryterium porównawcze (1 część).
+    Zakładamy że zachodzą następujące własności:
+    \begin{enumerate}
+        \item $0\leq g(t)\leq f(t)$ dla $t\in[a,\infty]$
+        \item $\int_{a}^{\infty} f(t) dt < \infty$ jest zbieżna
+    \end{enumerate}
+    Wówczas:
+    \begin{center}
+        $\int_{a}^{\infty} g(t) dt < \infty$ jest zbieżna.
+    \end{center}
+    Analogicznie $\left(a=n_0\right)\land\left(\sum_{t=n_0}^{\infty} f(t)<\infty \right)\implies\left(\sum_{t=n_0}^{\infty} g(t)<\infty \right)$ - kryterium porównawcze zbieżności szeregów.
+\end{tw}
+
+\begin{pk}
+    $f(0)\cdot 1 + f(1)\cdot 1 + f(2)\cdot 2 + ... \geq \int_{0}^{\infty} f(t) dt$\\
+    $\int_{0}^{\infty} f(t)dt \leq \sum_{k=0}^{\infty} f(k)$\\
+    $f(0)+ \sum_{k=1}^{\infty} f(k)$\\
+    Zatem:\\
+    $f(1)\cdot 1 + f(2)\cdot 1 + ... \leq \int_{0}^{\infty} f(t) dt$\\
+    $\sum_{k=1}^{\infty} f(k) \leq \int_{0}^{\infty} f(t) dt$\\
+    $\sum_{k=1}^{\infty} f(k) \leq \int_{0}^{\infty} f(t) dt \leq f(0) + \sum_{k=1}^{\infty} f(k)$
+\end{pk}
+
+\begin{tw}
+    Kryterium porównawcze (2 część).
+    Zakładamy, że zachodzą następujące własności:
+    \begin{enumerate}
+        \item $0\leq f(t) \leq g(t)$ dlamin $t\in[a,\infty]$
+        \item $\int_{a}^{\infty} f(t) dt$ jest rozbieżna.
+    \end{enumerate}
+    Wówczas:
+    \begin{center}
+        $\int_{a}^{\infty} g(t)$ jest rozbieżna
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Policzmy całkę:
+    $\int_{1}^{\infty} \frac{1}{t+\sqrt{t}} dt$\\
+    Wiemy, że $\frac{1}{t+\sqrt{t}}\geq \frac{1}{t+t}$. Sprawdźmy:\\
+    $\int_{1}^{\infty} \frac{1}{2t} dt = \infty$\\
+    Na mocy kryterium porównawczego również $\int_{1}^{\infty} \frac{1}{t+\sqrt{t}}=\infty$ rozbieżna.
 \end{pk}
 
 \end{document}

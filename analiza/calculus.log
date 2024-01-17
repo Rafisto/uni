@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  10 JAN 2024 10:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  17 JAN 2024 10:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -569,171 +569,181 @@ Underfull \hbox (badness 10000) in paragraph at lines 352--354
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 413--427
+Underfull \hbox (badness 10000) in paragraph at lines 413--430
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 413--427
+Underfull \hbox (badness 10000) in paragraph at lines 413--430
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 443--444
+Underfull \hbox (badness 10000) in paragraph at lines 446--447
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 465--466
+Underfull \hbox (badness 10000) in paragraph at lines 468--469
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 480--485
+Underfull \hbox (badness 10000) in paragraph at lines 483--488
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 526--528
+Underfull \hbox (badness 10000) in paragraph at lines 529--531
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 529--530
+Underfull \hbox (badness 10000) in paragraph at lines 532--533
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 590--592
+Underfull \hbox (badness 10000) in paragraph at lines 593--595
 
  []
 
 [9] [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 715--716
+Underfull \hbox (badness 10000) in paragraph at lines 718--719
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 719--720
+Underfull \hbox (badness 10000) in paragraph at lines 722--723
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 734--735
+Underfull \hbox (badness 10000) in paragraph at lines 737--738
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 747--748
+Underfull \hbox (badness 10000) in paragraph at lines 750--751
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 773--774
+Underfull \hbox (badness 10000) in paragraph at lines 776--777
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 825--827
+Underfull \hbox (badness 10000) in paragraph at lines 828--830
 
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 907--908
+Underfull \hbox (badness 10000) in paragraph at lines 910--911
 
  []
 
 [14]
-Underfull \hbox (badness 10000) in paragraph at lines 955--958
+Underfull \hbox (badness 10000) in paragraph at lines 958--961
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 955--958
+Underfull \hbox (badness 10000) in paragraph at lines 958--961
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 1004--1006
+Underfull \hbox (badness 10000) in paragraph at lines 1007--1009
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1004--1006
+Underfull \hbox (badness 10000) in paragraph at lines 1007--1009
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1022--1027
+Underfull \hbox (badness 10000) in paragraph at lines 1025--1030
 
  []
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 1068--1078
+Underfull \hbox (badness 10000) in paragraph at lines 1071--1081
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1111--1114
+Underfull \hbox (badness 10000) in paragraph at lines 1114--1117
 
  []
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 1139--1146
+Underfull \hbox (badness 10000) in paragraph at lines 1142--1149
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1139--1146
+Underfull \hbox (badness 10000) in paragraph at lines 1142--1149
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1139--1146
+Underfull \hbox (badness 10000) in paragraph at lines 1142--1149
 
  []
 
 [18]
-Overfull \hbox (17.97087pt too wide) in paragraph at lines 1188--1195
+Overfull \hbox (17.97087pt too wide) in paragraph at lines 1191--1198
 \T1/cmr/m/n/10 D-d. $\OT4/cmr/m/n/10 (\OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x\OT4/cmr/m/n/10 ) \OMS/plsy/m/n/10 ^^A \OML/plm/m/it/10 g\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x\OT4/cmr/m/n/10 ))[] =$ $\OML/plm/m/it/10 lim[][] \OT4/cmr/m/n/10 =$ $\OML/plm/m/it/10 lim[][] \OT4/cmr/m/n/10 =$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1242--1245
+Underfull \hbox (badness 10000) in paragraph at lines 1245--1248
 
  []
 
 [19]
-Overfull \hbox (2.32497pt too wide) in paragraph at lines 1284--1287
+Overfull \hbox (2.32497pt too wide) in paragraph at lines 1287--1290
 [][]\T1/cmr/bx/n/10 Przykªad 8.5.3. []$\OT4/cmr/m/n/10 (\OML/plm/m/it/10 a[]\OT4/cmr/m/n/10 )[] = (\OML/plm/m/it/10 e[]\OT4/cmr/m/n/10 )[] = [][] [] =$ $[][] \OML/plm/m/it/10 e[][] \OT4/cmr/m/n/10 =$ 
  []
 
-[20] [21] [22]
-Underfull \hbox (badness 10000) in paragraph at lines 1455--1456
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 1350--1352
 
  []
 
-[23] [24] (./calculus.aux)
+
+Underfull \hbox (badness 10000) in paragraph at lines 1354--1364
+
+ []
+
+[21] [22] [23]
+Underfull \hbox (badness 10000) in paragraph at lines 1531--1532
+
+ []
+
+[24] [25] [26] [27] [28] (./calculus.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus.out' has not changed.
-(rerunfilecheck)             Checksum: 08807BDAFA88D53ECACFCA22A92E3F46;6471.
+(rerunfilecheck)             Checksum: 9E81D4E6D36DE3C1E21C810F5E7EFD1D;8236.
  ) 
 Here is how much of TeX's memory you used:
- 12717 strings out of 474504
- 197541 string characters out of 5752696
+ 12772 strings out of 474504
+ 198112 string characters out of 5752696
  1948040 words of memory out of 5000000
- 34208 multiletter control sequences out of 15000+600000
+ 34217 multiletter control sequences out of 15000+600000
  574946 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,10n,79p,567b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus.pdf (24 pages, 302940 bytes).
+Output written on calculus.pdf (28 pages, 323972 bytes).
 PDF statistics:
- 632 PDF objects out of 1000 (max. 8388607)
- 561 compressed objects within 6 object streams
- 259 named destinations out of 1000 (max. 500000)
- 329 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 727 PDF objects out of 1000 (max. 8388607)
+ 651 compressed objects within 7 object streams
+ 305 named destinations out of 1000 (max. 500000)
+ 401 words of extra memory for PDF output out of 10000 (max. 10000000)
 
