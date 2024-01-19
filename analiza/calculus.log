@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  17 JAN 2024 10:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  19 JAN 2024 10:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -718,32 +718,67 @@ Underfull \hbox (badness 10000) in paragraph at lines 1354--1364
 
  []
 
-[21] [22] [23]
-Underfull \hbox (badness 10000) in paragraph at lines 1531--1532
+[21] [22]
+Underfull \hbox (badness 10000) in paragraph at lines 1433--1434
 
  []
 
-[24] [25] [26] [27] [28] (./calculus.aux)
+
+Overfull \hbox (14.73259pt too wide) in paragraph at lines 1463--1464
+[]\T1/cmr/bx/n/10 FAKT. []\T1/cmr/m/n/10 Uwaga. De L'Hospital dziaªa rów-nie» dla $\OML/plm/m/it/10 a \OT4/cmr/m/n/10 = \OMS/plsy/m/n/10 ^^F1$\T1/cmr/m/n/10 . Je-±li $[][] \OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x\OT4/cmr/m/n/10 ) = [][] \OML/plm/m/it/10 g\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x\OT4/cmr/m/n/10 ) =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1478--1479
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1480--1486
+
+ []
+
+[23]
+Underfull \hbox (badness 10000) in paragraph at lines 1528--1530
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1532--1533
+
+ []
+
+[24]
+Underfull \hbox (badness 10000) in paragraph at lines 1543--1544
+
+ []
+
+[25] [26] [27]
+Underfull \hbox (badness 10000) in paragraph at lines 1766--1767
+
+ []
+
+[28] [29] [30] [31] [32] (./calculus.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus.out' has not changed.
-(rerunfilecheck)             Checksum: 9E81D4E6D36DE3C1E21C810F5E7EFD1D;8236.
+(rerunfilecheck)             Checksum: CBD3658B87C04B2ED75B55015957C4D9;9982.
  ) 
 Here is how much of TeX's memory you used:
- 12772 strings out of 474504
- 198112 string characters out of 5752696
+ 12835 strings out of 474504
+ 198765 string characters out of 5752696
  1948040 words of memory out of 5000000
- 34217 multiletter control sequences out of 15000+600000
+ 34228 multiletter control sequences out of 15000+600000
  574946 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,79p,567b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,567b,675s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus.pdf (28 pages, 323972 bytes).
+Output written on calculus.pdf (32 pages, 341385 bytes).
 PDF statistics:
- 727 PDF objects out of 1000 (max. 8388607)
- 651 compressed objects within 7 object streams
- 305 named destinations out of 1000 (max. 500000)
- 401 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 833 PDF objects out of 1000 (max. 8388607)
+ 752 compressed objects within 8 object streams
+ 357 named destinations out of 1000 (max. 500000)
+ 481 words of extra memory for PDF output out of 10000 (max. 10000000)
 

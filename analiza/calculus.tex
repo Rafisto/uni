@@ -1332,77 +1332,312 @@ $\lim_{k\rightarrow 0} \frac{1}{\frac{f(x_0+k)-f(x_0)}{k}}=\frac{1}{\frac{1}{f'(
 \section{Wykład IX}
 
 \begin{de}
-    Maksimum Lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
-    Jeśli:
+Maksimum Lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
+Jeśli:
+\begin{center}
+    $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\leq f(a)$
+\end{center} to $f$  ma w punkcie $a$ maksimum lokalne.
+\end{de}
+Maksimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)<f(a)$
+
+\begin{de}
+Minimum lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
+Jeśli:
+\begin{center}
+    $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\geq f(a)$
+\end{center} to $f$  ma w punkcie $a$ minimum lokalne.
+\end{de}
+Minimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)>f(a)$\\\\
+Maksima lokalne, maksima lokalne właściwe, minima lokalne i minima lokalne właściwe to ekstrema funkcji!
+
+\begin{tw}
+Jeśli $f$ jest różniczkowalna w punkcie $c$ io posiada w tym punkcie ekstremum to $f'(c)=0$.\\
+D-d (dla maksimum, dla min. analogicznie):\\
+Niech $h>0$:\\
+$f(c+h)\leq f(c), f(c-h)\leq f(c)$\\
+$f(c+h)-f(c)\leq 0, f(c-h) - f(c) \leq 0$\\
+$\frac{f(c+h)-f(c)}{h}\leq 0, \frac{f(c+h)-f(c)}{-h}\geq 0$\\
+$f+'(c)=\lim_{h\rightarrow 0^+} \frac{f(c+h)-f(c)}{h}\leq 0$\\
+$f-'(c)=\lim_{h\rightarrow 0^+} \frac{f(c-h)-f(c)}{-h}\geq 0$\\
+$f+'(c)=f-'(c)\iff f+'(c)=f-'(c)=0 \equiv f'(c)=0$\\\\
+Warunek $f'(c)=0$ ma ekstremum jest tylko warunkiem koniecznym!
+\end{tw}
+
+\begin{tw}
+    Twierdzenie Rolle'a. Niech $f$ będzie ciągła w przedziale domkniętym $[a,b]$, różniczkowalan wewnątrz $(a,b)$. Jeśli $f(a)=f(b)=0$, to istnieje takie $c$, że $a<c<b$ oraz $f'(c)=0$.\\
+    D-d.\\
+    Jeśli $f$ jest stała, $f'(x)=0$. Wówczas dla wszystkich $x\in(a,b)$ istnieje $c\in(a,b) : f'(c)=0$.\\
+    Jeśli $f$ nie jest stała, to istnieje dodatnia lub ujemna wartość funkcji $f$.\\
+    Niech istnieje wartość dodatnia $M=sup f(x)$. Z twierdzenia Weierstraßa:
     \begin{center}
-        $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\leq f(a)$
-    \end{center} to $f$  ma w punkcie $a$ maksimum lokalne.
-    \end{de}
-    Maksimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)<f(a)$
-    
-    \begin{de}
-    Minimum lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
-    Jeśli:
+        $\exists c\in(a,b) f(x) : M>0, a<c<b, f(a)=f(b)=0$
+    \end{center}
+    Zatem funkcja $f$ osiąga kres górny w punkcie $c$. To jest maksimum lokalne w punkcie $c$. $f'(c)=0$ itd.
+\end{tw}
+
+\begin{tw}
+    $f$ - ciągła na $[a,b]$ i różniczkowalan wewnątrz przedziału $(a,b)$. Wówczas istnieje $0<\theta<1$, takie że:
     \begin{center}
-        $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\geq f(a)$
-    \end{center} to $f$  ma w punkcie $a$ minimum lokalne.
-    \end{de}
-    Minimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)>f(a)$\\\\
-    Maksima lokalne, maksima lokalne właściwe, minima lokalne i minima lokalne właściwe to ekstrema funkcji!
-    
-    \begin{tw}
-    Jeśli $f$ jest różniczkowalna w punkcie $c$ io posiada w tym punkcie ekstremum to $f'(c)=0$.\\
-    D-d (dla maksimum, dla min. analogicznie):\\
-    Niech $h>0$:\\
-    $f(c+h)\leq f(c), f(c-h)\leq f(c)$\\
-    $f(c+h)-f(c)\leq 0, f(c-h) - f(c) \leq 0$\\
-    $\frac{f(c+h)-f(c)}{h}\leq 0, \frac{f(c+h)-f(c)}{-h}\geq 0$\\
-    $f+'(c)=\lim_{h\rightarrow 0^+} \frac{f(c+h)-f(c)}{h}\leq 0$\\
-    $f-'(c)=\lim_{h\rightarrow 0^+} \frac{f(c-h)-f(c)}{-h}\geq 0$\\
-    $f+'(c)=f-'(c)\iff f+'(c)=f-'(c)=0 \equiv f'(c)=0$\\\\
-    Warunek $f'(c)=0$ ma ekstremum jest tylko warunkiem koniecznym!
-    \end{tw}
-    
-    \begin{tw}
-        Twierdzenie Rolle'a. Niech $f$ będzie ciągła w przedziale domkniętym $[a,b]$, różniczkowalan wewnątrz $(a,b)$. Jeśli $f(a)=f(b)=0$, to istnieje takie $c$, że $a<c<b$ oraz $f'(c)=0$.\\
-        D-d.\\
-        Jeśli $f$ jest stała, $f'(x)=0$. Wówczas dla wszystkich $x\in(a,b)$ istnieje $c\in(a,b) : f'(c)=0$.\\
-        Jeśli $f$ nie jest stała, to istnieje dodatnia lub ujemna wartość funkcji $f$.\\
-        Niech istnieje wartość dodatnia $M=sup f(x)$. Z twierdzenia Weierstraßa:
-        \begin{center}
-            $\exists c\in(a,b) f(x) : M>0, a<c<b, f(a)=f(b)=0$
-        \end{center}
-        Zatem funkcja $f$ osiąga kres górny w punkcie $c$. To jest maksimum lokalne w punkcie $c$. $f'(c)=0$ itd.
-    \end{tw}
-    
-    \begin{tw}
-        $f$ - ciągła na $[a,b]$ i różniczkowalan wewnątrz przedziału $(a,b)$. Wówczas istnieje $0<\theta<1$, takie że:
-        \begin{center}
-            $\frac{f(b)-f(a)}{b-a} = f'(a+\theta(b-a))$
-        \end{center}
-        D-d (pomysł):\\
-        Rozważ fukcję $g(x)=f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a}$ i zastosuj tw. Rolle'a.\\
-        $g(a)=0, g(b)=0, \exists_{c\in(a,b)} : g'(c)=0$\\
-        $c=a+\theta(b-a), \theta\in(0,1)$\\
-        $g'(x)=\left(f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a})\right)'=-f'(x)+\frac{f(b)-f(a)}{b-a}$\\
-        $g'(a+\theta(b-a))=0 \iff f'(a+\theta(b-a)) = \frac{f(b)-f(a)}{b-a}\qed$
-    \end{tw}
-    Wnioski:
+        $\frac{f(b)-f(a)}{b-a} = f'(a+\theta(b-a))$
+    \end{center}
+    D-d (pomysł):\\
+    Rozważ fukcję $g(x)=f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a}$ i zastosuj tw. Rolle'a.\\
+    $g(a)=0, g(b)=0, \exists_{c\in(a,b)} : g'(c)=0$\\
+    $c=a+\theta(b-a), \theta\in(0,1)$\\
+    $g'(x)=\left(f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a})\right)'=-f'(x)+\frac{f(b)-f(a)}{b-a}$\\
+    $g'(a+\theta(b-a))=0 \iff f'(a+\theta(b-a)) = \frac{f(b)-f(a)}{b-a}\qed$
+\end{tw}
+Wnioski:
+\begin{enumerate}
+    \item Jeśli $f'(x)=0$ dla wszystkich $x\in[a,b]$ to $f$ jest stała na $[a,b]$.\\
+    D-d.\\
+    $x_1<x_2\in[a,b], \frac{f(x_2)-f(x_1)}{x_2-x_1} = f'(x_1+\theta(x_2-x_1))=0$\\
+    $f(x_2)-f(x_1) = 0 \iff f(x_2) = f(x_1), f(x)$ jest stała na $[a,b]$
+    \item Jeśli $\forall_{a<x<b} f'(x)=g'(x) \implies f(x)=g(x) + $ stała.\\
+    D-d.\\
+    $f'(x)=g'(x)\iff f'(x)-g'(x)=0 \iff (f(x)-g(x))'=0 \implies f(x)-g(x) =$ stała $\iff f(x)=g(x) + $ stała.
+\end{enumerate}
+
+\begin{tw}
+    Reguła de L'Hospitala. Zakładamy, że funkcje $f$ i $g$ są ciągłe na przedziale $[a,b]$. Ponadto $f(a)=g(a)=0$.
+    Wówczas:
+    \begin{center}
+        $\lim_{x\rightarrow a^+} \frac{f(x)}{g(x)} = \lim_{x\rightarrow a^+} \frac{f'(x)}{g'(x)}$, o ile granica istnieje.
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Rozważmy podane przykłady:
+    $\lim_{x\rightarrow 2} \frac{x-1}{x+1} = \frac{2-1}{2+1}$\\
+    $\lim_{x\rightarrow 2^+} \frac{x^2-4}{x-2}=\left[\frac{0}{0}\right] = \lim_{x\rightarrow 2^+} \frac{2x}{1}=4$
+\end{pk}
+
+D-d. (szkic)
+$\lim_{x\rightarrow a^+} \frac{f(x)}{g(x)}$.\\
+Podstawmy $x=a+h, h\rightarrow 0^+$. Mamy:\\
+$\lim_{h\rightarrow 0^+} \frac{f(a+h)}{g(a+h)}=$\\
+$=\lim_{h\rightarrow 0^+} \frac{f(a+h)-f(a)}{g(a+h)-g(a)}=$\\
+$=\lim_{h\rightarrow 0^+} \frac{\frac{f(a+h)-f(a)}{h}}{\frac{g(a+h)-g(a)}{h}}=$\\
+$=\lim_{h\rightarrow 0^+} \frac{f'(a+\theta_1h)}{g'(a+\theta_2 h)}$
+
+\subsection{Pochodna funkcji złożonej}
+
+\begin{tw}
+    Zakładamy, że $g$ i $f$ są rózniczkowalne oraz $g'$ jest ciągła. Wówczas:
+    \begin{center}
+        $g(f(x))'=g'(f(x))\cdot f'(x)$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Na przykład:\\
     \begin{enumerate}
-        \item Jeśli $f'(x)=0$ dla wszystkich $x\in[a,b]$ to $f$ jest stała na $[a,b]$.\\
-        D-d.\\
-        $x_1<x_2\in[a,b], \frac{f(x_2)-f(x_1)}{x_2-x_1} = f'(x_1+\theta(x_2-x_1))=0$\\
-        $f(x_2)-f(x_1) = 0 \iff f(x_2) = f(x_1), f(x)$ jest stała na $[a,b]$
-        \item Jeśli $\forall_{a<x<b} f'(x)=g'(x) \implies f(x)=g(x) + $ stała.\\
-        D-d.\\
-        $f'(x)=g'(x)\iff f'(x)-g'(x)=0 \iff (f(x)-g(x))'=0 \implies f(x)-g(x) =$ stała $\iff f(x)=g(x) + $ stała.
+        \item $\left(\left(x^2+1\right)^100\right)'=100(x^2+1)^{100-1}\cdot(x^2+1)'=100\cdot(x^2+1)^99\cdot 2x$
+        \item $\left(sin(x^2)\right)'=cos(x^2)\cdot(x^2)\cdot 2x$
+        \item $\left(sin^2(x)\right)'=2(sin(x))^{2-1}\cdot sin(x)'=2sin(x)\cdot cos(x)$
+        \item $(x^n)'=nx^{n-1}$
+        \item $(x^a)'=ax^{a-1}$
+        \item $x^a=(e^{ln(x)})^{a}=e^{ln(x)\cdot a}$
+        \item $(x^a)'=\left(e^{ln(x)\cdot a}\right)'=e^{ln(x)\cdot a}\cdot \left(ln(x)\cdot a\right)'=x^n\cdot\frac{1}{x}\cdot a= x^{a-1}\cdot a$
     \end{enumerate}
-    
-    \begin{tw}
-        Reguła de L'Hospitala
-    \end{tw}
+\end{pk}
+
+\begin{fakt}
+    Uwaga. Regułę de L'Hospitala stosuje się również dla $x\rightarrow a^-$ lub dla $x\rightarrow a^+$. Przy odpowiednich założeniach zachodzą wzory:
+    \begin{center}
+        $\lim_{x\rightarrow a} \frac{f(x)}{g(x)} = \lim_{x\rightarrow a} \frac{f'(x)}{g'(x)}$
+    \end{center}
+\end{fakt}
+
+\begin{pk}
+    Rozważmy przykłady:
+    \begin{itemize}
+        \item $\lim_{x\rightarrow 0} \frac{ln(1+x)}{x} = \frac{ln(1)}{0} = \left[\frac{0}{0}\right]=$
+        $\lim_{x\rightarrow 0} \frac{(ln(x+1)')}{x'} = \lim_{x\rightarrow 0} \frac{\frac{1}{x+1}}{1}=1$
+        \item $\lim_{x\rightarrow 0} \frac{sin^2(x)}{x^2} = \left[\frac{0}{0}\right] = \lim_{x\rightarrow 0} \frac{(sin^2(x))'}{(x^2)'}=$
+        $\lim_{x\rightarrow 0} \frac{2sin(x)cos(x)}{2x} = \lim_{x\rightarrow 0} \frac{sin(x)}{x}\cdot \lim_{x\rightarrow 0} cos(x) = 1$
+    \end{itemize}
+\end{pk}
+
+\begin{fakt}
+    Uwaga. De L'Hospital działa również dla $a=\pm\infty$. Jeśli $\lim_{x\rightarrow \infty} f(x)=\lim_{x\rightarrow\infty} g(x)=0$, to:
+    \begin{center}
+        $\lim_{x\rightarrow \infty} \frac{kx^{k-1}}{e^x}=\frac{f(x)}{g(x)} = \lim_{x\rightarrow \infty} \frac{f'(x)}{g'(x)}$ 
+    \end{center}
+\end{fakt}
+
+\begin{fakt}
+    Regułę de L'Hospiatala można stosować również dla wyrażeń nieoznacoznych postaci $\frac{\infty}{\infty}$. 
+    Jeśli $\lim_{x\rightarrow a} f(x) = \lim_{x\rightarrow a } g(x) = \infty$, to:
+    \begin{center}
+        $\lim_{x\rightarrow a} \frac{f(x)}{g(x)}= \lim_{x\rightarrow a} \frac{f'(x)}{g'(x)}$
+    \end{center}
+\end{fakt}
+
+\begin{pk}
+    Przykład:\\
+    \begin{itemize}
+        \item Ustalmy $k\in\mathbb{N} -\{0\}$. Wówczas:\\
+        $\lim_{x\rightarrow \infty} \frac{x^k}{e^x}=$\\
+        $\lim_{x\rightarrow \infty} \frac{(e^k)'}{(e^x)'}=$\\
+        $\lim_{x\rightarrow \infty} \frac{kx^{k-1}}{e^x}=$\\
+        $...=$\\
+        $\lim_{x\rightarrow \infty} \frac{k!}{e^x}=0$\\
+        \item Ustalmy $k\in\mathbb{N}$. Wówczas $n^k\in O(2^n)$\\
+        $\lim_{n\rightarrow \infty} \frac{n^k}{2^n}=$\\
+        $\lim_{x\rightarrow \infty} \frac{x^k}{2^x}=$\\
+        $\lim_{x\rightarrow \infty} \frac{x^k}{e^{ln(2)x}}=$\\
+        $\lim_{x\rightarrow \infty} \frac{k\cdot x^{k-1}}{ln(2)e^{ln(2)x}}=$\\
+        $...=$\\
+        $\lim_{x\rightarrow \infty} \frac{k!}{ln(2)^k\cdot e^{ln(2)x}}=0$ 
+    \end{itemize}
+\end{pk}
+
+\begin{pk}
+    $\lim_{x\rightarrow 0^+} (ln(x)\cdot x) =$\\
+    $\lim_{x\rightarrow 0^+} \frac{ln(x)}{\frac{{1}}{x}} =$\\
+    $\lim_{x\rightarrow 0^+} \frac{(ln(x))'}{(\frac{1}{x})'} =$\\
+    $\lim_{x\rightarrow 0^+} \frac{\frac{{1}}{x}}{-1 \frac{1}{x^2}}=0$
+\end{pk}
 
 \section{Wykład X}
+
+\begin{enumerate}
+    \item $ln(f(x))'=\frac{1}{f(x)} f'(x)$
+    \item $x^x = e^{ln(x)\cdot x}$\\
+    $(x^x)' = e^{ln(x)\cdot x} \cdot \left(\frac{1}{x}+1\ln(x)\right)= x^x\cdot(1+\ln(x))$
+    \item $a^x=e^{ln(a)\cdot x}$\\
+    $(a^x)' = a^x\cdot \ln(a)$
+    \item $(f(x)^{g(x)})'=\left(e^{ln(f(x))-g(x)}\right)'=e^{\ln(f(x))-g(x)}\cdot (\ln f(x)\cdot g(x))'=$\\
+    $f(x)^{g(x)}(\ln(f(x))'\cdot g(x) + g'(x)\cdot \ln(f(x)))=$\\
+    $f(x)^{g(x)} \cdot \left(\frac{f'(x)\cdot g(x)}{f(x)}+g'(x)\cdot \ln(f(x))\right)$
+\end{enumerate}
+
+\subsection{Funkcje Hiperboliczne}
+
+$\sinh(x)=\frac{e^x-e^{-x}}{2}$\\
+$\sinh'(x)=\frac{1}{2}\left(e^x+e^{-x}\right)=cosh(x)$\\
+$\cosh'(x)=\frac{1}{2}\left(e^x-e^{-x}\right)=sinh(x)$
+
+\subsection{Interpretacja geometryczna znaku pochodnej}
+
+Jeśli $\forall_{x\in(a,b)} f'(x)>0$, to $f$-rosnąca w $(a,b)$. Analogicznie dla $f'(x)<0$ to $f$-malejąca.
+
+\subsection{Pochodne wyższych rzędów}
+
+$f', f'', f''', f^{iv}, ..., f^{(1)}$\\
+$\frac{dx}{dy}, \frac{d^2y}{dx^2}, ... \frac{d^ny}{dx^n}$\\
+
+\begin{pk}
+    Przykłady:\\
+    \begin{enumerate}
+        \item $(x^n)'=nx^{n-1}$
+        \item $(x^n)''=(nx^{n-1})'=n(n-1)x^{n-2}$ \dots
+        \item $(x^n)^(k) =n(n-1)...(n-k+1)\cdot x^{n-k}$
+    \end{enumerate}
+\end{pk}
+
+\subsection{Wzór Taylora}
+
+\begin{tw}
+    Twierdzenie Lagrange'a - przypomnienie.\\
+    \begin{center}
+        $\frac{f(b)-f(a)}{b-a}=f'(a+\theta(b-a))$
+    \end{center}
+    \begin{center}
+        $f(b)=f(a)+\frac{b-a}{1!}\cdot f'(a+\theta(b-a))$
+    \end{center}
+    Załóżmy, że $f$ jest $n$-krotnie różniczkowalna na $[a,b]$. Wtedy istnieje $0<\theta<1$, że:
+    \begin{center}
+        $f(b)=f(a)+\frac{b-a}{1!} f'(a) + \frac{(b-a)^2}{2!} f''(a) + \dots + \frac{(b-a)^{n-1}}{(n-1)!} f^{n-1} (a) + R_n$
+    \end{center}
+\end{tw}
+
+\begin{tw}
+    Wzór Maclaurina.\\
+    $b=x, a=0$\\
+    $f(x)=f(0)+\frac{x}{1!} f'(0) + \dots + \frac{x^{n-1}}{(n-1)!} f^{(n-1)}(0) + R_n$, gdzie $R_n = \frac{x^n}{n!} f^{(n)}(\theta x)$
+    \begin{enumerate}
+        \item $sin(x)=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!} \cdot \cos(\theta x)$
+        $f(x)=\sum_{n=0}^{\infty} \left(\frac{f^{(n)}(0)}{n!} x^n\right)$
+        \item $f(x)=e^x$
+        $f(x)=f(0)+\frac{x}{1!} f'(0) + \frac{x^2}{2!} f(\theta x) = 1 + \frac{x}{1!} + \frac{x^2}{2!}\cdot e^{\theta x}$
+    \end{enumerate}
+\end{tw}
+
+\begin{tw}
+    Jeśli pochodna rzędu parzystego jest niezerowa to jest ekstremum, jeśli nieparzytego rzędu tylko punktem przegięcia.
+\end{tw}
+
+\begin{pk}
+    Zobaczmy funkcje:\\
+    $f(x)=x^3, f'(0)=0, f''(0)=0, f'''(0)=6$\\
+    $f(x)=x^4, f'(0)=0, f''(0)=0, f'''(0)=0, f^{(iv)}(0)=4!$
+\end{pk}
+
+\begin{enumerate}
+    \item $f'(c)=...f^{(2k-1)}(c)=0 \land f^{2k} > 0$, to $f$ ma min. lok. w $c$
+    \item $f'(c)=...f^{(2k-1)}(c)=0 \land f^{2k} < 0$, to $f$ ma maks. lok. w $c$
+    \item $f'(c)=...f^{(2k-1)}(c) \neq 0 \land f^{2k} = 0$, to $f$ nie ma ekstremum w $c$
+\end{enumerate}
+
+\subsection{Wypukłość funkcji}
+
+$f$ wypukła na $[a,b] \iff \forall_{\alpha, \beta \in [a,b]: \alpha < \beta} \forall_{t\in[0,1]} \left(f(t\alpha + (1-t)\beta) \leq tf(\alpha) + (1-t)f(\beta)\right)$\\
+Funkcja wypukła - tempo wzrostu funkcji rośnie
+
+\begin{tw}
+    Zakładamy, że $f$ jest różniczkowalna na $(a,b)$. Wtedy $f$ wypukła na $(a,b) \iff f'$ jest rosnąca. Wnioski:
+    \begin{enumerate}
+        \item $f''(x)>0$ na $(a,b) \rightarrow f'$ rosnąca $f$ wypukła 
+        \item $f''(x)<0$ na $(a,b) \rightarrow f'$ malejąca $f$ wklęsła 
+        \item $f''(x_0)=0$ jest warunkiem koniecznym istnienia punktu przegięcia w punkcie $x_0$
+    \end{enumerate}
+\end{tw}
+
+\begin{pk}
+    Badanie wypukłości:\\
+    $f(x)=(1+x^2)e^x, f''(x)=e^x(x^2+4x+3)=0\rightarrow x_1=-3, x_2 = -1$
+\end{pk}
+
+\subsection{Nierówność Jensena}
+
+\begin{tw}
+    Niech $f$-wypukła na $[a,b]$, $a_1,a_2,a_3,\dots,a_n\in[0,1]$, $\sum_{i=0}^{n} a_i = 1$, $x_1, x_2,\dots, x_n\in[0,1]$. Wtedy:
+    \begin{center}
+        $f\left(\sum_{i=1}^{n} a_ix_i\right) \leq \sum_{i=1}^{n} a_i f(x_i)$
+    \end{center}
+    Dla $n=2$ jest to po prostu definicja wypukłości.
+\end{tw}
+
+\subsection{Problem opymalizacyjny}
+Znajdź $MAX(x_1\cdot x_2\cdot x_n)$ przy zał, że $x_1+x_2+\dots+x_n=const.$ i $x_1, x_2, \dots, x_n \geq 0$\\
+$x_1\cdot x_2\cdot \dots \cdot x_n \leq \left(\frac{x_1+x_2+\dots+x_n}{n}\right)^n=\left(\frac{const.}{n}\right)^n$\\
+$MAX(x_1\cdot x_2\cdot \dots \cdot x_n) = \left(\frac{const.}{n}\right)^n$
+
+\subsection{Funkcje Sigmoidalne}
+
+\begin{de}
+    (nieformalna). Funkcje, których wykres jest w kształcie charakterystycznej litery S.
+    \begin{itemize}
+        \item Funkcja logistyczna - $\sigma(x)=\frac{1}{1+e^{-x}}, \mathbb{R}\rightarrow[0,1]$
+    \end{itemize}
+\end{de}
+
+\begin{de}
+    (formalna). Funkcja ograniczona, różniczkowalna na $\mathbb{R}$ o dodatniej pochodnej i tylko z jednym punktem przegięcia.
+\end{de}
+Punkt przegięcia - punkt, gdzie funkcja zmienia się z wypukłej na wklęsłą lub z wklęsłej na wypukłą:
+\begin{itemize}
+    \item $\tan(x) = \frac{e^x-e^{-x}}{e^x+e^{-x}}$
+    \item $\arctan(x)$...
+\end{itemize}
+
+\subsection{Error function}
+
+\begin{center}
+    $erf(x)=\frac{2}{\sqrt{n}} \int_{0}^{x} e^{-t^2} dt$
+\end{center}
 
 \section{Wykład XI}
 
