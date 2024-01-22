@@ -37,7 +37,7 @@
 
 \maketitle
 
-\section{Wykład pierwszy}
+\section{Wykład I}
 
 Liczby naturalne $\mathbb{N}=\{1,2,3,\dots\}$
 
@@ -183,8 +183,8 @@ $|a|=\begin{cases}
         $\sum_{i=1}^{n} a_i^2 \cdot \sum_{i=1}^{n} b_i^2 \geq \left(\sum_{i=1}^{n} a_ib_i\right)^2$
     \end{center}
 \end{de}
-
-\section{Wykład drugi}
+drugi
+\section{Wykład II}
 
 \begin{de}
     Ciąg liczbowy to funkcja z $\mathbb{N}$ w $\mathbb{R}$. Stosujemy zapis $a_1,a_2,\dots,a_n$. Przykłady:
@@ -219,7 +219,7 @@ $|a|=\begin{cases}
     $|a_n-g|<\varepsilon \iff -\varepsilon < a_n -g < \varepsilon \iff g-\varepsilon < a_n < g+\varepsilon$
 \end{de}
 
-\section{Wykład trzeci}
+\section{Wykład III}
 
 \begin{tw}
 Twierdzenie (o ciągu monotonicznym i ograniczonym)\\
@@ -412,7 +412,10 @@ $\sum_{n=1}^{\infty} a_n = \lim_{n\rightarrow \infty} S_N$
 \begin{pk}
 Szereg harmoniczny.
 $H_N = \sum_{n=1}^{N} \frac{1}{n}$, $\lim_{N\rightarrow \infty}=\infty$, wolny wzrost do $\infty$\\
-$H_{2^{n+1}}=\frac{1}{1} + \frac{1}{2} + \frac{1}{2+1} + \frac{1}{2+2} + \frac{1}{2^2 + 1} + \frac{1}{2^2+2} + \frac{1}{2^2+3} + \frac{1}{2^3} + \frac{1}{2^3+1} + \frac{1}{2^3 + 2} + \frac{1}{2^3 + 3} + \dots + \frac{1}{2^3 + 2^3} + \frac{1}{2^n + 1} + \frac{1}{2^n + 2} + \dots + \frac{1}{2^n+2^n}$\\\\
+$H_{2^{n+1}}=\frac{1}{1} + \frac{1}{2} + \frac{1}{2+1} + \frac{1}{2+2} + \frac{1}{2^2 + 1} +$
+$\frac{1}{2^2+2} + \frac{1}{2^2+3} + \frac{1}{2^3} + \frac{1}{2^3+1} + \frac{1}{2^3 + 2} +$
+$\frac{1}{2^3 + 3} + \dots + \frac{1}{2^3 + 2^3} + \frac{1}{2^n + 1} + \frac{1}{2^n + 2} +$
+$\dots + \frac{1}{2^n+2^n}$\\\\
 $\frac{1}{1}+\frac{1}{2}=\frac{3}{2}$\\
 $\frac{1}{2+1}+\frac{1}{2+2}\geq 2\cdot \frac{1}{2+2}=\frac{1}{2}$\\
 $\frac{1}{2^2+1}+\frac{1}{2^2+2} + ... \geq 4\cdot \frac{1}{2^2 + 2^2}=\frac{1}{2}$\\
@@ -435,7 +438,7 @@ Następny wykład - kryteria zbieżności szeregów: kryterium kondensacyjne.
 Szereg $\sum_{n=1}^{\infty} \frac{n}{n+1}$ jest rozbieżny, bo nie jest spełniony warunek konieczny\\ $lim_{n\rightarrow \infty} \frac{n}{n+1}=1$\\
 Warunek konieczny nie jest wystarczający.
 
-\section{Wykład czwarty}
+\section{Wykład IV}
 
 \subsection{Kryteria zbieżności szeregów}
 
@@ -670,7 +673,7 @@ Analizujemy funkcje $\mathbb{R}\rightarrow\mathbb{R}$
     $f\circ g(x) = f(g(x)) = f(sin(x)) = sin^3(x)+1$
 \end{pk}
 
-\section{Wykład piąty}
+\section{Wykład V}
 
 Funkcje elementarne.
 \begin{enumerate}
@@ -857,7 +860,7 @@ $\lim_{x\rightarrow \infty} f(x)=g \iff \forall_{n\rightarrow \infty} f(x_n)=g$
     \begin{itemize}
         \item $\lim_{x\rightarrow \infty} e^x = e^{\infty} = \infty$
         \item $\lim_{x\rightarrow \infty} a^x = \infty$, o ile $a>1$
-        \item $\lim_{x\rightarrow \infty} ln(x) = \infty$
+        \item $\lim_{x\rightarrow \infty} \ln(x) = \infty$
     \end{itemize}
 \end{pk}
 
@@ -949,7 +952,7 @@ Oraz kolejno (zaawansowane):\\
 $\binom{n}{k}=\Theta (n^k)$\\
 $\binom{n}{k}=\frac{1}{k!} n^k + \Theta(n^{k-1})$
 
-\section{Wykład szósty}
+\section{Wykład VI}
 
 \begin{pk}
     Policzmy granicę:\\\\
@@ -1283,7 +1286,7 @@ $\left(\frac{1}{g(x)}\right)' = \frac{\frac{1}{g(x+h)}-\frac{1}{g(x)}}{h}$
 \begin{pk}
     $(a^x)'=(e^{ln(a)\cdot x})'=\lim_{h\rightarrow 0} \frac{e^{\ln(a)\cdot(x+h)}-e^{\ln(a)\cdot x}}{h}=$
     $\lim_{h\rightarrow 0} e^{\ln(a)\cdot x} \frac{e^{\ln(a) h}- e^{1}}{h}=$\\
-    $=\lim_{h\rightarrow 0} a^x \frac{e^{\ln(a)h}-1}{\ln(a) h} ln(a) = a^x \cdot \ln(a)$
+    $=\lim_{h\rightarrow 0} a^x \frac{e^{\ln(a)h}-1}{\ln(a) h} \ln(a) = a^x \cdot \ln(a)$
 \end{pk}
 
 \subsection{Pochodna funkcji odwrotnej}
@@ -1326,6 +1329,697 @@ $\lim_{k\rightarrow 0} \frac{1}{\frac{f(x_0+k)-f(x_0)}{k}}=\frac{1}{\frac{1}{f'(
     $\left(arctan(y)\right)'=\frac{1}{(tan(x))'}=cos^2(x)=\frac{1}{1+tan^2(x)}=\frac{1}{1+y^2}$
 \end{pk}
 
+\section{Wykład IX}
+
+\begin{de}
+Maksimum Lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
+Jeśli:
+\begin{center}
+    $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\leq f(a)$
+\end{center} to $f$  ma w punkcie $a$ maksimum lokalne.
+\end{de}
+Maksimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)<f(a)$
+
+\begin{de}
+Minimum lokalne. Niech funkcja $f:\mathbb{R}\rightarrow\mathbb{R}$ będzie określona na przedziale $(a-\delta,a+\delta)$.
+Jeśli:
+\begin{center}
+    $\exists_{\delta_1 < \delta} \forall_{x\in(a-\delta_1,a + \delta_1)} f(x)\geq f(a)$
+\end{center} to $f$  ma w punkcie $a$ minimum lokalne.
+\end{de}
+Minimum lokalne właściwe - jw. z $\forall_{x\in (a-\delta_1, a)\cup(a,a+\delta_1)}$ $f(x)>f(a)$\\\\
+Maksima lokalne, maksima lokalne właściwe, minima lokalne i minima lokalne właściwe to ekstrema funkcji!
+
+\begin{tw}
+Jeśli $f$ jest różniczkowalna w punkcie $c$ io posiada w tym punkcie ekstremum to $f'(c)=0$.\\
+D-d (dla maksimum, dla min. analogicznie):\\
+Niech $h>0$:\\
+$f(c+h)\leq f(c), f(c-h)\leq f(c)$\\
+$f(c+h)-f(c)\leq 0, f(c-h) - f(c) \leq 0$\\
+$\frac{f(c+h)-f(c)}{h}\leq 0, \frac{f(c+h)-f(c)}{-h}\geq 0$\\
+$f+'(c)=\lim_{h\rightarrow 0^+} \frac{f(c+h)-f(c)}{h}\leq 0$\\
+$f-'(c)=\lim_{h\rightarrow 0^+} \frac{f(c-h)-f(c)}{-h}\geq 0$\\
+$f+'(c)=f-'(c)\iff f+'(c)=f-'(c)=0 \equiv f'(c)=0$\\\\
+Warunek $f'(c)=0$ ma ekstremum jest tylko warunkiem koniecznym!
+\end{tw}
+
+\begin{tw}
+    Twierdzenie Rolle'a. Niech $f$ będzie ciągła w przedziale domkniętym $[a,b]$, różniczkowalan wewnątrz $(a,b)$. Jeśli $f(a)=f(b)=0$, to istnieje takie $c$, że $a<c<b$ oraz $f'(c)=0$.\\
+    D-d.\\
+    Jeśli $f$ jest stała, $f'(x)=0$. Wówczas dla wszystkich $x\in(a,b)$ istnieje $c\in(a,b) : f'(c)=0$.\\
+    Jeśli $f$ nie jest stała, to istnieje dodatnia lub ujemna wartość funkcji $f$.\\
+    Niech istnieje wartość dodatnia $M=sup f(x)$. Z twierdzenia Weierstraßa:
+    \begin{center}
+        $\exists c\in(a,b) f(x) : M>0, a<c<b, f(a)=f(b)=0$
+    \end{center}
+    Zatem funkcja $f$ osiąga kres górny w punkcie $c$. To jest maksimum lokalne w punkcie $c$. $f'(c)=0$ itd.
+\end{tw}
+
+\begin{tw}
+    $f$ - ciągła na $[a,b]$ i różniczkowalan wewnątrz przedziału $(a,b)$. Wówczas istnieje $0<\theta<1$, takie że:
+    \begin{center}
+        $\frac{f(b)-f(a)}{b-a} = f'(a+\theta(b-a))$
+    \end{center}
+    D-d (pomysł):\\
+    Rozważ fukcję $g(x)=f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a}$ i zastosuj tw. Rolle'a.\\
+    $g(a)=0, g(b)=0, \exists_{c\in(a,b)} : g'(c)=0$\\
+    $c=a+\theta(b-a), \theta\in(0,1)$\\
+    $g'(x)=\left(f(a)-f(x)+(x-a)\frac{f(b)-f(a)}{b-a})\right)'=-f'(x)+\frac{f(b)-f(a)}{b-a}$\\
+    $g'(a+\theta(b-a))=0 \iff f'(a+\theta(b-a)) = \frac{f(b)-f(a)}{b-a}\qed$
+\end{tw}
+Wnioski:
+\begin{enumerate}
+    \item Jeśli $f'(x)=0$ dla wszystkich $x\in[a,b]$ to $f$ jest stała na $[a,b]$.\\
+    D-d.\\
+    $x_1<x_2\in[a,b], \frac{f(x_2)-f(x_1)}{x_2-x_1} = f'(x_1+\theta(x_2-x_1))=0$\\
+    $f(x_2)-f(x_1) = 0 \iff f(x_2) = f(x_1), f(x)$ jest stała na $[a,b]$
+    \item Jeśli $\forall_{a<x<b} f'(x)=g'(x) \implies f(x)=g(x) + $ stała.\\
+    D-d.\\
+    $f'(x)=g'(x)\iff f'(x)-g'(x)=0 \iff (f(x)-g(x))'=0 \implies f(x)-g(x) =$ stała $\iff f(x)=g(x) + $ stała.
+\end{enumerate}
+
+\begin{tw}
+    Reguła de L'Hospitala. Zakładamy, że funkcje $f$ i $g$ są ciągłe na przedziale $[a,b]$. Ponadto $f(a)=g(a)=0$.
+    Wówczas:
+    \begin{center}
+        $\lim_{x\rightarrow a^+} \frac{f(x)}{g(x)} = \lim_{x\rightarrow a^+} \frac{f'(x)}{g'(x)}$, o ile granica istnieje.
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Rozważmy podane przykłady:
+    $\lim_{x\rightarrow 2} \frac{x-1}{x+1} = \frac{2-1}{2+1}$\\
+    $\lim_{x\rightarrow 2^+} \frac{x^2-4}{x-2}=\left[\frac{0}{0}\right] = \lim_{x\rightarrow 2^+} \frac{2x}{1}=4$
+\end{pk}
+
+D-d. (szkic)
+$\lim_{x\rightarrow a^+} \frac{f(x)}{g(x)}$.\\
+Podstawmy $x=a+h, h\rightarrow 0^+$. Mamy:\\
+$\lim_{h\rightarrow 0^+} \frac{f(a+h)}{g(a+h)}=$\\
+$=\lim_{h\rightarrow 0^+} \frac{f(a+h)-f(a)}{g(a+h)-g(a)}=$\\
+$=\lim_{h\rightarrow 0^+} \frac{\frac{f(a+h)-f(a)}{h}}{\frac{g(a+h)-g(a)}{h}}=$\\
+$=\lim_{h\rightarrow 0^+} \frac{f'(a+\theta_1h)}{g'(a+\theta_2 h)}$
+
+\subsection{Pochodna funkcji złożonej}
+
+\begin{tw}
+    Zakładamy, że $g$ i $f$ są rózniczkowalne oraz $g'$ jest ciągła. Wówczas:
+    \begin{center}
+        $g(f(x))'=g'(f(x))\cdot f'(x)$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Na przykład:\\
+    \begin{enumerate}
+        \item $\left(\left(x^2+1\right)^100\right)'=100(x^2+1)^{100-1}\cdot(x^2+1)'=100\cdot(x^2+1)^99\cdot 2x$
+        \item $\left(sin(x^2)\right)'=cos(x^2)\cdot(x^2)\cdot 2x$
+        \item $\left(sin^2(x)\right)'=2(sin(x))^{2-1}\cdot sin(x)'=2sin(x)\cdot cos(x)$
+        \item $(x^n)'=nx^{n-1}$
+        \item $(x^a)'=ax^{a-1}$
+        \item $x^a=(e^{ln(x)})^{a}=e^{ln(x)\cdot a}$
+        \item $(x^a)'=\left(e^{ln(x)\cdot a}\right)'=e^{ln(x)\cdot a}\cdot \left(ln(x)\cdot a\right)'=x^n\cdot\frac{1}{x}\cdot a= x^{a-1}\cdot a$
+    \end{enumerate}
+\end{pk}
+
+\begin{fakt}
+    Uwaga. Regułę de L'Hospitala stosuje się również dla $x\rightarrow a^-$ lub dla $x\rightarrow a^+$. Przy odpowiednich założeniach zachodzą wzory:
+    \begin{center}
+        $\lim_{x\rightarrow a} \frac{f(x)}{g(x)} = \lim_{x\rightarrow a} \frac{f'(x)}{g'(x)}$
+    \end{center}
+\end{fakt}
+
+\begin{pk}
+    Rozważmy przykłady:
+    \begin{itemize}
+        \item $\lim_{x\rightarrow 0} \frac{ln(1+x)}{x} = \frac{ln(1)}{0} = \left[\frac{0}{0}\right]=$
+        $\lim_{x\rightarrow 0} \frac{(ln(x+1)')}{x'} = \lim_{x\rightarrow 0} \frac{\frac{1}{x+1}}{1}=1$
+        \item $\lim_{x\rightarrow 0} \frac{sin^2(x)}{x^2} = \left[\frac{0}{0}\right] = \lim_{x\rightarrow 0} \frac{(sin^2(x))'}{(x^2)'}=$
+        $\lim_{x\rightarrow 0} \frac{2sin(x)cos(x)}{2x} = \lim_{x\rightarrow 0} \frac{sin(x)}{x}\cdot \lim_{x\rightarrow 0} cos(x) = 1$
+    \end{itemize}
+\end{pk}
+
+\begin{fakt}
+    Uwaga. De L'Hospital działa również dla $a=\pm\infty$. Jeśli $\lim_{x\rightarrow \infty} f(x)=\lim_{x\rightarrow\infty} g(x)=0$, to:
+    \begin{center}
+        $\lim_{x\rightarrow \infty} \frac{kx^{k-1}}{e^x}=\frac{f(x)}{g(x)} = \lim_{x\rightarrow \infty} \frac{f'(x)}{g'(x)}$ 
+    \end{center}
+\end{fakt}
+
+\begin{fakt}
+    Regułę de L'Hospiatala można stosować również dla wyrażeń nieoznacoznych postaci $\frac{\infty}{\infty}$. 
+    Jeśli $\lim_{x\rightarrow a} f(x) = \lim_{x\rightarrow a } g(x) = \infty$, to:
+    \begin{center}
+        $\lim_{x\rightarrow a} \frac{f(x)}{g(x)}= \lim_{x\rightarrow a} \frac{f'(x)}{g'(x)}$
+    \end{center}
+\end{fakt}
+
+\begin{pk}
+    Przykład:\\
+    \begin{itemize}
+        \item Ustalmy $k\in\mathbb{N} -\{0\}$. Wówczas:\\
+        $\lim_{x\rightarrow \infty} \frac{x^k}{e^x}=$\\
+        $\lim_{x\rightarrow \infty} \frac{(e^k)'}{(e^x)'}=$\\
+        $\lim_{x\rightarrow \infty} \frac{kx^{k-1}}{e^x}=$\\
+        $...=$\\
+        $\lim_{x\rightarrow \infty} \frac{k!}{e^x}=0$\\
+        \item Ustalmy $k\in\mathbb{N}$. Wówczas $n^k\in O(2^n)$\\
+        $\lim_{n\rightarrow \infty} \frac{n^k}{2^n}=$\\
+        $\lim_{x\rightarrow \infty} \frac{x^k}{2^x}=$\\
+        $\lim_{x\rightarrow \infty} \frac{x^k}{e^{ln(2)x}}=$\\
+        $\lim_{x\rightarrow \infty} \frac{k\cdot x^{k-1}}{ln(2)e^{ln(2)x}}=$\\
+        $...=$\\
+        $\lim_{x\rightarrow \infty} \frac{k!}{ln(2)^k\cdot e^{ln(2)x}}=0$ 
+    \end{itemize}
+\end{pk}
+
+\begin{pk}
+    $\lim_{x\rightarrow 0^+} (ln(x)\cdot x) =$\\
+    $\lim_{x\rightarrow 0^+} \frac{ln(x)}{\frac{{1}}{x}} =$\\
+    $\lim_{x\rightarrow 0^+} \frac{(ln(x))'}{(\frac{1}{x})'} =$\\
+    $\lim_{x\rightarrow 0^+} \frac{\frac{{1}}{x}}{-1 \frac{1}{x^2}}=0$
+\end{pk}
+
+\section{Wykład X}
+
+\begin{enumerate}
+    \item $ln(f(x))'=\frac{1}{f(x)} f'(x)$
+    \item $x^x = e^{ln(x)\cdot x}$\\
+    $(x^x)' = e^{ln(x)\cdot x} \cdot \left(\frac{1}{x}+1\ln(x)\right)= x^x\cdot(1+\ln(x))$
+    \item $a^x=e^{ln(a)\cdot x}$\\
+    $(a^x)' = a^x\cdot \ln(a)$
+    \item $(f(x)^{g(x)})'=\left(e^{ln(f(x))-g(x)}\right)'=e^{\ln(f(x))-g(x)}\cdot (\ln f(x)\cdot g(x))'=$\\
+    $f(x)^{g(x)}(\ln(f(x))'\cdot g(x) + g'(x)\cdot \ln(f(x)))=$\\
+    $f(x)^{g(x)} \cdot \left(\frac{f'(x)\cdot g(x)}{f(x)}+g'(x)\cdot \ln(f(x))\right)$
+\end{enumerate}
+
+\subsection{Funkcje Hiperboliczne}
+
+$\sinh(x)=\frac{e^x-e^{-x}}{2}$\\
+$\sinh'(x)=\frac{1}{2}\left(e^x+e^{-x}\right)=cosh(x)$\\
+$\cosh'(x)=\frac{1}{2}\left(e^x-e^{-x}\right)=sinh(x)$
+
+\subsection{Interpretacja geometryczna znaku pochodnej}
+
+Jeśli $\forall_{x\in(a,b)} f'(x)>0$, to $f$-rosnąca w $(a,b)$. Analogicznie dla $f'(x)<0$ to $f$-malejąca.
+
+\subsection{Pochodne wyższych rzędów}
+
+$f', f'', f''', f^{iv}, ..., f^{(1)}$\\
+$\frac{dx}{dy}, \frac{d^2y}{dx^2}, ... \frac{d^ny}{dx^n}$\\
+
+\begin{pk}
+    Przykłady:\\
+    \begin{enumerate}
+        \item $(x^n)'=nx^{n-1}$
+        \item $(x^n)''=(nx^{n-1})'=n(n-1)x^{n-2}$ \dots
+        \item $(x^n)^(k) =n(n-1)...(n-k+1)\cdot x^{n-k}$
+    \end{enumerate}
+\end{pk}
+
+\subsection{Wzór Taylora}
+
+\begin{tw}
+    Twierdzenie Lagrange'a - przypomnienie.\\
+    \begin{center}
+        $\frac{f(b)-f(a)}{b-a}=f'(a+\theta(b-a))$
+    \end{center}
+    \begin{center}
+        $f(b)=f(a)+\frac{b-a}{1!}\cdot f'(a+\theta(b-a))$
+    \end{center}
+    Załóżmy, że $f$ jest $n$-krotnie różniczkowalna na $[a,b]$. Wtedy istnieje $0<\theta<1$, że:
+    \begin{center}
+        $f(b)=f(a)+\frac{b-a}{1!} f'(a) + \frac{(b-a)^2}{2!} f''(a) + \dots + \frac{(b-a)^{n-1}}{(n-1)!} f^{n-1} (a) + R_n$
+    \end{center}
+\end{tw}
+
+\begin{tw}
+    Wzór Maclaurina.\\
+    $b=x, a=0$\\
+    $f(x)=f(0)+\frac{x}{1!} f'(0) + \dots + \frac{x^{n-1}}{(n-1)!} f^{(n-1)}(0) + R_n$, gdzie $R_n = \frac{x^n}{n!} f^{(n)}(\theta x)$
+    \begin{enumerate}
+        \item $sin(x)=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!} \cdot \cos(\theta x)$
+        $f(x)=\sum_{n=0}^{\infty} \left(\frac{f^{(n)}(0)}{n!} x^n\right)$
+        \item $f(x)=e^x$
+        $f(x)=f(0)+\frac{x}{1!} f'(0) + \frac{x^2}{2!} f(\theta x) = 1 + \frac{x}{1!} + \frac{x^2}{2!}\cdot e^{\theta x}$
+    \end{enumerate}
+\end{tw}
+
+\begin{tw}
+    Jeśli pochodna rzędu parzystego jest niezerowa to jest ekstremum, jeśli nieparzytego rzędu tylko punktem przegięcia.
+\end{tw}
+
+\begin{pk}
+    Zobaczmy funkcje:\\
+    $f(x)=x^3, f'(0)=0, f''(0)=0, f'''(0)=6$\\
+    $f(x)=x^4, f'(0)=0, f''(0)=0, f'''(0)=0, f^{(iv)}(0)=4!$
+\end{pk}
+
+\begin{enumerate}
+    \item $f'(c)=...f^{(2k-1)}(c)=0 \land f^{2k} > 0$, to $f$ ma min. lok. w $c$
+    \item $f'(c)=...f^{(2k-1)}(c)=0 \land f^{2k} < 0$, to $f$ ma maks. lok. w $c$
+    \item $f'(c)=...f^{(2k-1)}(c) \neq 0 \land f^{2k} = 0$, to $f$ nie ma ekstremum w $c$
+\end{enumerate}
+
+\subsection{Wypukłość funkcji}
+
+$f$ wypukła na $[a,b] \iff \forall_{\alpha, \beta \in [a,b]: \alpha < \beta} \forall_{t\in[0,1]} \left(f(t\alpha + (1-t)\beta) \leq tf(\alpha) + (1-t)f(\beta)\right)$\\
+Funkcja wypukła - tempo wzrostu funkcji rośnie
+
+\begin{tw}
+    Zakładamy, że $f$ jest różniczkowalna na $(a,b)$. Wtedy $f$ wypukła na $(a,b) \iff f'$ jest rosnąca. Wnioski:
+    \begin{enumerate}
+        \item $f''(x)>0$ na $(a,b) \rightarrow f'$ rosnąca $f$ wypukła 
+        \item $f''(x)<0$ na $(a,b) \rightarrow f'$ malejąca $f$ wklęsła 
+        \item $f''(x_0)=0$ jest warunkiem koniecznym istnienia punktu przegięcia w punkcie $x_0$
+    \end{enumerate}
+\end{tw}
+
+\begin{pk}
+    Badanie wypukłości:\\
+    $f(x)=(1+x^2)e^x, f''(x)=e^x(x^2+4x+3)=0\rightarrow x_1=-3, x_2 = -1$
+\end{pk}
+
+\subsection{Nierówność Jensena}
+
+\begin{tw}
+    Niech $f$-wypukła na $[a,b]$, $a_1,a_2,a_3,\dots,a_n\in[0,1]$, $\sum_{i=0}^{n} a_i = 1$, $x_1, x_2,\dots, x_n\in[0,1]$. Wtedy:
+    \begin{center}
+        $f\left(\sum_{i=1}^{n} a_ix_i\right) \leq \sum_{i=1}^{n} a_i f(x_i)$
+    \end{center}
+    Dla $n=2$ jest to po prostu definicja wypukłości.
+\end{tw}
+
+\subsection{Problem opymalizacyjny}
+Znajdź $MAX(x_1\cdot x_2\cdot x_n)$ przy zał, że $x_1+x_2+\dots+x_n=const.$ i $x_1, x_2, \dots, x_n \geq 0$\\
+$x_1\cdot x_2\cdot \dots \cdot x_n \leq \left(\frac{x_1+x_2+\dots+x_n}{n}\right)^n=\left(\frac{const.}{n}\right)^n$\\
+$MAX(x_1\cdot x_2\cdot \dots \cdot x_n) = \left(\frac{const.}{n}\right)^n$
+
+\subsection{Funkcje Sigmoidalne}
+
+\begin{de}
+    (nieformalna). Funkcje, których wykres jest w kształcie charakterystycznej litery S.
+    \begin{itemize}
+        \item Funkcja logistyczna - $\sigma(x)=\frac{1}{1+e^{-x}}, \mathbb{R}\rightarrow[0,1]$
+    \end{itemize}
+\end{de}
+
+\begin{de}
+    (formalna). Funkcja ograniczona, różniczkowalna na $\mathbb{R}$ o dodatniej pochodnej i tylko z jednym punktem przegięcia.
+\end{de}
+Punkt przegięcia - punkt, gdzie funkcja zmienia się z wypukłej na wklęsłą lub z wklęsłej na wypukłą:
+\begin{itemize}
+    \item $\tan(x) = \frac{e^x-e^{-x}}{e^x+e^{-x}}$
+    \item $\arctan(x)$...
+\end{itemize}
+
+\subsection{Error function}
+
+\begin{center}
+    $erf(x)=\frac{2}{\sqrt{n}} \int_{0}^{x} e^{-t^2} dt$
+\end{center}
+
 \section{Wykład XI}
+
+\subsection{Techniki całkowania}
+
+Podstawowe wzory
+\begin{enumerate}
+    \item $\int x^n dx = \frac{x^{n+1}}{n+1} + C, n\in \mathbb{N}$
+    \item $\int sin(x) dx = - cos(x) + C$, bo $(-cos(x))'=sin(x)$
+    \item $\int cos(x) dx = sin (x) + C$
+    \item $\int \frac{1}{x} = \ln(|x|) + C$
+\end{enumerate}
+
+\begin{tw}
+    Niech $\int f(x) dx = F(x) + C$, wówczas:
+    \begin{center}
+        $\int f(ax+b) dx = \frac{1}{a}F(ax+b)+C$
+    \end{center}
+    Dowód\\
+    $\left(\frac{1}{a}F(ax+b)+C\right)'=\frac{1}{a} f(ax+b) (ax+b)' = \frac{1}{a} f(ax+b)\cdot a = f(ax+b)$
+\end{tw}
+Przykłady:
+\begin{itemize}
+    \item $\int cos(nx) dx = \frac{1}{n} sin(nx) + C$
+    \item $\int \frac{1}{1+x^2} dx = \arctan(x) + C$
+    \item $\int \frac{1}{1+(\frac{x}{a})^2} = \frac{1}{\frac{1}{a}} \arctan(\frac{x}{a}) + C = a\cdot \arctan(\frac{x}{a}) + C$
+    \item $\int \frac{x}{x+1} dx = \int \frac{x+1-1}{x+1} dx = \int (1-\frac{1}{x+1}) dx = \int 1 dx - \int \frac{1}{x+1} dx = x - \ln(|x+1|) + C$
+\end{itemize}
+
+\subsection{Całkowanie przez części}
+
+\begin{tw}
+    Twierdzenie o całkowaniu przez części.
+    \begin{center}
+        $\int f(x) g'(x) dx = f(x) g(x) - \int f'(x) g(x) dx$
+    \end{center}
+    Dowód.\\
+    $\int f(x) g'(x) dx + \int f'(x) g(x) dx = \int f(x)g'(x)+f'(x)g(x) dx = \int (f(x)g(x))' dx = f(x)\cdot g(x)$
+\end{tw}
+Przykłady:
+\begin{itemize}
+    \item $\int x sin(x) dx$. Przyjmujemy $f(x)=x, g'(x)=sin(x)$ Mamy:\\
+    $x(-cos(x)) - \int 1(-cos(x)) dx = -(x)cos(x) + \int cos(x) dx=$\\
+    $=x\cdot cos(x) + sin(x) + C$
+    \item $\int x^2 cos(x) dx$. Przyjmujemy $f(x)=x^2 g'(x)=cos(x)$ Mamy:\\
+    $=x^2\cdot sin(x) - \int 2x sin(x) dx = x^2 \cdot sin(x) - 2 \int sin(x)dx =$\\
+    $=x^2\sin(x)+2xcos(x)-2sin(x)+C$
+    \item $\int x^2 \ln(x) dx$. Przyjmujemy $f(x)=ln(x), g'(x)=x^2$ Mamy:\\
+    $=ln(x)\cdot\frac{x^3}{3} - \int \frac{1}{x}\cdot\frac{x^3}{3} dx=$\\
+    $=ln(x)\cdot\frac{x^3}{3} - \int \frac{x^2}{3} = \ln(x)\cdot\frac{x^3}{3} - \frac{x^3}{9} + C$
+    \item $\int x^n \ln(x) dx$ - ćwiczenie.
+    \item $\int \ln(x) dx = \ln(x)x-x+C$
+    \item $\int x^2 e^x dx$. Przyjmujemy $f(x)=x^2, g'(x)=e^x$ Mamy:\\
+    $=x^2e^x-\int 2xe^x dx = x^2e^x - 2\int xe^x =$. Przyjmujemy $f(x)=x, g'(x)=e^x$ Mamy:\\
+    $=x^2e^x-2xe^x+2\int e^x dx = x^2e^x-2xe^x+2e^x+C=e^x(x^2-2x+2)+C$
+    \item $\int sin(x)e^x dx = \frac{sin(x)-cos(x)}{2} e^x + C$. Przyjmujemy $f(x)=sin(x) g'(x)=e^x$ Mamy:\\
+    $=sin(x)e^x - \int cos(x)e^x dx = sin(x)e^x - cos(x)e^x - \int sin(x)e^x dx$
+    \item $\int cos(x)e^x$. Przyjmujemy $f(x)=cos(x), g'(x)=e^x$ Mamy:\\
+    $=cos(x)e^x + \int sin(x)e^x dx$
+    \item $\int sin(x)e^x dx = \frac{sin(x)-cos(x)}{2} e^x + C$ 
+\end{itemize}
+
+\subsection{Całkowanie przez podstawienie}
+
+\begin{tw}
+    Wiedząc, że:
+    \begin{center}
+        $\int g(t) dt = G(t) + C$, $G'(t)=g(t)$
+    \end{center}
+    możemy obliczyć:
+    \begin{center}
+        $\int g(w(x)) w'(x) dx = G(w(x)) + C$
+    \end{center}
+    bo $(G(w(x)))'=g(w(x))w'(x)$.
+\end{tw}
+
+\begin{pk}
+    $\int e^{x^2+x} (2x+1) = e^{x^2+x} + C$
+\end{pk}
+
+\begin{pk}
+    $\int (3x+1)^n dx$. Podstawiamy $3x+1=t, dx=\frac{1}{3} dt$. Mamy:\\
+    $\int t^n \frac{1}{3} dt = \frac{1}{3} \int t^n dt =$
+    $\frac{1}{3} \frac{t^{n+1}}{n+1} + C = \frac{1}{3} \frac{(3x+1)^{n+1}}{n+1}$\\
+    ($t(x)=3x+1, \frac{dt(x)}{dx}=3$)
+\end{pk}
+
+\begin{pk}
+    $\int sin^3(x) cos(x) dx$. Przyjmujemy $t=sin(x), \frac{dt}{dx} = cos(x)$ Mamy:\\
+    $\int t^3dt = \frac{t^4}{4} + C = \frac{sin^4(x)}{4} + C$
+\end{pk}
+
+\begin{pk}
+    $\int e^{x^2}x dx$. Przyjmujemy $t=x^2, \frac{dt}{dx} = 2x$ Mamy:\\
+    $\int e^{t}\frac{1}{2} dt=\frac{1}{2}\int e^t dt = \frac{1}{2} e^{x^2} + C$
+\end{pk}
+
+\begin{pk}
+    $\int \frac{cos(x)}{1+sin(x)} dx$. Przyjmujemy $t=1+sin(x) dt=cos(x)$ Mamy:\\
+    $\int \frac{1}{t} dt = ln(|t|) + C = ln(|1+sin(x)|) + C$
+\end{pk}
+
+\begin{pk}
+    $\int \frac{f'(x)}{f(x)} dx = ln(|f(x)|) + C$
+    $\int \frac{f'(x)}{f(x)} dx$ Przyjmujemy $t=f(x) \frac{dt}{dx} = f'(x)$ Mamy:\\
+    $\int \frac{1}{t} dt = ln(|t|) + C = ln(|f(x)|) + C$
+\end{pk}
+
+\begin{pk}
+    $\int tan(x) dx = \int \frac{sin(x)}{cos(x)} dx = - \int \frac {cos'(x)}{cos(x)} dx = ln(|cos(x)|) + C$
+\end{pk}
+
+\subsection{Paskudny algorytm całkowania funkcji wymiernych}
+$W(x)=\frac{P(x)}{Q(x)}$, $P, Q$ - wielomiany, cel $\int W(x)dx$\\
+$W$ jest właściwą funkcją wymierną jeśli: $\deg(P) < \deg(Q)$\\
+Każdą funkcję wymierną można zapisać jako sumę wielomianu i funkcji wymiernej właściwej.
+
+\begin{pk}
+    $\int \frac{x^3}{x-1} dx = \int (x^2 + x + 1 + \frac{1}{x-1}) dx=$
+    $\int (x^2 + x + 1) dx + \int frac{1}{x-1} dx=$
+    $\frac{x^3}{3} + \frac{x^2}{2} + x + ln(|x-1|) + C$
+\end{pk}
+W dalszej części zakłdamy, że:
+$W(x)=\frac{P(x)}{Q(x)}$, $\deg P < \deg Q$
+
+Funkcje wymierną właściwą rozkładamy na ułamki proste. (apart wolframalpha)\\
+
+\begin{tw}
+    Każda funkcja wymierna właściwa jest sumą ułamków prostych:
+    \begin{enumerate}
+        \item $\frac{A}{x-a}$
+        \item $\frac{A}{(x-a)^k}$, $k=2, 3, ...$
+        \item $\frac{Mx+N}{x^2+px+q}$, $\Delta < 0$
+        \item $\frac{Mx+N}{(x^2+px+q)^m}$, $m=2, 3, ...$
+    \end{enumerate}
+\end{tw}
+
+\begin{pk}
+    $W(x) = \frac{1}{x} + \frac{2}{x^2} + \frac{1}{x^2+1} + \frac{1}{(x^2+1)^2}$
+\end{pk}
+
+\begin{enumerate}
+    \item $\int \frac{A}{x-a} dx = A ln(|x-a|) + C$
+    \item $\int \frac{A}{(x-a)^k} dx = \frac{(x-a)^{-k+1}}{-k+1} A + C$, $k=2,3,...$
+    \item $\int \frac{Mx+N}{x^2+px+q} dx = \int \frac{Mx+N}{(x+a)^2+b^2} dx =$\\
+    $\int \frac{\frac{M}{2}2(x+a)-Ma+N}{(x+a)^2+b^2}=$\\
+    $\frac{M}{2} ln(|(x+a)^2 + b^2|)+\int \frac{N-Ma}{(x+a)^2+b^2} dx=$\\
+    $\frac{M}{2} ln(|(x+a)^2 + b^2|)+(N-Ma)\int \frac{1}{(x+a)^2+b^2} dx=$\\
+    $\frac{M}{2} ln(|(x+a)^2 + b^2|)+(N-Ma)\frac{1}{b^2}\int \frac{1}{(\frac{x+a}{b})^2+1}dx=...$\\
+    $\arctan...$
+    \item $\int \frac{Mx+N}{(x^2+px+q)^m} dx$ sprowadza się do całek:\\ 
+    $\int \frac{1}{(t^2+1)^m} dt, \int \frac {t}{(t^2+1)^m} dt$
+\end{enumerate}
+
+\begin{pk}
+    $\int \frac{t}{(t^2+1)^m} dt$. Przyjmujemy $x=t^2+1$ Mamy:\\
+    $= \frac{1}{2} \int \frac{dx}{x^m} = \frac{1}{2} \frac{x^{-m+1}}{-m+1}= \frac{1}{2}\frac{(t^2+1)^{-m+1}}{-m+1}+C$
+\end{pk}
+
+\begin{pk}
+    Rozważmy następujący ciąg rekurencyjny:\\
+    $I_m = \int \frac{1}{(t^2+1)^m} dt$\\
+    $I_{m+1} = \frac{1}{2m} \frac{t}{(t^2+1)^m} + \frac{2m-1}{m} I_m$\\
+    $I_1 = \arctan(t)$
+\end{pk}
+
+\section{Wykład XII}
+
+$\int cos^2 t dt = \int \frac{1+cos(2t)}{2} dt =$\\
+$\int \frac{1}{2} dt + \int \frac{cos(2t)}{2} dt = \frac{1}{2}t + \frac{sin(2t)}{4} + C$\\
+$\int \sqrt{a^2-x^2} dx = \int a cost a cost dt = \int a^2 \int cos^2dt...$
+
+\subsection{Przez części dla całek oznaczonych}
+
+$\int f'(x)g(x) dx = |(f(x)g(x))|^a_b - \int_a^bf(x)g'(x)dx$
+
+\begin{pk}
+    $\int_1^e \ln(x) dx$, przyjmujemy: $f'(x)=1, g(x)=\ln(x) \rightarrow f(x)=x, g'(x)=\frac{1}{x}=$
+    $(x \ln(x))|_1^e - \int_1^e 1 dx = e\ln(e) - 1\ln(1) - x|_1^e = e-(e-1)=1$ 
+\end{pk}
+
+\subsection{Zamiana zmiennych w całkach oznaczonych}
+
+\begin{tw}
+    Twierdzenie o zamianie zmiennych w całach oznaczonych.\\
+    $\varphi: [\alpha, \beta] \rightarrow_{na} [a,b], t \in [\alpha, \beta]$,
+    $\varphi(\alpha)=a, \varphi(\beta)=b$, to:
+    \begin{center}
+        $\int_a^b f(x) dx = \int_\alpha^\beta f(\varphi(t))\varphi'(t) dt$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    $\int_0^1 (3x+1)^{10} dx$, przyjmujemy $3x+1=t, dx=\frac{1}{3}dt$, mamy:
+    $\int_1^4 t^{10} \frac{1}{3} dt = \frac{1}{3} \int_1^4 t^{10} = \frac{1}{3} |\frac{1}{11}\cdot t^11|_1^4=$
+    $\frac{1}{3}\frac{4^{11}}{11}-\frac{1}{3}\frac{1}{11}$
+\end{pk}
+
+\begin{pk}
+    $\int_0^R \sqrt{R^2-x^2} dx$, przyjmujemy $x=R\cdot sin(t), \frac{dx}{dt} R\cdot cos(t)$\\
+    $x=sin(t)$, to więc $x\in[0,1]\rightarrow t\in[0,\frac{\pi}{2}]$\\
+    $\left(\forall x\in[0,1]\right) \left(\exists t\in[0,\frac{\pi}{2}]\right) sin(t)=x, t=arcsin(x)$, mamy:\\
+    $\int_0^{\frac{\pi}{2}} \sqrt{R^2-R^2 \sin^2 t}\cdot R\cdot \cos(t) dt=$\\
+    $\int_0^{\frac{\pi}{2}} R\sqrt{1-sin^2t}\cdot R\cdot cos(t)dt=$\\
+    $\int_0^{\frac{\pi}{2}} R^2 \sqrt{cos^2(t)} cos(t) dt=$\\
+    $\int_0^{\frac{\pi}{2}} R^2 cos(t) cos(t) dt=$\\
+    $\int_0^{\frac{\pi}{2}} R^2 cos^2(t) dt=$\\
+    $R^2 \int_0^{\frac{\pi}{2}} cos^2(t) dt=$\\
+    $R^2 (\frac{1}{2}t + \frac{sin(2t)}{4})|_0^{\frac{\pi}{2}}=$\\
+    $\frac{R^2\pi}{4}$
+\end{pk}
+
+\subsection{Zastosowania całek}
+
+\subsection{Pole pod wykresem}
+
+\begin{fakt}
+Pole pod wykresem. Dla funkcji $f\geq 0$ określonej na $[a,b]$ pole pod jej wykresem
+na przedziale $[a,b]$ wynosi $S=\int_a^b f(x) dx$
+\end{fakt}
+
+\begin{pk}
+    Pole między wykresami $f(x)=x^2, g(x)=\sqrt{x}$ na przedziale $[0,1]$ wynosi:
+    $\int_0^1 \sqrt{x} - \int_0^1 x^2 dx = \int_0^1 (\sqrt{x}-x^2) dx$
+\end{pk}
+
+\begin{pk}
+    Pole koła. $x^2+y^2=R^2\rightarrow y^2=R^2-x^2$. Weźmy $x\in[0,R]$, wtedy:
+    $y(x)=\sqrt{R^2-x^2}$. Pole koła: $S=4\cdot\int_0^R \sqrt{R^2-x^2}dx=4\frac{R^2\pi}{4} = \pi R^2$
+\end{pk}
+
+\subsection{Długość łuku krzywej}
+
+\begin{fakt}
+    Długość łuku krzywej funkcji ciągłej $f$ określonej na przedziale $[a,b]$:
+    \begin{center}
+        $L=\int_a^b \sqrt{1+\left(\frac{dy}{dx}\right)^2} dx$
+    \end{center} 
+\end{fakt}
+
+\begin{pk}
+    Policzmy długość krzywej $f(x)=x^2$ na $[0,1]$. Mamy:
+    $\int_0^1 \sqrt{1+(2x)^2}dx = \int_0^1 \sqrt{1+4x^2} dx = F(1)-F(0) = ...$
+\end{pk}
+
+\begin{fakt}
+    Ogólna długość łuku krzywej $(x(t),y(t))$ dla $a\leq t\leq b$:
+    \begin{center}
+        $\int_a^b \sqrt{(x'(t))^2+(y'(t))^2} dt$
+    \end{center}
+    Dla funkcji $(x,f(x))$ mamy $(x',f'(x))=(1,f'(x))$ uzyskując poprzedni wzór.
+\end{fakt}
+
+\begin{pk}
+    Parametryzacja przy użyciu współrzędnych biegunowych:\\
+    Okrąg $(R\cdot \cos(t), R\cdot \sin(t)), t\in[0,2\pi]$ - okrąg o promieniu $r$\\
+    Zatem obwód okręgu wynosi:\\
+    $\int_0^{2\pi} \sqrt{(R(-sin(t)))^2+(R\cdot cos(t)^2)} dt =$\\
+    $\int_{0}^{2\pi} \sqrt{R^2(sin^2(t)+cos^2(t))} dt=$\\
+    $\int_{0}^{2\pi} R dt=$\\
+    $(Rt)|_0^{2\pi}=$\\
+    $2\pi R$
+\end{pk}
+
+\subsection{Pola powierzchni i objętości brył obrotowych}
+
+\begin{pk}
+    Obrót proporcjonalności prostej $y=ax$ wokół OX tworzy stożek
+\end{pk}
+
+\begin{fakt}
+    Objętość bryły obrotowej jest dana wzorem:
+    \begin{center}
+        $V=\pi \int_0^b f^2(x) dx$
+    \end{center}
+\end{fakt}
+
+\begin{pk}
+    Weźmy $f(x)=x$, zatem $R=1$ a tworząca $l=\sqrt{2}$. Objętość stożka:\\
+    $V=\pi \int_{0}^{1} x^2 dx = \pi \frac{x^3}{3}|_0^1 = \frac{\pi}{3}$\\
+    Sprawdźmy, że $V=\frac{\pi R^2 h}{3} = \frac{\pi \cdot 1 }{3} = \frac{\pi}{3}$
+\end{pk}
+
+\begin{fakt}
+    Pole powierzchni bocznej bryły obrotowej dane jest wzorem:
+    \begin{center}
+        $P=2\pi \int_{a}^{b} f(x) \sqrt{1+(f'(x))^2}dx$
+    \end{center}
+\end{fakt}
+
+\subsection{Całki niewłaściwe pierwszego rodzaju}
+
+Rozważmy $\forall_{x>a} f(t)$ jest ciągła na $[a,x]$, wtedy:
+\begin{center}
+    $\int_{a}^{x} f(t) dt = F(x)-F(a)$, dla $F'(x)=f(x)$
+\end{center}
+Pytanie - czy istnieje $\lim_{x\rightarrow \infty} F(x)=\int_{a}^{\infty} f(t)dt$?
+
+\begin{pk}
+    Pytania:
+    \begin{enumerate}
+        \item Oblicz $\int_{0}^{\infty} f(t) dt$  
+        \item Zbadaj zbieżność $\int_{0}^{\infty} f(t) dt$ 
+    \end{enumerate}
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{0}^{\infty} \frac{1}{1+t^2} dt=$\\
+    $\lim_{x\rightarrow\infty} arctan(t) |_0^x=$\\
+    $\lim_{x\rightarrow\infty} arctan(x) - arctan(0)=$\\
+    $\pi - 0 =\pi$
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{1}^{\infty} \frac{1}{t} dt=$\\
+    $\lim_{x\rightarrow \infty} \int_{1}^{x} \frac{1}{t} dt=$\\
+    $\lim_{x\rightarrow \infty} \ln(t)|_1^x=$\\
+    $\lim_{x\rightarrow \infty} \ln(x) - \ln(1)=$\\
+    $\lim_{x\rightarrow \infty} \ln(x) = \infty$
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{0}^{\infty} cos(t) dt=$\\
+    $lim_{x\rightarrow \infty} \int_{0}^{x} cos(t)dt=$\\
+    $\lim_{x\rightarrow \infty} sin(t)|_0^x=$\\
+    $\lim_{x\rightarrow \infty} sin(x) - sin(0)$\\
+    $\lim_{x\rightarrow \infty} sin(x)$ NIE ISTNIEJE, zatem całka jest rozbieżna
+\end{pk}
+
+\begin{pk}
+    Policzmy całkę:\\
+    $\int_{0}^{\infty} \frac{1}{1+t^2+\sqrt[5]{t^2+1}} dt$\\
+    $f(x) = \frac{1}{1+t^2+\sqrt[5]{t^2+1}} \leq \frac{1}{1+t^2} = g(x)$\\
+    $\int_{0}^{\infty} g(t) dt < \infty \implies \int_{0}^{\infty} f(t) dt < \infty$
+\end{pk}
+
+\begin{tw}
+    Kryterium porównawcze (1 część).
+    Zakładamy że zachodzą następujące własności:
+    \begin{enumerate}
+        \item $0\leq g(t)\leq f(t)$ dla $t\in[a,\infty]$
+        \item $\int_{a}^{\infty} f(t) dt < \infty$ jest zbieżna
+    \end{enumerate}
+    Wówczas:
+    \begin{center}
+        $\int_{a}^{\infty} g(t) dt < \infty$ jest zbieżna.
+    \end{center}
+    Analogicznie $\left(a=n_0\right)\land\left(\sum_{t=n_0}^{\infty} f(t)<\infty \right)\implies\left(\sum_{t=n_0}^{\infty} g(t)<\infty \right)$ - kryterium porównawcze zbieżności szeregów.
+\end{tw}
+
+\begin{pk}
+    $f(0)\cdot 1 + f(1)\cdot 1 + f(2)\cdot 2 + ... \geq \int_{0}^{\infty} f(t) dt$\\
+    $\int_{0}^{\infty} f(t)dt \leq \sum_{k=0}^{\infty} f(k)$\\
+    $f(0)+ \sum_{k=1}^{\infty} f(k)$\\
+    Zatem:\\
+    $f(1)\cdot 1 + f(2)\cdot 1 + ... \leq \int_{0}^{\infty} f(t) dt$\\
+    $\sum_{k=1}^{\infty} f(k) \leq \int_{0}^{\infty} f(t) dt$\\
+    $\sum_{k=1}^{\infty} f(k) \leq \int_{0}^{\infty} f(t) dt \leq f(0) + \sum_{k=1}^{\infty} f(k)$
+\end{pk}
+
+\begin{tw}
+    Kryterium porównawcze (2 część).
+    Zakładamy, że zachodzą następujące własności:
+    \begin{enumerate}
+        \item $0\leq f(t) \leq g(t)$ dlamin $t\in[a,\infty]$
+        \item $\int_{a}^{\infty} f(t) dt$ jest rozbieżna.
+    \end{enumerate}
+    Wówczas:
+    \begin{center}
+        $\int_{a}^{\infty} g(t)$ jest rozbieżna
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Policzmy całkę:
+    $\int_{1}^{\infty} \frac{1}{t+\sqrt{t}} dt$\\
+    Wiemy, że $\frac{1}{t+\sqrt{t}}\geq \frac{1}{t+t}$. Sprawdźmy:\\
+    $\int_{1}^{\infty} \frac{1}{2t} dt = \infty$\\
+    Na mocy kryterium porównawczego również $\int_{1}^{\infty} \frac{1}{t+\sqrt{t}}=\infty$ rozbieżna.
+\end{pk}
 
 \end{document}

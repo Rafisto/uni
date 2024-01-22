@@ -10,4 +10,4 @@ int main(void);
 Result check_code(int *guess);
 Result check(int guess[], int code[]);
 
-int guess();
+int guess(void);

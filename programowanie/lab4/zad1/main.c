@@ -41,8 +41,8 @@ int main(void)
         bool result = match(test.pattern, test.text);
         if (result != test.expected)
         {
-            printf("Test %lu failed %d != %d (pattern %s; case %s)\n", i, result, test.expected, pattern, text);
+            printf("Test %lu failed %d != %d (pattern '%s'; case '%s')\n", i, result, test.expected, pattern, text);
         }
-        printf("Test %lu passed (pattern %s; case %s)\n", i, pattern, text);
+        printf("Test %lu passed (pattern '%s'; case '%s')\n", i, pattern, text);
     }
 }
