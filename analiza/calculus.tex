@@ -16,6 +16,8 @@
 \usepackage{pdfpages}
 \usepackage{wrapfig}
 \usepackage{hyperref}
+\usepackage{etoolbox}
+\AtBeginEnvironment{align}{\setcounter{equation}{0}}
 
 \theoremstyle{definition}
 \newtheorem{de}{Definicja}[subsection]
@@ -1165,7 +1167,41 @@ $=\frac{1}{n!} \sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k} = \frac{1}{n!} (x+y)^n$\\
 
 \section{Wykład VII}
 
-Konfa ... 
+\subsection{Pochodna funkcji}
+
+\begin{de}
+    Pochodna funkcji. Funkcja $f$ jest różniczkowalna w punkcie $a$, jeżeli istnieje granica:
+    \begin{center}
+        $f'(a)=\lim_{h\rightarrow 0} \frac{f(a+h)-f(a)}{h}$
+    \end{center}
+    Jeżeli $f$ jest różniczkowalna w każdym punkcie dziedziny, to mówimy, że $f$ jest różniczkowalna.
+    Pochodna jest liniowa, tzn. $(f+g)'=f'+g'$, $(cf)'=cf'$.
+\end{de}
+
+\subsection{Elementarne pochodne}
+
+\begin{enumerate}
+    \item $(x^n)'=n\cdot x^{n-1}$
+    \item $(e^x)'=e^x$
+    \item $(a^x)'=a^x\cdot ln(a)$
+    \item $(log_a(x))'=\frac{1}{x\cdot ln(a)}$
+    \item $(sin(x))'=cos(x)$
+    \item $(cos(x))'=-sin(x)$
+    \item $(tg(x))'=\frac{1}{cos^2(x)}$
+    \item $(ctg(x))'=-\frac{1}{sin^2(x)}$
+    \item $(arcsin(x))'=\frac{1}{\sqrt{1-x^2}}$
+    \item $(arccos(x))'=-\frac{1}{\sqrt{1-x^2}}$
+    \item $(arctg(x))'=\frac{1}{1+x^2}$
+    \item $(arcctg(x))'=-\frac{1}{1+x^2}$
+\end{enumerate}
+
+\subsection{Algebra pochodnych}
+\begin{enumerate}
+    \item $(f\pm g)'=f'\pm g'$
+    \item $(f\cdot g)'=f'\cdot g + f\cdot g'$
+    \item $(\frac{f}{g})'=\frac{f'\cdot g - f\cdot g'}{g^2}$
+    \item $(f\circ g)'=(f'\circ g)\cdot g'$
+\end{enumerate}
 
 \section{Wykład VIII}
 
@@ -2021,5 +2057,289 @@ Pytanie - czy istnieje $\lim_{x\rightarrow \infty} F(x)=\int_{a}^{\infty} f(t)dt
     $\int_{1}^{\infty} \frac{1}{2t} dt = \infty$\\
     Na mocy kryterium porównawczego również $\int_{1}^{\infty} \frac{1}{t+\sqrt{t}}=\infty$ rozbieżna.
 \end{pk}
+
+\section{Wykład XIII}
+
+\subsection{Całki oznaczone w nieskończonościach}
+
+\begin{center}
+    $\int_{-\infty}^{+\infty} f(t) dt = \int_{-\infty}^{a} f(t) dt + \int_{a}^{+\infty} f(t) dt$
+\end{center}
+
+\begin{pk}
+    $\int_{-\infty}^{+\infty} e^{-|t|} dt = \int_{-\infty}^{0} e^{-|t|} + \int_{0}^{+\infty} e^{-|t|} dt = 2$
+\end{pk}
+
+\subsection{Splot funkcji}
+
+Nie będzie na egzaminie.
+
+\begin{de}
+    Splot funkcji. Dla odpowiedniej funkcji $f,g: \mathbb{R}\rightarrow \mathbb{R}$ definiujemy splot:
+    \begin{center}
+        $(f*g)(x) = \int_{-\infty}^{+\infty} f(t)g(x-t) dt$
+    \end{center}
+    $(f*g)(x)$ jest dobrze zdefiniowany:
+    \begin{enumerate}
+        \item $\int_{-\infty}^{+\infty} |f(t)| dt < \infty$
+        \item $\int_{-\infty}^{+\infty} |g(t)| dt < \infty$
+    \end{enumerate}
+\end{de}
+
+\begin{fakt}
+    $f,g: \mathbb{R}_+ \rightarrow \mathbb{R}$ to $(f*g)(x) = \int_{0}^{x} f(t)g(x-t)$\\
+    Mając $\int_{-\infty}^{\infty} f(t) g(x-t) dt, f(t)=$
+    $$\begin{cases}
+        f(t)\text{ dla } t\geq 0\\
+        0\text{ dla } t\leq 0
+    \end{cases}$$
+    Oraz $g(x-t)$ analogicznie osiągamy wzór podany wyżej.
+\end{fakt}
+
+convolve$(f,g,t,x)$ - splot w wolframalpha
+
+\begin{pk}
+    $$f(t)=
+    \begin{cases}
+        1 \text{ dla } |t|\leq 1\\
+        0 \text{ dla } t > 1
+    \end{cases}
+    $$
+    $$g(t)=
+    \begin{cases}
+        t \text{ dla } 0\leq t\leq 1\\
+        0 \text{ dla } t\notin[0,1]
+    \end{cases}
+    $$
+    Obliczmy splot\\
+    \begin{center}
+        $(f*g)(x) = \int_{-\infty}^{\infty} f(t)g(x-t) dt$
+    \end{center}
+    convolve$(1*boole(-1<t<1),t*boole(0<t<1),t,x)$
+\end{pk}
+
+\subsection{Własności splotu}
+
+\begin{tw}
+    Algebra splotu
+    \begin{enumerate}
+        \item $f*g=g*f$
+        \item $(f*g)*h=f*(g*h)$
+        \item $f*(g+h)=(f*g)+(f*h)$
+        \item $a(f*g)=af*g=f*ag$
+    \end{enumerate}
+\end{tw}
+
+\begin{proof}
+    $$
+    (f*g)(x) = \int_{-\infty}^{\infty} f(t)g(x-t) dt=\\
+    \begin{cases}
+        x-t=y\\ %2024-01-24 line: 2137
+        \frac{dy}{dt}=-1\\
+        t=\infty, y=-\infty\\
+        t=-\infty, y=\infty
+    \end{cases}=$$
+    \begin{align}
+        &\int_{\infty}^{-\infty} g(y)f(x-y) (-1) \,dy = \\
+        -1 &\int_{\infty}^{-\infty} g(y)f(x-y) \,dy = \\
+        &\int_{-\infty}^{\infty} g(y)f(x-y) \,dy = \\
+        &\int_{-\infty}^{\infty} g(t)f(x-t) \,dt = (g*f)(x)
+    \end{align}
+\end{proof}
+
+\begin{tw}
+    Splot funkcji ciągłych jest ciągły
+\end{tw}
+
+\begin{proof}
+    Niech $f,g: \mathbb{R}\rightarrow \mathbb{R}$ będą funkcjami ciągłymi.\\
+    Niech $x_0\in\mathbb{R}$.\\
+    Zdefiniujmy $(f*g)(x_0) = \int_{-\infty}^{\infty} f(t)g(x_0-t) dt$.\\
+    Ponieważ $g(x_0-t)$ jest funkcją ciągłą, a $f(t)$ także jest funkcją ciągłą, to iloczyn $f(t)g(x_0-t)$ również jest funkcją ciągłą.\\
+    Zatem całka $\int_{-\infty}^{\infty} f(t)g(x_0-t) dt$ jest funkcją ciągłą.
+\end{proof}
+
+\begin{pk}
+    Wróćmy do przykładu:\\
+    $0<x-t<1 \iff x-1<t<x$\\
+    \begin{align}
+        \int (x-t) dt = [-1,1] \cap [x-1,x]
+    \end{align}
+    \begin{enumerate}
+        \item $x-1>1 \iff x>2, A\cap B = \emptyset$, splot = zero
+        \item $x<-1, A\cap B=\emptyset$, splot = zero
+        \item $x\in(-1,0), x-1<-1<x<1 A\cap B=[-1,x]$\\
+        $\int_{-1}^{x} (x-t) dt = \frac{1}{2} (x+1)^2$
+        \item $x\in(0,1), -1<x-1<x<1, A\cap B=[x-1,x]$\\
+        $\int_{x-1}^{x} (x-t) dt = \frac{1}{2}$
+        \item $x\in(1,2), -1<x-1<1<x, A\cap B=[x-1,1]$\\
+        $\int_{x-1}^{1} (x-t) dt = \frac{1}{2} \left[1-(x-1)^2\right]$
+    \end{enumerate}
+    Wynik:
+    \begin{center}
+        $$
+        (f*g)(x)=
+        \begin{cases}
+            \frac{1}{2} (x+1)^2 \text{ dla } x\in(-1,0)\\
+            \frac{1}{2} \text{ dla } x\in(0,1)\\
+            \frac{1}{2} \left[1-(x-1)^2\right] \text{ dla } x\in(1,2)\\
+            0 \text{ w pozostałych przypadkach}
+        \end{cases}
+        $$
+    \end{center}
+\end{pk}
+
+Transformata Fouriera zamienia splot na iloczyn.
+
+\subsection{Kryterium całkowe zbieżności szeregów}
+
+\begin{tw}
+    Kryterium całkowe zbieżności szeregów.\\
+    Niech $f: [a,\infty)\rightarrow \mathbb{R}$ będzie funkcją ciągłą, nieujemną i malejącą. Wówczas:
+    \begin{center}
+        $\sum_{n=a}^{\infty} f(n)$ jest zbieżny $\iff \int_{a}^{\infty} f(t) dt$ jest zbieżna
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Zbadajmy zbieżność $\sum_{n=2}^{\infty} \frac{1}{n \ln(x)}$ poprzez:
+    $\int_{2}^{\infty} \frac{1}{x \ln(x)}$. Podstawmy $y=\ln(y), dy=\frac{dx}{x}$. Mamy:
+    $\int_{\ln(2)}^{\ln(\infty)} \frac{1}{y} dy = \int_{\ln(2)}^{\infty} \frac{1}{y} dy = \left[ln(y)\right]_{ln(2)}^{\infty} =\infty$\\
+    Możemy to również pokazać za pomocą kryterium kondensacyjnego.
+\end{pk}
+
+\subsection{Całki niewłaściwe drugiego rodzaju}
+
+\begin{pk}
+$\int_{0}^{1} \frac{1}{x^{\frac{1}{2}}} dx =$
+$\lim_{\varepsilon\rightarrow 0^+} \int_{\varepsilon}^{1} \frac{1}{x^{\frac{1}{2}}}=$
+$\lim_{\varepsilon\rightarrow 0^+} \int_{\varepsilon}^{1} x^{-\frac{1}{2}} dx =$
+$\lim_{\varepsilon\rightarrow 0^+} (2-2\varepsilon^{\frac{1}{2}})=2$
+\end{pk}
+
+\begin{pk}
+$\int_{-2}^{-1} \frac{1}{(x+1)^2} dx =$
+$\lim_{\varepsilon\rightarrow -1^-} \int_{-2}^{\varepsilon} \frac{1}{(x+1)^2} dx =$
+$\lim_{\varepsilon\rightarrow -1^-} \frac{(x+1)^{-2+1}}{-2+1} |_{-2}^{\varepsilon}=$
+$\lim_{\varepsilon\rightarrow -1^-} \frac{-1}{\varepsilon+1}-1=$
+$\frac{1}{0^-} = +\infty$
+\end{pk}
+
+\begin{pk}
+    $\int_{-1}^{1} \frac{1}{x^2} dx =$
+    $\lim_{\varepsilon\rightarrow 0^-} \int_{-1}^{\varepsilon} \frac{1}{x^2} dx + \lim_{\varepsilon\rightarrow 0^+} \int_{\varepsilon}^{1} \frac{1}{x^2} dx =$
+    $\lim_{\varepsilon\rightarrow 0^-} \frac{1}{x} |_{-1}^{\varepsilon} + \lim_{\varepsilon\rightarrow 0^+} \frac{1}{x} |_{\varepsilon}^{1} =$
+    $\lim_{\varepsilon\rightarrow 0^-} \frac{1}{\varepsilon} + \lim_{\varepsilon\rightarrow 0^+} \frac{1}{\varepsilon} =$
+    $+\infty + \infty = +\infty$
+\end{pk}
+$f(t)>0$, ciągła:\\
+$\int_{-\infty}^{\infty} f(t)dt = 1$
+
+\subsection{Całki niewłaściwe z punktem nieciągłości}
+
+\begin{de}
+    Jeżeli $f(t)$ nie jest ciągła w punkcie $a$, ale jest ciągła na $[a, a+\delta]$ dla pewnego $\delta>0$, wówczas:
+    \begin{center}
+        $\int_{a}^{a+\infty} f(t) dt \lim_{\Delta \rightarrow a^+} \int_{\Delta}^{a+\delta} f(t) dt=\lim_{\varepsilon \rightarrow 0^+} \int_{a+\varepsilon}^{a+\delta} f(t)dt$
+    \end{center}
+\end{de}
+
+\begin{de}
+    Jeżeli $f(t)$ nie jest ciągła w punkcie $a$, ale jest ciągła na $[a-\delta, a]$ dla pewnego $\delta>0$, wówczas:
+    \begin{center}
+        $\int_{a-\infty}^{a} f(t) dt \lim_{\Delta \rightarrow a^-} \int_{a-\delta}^{\Delta} f(t) dt=\lim_{\varepsilon \rightarrow 0^-} \int_{a-\delta}^{a-\varepsilon} f(t)dt$
+    \end{center}
+\end{de}
+
+\subsection{Całki z parametrem}
+
+$\int \frac{1}{x^p}dx=$
+$\int x^{-p} dx=$
+$\frac{x^{-p-1}}{-p+1} + C$\\
+$\int \frac{1}{x} dx = \ln|x| + C$\\
+$$\int_{1}^{\infty} \frac{1}{x^p} dx =
+\begin{cases}
+    \text{rozbieżna dla } p\leq 1\\
+    \text{zbieżna dla } p>1
+\end{cases}
+$$
+Dla $p<1$ mamy:\\
+$\frac{x^{-p-1}}{-p+1} |_{0}^{\infty} = \infty$
+$$
+\int_{0}^{1} \frac{1}{x^p} dx =
+\begin{cases}
+    \text{rozbieżna dla } p\geq 1\\
+    \text{zbieżna dla } p<1
+\end{cases}
+$$
+Wniosek:\\
+$\int_{0}^{\infty} \frac{1}{x^p} dx$ jest rozbieżna dla dowolnego $p$.
+
+\begin{pk}
+    $\int_{-1}^{1} \frac{1}{|x|^{\alpha}} dx=$
+    $\int_{-1}^{0} \frac{1}{|x|^{\alpha}} dx + \int_{0}^{1} \frac{1}{|x|^{\alpha}} dx=$
+    $2\int_{0}^{1} \frac{1}{|x|^{\alpha}} dx=...$
+\end{pk}
+
+\begin{pk}
+    $\int_{-\infty}^{\infty} \frac{1}{1+|x|^{\alpha}} dx=$
+    $\int_{-\infty}^{0} \frac{1}{1+|x|^{\alpha}} dx + \int_{0}^{\infty} \frac{1}{1+|x|^{\alpha}} dx=$
+    $2\int_{0}^{\infty} \frac{1}{1+|x|^{\alpha}} dx=...$\\
+    $x\rightarrow \infty: \frac{1}{1+x^{\alpha}} \sim \frac{1}{x^{\alpha}}$ 
+    Natomiast formalnie z kryterium porównawczego:
+    $\frac{1}{1+x^\alpha} > \frac{1}{x^\alpha \cdot x^\alpha} = \frac{1}{2x^\alpha}, \alpha \leq 1$
+\end{pk}
+
+\subsection{Funkcja Gamma Eulera}
+
+\begin{de}
+    Funkcja Gamma Eulera. Dla $\alpha>0$\\
+    \begin{center}
+        $\Gamma(\alpha) = \int_{0}^{\infty} t^{\alpha-1} e^{-t} dt$
+    \end{center}
+    \begin{enumerate}
+        \item $a\geq 1$, mamy "osobliwość" tylko w $\infty$
+        \item $0<a<1$, mamy nieciągłość w $0$ 
+    \end{enumerate}
+    Gamma jest poprawnie zdefiniowana, czyli całka niewłaściwa jest zbieżna.\\
+    Rozważmy $a\in(0,1)$:
+    \begin{center}
+        $\Gamma(a)=\int_{0}^{1} t^{a-1} e^{-t} dt + \int_{1}^{\infty} t^{a-1} e^{-t} dt$
+    \end{center}
+    $e^{-t}t^{a-1} < t^{a-1}e^{-t}$, $\int_{0}^{1} t^{a-1} dt$, zbieżna dla $a\in(0,1)$\\
+    $t^{a-1}<1^{a-1}=1$\\
+    $t^{a-1}e^{-t} < e^{-t}\rightarrow \int_{1}^{\infty} e^{-t} dt$ zbieżna\\
+    Rozważmy $a\in(1,\infty)$:
+    \begin{center}
+        $\int_{1}^{\infty} t^{a-1}e^{-t} dt = \int_{1}^{\infty} \frac{t^{a-1}}{e^t} dt$\\
+    \end{center}
+    \begin{align}
+        e^t=\sum_{k=0}^{\infty} \frac{t^k}{k!} &\geq \frac{t^{ceil(a)+1}}{(ceil(a)+1)!}\\
+        \frac{1}{e^t} &\leq \frac{(ceil(a)+1)!}{t^{ceil(a)+1}}\\
+        \frac{t^{a-1}}{e^t} &\leq \frac{(ceil(a)+1)!}{t^{ceil(a)+1-a}}\frac{1}{t^2}\leq(ceil(a)+1)!\frac{1}{t^2}
+    \end{align}
+    Zatem na mocy kryterium porównawczego $\int_{1}^{\infty} \frac{1}{t^2} dt$ jest zbieżna.
+\end{de}
+
+\begin{pk}
+    $\Gamma(1)=\int_{0}^{\infty} e^{-t} dt = (-1)e^{-t}|_{0}^{\infty} = 1$\\
+\end{pk}
+
+\begin{pk}
+    $\Gamma(n+1)=\int_{0}^{\infty} t^{n} e^{-t} dt =$. \\
+    Zobaczmy $e^{-t}\rightarrow (-1)e^{-t} \rightarrow f'(t)$ oraz $t^n \rightarrow \frac{t^{n+1}}{n+1} \rightarrow g'(t)$. Mamy:
+    $e^{-t}\frac{t^{n+1}}{n+1}|_{0}^{\infty} - \int_{0}^{\infty} \frac{1}{n+1} t^{n+1} e^{-t} dt =$
+    $\frac{1}{n+1} \Gamma(n+2)$. \\
+    Rozwiązaniem tej rekurencji jest:\\
+    \begin{center}
+        $\Gamma(n+1)=n!$
+    \end{center}
+    \begin{enumerate}
+        \item $\Gamma(n+2)=(n+1)\Gamma(n+1)$
+        \item $\Gamma(1)=1$
+        \item $\Gamma(n+1)=n\Gamma(n)$
+    \end{enumerate}
+\end{pk}
+
 
 \end{document}
