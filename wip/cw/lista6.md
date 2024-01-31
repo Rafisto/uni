@@ -189,15 +189,15 @@ int g(int x, int y, int z)
 }
 ```
 
-Pokażmy, że f(x) = g(0, x, 1) dla x >= 0.
+Pokażmy, że f(x) = g(x, 0, 1) dla x >= 0.
 
 Dla x = 0, f(0) = 1, oraz g(0, 0, 1) = 1. Zatem f(0) = g(0, 0, 1).<br/>
 Dla każdego kolejnego x > 0, możemy szacować:<br/>
-Przyjmijmy założenie indukcyjne, że f(x) = g(0, x, 1).<br/>
+Przyjmijmy założenie indukcyjne, że f(x) = g(x, 0, 1).<br/>
 Zobaczmy następnie, że dla:<br/>
-f(x + 1) = (x+1) _ f(x) = (x+1) _ g(0,x,1) = g(0,x+1,1).
+f(x + 1) = (x+1) * f(x) = (x+1) * g(x,0,1) = g(x+1,0,1).<br/>
 
-Zatem f(x) = g(0, x, 1) dla x >= 0.
+Zatem f(x) = g(x, 0, 1) dla x >= 0.
 
 ## Zadanie 8
 
@@ -232,25 +232,22 @@ int f(int x)
 }
 ```
 
-Widzimy, że na pewno zajdzie:
+Dowód indukcyjny:
 
-```c
-int f(int x)
-{
-    if(x % 2 == 0)
-    {
-        return x / 2;
-    }
-    else
-    {
-        return f(3 * x + 1);
-    }
-}
-```
+Podstawa indukcji ($k=0$):
+Dla $k=0$, liczba $(2i+1)2^k - 1$ jest parzysta, a zatem $F((2i+1)2^k - 1) = ((2i+1)2^k - 1)/2$ kończy się, spełniając warunek podstawowy.
 
-Rozpatrzmy dwa przypadki: <br/>
-1. x = 2k. Wykona się: <br/>
-(2k) -> (k).
-2. x = 2k+1. Wykona się: <br/>
-(2k+1) -> (3*(2k+1)+1=6k+4) -> (3k+2) <br/>
-Zatem rekursja zawsze zakończy się.
+Krok indukcyjny ($k > 0$):
+Załóżmy, że dla pewnej dowolnej dodatniej liczby całkowitej $m$, $F((2i+1)2^m - 1)$ kończy się. Teraz rozważmy przypadek, gdy $k = m + 1$:
+
+$F((2i+1)2^{m+1} - 1)$
+
+$= F(F(3((2i+1)2^{m+1} - 1) + 1))$
+
+$= F(F(3(2i+1)2^{m} - 2))$
+
+Ponieważ $(2i+1)2^{m} - 1$ jest liczbą nieparzystą, możemy ją przedstawić jako $(2(3i+1) + 1)2^m - 1$:
+
+$= F((2(3i+1) + 1)2^{m} - 1)$
+
+Teraz, stosując założenie indukcyjne do $F((2(3i+1) + 1)2^{m} - 1)$, dochodzimy do wniosku, że kończy się. Zatem, przez indukcję, udowodniliśmy, że $F(x)$ kończy się dla wszystkich liczb całkowitych $x$, co było naszym celem.
