@@ -269,8 +269,8 @@ $$F((2j + 1)2^{m} - 1)$$
 Zatem funkcja kończy się dla dowolnego $k _\square$
 
 Malejące w kolejnych iteracjach:<br/>
-$x-(x\&(x-1)) =$<br/>
-Czyli $(x\&(x-1))$ bez kasuje ostatnie 1-ki<br/>
-$x-(x\&(x-1)) = 2^k-1$ utrzymuje ostatnie 1-ki<br/>
+$x-(x(x-1)) =$<br/>
+Czyli $(x(x-1))$ bez kasuje ostatnie 1-ki<br/>
+$x-(x(x-1)) = 2^k-1$ utrzymuje ostatnie 1-ki<br/>
 
-Narzędzia automatycznego dow. twierdzeń widzą to.oam
+Narzędzia automatycznego dow. twierdzeń widzą, że to jest prawda. ~ Major
