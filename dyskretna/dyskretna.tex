@@ -1,0 +1,154 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\AtBeginEnvironment{align}{\setcounter{equation}{0}}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Matematyka Dyskretna}  
+\date{INA 2 Sem. 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Wykład I}
+
+\subsection{Współczynniki Dwumianowe}
+
+\begin{center}
+  $\mathbb{N}=\{0,1,2,3,\dots\}$\\
+  $\mathbb{N}^{+}=\{1,2,3,\dots\}$
+\end{center}
+
+$n\in\mathbb{N}^{+}$: $[n]=\{1,2,3,\dots,n\}$
+
+\begin{de}
+  Silnia. Niech $n\in\mathbb{N}$. Definiujemy:
+  \begin{center}
+    $0!=1$\\
+    $n!=1\cdot2\cdot \dots \cdot n$
+  \end{center}
+\end{de}
+
+\begin{de}
+  Silnia górna. Niech $x\in \mathbb{R}, n\in \mathbb{N}$. Definiujemy:
+  \begin{center}
+    $x^0 = 1$\\
+    $x^n = x(x+1)(x+2)\dots (x+n-1), n\geq 1$.
+  \end{center}
+\end{de}
+
+\begin{de}
+  Silnia dolna. Analogicznie
+\end{de}
+
+\begin{de}
+  Współczynnik dwumianowy (symbol Newtona). Niech $x\in\mathbb{R}, k\in\mathbb{N}$. Definiujemy:
+  \begin{center}
+    $\binom{x}{k} = \frac{x^{\underline{k}}}{k!}$
+  \end{center}
+\end{de}
+Uwaga. Czasami wygodnie będzie rozszerzyć defonicję $\binom{x}{k}$ na $k\in\mathbb{Z}$ wtedy dla $k<0$ przyjmujemy $\binom{x}{k}=0$\\
+Interpretacja kombinatoryczna: $k, n\in\mathbb{N}, n\geq k$:\\
+\begin{center}
+  $\binom{n}{k}$ - \# podzbiorów k-elementowych zbioru n-elementowego
+\end{center}
+
+\begin{pk}
+  Rozważ następujące ćwiczenia: \\
+  Ćwiczenie 1. Pokaż, że podzbiorów k-elementowych zbioru n-elementowego jest $\frac{n!}{k!(n-k)!}$.\\
+  Ćwiczenie 2. Niech $k,n \in \mathbb{N}, n\geq k$. Wtedy $\binom{n}{k}=\binom{n}{n-k}$\\
+  Ćwiczenie 3. Reguła Pochłaniania. Niech $n\in\mathbb{N} k\in\mathbb{N}^{+}, n\geq k$. Wtedy: $\binom{n}{k} = \frac{n}{k} \binom{n-1}{k-1}$
+\end{pk}
+
+\begin{tw}
+  Dwumian Newtona. Niech $x,y\in \mathbb{R}, n \in \mathbb{N}$. Wtedy:
+  \begin{center}
+    $(x+y)^n = \sum_{k=0}^{n} \binom{n}{k} x^k y^{n-k}$
+  \end{center}
+  D-d. (indukcyjny) - ćwiczenie\\
+  D-d. (kombinatoryczny)\\
+  Dokonujemy mnożenia:
+  \begin{center}
+    $(x+y)(x+y)\dots(x+y)=x^n + \_ x^{n-1}\cdot y + \dots + x\cdot y^{n-1} + y^n$
+  \end{center}
+  Wystarczy zauważyć, że współczynnik przy $x^k\cdot y^{n-k}$ to liczba sposobów, na jakie spośród 
+  $n$ czynników $(x+y)$ możemy wybrać $k$ nawiasów jako te, z których wybieramy składniki $x$.
+\end{tw}
+
+Wniosek 1:\\
+\begin{center}
+  $2^n = (1+1)^n = \sum_{k=0}^{n} \binom{n}{k} 1^k 1^{n-k} = \sum_{k=0}^{n} \binom{n}{k}$\\
+  $2^n = \sum_{k=0}^{n} \binom{n}{k}$ - liczba wszystkich podzbiorów zbioru $n$ - elementowego
+\end{center}
+
+Wniosek 2:\\
+\begin{center}
+  $0=0^n=(1-1)^n=\sum_{k=0}^{n} \binom{n}{k} (-1)^{k} 1^{n-k} = \sum_{k=0}^{n} \binom{n}{k} (-1)^{k}$\\
+  $0=\sum_{k=0}^{n} \binom{n}{k} (-1)^k$
+\end{center}
+
+Zatem widzimy że:
+\begin{center}
+  $\sum_{k=0}^{n} \binom{n}{k} :$(2 nie dzieli $k$) $ = \sum_{k=0}^{n} \binom{n}{k} :$(2 dzieli $k$)
+\end{center}
+\# podzbiorów o mocy parzystej zbioru $n$-elementowego = \# podzbiorów o mocy nieparzystej zbioru $n$-elementowego
+
+\begin{tw}
+  Tożsamość Pascala. Niech $n\in \mathbb{N}, k\in \mathbb{N}^{+}, n>k$. Wtedy:
+  \begin{center}
+    $\binom{n}{k} = \binom{n-1}{k} + \binom{n-1}{k-1}$
+  \end{center}
+  D-d. (analityczny). Niech $x\in\mathbb{R}$.\\
+  $\sum_{k=0}^{n} \binom{n}{k} x^{k}=$\\
+  $=\sum_{k=0}^{n} \binom{n}{k} x^{k} 1^{n-k}=$\\
+  $=(x+1)^{n} = (x+1)^{n-1} \cdot (x+1)=$\\
+  $=(\sum_{k=0}^{n-1} \binom{n-1}{k} x^k)(x+1)=$\\
+  $=\sum_{k=0}^{n-1} \binom{n-1}{k} x^{k+1} + \sum_{k=0}^{n-1} \binom{n-1}{k} x^{k}=$\\
+  $=\sum_{k=1}^{n} \binom{n-1}{k-1} x^{k} + \sum_{k=0}^{n} \binom{n-1}{k} x^k$\\
+  Zatem:\\
+  $\sum_{k=0}^{n} \binom{n}{k} x^k = \sum_{k=1}^{n} \binom{n-1}{k-1} x^k + \sum_{k=0}^{n-1} \binom{n-1}{k} x^k$\\
+  Współczynniki przy odpowiadających sobie są równe, zatem dla $k\in\mathbb{N}^{+}, k<n$ mamy:
+  
+  \begin{center}
+    $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$
+  \end{center}
+  D-d. (kombinatoryczny). Zliczmy na dwa sposoby \# podzbiorów $k$-elementowych zbioru $n$-elementowego.
+  \begin{enumerate}
+    \item $\binom{n}{k}$ - z definicji
+    \item Wyróżniamy jeden element $*$ w zbiorze $n$-elementowym. Podzbiory $k$-elementowe dzielą się teraz na dwie klasy:\\
+      Te, które nie zawierają $*$. Jest ich $\binom{n-1}{k}$ (gwiazdki nie ma)\\
+      Te, które zawierają $*$. Jest ich $\binom{n-1}{k-1}$ (gwiazdkę wybieram)\\
+      Zatem zachodzi twierdzenie.
+  \end{enumerate}
+\end{tw}
+
+
+\end{document}

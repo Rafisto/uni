@@ -1,0 +1,184 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\AtBeginEnvironment{align}{\setcounter{equation}{0}}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Analiza Matematyczna II}  
+\date{INA 2 Sem. 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Wykład I}
+
+\subsection{Iloczyn skalarny}
+
+$\mathbb{R}^n=\{(x_1,x_2,\dots, x_n), x_i \in \mathbb{R}\}$
+
+\begin{de}
+Dla $x,y \in \mathbb{R}^n$ definiujemy iloczyn skalarny:
+\begin{center}
+    $<x,y> = \sum_{i=1}^{n} x_i y_i$
+\end{center}
+$(x=(x_1,x_2,\dots, x_n) y = (y_1,y_2,\dots, y_n))$\\
+$ax = (ax_1, ax_2, \dots, ax_n)$\\
+$\sqrt{\langle x,x \rangle} = \sqrt{x_1^2+x_2^2+\dots+x_n^2}$\\
+Własności:
+\begin{enumerate}
+    \item $\langle x,y \rangle = <y,x>$
+    \item $<ax,y> = <x,ay> = a<x,y>, a \in \mathbb{R}$
+    \item $<x+y,z>=<x,z>+<y,z>$
+\end{enumerate}
+\end{de}
+
+\begin{de}
+    Długość wektora $x\in \mathbb{R}^n$\\
+    \begin{center}
+        $|x|=\sqrt{\langle x,x \rangle}$
+    \end{center}
+\end{de}
+
+\begin{pk}
+	$\mathbb{R}$ : $|x|=|x_1|$ - oś liczbowa
+	$\mathbb{R}^2$ : $|x|=\sqrt{x_1^2+y_2^2}$ - płaszczyzna
+\end{pk}
+
+\begin{tw}
+	$x\in\mathbb{R}^n$. Wówczas $|\langle x,y \rangle| \leq |x|\cdot |y|$\\
+	D-d. $x=(x_1,x_2,\dots,x_n)$, $y=(y_1,y_2,\dots, y_n)$\\
+	$|\langle x,y, \rangle| = |\sum_{i=1}^{n} x_i y_i| \leq \sqrt{\sum_{i=1}^{n} x_i^2} + \sqrt{\sum_{i=1}^{n} y_1^2}$\\
+	Nierówność Cauchy'ego Schwarza, a zatem dowód.
+\end{tw}
+Wniosek $x,y\in\mathbb{R}^n$.
+\begin{center}
+	$|x+y| \leq |x| + |y|$
+\end{center}
+D-d.\\
+$|x+y|^2=\langle x+y, x+y \rangle$
+$= \langle x, x+y \rangle + \langle y, x+y \rangle$
+$= \langle x, x \rangle + \langle x, y \rangle + \langle y, y \rangle + \langle y, x \rangle$
+$=|x|^2+|y|^2 + 2\langle x,y \rangle \leq |x|^2 |y|^2 + 2|x||y|$
+$=(|x|+|y|)^2$
+$=|x+y|^2 \leq (|x|+|y|)^2$
+$\iff$
+$|x+y| \leq |x| + |y|\qed$
+
+\subsection{Kąt między wektorami}
+
+$\overrightarrow{x_1}, \overrightarrow{x_2} \in \mathbb{R}^2$,
+$\overrightarrow{x_1} = (x_{11}, x_{12})$,
+$\overrightarrow{x_2} = (x_{21}, x_{22})$\\
+\begin{center}
+    $\cos(\overrightarrow{x_1}, \overrightarrow{x_2})=$
+    $\frac{\overrightarrow{x_1} \odot \overrightarrow{x_2}}{|\overrightarrow{x_1}||\overrightarrow{x_2}|}$
+\end{center}
+Rozważmy funkcję:\\
+$d_n \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$\\
+$d_n(x,y) = |x-y|$, dla $n=2$:\\\\
+$x=(x_1,x_2), y=(y_1,y_2)$
+$|x-y| = \sqrt{(x_1-y_1)^2+(x_2-y_2)^2}$
+Własności:
+\begin{enumerate}
+    \item $d_n(x,y)\geq 0$
+    \item $d_n(x,y)=0 \iff x=y$
+    \item $d_n(x,y)=d_n(y,x)$
+    \item $d_n(x,z)\leq d_n(x,y) + d_n(y,z)$ - nierówność trójkąta
+\end{enumerate}
+
+\subsection{Przestrzeń metryczna}
+
+\begin{de}
+Przestrzenią metryczną nazywamy dowolny zbiór $X$, pewną funkcję $X\times X \rightarrow \mathbb{R}$,
+która spełnia następujące aksjomaty:
+\begin{enumerate}
+    \item $d(x,y)\geq 0$
+    \item $d(x,y)=0 \iff x=y$
+    \item $d(x,y)=d(y,x)$ dla $x,y\in X$
+    \item $d(x,z)\leq d(x,y) + d(y,z)$ dla każdych $x,y,z \in X$
+\end{enumerate}
+Funkcję $d$ nazywamy metryką, a wartość $d(x,y)$ odległością punktów.
+
+\end{de}
+Uwaga: aksjomat $1$ wynika z pozostałych aksjomatów\\
+D-d.\\
+$d(x,y) = \frac{1}{2} \left(d(x,y)+d(y,x)\right) \geq \frac{1}{2} d(x,x) = 0$, zatem $d(x,y)\geq 0$
+
+\begin{tw}
+Stwierdzenie. Niech $(X,d)$ (Corollary) będzie przestrzenią metryczną oraz $x_1,x_2,\dots,x_n\in X$.
+Wówczas:
+\begin{center}
+    $d(x_1,x_n)\leq\sum_{j=1}^{n-1} d(x_j,x_{j+1}), n\geq 2$
+\end{center}
+Dla $n=2$:\\
+    $d(x_1,x_2)\leq d(x_1,x_2)$ - oczywiste\\
+Dla $n=3$:\\
+    $d(x_1,x_3)\leq d(x_1,x_2) + d(x_2,x_3)$ - nierówność trójkąta\\
+Krok indukcyjny:\\
+    $d(x_1,x_{n+1})\leq d(x_1,x_2)+d(x_2,x_3)+\dots+d(x_n,x_{n+1})$\\
+    $d(x_1,x_{n+1})\leq d(x_1,x_n)+d(x_n,x_{n+1}) \leq_{ind}$
+    $d(x_1,x_2) + d(x_2,x_3) + \dots + d(x_{n-1}, x_n) + d(x_{n},x_{n+1})\qed$
+\end{tw}
+
+\subsection{Przestrzeń metryczna dyskretna}
+
+$X$ - dowolny zbiór i metryka określona wzorem:
+\begin{center}
+    $$d(x,y)=\begin{cases}
+        0 \text{ dla } x=y\\
+        1 \text{ dla } x\neq y
+    \end{cases}$$
+\end{center}
+Aksjomaty $1,2,3,4$ są oczywiste.
+
+\subsection{Metryka Euklidesowa}
+
+$d_n: \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$\\
+$x=(x_1,x_2,\dots, x_n)$\\
+$y=(y_1,y_2,\dots, y_n)$\\
+$d_n(x,y)=\sqrt{\sum_{i=1}^{n} (x_i-y_i)^2}$
+
+\subsection{Przestrzeń Hilberta}
+
+$x=(x_1,x_2,\dots, x_n)$\\
+$y=(y_1,y_2,\dots, y_n)$\\
+$\sum_{i=1}^{\infty} x_i^2\leq \infty, \sum_{i=1}^{\infty} y_i^2 < \infty$\\
+$x=\left(\frac{1}{1},\frac{1}{2},\frac{1}{3},\dots,\frac{1}{i}, \dots \right)$\\
+$\sum_{i=1}^{\infty} \frac{1}{i^2} \leq \infty$\\
+$\sum_{i=1}^{\infty} \left(\frac{1}{\sqrt{i}}\right)^2=\sum_{i=1}^{\infty} \frac{1}{i} = \infty$\\
+$y=\left(\frac{1}{\sqrt{1}},\frac{1}{\sqrt{2}},\dots \right)$
+
+\subsection{Metryka Manhattan}
+
+$d(x,y)=|x_1-y_1| + |x_2-y_2|$\\
+$d((x_1,x_2),(y_1,y_2))=|x_1-y_1|+|x_2-y_2|$
+
+\end{document}
