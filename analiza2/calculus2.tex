@@ -181,4 +181,194 @@ $y=\left(\frac{1}{\sqrt{1}},\frac{1}{\sqrt{2}},\dots \right)$
 $d(x,y)=|x_1-y_1| + |x_2-y_2|$\\
 $d((x_1,x_2),(y_1,y_2))=|x_1-y_1|+|x_2-y_2|$
 
+\section{Wykład II}
+
+\subsection{Kula otwarta}
+
+\begin{de}
+Kula otwarta w przestrzeni metrycznej $Y$:
+\begin{center}
+    $K(y_0, r) = \{y\in Y: d(y, y_0) < r\}$
+\end{center}
+Gdzie:
+\begin{itemize}
+    \item $y_0$ - środek
+    \item $r$ - promień
+    \item Wnętrze okręgu w $\mathbb{R}^2$ - metryka Euklidesowa
+    \item Wnętrze kuli w $\mathbb{R}^3$
+\end{itemize}
+\end{de}
+
+\begin{pk}
+    Rozważmy następujący przykład: \\
+    $K((x_0,y_0),r)$ :: 
+    $\sqrt{(x-x_0)^2 + (y-y_0)^2} < r$ zachodzący warunek\\
+    (wyobraż sobie rysunek poglądowy)
+\end{pk}
+
+\begin{de}
+    Niech $(X,d)$ będzie przestrzenią metryczną. Zbiór $U\subseteq X$ jest otwarty, jeśli:
+    \begin{center}
+        $\forall_{x\in U} \exists_{\varepsilon > 0} \left(K(x,\varepsilon) \subseteq U\right)$
+    \end{center}
+    (Kula otwarta o środku w punkcie $X$ i promieniu $\varepsilon > 0$)
+\end{de}
+
+\begin{pk}
+    Przykłady: \\
+    $(a,b)$ - jest otwarty\\
+    $[a,b)$ - nie jest otwarty
+\end{pk}
+
+\begin{de}
+    Niech $(X,d)$ będzie przestrzenią metryczną. Zbiór $D\subseteq X$ jest zbiorem domkniętym $\iff$ $X - D$ jest otwarty.\\
+    $[a,b] \subset \mathbb{R} \implies \mathbb{R} - [a,b] = (\infty, a) \cup (b,\infty)$ - zbiór otwarty
+\end{de}
+
+\begin{de}
+    $(X,d_1), (Y, d_2)$ - przestrzenie metryczne\\
+    $F: X\rightarrow Y$\\
+    $\lim F(x) = b$ :: $x\rightarrow a$ :: $a\in X, b\in Y$\\
+    Przykład. Dla $X=\mathbb{N}, Y=\mathbb{R}$ - ciągi, dla obu $\mathbb{R}$ - funkcje\\
+    \begin{center}
+        $\forall_{\varepsilon>0} \exists_{\delta > 0} \forall_{x} (0 < d_1 (x,a) < \delta \implies d_2(F(x),b) < \varepsilon)$
+    \end{center}
+\end{de}
+
+\begin{tw}
+    Warunki (1), (2) są równoważne:
+    \begin{enumerate}
+        \item $\lim_{x\rightarrow a} F(x) = b$
+        \item dla dowolnego ciągu $(x_n)_{n\geq 0}$ 
+        punktów przestrzeni metrycznej $X(x_n \neq a)$\\
+        jeśli $\lim_{n\rightarrow a} x_n = a$ w metryce $d_1$ to
+        $\lim_{n\rightarrow \infty} F(x_n) = b$
+    \end{enumerate}
+\end{tw}
+$\lim_{n\rightarrow \infty} x_n = a \iff$
+$(\forall \varepsilon) (\exists n_0) (\forall n>n_0)$  $d_1(x_n,a)< \varepsilon$\\\\
+$(|x_n-a|<\varepsilon), x_n, a \in (X, d_1) \implies \lim_{n\rightarrow \infty} d_1(x_n,a) = 0$
+
+\begin{pk}
+    $x_n\in\mathbb{R}, a\in X$\\
+    $d_1(x_n,a) \in \mathbb{R}$\\
+    $\lim_{n\rightarrow \infty} x_n = a \iff \lim_{n\rightarrow\infty} d_1(x_n,a)=0$ w metryce $d_1$
+\end{pk}
+
+\begin{pk}
+    $(a_n,b_n,c_n) \in \mathbb{R}^3$\\
+    $\lim_{n\rightarrow \infty} (a_n,b_n,c_n) = (g_1,g_2,g_3)$ w metryce Eulidesowej $\mathbb{R}^3 \iff$\\
+    $\lim_{n\rightarrow \infty} a_n = g_1 \land \lim_{n\rightarrow \infty} b_n = g_2 \land \lim_{n\rightarrow \infty} c_n = g_3$\\
+    Idea:\\
+    $\sqrt{(a_n-g_1)^2 + (b_n-g_2)^2 + (c_n-g_3)^2}\rightarrow 0 \iff a_n\rightarrow g_1 \land b_n \rightarrow g_2 \land c_n \rightarrow g_3$\\
+    Dla $\mathbb{R}^k$ podane włansości zachodzą analogicznie.
+\end{pk}
+
+\begin{de}
+    Ciągłość funkcji. $(X,d_1), (Y, d_2), F: X\rightarrow Y$. \\
+    Funkcja $F$ jest ciągła w punkcie $a$ jeśli:
+    \begin{center}
+        $\lim_{x\rightarrow a} F(x) = F(a)$
+    \end{center}
+    $x\rightarrow a$ w $d_1 \implies F(x)\rightarrow F(a)$ w $d_2$
+\end{de}
+
+\begin{pk}
+    Weźmy funkcje $f: \mathbb{R}^2 \rightarrow \mathbb{R}$.\\
+    $$
+    f(x,y)=\begin{cases}
+        \frac{xy}{x^2+y^2} \text{ dla } x^2+y^2 > 0\\
+        0 \text{ dla } (x,y) = (0,0)
+    \end{cases}
+    $$\\
+    Pokażmy, że $f$ nie jest ciągła w $(0,0)$\\
+    $(x_n,y_n) = (\frac{1}{n}, \frac{1}{n}) \rightarrow (0,0)$\\
+    $\lim_{n\rightarrow \infty} f(x_n, y_n)$\\
+    $f(\frac{1}{n}, \frac{1}{n}) = \frac{1}{2}$ - nie dąży do $0$ nie jest ciągła w $(0,0)$. 
+\end{pk}
+
+\begin{pk}
+    $f: \mathbb{R}^3 \rightarrow \mathbb{R}^2$\\
+    $f(x,y,z) = (x^2,y^2\cdot z)$\\
+    Zbadajmy ciąg $a=(x_0, y_0, z_0)$\\
+    $f(x_0, y_0, z_0) = (x_0^2, y_0^2\cdot z)$\\
+    $(x_n, y_n, z_n) \rightarrow (x_0, y_0, z_0)$\\
+    $x_n\rightarrow x_0 \land y_n \rightarrow y_0 \land z_n \rightarrow z_0$\\
+    $f(x_n,y_n,z_n) = (x_n^2, y_n z_n)$\\
+\end{pk}
+
+\begin{pk}
+    $$f(x,y)=\begin{cases}
+        \frac{xy^2}{x^2+y^4} \text{ dla } x^2 + y^4 > 0\\
+        0 \text { dla } (x,y) = (0,0)
+    \end{cases}$$
+    $f$ jest ciągła w $(0,0)$ $(\alpha t, \beta t) \rightarrow (0,0)$\\
+    $f(\alpha t, \beta t) = \frac{\alpha \beta^2 t^3}{\alpha^2 t^2 + \beta^4 t^4}=$\\
+    $\frac{\alpha \beta^2 t}{\alpha^2 + \beta^4 t^2} \rightarrow \frac{0}{\alpha^2} = 0 = f(0,0)$\\
+    $\lim_{t\rightarrow 0} f(t^2,t) = \lim_{t\rightarrow 0} \frac{t^2 t^2}{t^4 + t^4} = \frac{1}{2}$\\
+    $f$ nie jest ciągła $0=f(0,0)\neq \frac{1}{2}$, czyli nie tylko liniowa ale też dowolna\\\\
+    Kolejny przykład obalający dla zdef. funkcji $\left(\frac{1}{n^2} , \frac{1}{n}\right) \rightarrow (0,0)$, ale już\\
+    $f\left(\frac{1}{n^2} + \frac{1}{n}\right) = - \frac{1}{2} \neq f(0,0)$
+\end{pk}
+
+\begin{pk}
+    $f: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$
+    $f(x,y) = x+y$\\
+    $g: \mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$
+    $g(x,y) = xy$\\\\
+    $(x_n,y_n) \rightarrow (x_0, y_0) \iff (x_n\rightarrow x_0 \land y_n \rightarrow y_0)$\\
+    $\lim_{n\rightarrow \infty} f(x_n, y_n) = \lim_{n\rightarrow \infty} (x_n + y_n) = x_0 + y_0 = f(x_0, y_0)$\\
+    $\lim_{n\rightarrow \infty} g(x_n, y_n) = \lim_{n\rightarrow \infty} (x_n, y_n) = x_0 y_0 = g(x_0, y_0)$\\
+\end{pk}
+
+\begin{pk}
+    $\lim_{x\rightarrow 0} (\lim_{y\rightarrow 0} f(x,y)) =$\\
+    $\lim_{x\rightarrow 0} (\lim_{y\rightarrow 0} \frac{xy}{x^2+y^2}) = \lim_{x\rightarrow 0} (0) = 0$
+    $\lim_{y\rightarrow 0} (\lim_{x\rightarrow 0} f(x,y)) =$\\
+    $\lim_{y\rightarrow 0} (\lim_{x\rightarrow 0} \frac{xy}{x^2+y^2})$\\
+    Nie istnieje\\
+    $(x_n', y_n') = (\frac{1}{n}, \frac{1}{n}) \rightarrow (0,0)$\\
+    $(x_n'', y_n'') = (-\frac{1}{n}, \frac{1}{n}) \rightarrow (0,0)$\\
+    $f(x_n', y_n') = \frac{1/n 1/n}{(1/n)^2 + (1/n)^2} = 1/2$\\
+    $f(x_n'', y_n'') = \frac{-\frac{1}{n}\frac{1}{n}}{(1/n)^2 + (1/n)^2}=-1/2$\\
+    Ergo rozbieżny - granica podwójna nie istnieje.
+\end{pk}
+
+\subsection{Granica podwójna}
+
+\begin{de}
+    $\lim_{(x,y)\rightarrow(x_0,y_0) f(x,y)}$
+\end{de}
+
+\subsection{Granice iterowane}
+
+\begin{de}
+    $\lim_{x\rightarrow x_0} (\lim_{y\rightarrow y_n} f(x,y))$\\
+    $\lim_{y\rightarrow y_0} (\lim_{x\rightarrow x_n} f(x,y))$
+\end{de}
+
+\subsection{Różniczkowanie}
+
+$f: \mathbb{R} \rightarrow \mathbb{R}$:
+$f'(x) = a \iff \lim_{h\rightarrow 0} \frac{f(x+h)-f(x)}{h}=a$\\
+$\lim_{h\rightarrow 0} \frac{f(x+h)-f(x)}{h} - a = 0$\\
+$\lim_{h\rightarrow 0} \frac{f(x+h)-f(x)-ah}{h} = 0$\\
+$\lim_{h\rightarrow 0} \left|\frac{f(x+h)-f(x)-ah}{h}\right| = 0$\\
+$\lim_{h\rightarrow 0} \frac{|f(x+h)-f(x)-ah|}{|h|} = 0$\\\\
+$L: \mathbb{R} \rightarrow \mathbb{R}, L(h)= ah, h\in\mathbb{R}$\\
+$L(h_1+h_2) = L(h_1) + L(h_2)$\\
+$L(ch)=c\cdot L(h)$ ($L$ jest odwzorowaniem liniowym)\\
+
+\begin{de}
+    (Pochodna funkcji) $n, m \in \mathbb{N}-\{0\}$, $f: \mathbb{R}^n \rightarrow \mathbb{R}^n, x \in \mathbb{R}^n$\\
+    Mówimy że funkcja $f$ jest różniczkowalna w punkcie $x$\\
+    jeśli istnieje odwzorowaniem liniowe $f'(x): \mathbb{R}^n \rightarrow \mathbb{R}^m$\\
+    takie że $h\in\mathbb{R}^n 0_n = (0,0,\dots, 0)$
+
+    \begin{center}
+        $\lim_{h\rightarrow 0} \frac{||f(x+h)-f(x)-f'(x)(h)||}{||h||} = 0_{\mathbb{R}}$
+    \end{center}
+\end{de}
+
+
 \end{document}

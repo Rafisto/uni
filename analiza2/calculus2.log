@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  28 FEB 2024 12:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  6 MAR 2024 13:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -392,26 +392,26 @@ File: l3backend-pdftex.def 2023-10-10 L3 backend support: PDF output (pdfTeX)
 ) (./calculus2.aux)
 \openout1 = `calculus2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -474,81 +474,126 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ))
-Package hyperref Info: Link coloring OFF on input line 38.
+Package hyperref Info: Link coloring OFF on input line 37.
  (./calculus2.out) (./calculus2.out)
 \@outlinefile=\write3
 \openout3 = `calculus2.out'.
 
-LaTeX Font Info:    Trying to load font information for OML+plm on input line 41.
+LaTeX Font Info:    Trying to load font information for OML+plm on input line 40.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/polski/omlplm.fd
 File: omlplm.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Trying to load font information for OMS+plsy on input line 41.
+LaTeX Font Info:    Trying to load font information for OMS+plsy on input line 40.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/polski/omsplsy.fd
 File: omsplsy.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Trying to load font information for OMX+plex on input line 41.
+LaTeX Font Info:    Trying to load font information for OMX+plex on input line 40.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/polski/omxplex.fd
 File: omxplex.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <12> on input line 41.
+(Font)              <12> on input line 40.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <8> on input line 41.
+(Font)              <8> on input line 40.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <6> on input line 41.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 41.
+(Font)              <6> on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 40.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 40.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <10> on input line 46.
+(Font)              <10> on input line 45.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <7> on input line 46.
+(Font)              <7> on input line 45.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <5> on input line 46.
+(Font)              <5> on input line 45.
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--66
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 98--101
+Underfull \hbox (badness 10000) in paragraph at lines 97--100
 
  []
 
 [1
 
 {/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plme.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 105--111
+Underfull \hbox (badness 10000) in paragraph at lines 104--110
 
  []
 
-[2{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plsc.enc}] [3] (./calculus2.aux)
+[2{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plsc.enc}] [3{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+Underfull \hbox (badness 10000) in paragraph at lines 229--233
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--251
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 277--278
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 291--298
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 304--312
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 315--322
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 315--322
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 352--361
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 352--361
+
+ []
+
+[6] (./calculus2.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus2.out' has not changed.
-(rerunfilecheck)             Checksum: 89EDD98BC09BB7B2088851C424A270B0;1235.
+(rerunfilecheck)             Checksum: 6F35620BAE2E5A7055B8F4271CE554A2;1874.
  ) 
 Here is how much of TeX's memory you used:
- 12453 strings out of 474504
- 195178 string characters out of 5752696
+ 12492 strings out of 474504
+ 195603 string characters out of 5752696
  1941040 words of memory out of 5000000
- 34176 multiletter control sequences out of 15000+600000
- 574611 words of font info for 76 fonts, out of 8000000 for 9000
+ 34185 multiletter control sequences out of 15000+600000
+ 574946 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,79p,569b,523s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus2.pdf (3 pages, 147652 bytes).
+ 75i,15n,79p,569b,585s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
+Output written on calculus2.pdf (6 pages, 186156 bytes).
 PDF statistics:
- 158 PDF objects out of 1000 (max. 8388607)
- 121 compressed objects within 2 object streams
- 29 named destinations out of 1000 (max. 500000)
- 65 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 236 PDF objects out of 1000 (max. 8388607)
+ 189 compressed objects within 2 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
