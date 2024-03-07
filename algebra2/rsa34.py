@@ -46,16 +46,3 @@ for d in range(1, N):
 
 print(f"d={d} :: '{''.join(done)}'")
 print("Assertion complete - key cracked")
-
-# e = 49
-# msg = " Deep Though znalazł odpowiedź i brzmi ona: 42"
-# new_cipher = []
-
-# for c in msg:
-#     char_val = pow(ord(c), e, N)
-#     new_cipher.append(hex(char_val)[2:].zfill(8))
-
-# old_format = cipher.replace(' ','').replace('\n','')
-# new_format = ':'.join(new_cipher)
-
-# assert old_format == new_format
