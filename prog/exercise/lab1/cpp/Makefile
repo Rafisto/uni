@@ -1,17 +1,11 @@
-all: test main.o primes.o
-	clang++ -Weverything -std=c++11 -I ./ main.o primes.o -o primes -L primes_library/ -lprimes
+all: main.o primes.o
+	clang++ -Weverything -std=c++11 -I ./include/ ./app/main.o ./app/primes.o -o ./app/primes -L ./include/primes_library/ -lprimes
 
-main.o: main.cpp
-	clang++ -Weverything -Wno-c++98-compat -std=c++11 -I ./ -c -Wall main.cpp -o main.o
+main.o: ./app/main.cpp
+	clang++ -Weverything -Wno-c++98-compat -std=c++11 -I ./include/ -c -Wall ./app/main.cpp -o ./app/main.o
 
-primes.o: primes.cpp
-	clang++ -Weverything -std=c++11 -I ./ -c -Wall primes.cpp -o primes.o
-
-test: tests
-	./tests
-
-tests: tests.cpp primes.o
-	clang++ -Weverything -std=c++11 -I ./ primes.o -o tests tests.cpp -L primes_library/ -lprimes
+primes.o: ./app/primes.cpp
+	clang++ -Weverything -std=c++11 -I ./include/ -c -Wall ./app/primes.cpp -o ./app/primes.o
 
 clean:
-	rm -rf main.o primes.o ./primes tests
+	rm -f ./app/*.o ./app/primes
