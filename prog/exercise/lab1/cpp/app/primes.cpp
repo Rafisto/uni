@@ -3,8 +3,9 @@
 #include <stdexcept>
 #include <vector>
 
-#include <headers.h>
 #include "primes_library/primes_library.h"
+
+#include "headers.h"
 
 PrimeNumbers::PrimeNumbers(int n)
 {
