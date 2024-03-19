@@ -2,7 +2,7 @@
 I hereby present a treasure trove of resources covering various topics in mathematics and computer science, I have created and gathered during my studies at Wroclaw University of Science and Technology. Whether you're a student looking for study materials, or a curious mind eager to learn, you've come to the right place.
 
 - 📊 **Mathematical Analysis** 📊. ✨***Full semester course notes***✨ purely in `LaTeX` is a must-have for any aspiring computer-scientist. 
-    - See [calculus1.pdf (polish)](./analiza1/calculus.pdf)
+    - See [calculus1.pdf (polish)](analiza1/calculus.pdf)
 - 🕳 **Procedural Programming** 🕳 in `C`
     - [Exercise List 1](./wip/lab1/)
     - [Exercise List 2](./wip/lab2/)
