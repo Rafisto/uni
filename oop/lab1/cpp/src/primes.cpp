@@ -10,7 +10,7 @@ PrimeNumbers::PrimeNumbers(const int n) noexcept(false)
     {
         throw std::invalid_argument(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " [" + __func__ + "] " + "Invalid argument: " + std::to_string(n));
     }
-    this->primes = Sieve::Primes(static_cast<size_t>(n));
+    this->primes = Sieve::Primes(n);
 }
 
 int PrimeNumbers::getPrime(int m) noexcept(false)

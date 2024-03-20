@@ -31,7 +31,7 @@ public:
      *
      * @return vector of prime numbers up to n
      */
-    static std::vector<int> Primes(size_t n) noexcept(false);
+    static std::vector<int> Primes(int n) noexcept(false);
 };
 
 #endif

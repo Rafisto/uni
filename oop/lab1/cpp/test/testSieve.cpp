@@ -19,7 +19,7 @@ static void testSieveExceptions(const int val) noexcept(true)
 {
     try
     {
-        const auto primes = Sieve::Primes(static_cast<size_t>(val));
+        const auto primes = Sieve::Primes(val);
         assert(false && "Exception should be raised");
     }
     catch (const std::invalid_argument &e)
@@ -38,4 +38,8 @@ void testSieve() noexcept(true)
 
     testSieveExceptions(0);
     testSieveExceptions(1);
+    testSieveExceptions(-1);
+    testSieveExceptions(-420);
+    testSieveExceptions(-2137);
+    testSieveExceptions(-1000000);
 }

@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-std::vector<int> Sieve::Primes(size_t n) noexcept(false)
+std::vector<int> Sieve::Primes(int n) noexcept(false)
 {
     if (n < 2)
     {
@@ -11,14 +11,14 @@ std::vector<int> Sieve::Primes(size_t n) noexcept(false)
     }
 
     std::vector<int> primes;
-    std::vector<bool> isPrime(n + 1, true);
+    std::vector<bool> isPrime(static_cast<size_t>(n + 1), true);
 
-    for (size_t i = 2; i <= n; ++i)
+    for (size_t i = 2; i <= static_cast<size_t>(n) ; i++)
     {
         if (isPrime[i])
         {
             primes.push_back(static_cast<int>(i));
-            for (size_t j = i * i; j <= n; j += i)
+            for (size_t j = i * i; j <= static_cast<size_t>(n); j += i)
             {
                 isPrime[j] = false;
             }
