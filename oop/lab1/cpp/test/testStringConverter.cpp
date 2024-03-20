@@ -1,7 +1,9 @@
-#include <stringConverter.hpp>
-
 #include <cmath>
 #include <cassert>
+#include <stdexcept>
+
+#include <stringConverter.hpp>
+
 
 void testStringConverter() noexcept(true);
 

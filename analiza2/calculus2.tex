@@ -371,4 +371,287 @@ $L(ch)=c\cdot L(h)$ ($L$ jest odwzorowaniem liniowym)\\
 \end{de}
 
 
+\section{Wykład 3}
+
+\subsection{Pochodne cząstkowe}
+
+\begin{de}
+$f: \mathbb{R}^2\rightarrow\mathbb{R}$
+    \begin{center}
+    \[\frac{\partial f}{\partial x} (x_0,y_0) = \lim_{h\rightarrow 0} \frac{f(x_0+h,y_0)-f(x_0,y_0)}{h}\]
+    \[\frac{\partial f}{\partial y} (x_0,y_0) = \lim_{h\rightarrow 0} \frac{f(x_0,y_0+h)-f(x_0,y_0)}{h}\]
+    \end{center}
+\end{de}
+
+\begin{pk}
+    Policzmy następującą pochodne cząstkowe dla funkcji:\\
+    $f(x,y)=x\cdot y^2, f: \mathbb{R}^2\rightarrow \mathbb{R}$\\
+    $\frac{\partial}{\partial x} (xy^2) = y^2$\\
+    $\frac{\partial}{\partial y} (xy^2) = 2xy$\\
+\end{pk}
+
+\begin{de}
+    $f:\mathbb{R}^n \rightarrow \mathbb{R}^m, x \in \mathbb{R}^n$ jest różniczkowalna w $x$ jeśli istnieje odwzorowanie liniowe:
+        $f'(x):\mathbb{R}^n\rightarrow\mathbb{R}^m$ taka, że:
+    \begin{center}
+        \[\lim_{h\rightarrow 0} \frac{f(x+h)-f(x)-f'(x)(h)}{|h|}=0\]
+    \end{center}
+\end{de}
+
+\begin{tw}
+    Zakładamy, że $f:\mathbb{R}^n\rightarrow\mathbb{R}^m$ jest różniczkowalna. 
+    Niech: $f=(f_1,f_2,\dots,f_m), f_{i}: \mathbb{R}^n\rightarrow\mathbb{R}, i = 1,2,\dots,m$:
+    $a_{ij} = \frac{\partial f_i}{\partial x_j} (x), j = 1,2,\dots,n$. Wówczas macierz pochodnej wynosi:
+    \begin{center}
+        \[M_{f'(x)}=\begin{bmatrix}
+            a_{1,1} & a_{1,2} & \dots & a_{1,n} \\
+            a_{2,1} & a_{2,2} & \dots & a_{2,n} \\
+            \dots & \dots & \dots & \dots \\
+            a_{m,1} & a_{m,2} & \dots & a_{m,n} \\
+            \end{bmatrix}\]
+    \end{center}
+\end{tw}
+
+Uwaga. Istnienie wszystkich pochodnych cząstkowych nie wystarcza aby funkcja była różniczkowalna.
+$$
+f(x,y)=\begin{cases} 
+    \frac{x^2y}{x^2+y^2} \text{ dla } x^2+y^2>0\\
+    0 \text{ dla } (x,y)=(0,0) 
+\end{cases}
+$$
+Cel. pokażmy że $f$ nie jest różniczkowalna w $(0,0)$\\
+$\frac{\partial f}{\partial x} (0,0) = \lim_{h\rightarrow 0} \frac{f(h,0)-f(0,0)}{h} = \lim_{h\rightarrow 0} \frac{0}{h} = 0$\\
+$\frac{\partial f}{\partial y} (0,0) = 0$\\
+Kandydat na pochodną:
+$$
+M_{f'(0,0)} = \left[\frac{\partial f}{\partial x} (0,0),\frac{\partial f}{\partial y} (0,0)\right]
+$$
+Warunek różniczkowania: $h=(h_1,h_2)$\\
+$$
+\lim_{(h_1,h_2)\rightarrow(0,0)}
+\frac{\left|f(h_1,h_2) - f(0,0) - [0,0]
+    \left[\begin{matrix}
+    h_1\\h_2\end{matrix}\right]
+    \right|}{\sqrt{h_1^2 + h_2^2}} = 0
+$$ (??)
+$
+\lim_{(h_1,h_2)\rightarrow (0,0)} \frac{|h_1^2 h_2|}{(h_1^2+h_2^2)^{\frac{3}{2}}}=
+\lim_{n\rightarrow \infty} \frac{\left(\frac{1}{n}\right)^2\frac{1}{n}}{\left((\frac{1}{n})^22\right)^{\frac{3}{2}}}=0
+$
+
+\begin{tw}
+    Tw. $f: \mathbb{R}^n \rightarrow \mathbb{R}^m, x\in\mathbb{R}^n$. Zakładamy, że pochodne cząstkowe: $\frac{\partial f_i}{\partial x_j} (x)$
+    istnieją w otoczeniu punktu $x$ i są ciągłe w punkcie $x$. Wtedy $f$ jest różniczkowalna w punkcie $x$.
+\end{tw}
+
+\begin{pk}
+    $f:\mathbb{R}^n \rightarrow \mathbb{R}$ $f(x)=\langle x, x \rangle$\\
+    $x=(x_1,x_2,\dots,x_n)$\\
+    $f(x)=x_1^2+x_2^2+\dots+x_n^2$\\
+    $\frac{\partial f}{\partial x_1} = 2x_1, \frac{\partial f}{\partial x_2} = 2x_2, \dots$\\
+    $$M_{f'(x)} = \left[2x_1, 2x_2, \dots, 2x_n\right]=2x$$
+    $$M_{f'(x)}(h) = 2\langle x,h\rangle$$
+\end{pk}
+
+\begin{pk}
+    Z definicji $\frac{\left|f(x+h)-f(x)-M_{f'(x)}(h) \right|}{|h|}=\frac{\langle h,h \rangle}{|h|} = \frac{|h||h|}{|h|}$\\
+    Jednak algebraicznie $f(x+h)-f(x)-M_{f'(x)}(h)=\langle x+h,x+h \rangle - \langle x, x \rangle - 2 \langle x, h \rangle=\langle h,h \rangle$
+\end{pk}
+
+\begin{pk}
+    $f:\mathbb{R}\rightarrow \mathbb{R}^2, f(t)=(\sin(t),\cos(t))$\\
+    $$
+    M_{f'(t)} = \left[
+        \begin{matrix}
+        sin(t)'\\
+        cos(t)'
+        \end{matrix}
+    \right]=\left[
+        \begin{matrix}
+            cos(t)\\
+            -sin(t)
+        \end{matrix}
+    \right]
+    $$
+\end{pk}
+
+\begin{de}
+    Pochodne kierunkowe: $f: \mathbb{R}^n\rightarrow \mathbb{R}$. 
+    Pochodną kierunkową funkcji $f$ w punkcie $x_0$ 
+    w kierunku wektora $\overline{a}$ nazywamy granicę:
+    \begin{center}
+        \[(D_a f)(x_0)=\lim_{t\rightarrow 0} \frac{f(x_0 + at) - f(x_0)}{t}\]
+    \end{center}
+    $\varphi(t)=f(x_0+at)$\\
+    $\varphi'(0)=\lim_{h\rightarrow 0} \frac{\varphi(h)-\varphi(0)}{h}=\lim_{h\rightarrow 0} \frac{f(x_0+ah)-f(x_0)}{h}=(D_a f)(x_0)$
+\end{de}
+
+\begin{pk}
+    $f(x,y) = sin(x)\cdot y$\\
+    $x_0 = (0,0)$\\
+    $a=(\frac{\sqrt{2}}{2},\frac{\sqrt{2}}{2})$\\
+    \[D_a f (0,0) = \lim_{t\rightarrow 0} \frac{f\left(\frac{\sqrt{2}}{2}t,\frac{\sqrt{2}}{2}\right)-f(0,0)}{t}=\lim_{t\rightarrow 0} \frac{\sin(\frac{\sqrt{2}}{2})}{t}=\frac{\sqrt{2}}{2}\]
+\end{pk}
+
+\begin{tw}
+    Jeżeli $f$ jest różniczkowalna w punkcie $x_0$ oraz $a\in\mathbb{R}-\{0\}$, to:
+    \[(D_a f)(x_0) = f'(x_0) a^{T}\]
+    \[f'(x_0)=\left[\frac{\partial f}{\partial x_1} (x_0),\dots,\frac{\partial f}{\partial x_n} (x_n)\right]\]
+    \[f'(x_0)a = \frac{\partial f}{\partial x_1}(x_0)a_1 + \dots + \frac{\partial f}{\partial x_n} (x_0) a_n\]
+\end{tw}
+
+\begin{de}
+    Gradient funkcji $f: \mathbb{R}^n\rightarrow\mathbb{R}$ w punkcie $x_0\in\mathbb{R}^n$:
+    \[\nabla_{x_0} f = \left(\frac{\partial f}{\partial x_1} (x_0), \frac{\partial f}{\partial x_2} (x_0),\dots, \frac{\partial f}{\partial x_n} (x_0)\right)\]
+    \[(D_a f) (x_0) = \langle \nabla_{x_0} f, a \rangle\]
+\end{de}
+
+\begin{pk}
+    Policzmy gradient dla: $f(x,y)=x^2+y^2$.
+    \[\nabla_(x_0,y_0) f(x,y) = (2x_0, 2y_0)\]
+    \[\nabla f(x,y) = (2x,2y)\]
+\end{pk}
+D-d. Zakładamy, że $f$ jest różniczkowalna w $x_0$. 
+\[0=\lim_{h\rightarrow 0} \frac{|f(x+h)-f(x_0)-f'(x_0)h|}{|h|}=\]
+\[=\lim_{h\rightarrow 0} \frac{1}{|a|} \left|\frac{f(x_0+a)-f(x_0)-f'(x_0)t(ta)}{t}\right|=\]
+\[=\lim_{t\rightarrow 0} \frac{1}{|a|} \left|\frac{f(x_0+ta)-f(x_0)}{t}-f'(x_0)(a)\right|\]
+
+\subsection{Gradient}
+
+$f:\mathbb{R}^n \rightarrow \mathbb{R}$
+
+\[\nabla_{x_0} f = \left(\frac{\partial f}{\partial x_1} (x_0), \dots, \frac{\partial f}{\partial x_n} (x_0)\right)\]
+
+\subsection{Własności gradientu}
+
+Niech $\alpha \in \mathbb{R}$
+\begin{enumerate}
+    \item $\nabla_{x_0} (\alpha f) = \alpha \nabla_{x_0} (f)$
+    \item $\nabla_{x_0} (f+g) = \nabla{x_0} (f) + \nabla{x_0} (g)$
+\end{enumerate}
+Wniosek liniowość (dla $\alpha,\beta \in \mathbb{R}$):
+\[\nabla_{x_0} (\alpha f + \beta g) = \alpha \nabla_{x_0} (f) + \beta \nabla_{x_0} (g)\]
+
+\subsection{Gradient iloczynu}
+\[\nabla_{x_0} (f\cdot g) = \nabla_{x_0} (f) \cdot g(x_0) + f(x_0) \nabla_{x_0} (g)\]
+D-d. z liniowości gradientu.
+
+\begin{tw}
+Zakładamy, że $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ jest różniczkowalna w $x\in\mathbb{R}^n$.
+Wówczas $f$ jest ciągła w $x\in\mathbb{R}^n$.\\\\
+D-d. (metryka w $\mathbb{R}^n$)\\
+\[|f(x+h)-f(x)|=\]
+\[=|f(x+h)-f(x)-f'(x)h + f'(x)h|\]
+\[\leq |f(x+h)-f(x)-f'(x)h|+|f'(x)h|=\]
+\[=\frac{|f(x+h)-f(x)-f'(x)h|}{|h|} |h| = |f'(x)h|\]
+\end{tw}
+
+\subsection{Minimum lokalne właściwe}
+
+\begin{de}
+    $f:\mathbb{R}^n \rightarrow \mathbb{R}, a\in\mathbb{R}^n$. 
+    Mówimy, że $f$ ma w punkcie $a$ minimum lokalne (właściwe)
+    jeśli istnieje $r>0$:
+    \[\left(\forall x\in K(a,r) - \{a\}\right) f(a) \leq_{(<)} f(x)\] 
+    Gdzie $K(a,r)$ - kula towarta o środku w $a$ i promieniu $r$.
+\end{de}
+
+\begin{tw}
+    (Warunek konieczny) $f: \mathbb{R}^n \rightarrow \mathbb{R}, a\in\mathbb{R}^n$.
+    Jeżeli $f$ ma w punkcie $a$ ekstremum lokalne to:
+    \[\nabla_{x_0} f = (0,0,\dots, 0)\]
+    Inaczej:
+    $\frac{\partial f}{\partial x_1} (a) = \dots = \frac{\partial f}{\partial x_n} (a) = 0$
+\end{tw}
+
+\begin{pk}
+    Rozważmy następujące przykłady:
+    \begin{enumerate}
+        \item $f(x,y)=x^2-y^2$ - sprawdźmy warunek konieczny\\
+        $\frac{\partial f}{\partial x} = 2x = 0, \frac{\partial f}{\partial y} = 2y = 0$\\
+        $(0,0)$ - punkt podejrzany\\
+        $f(\frac{1}{n},0) = \frac{1}{n^2} > 0$
+        $f(0, \frac{1}{n}) = -\frac{1}{n^2} < 0$\\
+        Nie istnieje taka $K((0,0),r)$, że $f$ ma w tej kuli stały znak.
+        \item $f(x)=x^3$, $f\left(\frac{1}{n}\right) = \frac{1}{n^3}$, $f\left(-\frac{1}{n}\right)\dots$
+        \item $f(x,y,z) = -x^2 - (y-1)^2 - (z+1)^2$\\
+        Sprawdźmy warunek: $\nabla f = (-2x, -2(y-1), -2(z+1))=(0,0,0)$\\
+        Zobaczmy $f(0,1,-1)=0$\\
+        $f(a,b+1,c-1) - f(0,1,-1) = -a^2 -b^2 -c^2 = -(a^2+b^2+c^2) < 0$ maksimum lokalne
+        $f(a,b+1,c-1) < f(0,1,-1)$ (liczby sześcianu opisane na kuli)\\
+    \end{enumerate}
+\end{pk}
+
+\begin{de}
+    Niech $f(x,y): \mathbb{R}^2 \rightarrow \mathbb{R}$ $x,y\in\mathbb{R}$.
+    Zakładamy, że $\frac{\partial f(x,y)}{\partial x} = f_x(x,y)$ oraz $\frac{\partial f(x,y)}{\partial y} = f_y(x,y)$.
+    Wtedy pochodne cząstkowe pochodnych $f_x(x,y), f_y(x,y)$ nazywamy pochodnymi cząstkowymi drugiego rzędu:
+
+    \begin{enumerate}
+        \item $\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x} \left(\frac{\partial f}{\partial x}\right) = f_{xx} (x,y)$
+        \item $\frac{\partial^2 f}{\partial y^2} = \frac{\partial}{\partial y} \left(\frac{\partial f}{\partial y}\right) = f_{yy} (x,y)$
+        \item $\frac{\partial^2 f}{\partial x \partial y} = \frac{\partial}{\partial x} \left(\frac{\partial f}{\partial y}\right) = f_{xy} (x,y)$
+        \item $\frac{\partial^2 f}{\partial y \partial x} = \frac{\partial}{\partial y} \left(\frac{\partial f}{\partial x}\right) = f_{yx} (x,y)$
+    \end{enumerate}
+\end{de}
+
+\begin{tw}
+  Jeżeli pochodne cząstkowe istnieją w pewnym obszarze i obie są, w pewnym punkcie ciągłe, to w tym punkcie są równe
+  \[ f_{xy} = f_{yx} \]
+\end{tw}
+
+\[\frac{\partial^{p+q} f}{\partial x^p \partial y^q}\]\\
+
+$\frac{\partial^3 f}{\partial x^2 \partial y}$
+$f(x,y) = x^3 y^2$\\
+
+\[\frac{d}{dy} (x^3 y^2) = x^3 2y\]
+\[\frac{d}{dx} (x^3 2y) = 3x^2 2y\]
+\[\frac{d}{dx} (3x^2 2y) = 6x 2y\]
+
+\[D\left[x^3 \cdot y^2, (x,2), (y,1)\right] \text {(wolframalpha)}\]
+
+\subsection{Różniczkowanie złożenia funkcji}
+
+\begin{tw}
+    $f:\mathbb{R}^n \rightarrow \mathbb{R}^m, g: \mathbb{R}^m \rightarrow \mathbb{R}^k$ 
+    $a\in\mathbb{R}^n, b=f(a)\in \mathbb{R}^m$. Zakładamy, że $f$ jest różniczkowalna w punkcie $a$
+    oraz $g$ jest różniczkowalna w punkcie $b$. Wtedy $g\circ f$ jest różniczkowalna w punkcie $a$ i zachodzi wzór:
+    \[(g\circ f)(a) = g'\left(f(a)\right) \circ f'(a)\]
+    Złożenie odwzorowań liniowych - mnożenie macierzy.
+\end{tw}
+
+\begin{pk}
+    $U: \mathbb{R} \rightarrow \mathbb{R}^3, f: \mathbb{R}^3 \rightarrow \mathbb{R}, g=f\circ u : \mathbb{R} \rightarrow \mathbb{R}\\$
+    $u(t) = \left(u_1 (t), u_2 (t), u_3 (t)\right)$\\
+    $g(t) = (f\circ u) (t) = f(u_1(t),u_2(t),u_3(t))$\\
+    Zobaczmy:
+
+    $M_{u'(t)} = \begin{bmatrix}
+        u_1'(t) \\
+        u_2'(t) \\
+        u_3'(t)
+    \end{bmatrix}  
+    $
+    $M_{f'(b)} = \left(\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \frac{\partial f}{\partial x_3}\right)_{x=b}$\\
+    Wykonajmy mnożenie macierzy:
+    \[M_{f'(b)}\cdot M_{u'(b)} = \frac{\partial f}{\partial x_1} \frac{d u_1}{dt} + \frac{\partial f}{\partial x_2} \frac{d u_2}{dt} + \frac{\partial f}{\partial x_3} \frac{d u_3}{dt}\]
+\end{pk}
+
+\begin{fakt}
+    Uogólniona reguła łańcuchowa. ($x_i = u_i(t)$)
+    \[\frac{d}{dt} f\left(u_1(t), u_2(t), \dots, u_n(t)\right) = \sum_{i=1}^{n} \frac{\partial f}{\partial x_i} \frac{d u_i}{dt}\]
+\end{fakt}
+
+\begin{pk}
+    Niech $u(t) = (t^2-t, 2t, 4t), f(x,y,z)=xy+z, g=f\circ u, g(t)=(t^2-t)2t+4t$\\\\
+    $g'(t) = (t^2-1)'2t + (t^2-t)(2t)' + (4t)' = (2t-1)(2t) + 2(t^2-t) + 4=$\\
+    $= 4t^2 - 2t + 2t^2 - 2t + 4 = 6t^2 - 4t + 4$\\
+    Zobaczmy z reguły łańcuchowej:\\
+    \[g(t)=(f\circ u)(t)\]
+    \[g'(t)=\frac{\partial f}{\partial x_1} \frac{du_1}{dt} + \frac{\partial f}{\partial x_2} \frac{du_2}{dt} + \frac{\partial f}{\partial x_3} \frac{du_3}{dt}\]
+    \[y\cdot (2t-1) + 2x + 1\cdot 4 = 2t (2t-1) + 2(t^2-t) + 4 = 4t^2 - 2t + 2t^2 - 2t + 4 = 6t^2 - 4t + 4\]
+\end{pk}
+W zastosowaniu algorytmu back propagation.
+
 \end{document}

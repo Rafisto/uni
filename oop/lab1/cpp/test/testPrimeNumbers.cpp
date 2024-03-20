@@ -1,5 +1,7 @@
 #include <cmath>
 #include <cassert>
+#include <stdexcept>
+#include <cstddef>
 
 #include <primeNumbers.hpp>
 
