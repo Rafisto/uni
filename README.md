@@ -3,6 +3,7 @@ I hereby present a treasure trove of resources covering various topics in mathem
 
 - 📊 **Mathematical Analysis** 📊. ✨***Full semester course notes***✨ purely in `LaTeX` is a must-have for any aspiring computer-scientist. 
     - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/analiza1/calculus.pdf)
+    - See [calculus2.pdf (ongoing | polish)](https://github.com/Rafisto/uni/raw/master/analiza2/calculus2.pdf)
 - 🕳 **Procedural Programming** 🕳 in `C`
     - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/wip/lab1/)
     - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/wip/lab2/)
