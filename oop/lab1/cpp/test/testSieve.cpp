@@ -1,7 +1,8 @@
-#include <sieve.hpp>
-
 #include <cmath>
 #include <cassert>
+#include <stdexcept>
+
+#include <sieve.hpp>
 
 void testSieve() noexcept(true);
 static void testSieveNormalCase() noexcept(true);
@@ -19,7 +20,7 @@ static void testSieveExceptions(const int val) noexcept(true)
 {
     try
     {
-        const auto primes = Sieve::Primes(val);
+        (void)Sieve::Primes(static_cast<size_t>(val));
         assert(false && "Exception should be raised");
     }
     catch (const std::invalid_argument &e)

@@ -1,5 +1,7 @@
 #include <sieve.hpp>
 
+#include <cstddef>
+#include <stdexcept>
 #include <vector>
 #include <string>
 
