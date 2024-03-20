@@ -28,7 +28,7 @@ int main(const int argc, const char *const argv[])
     }
     catch (const std::invalid_argument &e)
     {
-        std::cerr << "Invalid Argument Error: " << e.what() << std::endl;
+        std::cerr << "Invalid Argument Error: " << e.what() << " should be greater than 1" << std::endl;
         return 1;
     }
 

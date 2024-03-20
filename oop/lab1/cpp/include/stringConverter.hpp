@@ -19,7 +19,7 @@ public:
 
     /**
      * @brief Function is converting the string to the value of type T
-     *        If the conversion cannot be done, the std::invaliud_argument is raised
+     *        If the conversion cannot be done, the std::invalid_argument is raised
      *
      * @tparam T - type of value to be converted from string
      * @param str - string with value to convert

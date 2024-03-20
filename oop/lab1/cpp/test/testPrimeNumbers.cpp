@@ -8,6 +8,7 @@
 void testPrimeNumbers() noexcept(true);
 static void testPrimeNumbersNormalCase() noexcept(true);
 static void testPrimeNumbersExceptions(const int val) noexcept(true);
+static void testGetPrimeNumbersException(const int gen, const int val) noexcept(true);
 
 void testPrimeNumbersNormalCase() noexcept(true)
 {
@@ -53,6 +54,20 @@ void testPrimeNumbersExceptions(const int val) noexcept(true)
     }
 }
 
+void testGetPrimeNumbersException(const int gen, const int val) noexcept(true)
+{
+    try
+    {
+        auto primes = PrimeNumbers(gen);
+        primes.getPrime(val);
+        assert(false && "Exception should be raised");
+    }
+    catch (const std::invalid_argument &e)
+    {
+        (void)e;
+    }
+}
+
 void testPrimeNumbers() noexcept(true)
 {
     testPrimeNumbersNormalCase();
@@ -62,4 +77,8 @@ void testPrimeNumbers() noexcept(true)
     testPrimeNumbersExceptions(-1);
     testPrimeNumbersExceptions(-420);
     testPrimeNumbersExceptions(-2137);
+
+    testGetPrimeNumbersException(2, -1);
+    testGetPrimeNumbersException(1, -42);
+    testGetPrimeNumbersException(2137, -420);
 }

@@ -1,5 +1,3 @@
-# Simple Makefile, do not use this shit :P
-
 CXX := clang++
 CXX_OPT := -O3
 CXX_DBG := # -ggdb3

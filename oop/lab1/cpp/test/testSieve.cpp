@@ -20,7 +20,7 @@ static void testSieveExceptions(const int val) noexcept(true)
 {
     try
     {
-        (void)Sieve::Primes(static_cast<size_t>(val));
+        (void)Sieve::Primes(val);
         assert(false && "Exception should be raised");
     }
     catch (const std::invalid_argument &e)
