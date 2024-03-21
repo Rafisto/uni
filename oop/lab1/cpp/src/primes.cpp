@@ -5,6 +5,11 @@
 #include <primeNumbers.hpp>
 #include <sieve.hpp>
 
+ /**
+ * @brief Constructor for the PrimeNumbers class
+ *
+ * @param n - any number greater or equal to 2
+ */
 PrimeNumbers::PrimeNumbers(const int n) noexcept(false)
 {
     if (n < 2)

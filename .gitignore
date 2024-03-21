@@ -2,3 +2,5 @@
 .idea/
 projekty/
 res/
+*.class
+*.out
