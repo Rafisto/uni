@@ -15,6 +15,10 @@ std::vector<int> Binomials::generateRow(int n) noexcept(false)
 
     for (int i = 1; i <= n; i++)
     {
+        if (row[static_cast<std::vector<int>::size_type>(i)-1] < 0)
+        {
+            throw std::invalid_argument("parameter " + std::to_string(n) + " causes an integer overflow at " + std::to_string(i) + "-th iteration");
+        }
         row.push_back(static_cast<int>(static_cast<long long>(row[static_cast<std::vector<int>::size_type>(i) - 1]) * static_cast<long long>(n - i + 1) / static_cast<long long>(i)));
     }
 

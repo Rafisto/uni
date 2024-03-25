@@ -41,4 +41,8 @@ void testBinomials() noexcept(true)
     testBinomialsNormalCase();
 
     testBinomialsExceptions(-1);
+    testBinomialsExceptions(-2137);
+    testBinomialsExceptions(420);
+    testBinomialsExceptions(35);
+    testBinomialsExceptions(100);
 }

@@ -68,4 +68,5 @@ void testPascalTriangleRow() noexcept(true)
 
     testPascalTriangleRowExceptions(-1);
     testPascalTriangleRowExceptions(-20);
+    testPascalTriangleRowExceptions(60);
 }

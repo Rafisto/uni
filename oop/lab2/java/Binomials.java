@@ -13,6 +13,9 @@ public class Binomials {
         long prev = 1;
         for (int i = 1; i <= n; i++) {
             long curr = prev * (n - i + 1) / i;
+            if ((int)curr < 0) {
+                throw new IllegalArgumentException("Parameter " + n + " causes an integer overflow at " + i + "-th iteration");
+            }
             row.add((int) curr);
             prev = curr;
         }
