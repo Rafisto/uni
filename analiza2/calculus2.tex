@@ -371,7 +371,7 @@ $L(ch)=c\cdot L(h)$ ($L$ jest odwzorowaniem liniowym)\\
 \end{de}
 
 
-\section{Wykład 3}
+\section{Wykład III}
 
 \subsection{Pochodne cząstkowe}
 
@@ -653,5 +653,140 @@ $f(x,y) = x^3 y^2$\\
     \[y\cdot (2t-1) + 2x + 1\cdot 4 = 2t (2t-1) + 2(t^2-t) + 4 = 4t^2 - 2t + 2t^2 - 2t + 4 = 6t^2 - 4t + 4\]
 \end{pk}
 W zastosowaniu algorytmu back propagation.
+
+\section{Wykład IV}
+
+$f(x)=\sqrt{x^2+\exp(x^2)} + \cos(x^2+\exp(x^2))$\\
+$\frac{df}{dx}$ ... można policzyć
+Graf, jakby liczył komputer:
+\begin{align}
+    (x) \rightarrow (\text{ })^2 \rightarrow &a \rightarrow +\\
+    & a\rightarrow exp(\text{ }) \rightarrow b \rightarrow + \rightarrow c \rightarrow \sqrt{\text{ }}\rightarrow d \rightarrow + \rightarrow f\\
+    & c \rightarrow cos(\text{ }) \rightarrow e \rightarrow +
+\end{align}
+Rozpiszmy $a=x^2, b=\exp(a), c = a+b, d=\sqrt{c}, e=\cos(c), f=d+e$
+
+$\frac{\partial a}{\partial x} = 2x$,
+$\frac{\partial b}{\partial a} = \exp(a)$,
+$\frac{\partial c}{\partial a} = 1 = \frac{\partial c}{\partial b}$,
+$\frac{\partial d}{\partial c} = \frac{1}{2\sqrt{c}}$,
+$\frac{\partial e}{\partial c} = -\sin(c)$,
+$\frac{\partial f}{\partial d} = 1 \frac{\partial f}{\partial e}$,
+\[\frac{\partial f}{\partial b} = \frac{\partial f}{\partial c} + \frac{\partial c}{\partial b}\]
+\[\frac{\partial f}{\partial c} = \frac{\partial f}{\partial d}\frac{\partial d}{\partial c} + \frac{\partial f}{\partial e}\frac{\partial e}{\partial c}\]
+\[\frac{\partial f}{\partial a} = \frac{\partial f}{\partial b}\frac{\partial b}{\partial a} + \frac{\partial f}{\partial c}\frac{\partial c}{\partial a}\]
+
+\begin{pk}
+    Problem. $f: \mathbb{R}^n \rightarrow \mathbb{R}$ przyzwoita - różniczkowalna co najmniej 2 razy, jakie jest maksimum lokalne.
+    \begin{enumerate}
+        \item $n=1$ analiza 1.
+        \item $n=2$
+        \item $n\geq 2$
+    \end{enumerate}
+\end{pk}
+
+\begin{tw}
+    Niech $f(x,y)$ ma w otoczeniu punktu $(x_0,y_0)$ pierwsze i drugie pochodne cząstkowe ciągłe oraz $f_x(x_0,y_0)=f_y(x_0,y_0)$. Wtedy:
+    \[W(x_0,y_0)= \begin{bmatrix}
+        f_{xx} (x_0,y_0)  \text{  }  f_{xy} (x_0,y_0) \\
+        f_{xy} (x_0,y_0)  \text{  }  f_{yy} (x_0,y_0) 
+        \end{bmatrix}  \]
+    Z ciągłości $f_{xy} (x_0,y_0) = f_{yx} (x_0,y_0)$
+\end{tw}
+
+\begin{enumerate}
+    \item Jeśli $W(x_0, y_0) > 0$ i $f_{xx} (x_0,y_0) > 0$, to $f$ ma w punkcie $(x_0,y_0)$ minimum lokalne
+    \item Jeśli $W(x_0, y_0) > 0$ i $f_{xx} (x_0,y_0) < 0$, to $f$ ma w punkcie $(x_0,y_0)$ maksimum lokalne
+    \item Jeśli $W(x_0, y_0) < 0$ to $f$ nie ma ekstremum lokalnego w $(x_0,y_0)$
+    \item Jeśli $W(x_0, y_0) = 0$ kryterium nie działa
+    \item (??) $W(x_0, y_0) > 0, f_{xx} (x_0, y_0) = 0$, -$f_{xy}^2 (x_0,y_0) \leq 0$, sprzeczność (z $\det$ macierzy)
+\end{enumerate}
+Jak to liczyć w wolframalpha
+
+\begin{enumerate}
+    \item solve(grad(f(x,y), {x,y})=0, (x,y)), (Hessian)
+    \item det(...)
+\end{enumerate}
+
+\begin{pk}
+    Rozważmy przykład \\
+    \[ f(x,y) = (2x+y^2)e^x \]
+    Policzmy najpierw pierwsze pochodne cząstkowe:
+    \[ f_x(x,y) = 2e^x (2x+y^2)e^x\]
+    \[ f_y(x,y) = 2y e^x\]
+    Rozwiążmy powyższe równianie:
+    \[ y = 0, x = -1\]
+    Punkt podejrzany o ekstremum $P=(-1,0)$\\
+    Policzmy drugie pochodne cząstkowe:
+    \[ f_{xx} = e^x (4 + 2x + y^2) \]
+    \[ f_{yy} = 2 e^x\]
+    \[ f_{xy} = f_{yx} = 2y e^x\]
+    Zobaczmy:
+    \[ f_{xx} (-1,0) = 2e^{-1}\]
+    \[ f_{yy} (-1,0) = 2e^{-1}\]
+    \[ f_{xy} (-1,0) = f_{yx} (-1,0) = 0 \]
+    Policzmy wyznacznik z powyższego twierdzenia:
+    \[ W(-1, 0) = 4e^2 > 0, f_{xx} > 0 \]
+    Wobec tego finalnie $f$ ma w punkcie $(-1,0)$ minimum lokalne.
+\end{pk}
+
+\begin{pk}
+    Zobaczmy następny przykład:
+    \[ f(x,y) = x^3 + y^3\]
+    Policzmy następujące pochodne cząstkowe:
+    \[ f_x(x,y)=3x^2, f_y(x,y)=3y^2, f_{xy}=0, f_{xx}(x,y) = 6x ,f_{yy}(x,y) = 6y\]
+    Wyznacznik macierzy:
+    \[ \det(W(0,0)) = 0\]
+    Kryterium nie działa. Nic nam nie powie.
+\end{pk}
+
+\begin{fakt}
+Wzór Taylora. Analiza I : $f:\mathbb{R} \rightarrow \mathbb{R}$
+\[f(b+x) = f(b) + \frac{1}{1!} f'(b)x + \frac{1}{2!} f'(b) x^2 + \dots + \frac{1}{n!} f^{(n)}(b) x^n + R_n\]
+\[R_n = \frac{1}{(n+1)!} f^{(n+1)} (b+\theta x) = x^{(n+1)} \]
+dla pewnego $\theta\in(0,1)$\\
+\end{fakt}
+
+\begin{fakt}
+Uogólnienie wzoru Taylora : $\mathbb{R}^n \rightarrow \mathbb{R}$\\
+$a=(a_1,a_2,\dots,a_n)\in\mathbb{R}^n$\\ $x=(x_1,x_2,\dots, x_n)\in\mathbb{R}^n$
+\[\varphi(t) = f(a+tx) = f(a_1+tx_1,a_2+tx_2,\dots,a_n+tx_n)\]
+Dla funkcji $\varphi(t)$ stosujemy wzór Taylora z $b=0$ i $x=t$:
+\[\varphi(t) = \varphi(0) + \frac{1}{1!} \varphi'(0)t + \frac{1}{2!} \varphi''(0)t^2 + \dots + \frac{1}{n!} \varphi^{(n)}(0) t^{n} + R_n\]
+\[R_n = \frac{1}{(n+1)!} \varphi^{(n+1)} (0+\theta t) t^{n+1}\]
+Zapiszmy $\varphi(0)$:
+\[\varphi(0) = f(a_1,a_2,\dots, a_n)\]
+\[\varphi'(t)(a_1+tx_1,a_2+tx_2,\dots,a_n+tx_n)=\]
+\[=\frac{\partial f}{\partial x_1}(a_1+tx_1,\dots,a_n+tx_n) + \frac{\partial f}{\partial x_2}(a_1+tx_1,\dots,a_n+tx_n) + \dots + \frac{\partial f}{\partial x_n}(a_1+tx_1,\dots,a_n+tx_n)=\]
+\[\varphi'(t) = \frac{\partial f}{\partial x_1} x_1 + \dots + \frac{\partial f}{\partial x_n} x_n\]
+Wprowadźmy $c(t)=\frac{\partial f}{\partial x_1}(a_1+tx_1,\dots,a_n+tx_n)$. Zachodzi:
+\[c'(t) = \frac{\partial^2 f}{\partial x_1 \partial x_1} x_1^2 + \frac{\partial^2 f}{\partial x_2 \partial x_1} x_2 x_1 + \dots + \frac{\partial^2 f}{\partial x_n \partial x_1} x_n x_1\]
+Zatem patrząc na $\varphi''(t)$:
+\[\varphi''(t)=\sum_{j=1}^{n}\sum_{i=1}^{n} \frac{\partial^2 f}{\partial x_j \partial x_i} x_j x_i\]
+Oznaczenie:
+\[\left(\frac{\partial}{\partial x_1} x_1 + \frac{\partial}{\partial x_2} x_2 + \dots + \frac{\partial}{\partial x_n} x_n\right) \left(f\right) = \frac{\partial f}{\partial x_1} x_1 + \dots + \frac{\partial f}{\partial x_n} x_n \]
+\[\left\{\frac{\partial}{\partial x_1} x_1 + \frac{\partial}{\partial x_2} x_2\right\}^2 = \frac{\partial}{\partial x_1} x_1 \frac{\partial}{\partial x_1} x_1 + \frac{\partial}{\partial x_1} x_1 \frac{\partial}{\partial x_2} x_2 + \frac{\partial}{\partial x_2} x_2  \frac{\partial}{\partial x_1} x_1 + \frac{\partial}{\partial x_2} x_2 \frac{\partial}{\partial x_2} x_2=\]
+\[=\frac{\partial^2}{\partial x_1 \partial x_1} x_1^2 + \frac{\partial^2}{\partial x_1 \partial x_2} x_1 x_2 + \frac{\partial^2}{\partial x_2 \partial x_1} x_2 x_1\frac{\partial^2}{\partial x_1 \partial x_2} x_1 x_2 + \frac{\partial^2}{\partial x_2 \partial x_2} x_2 x_2\]
+\end{fakt}
+
+\subsection{Ogólny wzór Taylora}
+
+\begin{fakt}
+Wzór Taylora. $f: \mathbb{R}^n \rightarrow \mathbb{R}, x=(x_1,x_2,\dots,x_n), a=(a_1,a_2,\dots,a_n)$\\
+Zdefiniujmy $D_x = \left\{\frac{\partial}{\partial x_1}x_1 + \dots + \frac{\partial}{\partial x_n} x_n\right\}$
+\[f(a+x) = f(a) + D_x(f(a)) + \frac{1}{2!} D_x^2 (f(a)) + \dots + \frac{1}{n!} D_x^n (f(a)) + R_n \]
+\[R_n = \frac{1}{(n+1)!} (D_x)^{n+1} (f(a+\theta x))\]
+\end{fakt}
+
+\begin{pk}
+Weźmy sobie taką $f: \mathbb{R}^2 \rightarrow \mathbb{R}$, $f(x_1,x_2)=x_1^2+x_2^2$\\
+Wyznaczmy $D_x(f(a_1,a_2))$:
+\[D_x(f(a_1,a_2)) = \left(\frac{\partial}{\partial x_1} x_1 + \frac{\partial}{\partial x_2} x_2\right) f(a_1,a_2) = \]
+\[=\frac{\partial}{\partial x_1} f(a_1,a_2) x_1 + \frac{\partial}{\partial x_2} f(a_1,a_2) x_2 = 2a_1x_1 + 2a_2x_2\]
+\[(D_x)^2(f(a_1,a_2)) = \frac{\partial^2}{\partial x_1 \partial x_1} f(a_1,a_2) x_1 x_1 + \frac{\partial^2}{\partial x_1 \partial x_2} f(a_1,a_2) x_1 x_2 + \frac{\partial^2}{\partial x_2 \partial x_1} f(a_1,a_2) x_2 x_1 + \frac{\partial^2}{\partial x_2 \partial x_2} f(a_1,a_2) x_2 x_2 =\]
+\[2x_1x_1 + 0 x_1 x_2 + 0 x_2 x_1 + 1 x_2 x_2 = 2x_1^2 + 2x_2^2\]
+\[(a_1+x_1)^2+(a_2+x_2)^2=a_1^2+a_2^2+2a_1x_1+2a_2x_2+2x_1^2+2x_2^2\]
+\end{pk}
+
 
 \end{document}
