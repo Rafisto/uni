@@ -20,7 +20,7 @@ public:
 
     static bool isSquare(double a, double b, double c, double d, double angle)
     {
-        if (!isRectangle(a, b, c, d, angle))
+        if (fabs(angle - 90) > TOLERANCE)
             return false;
 
         double sides[4] = {a, b, c, d};
