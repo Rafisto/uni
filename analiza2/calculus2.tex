@@ -788,5 +788,170 @@ Wyznaczmy $D_x(f(a_1,a_2))$:
 \[(a_1+x_1)^2+(a_2+x_2)^2=a_1^2+a_2^2+2a_1x_1+2a_2x_2+2x_1^2+2x_2^2\]
 \end{pk}
 
+\section{Wykład V}
+
+$f: \mathbb{R} \rightarrow \mathbb{R}$ ekstrema lokalne
+Weźmy $f: \mathbb{R}^n \rightarrow \mathbb{R}, n\geq 2$ - cel. ekstrema lokalne
+
+\subsection{Forma Kwadratowa}
+
+\[\sum_{k=1}^{n} \sum_{i=1}^{n} a_{ik} y_{i} y_{k}\] zmiennych $y_1, y_2, \dots, y_n$ 
+jest określona dodatnio (ujemnie) jeżeli przybiera wartości dodatnie (ujemne) 
+dla wszystkich $y_1, y_2, \dots, y_n \neq 0$.\\
+
+Przykład:
+
+$n=3$ (dziel 2, bo liczymy dwa razy)\\
+\[6y_1^2+5y_2^2+14y_3^2+4y_1y_2+8y_1y_3-2y_2y_3\]
+
+\begin{itemize}
+    \item $a_{11}=6, a_{22}=5, a_{33}=14$
+    \item $a_{12}=a_{21}=\frac{4}{2}=2$
+    \item $a_{13}=a_{31}=\frac{-8}{2}=-4$
+    \item $a_{23}=a_{32}=-1$
+\end{itemize}
+
+Sprowadźmy do postaci kanonicznej i przyrównajmy do 0.
+
+\[0=(y_1-y_3)^2+2(y_1+y_2+y^3)^2+3(y_2-y_3)^2=0\]
+\[y_1=y_2=y_3\dots=y_n=0\]
+
+\begin{tw}
+    Twierdzenie Sylvestera.
+    \begin{enumerate}
+        \item Warunek konieczny i dostateczny na to, aby forma (*) była określona dodatnio (ujemnie) wyraża się ciągiem nierówności:
+        \begin{itemize}
+        \item $n=2$: $\det(a_{11})> (<) 0, \det\left(\begin{bmatrix}
+            a_{11} & a_{12} \\
+            a_{21} & a_{22} 
+            \end{bmatrix} \right) > (>) 0$\\
+        \item $n=3$: $\det(a_{11})> (<) 0, \det\left( \begin{bmatrix}
+            a_{11} & a_{12} & a_{13} \\
+            a_{21} & a_{22} & a_{23} \\
+            a_{31} & a_{32} & a_{33} 
+            \end{bmatrix} \right)  > (<) 0$\\
+        \item $n$ ... itd (pojedyńczy wyraz < i det naprzemiennie dla ujemnych)
+        \end{itemize}
+    \end{enumerate}
+\end{tw}
+
+\begin{de}
+    Forma kwadratowa (*).
+    \begin{enumerate}
+        \item jest nieokreślona, jeśli przybiera wartości różnych znaków i zeruje się tylko dla \\ $y_1=y_2=\dots=y_n=0$
+        \item półokreślona, jeśli przybiera wartości różnych znaków i zeruje się nie tylko dla \\ $y_1=y_2=\dots=y_n=0$
+    \end{enumerate}
+\end{de}
+
+\begin{tw}
+    $f: \mathbb{R}^n \rightarrow \mathbb{R}$. Niech $f(x_1, x_2, \dots, x_n)$ ma w otoczeniu (kuli otwartej) punktu $x_0=(x_1^0,x_2^0,\dots,x_n^0)$ 
+    pierwsze i drugie pochodne cząstkowe ciągłe. Niech $f_{x_1}(x_0)=\frac{\partial f}{\partial x_1}(x_0)=0, f_{x_2}(x_0)=0, \dots$ (gradient jest zero).
+    Oznaczamy $a_{ik} = f_{x_i x_k} (x_0) = f_{x_1 x_k} (x_1^0, x_2^0,\dots x_n^0)$
+    \begin{enumerate}
+        \item Jeżeli forma kwadratowa \[\sum_{k=1}^{n} \sum_{i=1}^{n} a_{ik} y_{i} y_{k}\]
+        jest dodatnio (ujemnie) określona, to $f$ ma w punkcie $x_0=(x_1^0,x_2^0,\dots,x_n^0)$ minimum (maksimum) lokalne.
+        \item Jeżeli ww. forma kwadratowa jest nieokreślona to $f$ nie ma w punkcie $x_0=(x_1^0,x_2^0,\dots,x_n^0)$ ekstremum.
+        \item Jeżeli ww. forma kwadratowa jest półokreślona to kryterium nic nie powie
+    \end{enumerate}
+\end{tw}
+Ilustracja twierdzenia dla
+$f(x_1,x_2,x_3)=x_1^2+x_2^2+x_3^2$\\
+$f_{x_1} (x_1,x_2,x_3) = 2x_1 =0$\\
+$f_{x_2} (x_1,x_2,x_3) = 2x_2 =0$\\
+$f_{x_3} (x_1,x_2,x_3) = 2x_3 =0$\\
+$(x_1^0, x_2^0, x_3^0) = (0,0,0)$ znaleźliśmy punkt podejrzany.\\
+$a_{11}=2, a_{22}=2, a_{33}=2, a_{12}=a_{21}=a_{23}=a_{32}=a_{31}=a_{13}=0$\\\\
+$ \begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23} \\
+a_{31} & a_{32} & a_{33} 
+\end{bmatrix} = $
+$ \begin{bmatrix}
+2 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 2
+\end{bmatrix} $\\
+\begin{enumerate}
+    \item $\det\left(a_{11}\right) = 2 > 0$
+    \item $\det\begin{bmatrix}
+    a_{11} & a_{12} \\
+    a_{21} & a_{22} 
+    \end{bmatrix} = 4 > 0$
+    \item $\det\begin{bmatrix}
+        a_{11} & a_{12} & a_{13} \\
+        a_{21} & a_{22} & a_{23} \\
+        a_{31} & a_{32} & a_{33} 
+        \end{bmatrix}=8>0$
+\end{enumerate}
+
+\begin{de}
+    Otoczeniem punktu $P\in\mathbb{R}^n$ nazywamy dowolny zbiór otwarty $U$, taka, że $P\in U$
+\end{de}
+
+\subsection{Jacobian funkcji}
+
+\begin{de}
+    Jacobian funkcji $F: \mathbb{R}^n \rightarrow \mathbb{R}^n$. $F=(f_1,f_2,\dots,f_n): \mathbb{R}^n\rightarrow\mathbb{R}$
+    \[M_{F'(a)} = \begin{bmatrix}
+        \frac{\partial f_1}{\partial x_1} (a) & \frac{\partial f_1}{\partial x_2} (a) & \dots & \frac{\partial f_1}{\partial x_n} (a) \\
+        \frac{\partial f_2}{\partial x_1} (a) & \frac{\partial f_2}{\partial x_2} (a) & \dots & \frac{\partial f_2}{\partial x_n} (a) \\
+        \dots & \dots & \dots & \dots \\
+        \frac{\partial f_n}{\partial x_1} (a) & \frac{\partial f_n}{\partial x_2} (a) & \dots & \frac{\partial f_n}{\partial x_n} (a) \\
+        \end{bmatrix}\]
+    Jacobian: $J_f (a) = \det (M_{F'(a)})$
+\end{de}
+
+\begin{tw}
+    (O funkcji odwrotnej)
+    Zakładamy, że $F: \mathbb{R}^n\rightarrow \mathbb{R}^n, a\in \mathbb{R}^n$.
+    Zakładamy, że $F$ ma ciągłe pochodne cząstkowe w pewnym otoczeniu punktu $a$.
+    Zakładamy, że $J_{F}(a)\neq 0$.
+    Wówczas istnieje otoczenie $U$ punktu $a$ oraz $V$ punktu $F(a)$ oraz funkcja rózniczkowalna $\varphi: V\rightarrow U$, taka że:
+    \[\forall_{x\in U} (\varphi \circ F) (x) = x\]
+    (Przy powyższych założeniach lokalnie funkcje daje się odwrócić)
+\end{tw}
+
+\begin{pk}
+    (Jeden wymiar) \\
+    Weźmy $F:\mathbb{R} \rightarrow \mathbb{R}$, $F(x)=x^2, a>0$\\
+    $F'(a) = 2a, J_F(a)=2a\neq 0$\\
+    $\varphi \circ F(x) = x$\\
+    $\varphi = \sqrt{x}$\\
+    $\varphi\left(F(x)\right)=\sqrt{F(x)}$\\
+    Powyższe twierdzenie stanowi uogólnienie dla $n$ wymiarów.
+\end{pk}
+
+Niech $f: \mathbb{R}^2\rightarrow\mathbb{R}$, $f(x_0,y_0)=0$\\
+$\{(x,y)\in\mathbb{R}^2 : f(x,y)=0\}$. $f(x,y)=x^2+y^2-4$, $f:\mathbb{R}^2\rightarrow \mathbb{R}$\\
+$x^2+y^2=2$ równanie okręgu.\\
+$y=\pm \sqrt{4-x^2}$\\
+$\varphi(t)=\sqrt{4-x^2}$\\
+Szukamy funkcji (istnieje $\varepsilon > 0$)
+$\varphi(t): \mathbb{R}\rightarrow\mathbb{R}$ takiej, że:
+\begin{enumerate}
+    \item $\varphi(x_0) = y_0$
+    \item $\left(\forall t\in(x_0 - \varepsilon, x_0 + \varepsilon)\right) f(t,\varphi(t))=0$
+\end{enumerate}
+
+\begin{tw}
+    (O funkcji uwikłanej) Jeśli pochodne cząstkowe funkcji $f$ są ciągłe oraz $\frac{\partial f}{\partial y} (x_0,y_0) \neq 0$ to istnieje funkcja $\varphi$.
+\end{tw}
+Liczmy:\\
+$f(t,\varphi(t)) = 0$\\
+$\varphi'(t)=??$\\
+$\frac{d}{dt} \left(f(t,\varphi(t)) \right) = \frac{d}{dt} (0) = 0$\\
+$\frac{\partial}{\partial x} \frac{d}{dt} (t) + \frac{\partial f}{\partial y} \frac{d}{dt} (\varphi(t)) = 0$\\
+$\frac{\partial f}{\partial x} 1 + \frac{\partial f}{\partial y} \varphi'(t)= 0$\\
+$\varphi'(t) = \frac{\frac{\partial f}{\partial x}}{\frac{\partial f}{\partial x}}$
+
+Przypomnienie\\
+$\frac{d}{dt} F(x(t),y(t)) = \frac{\partial F}{\partial x} x'(t) + \frac{\partial F}{\partial y} y'(t)$
+
+\begin{tw}
+    $f: \mathbb{R}^2 \rightarrow \mathbb{R}$. Niech $f$ ma ciągłe pochodne cząstkowe w punkcie $(x_0,y_0)$. Równanie płaszczyzny
+    stycznej do wykresu funkcji $f$ w punkcie $(x_0,y_0,f(x_0,y_0))$:
+    \[z-f(x_0,y_0)=\frac{\partial f}{\partial x} (x_0,y_0) (x-x_0) + \frac{\partial f}{\partial y} (x_0,y_0) (y-y_0)\]
+    ($z-z_0=A(x-x_0)+B(y-y_0)$) - równanie płaszczyzny przechodzącej przez $(x_0,y_0,z_0)$
+\end{tw}
 
 \end{document}
