@@ -1,0 +1,176 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\AtBeginEnvironment{align}{\setcounter{equation}{0}}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{dd}{Dowód}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{lemat}{Lemat}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Wzór Stirlinga}  
+\date{INA 2 Sem. 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Wzór Stirlinga}
+
+\begin{tw}
+    \[\lim_{n\rightarrow \infty} \frac{n!}{\sqrt{2\pi n} \cdot \left(\frac{n}{e}\right)^n} = 1\]
+    (Inaczej $n! \approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n$)
+\end{tw}
+
+\begin{lemat}
+    Dla ciągu zadanego wzorem:
+    \[a_n = \frac{n!}{\sqrt{2n} \cdot \left(\frac{n}{e}\right)^n}\]
+    Zachodzi:
+    \[a_n \rightarrow C \in \mathbb{R}^{+}\]
+\end{lemat}
+
+\begin{dd}
+    Rozważmy $b_n = \ln(a_n)$.\\
+    1. Pokażemy, że $b_n$ jest malejący i ograniczony z dołu, zatem zbieżny do pewnej stałej rzeczywistej $b$. 
+    Wtedy $a_n=e^{b_n} \rightarrow e^{b} \in \mathbb{R}$.
+    \[b_n - b_{n+1} = \frac{1}{2}(2n+1) \cdot \ln {\frac{n+1}{n}} - 1\]
+    Wykorzystajmy rozwinięcie funkcji $\ln(x)$ w szereg Taylora w $1$.\\
+    Dla $|t| < 1$:
+    \[\ln(1+t) = t - \frac{t^2}{2} + \frac{t^3}{3} - \frac{t^4}{4} + \dots\]
+    \[-\ln(1-t) = t + \frac{t^2}{2} + \frac{t^3}{3} + \frac{t^4}{4} + \dots\]
+    \[\ln\left(\frac{1+t}{1-t}\right) = 2 \left(t + \frac{t^3}{3} + \frac{t^5}{5} + \dots \right)\]
+    Dla $t=\frac{1}{2n+1}$:
+    \begin{align}
+        &\ln\left(\frac{n+1}{n}\right)=\\
+        &= 2\cdot \sum_{k=0}^{\infty} \frac{1}{2k+1} \left(\frac{1}{2n+1}\right)^{2k+1}=\\
+        &= 2\cdot \frac{1}{2n+1} + 2\cdot \sum_{k=1}^{\infty} \frac{1}{2k+1} \left(\frac{1}{2n+1}\right)^{2k+1}
+    \end{align}
+    \begin{align}
+        &b_n - b_{n+1} = 1 + \left(\sum_{k=1}^{\infty} \frac{1}{2k+1} \left(\frac{1}{2n+1}\right)^{2k}\right) - 1=\\
+        &=\sum_{k=1}^{\infty} \frac{1}{2k+1} \left(\frac{1}{2n+1}\right)^{2k} > 0
+    \end{align}
+    Zobaczmy, że skoro $b_n > b_{n+1}$ $\implies$ $b_n$ jest malejący.\\
+    2. Pokażmy, że $b_n$ jest ograniczony z dołu.
+    \begin{itemize}
+        \item $b_m-b_{m+1}$
+        \[b_m - b_{m+1} < \sum_{k=1}^{\infty} \left(\frac{1}{(2m+1)^2}\right)^{k} =\]
+        \[=\frac{1}{(2n+1)^2} \cdot \frac{1}{1-\frac{1}{(2m+1)^2}} = \frac{1}{(2m+1)^2-1} = \frac{1}{4m^2+4m}=\frac{1}{4m(m+1)}\]
+        \item $b_1-b_n$
+        \[b_1-b_n = (b_1 - b_2) + (b_2 - b_3) + (b_3 - b_4) + \dots + (b_{n-1} - b_n)\]
+        \[< \sum_{m=1}^{n-1} \frac{1}{4m(m+1)} < \frac{1}{4} \cdot \sum_{m=1}^{\infty} \frac{1}{m(m+1)} = \frac{1}{4}\]
+    \end{itemize}
+    Zauważmy następnie:
+    \begin{align}
+        &b_1-b_n < \frac{1}{4}\\
+        &b_n > b_1 - \frac{1}{4} = \ln\left(\frac{e}{\sqrt{2}} - \frac{1}{4}\right)
+    \end{align}
+    Ostatecznie: $b_n$ malejący, ograniczony z dołu, zatem zbieżny.\\
+    To implikuje:
+    \[a_n \rightarrow C \in \mathbb{R}^{+} \qed\]
+\end{dd}
+
+\begin{lemat}
+    (Wzór Wallisa) 
+    \[\prod_{k=1}^{\infty} \frac{(2k)(2k)}{(2k-1)(2k+1)}=_{cw}
+    \lim_{n\rightarrow \infty} \frac{2^{4n} \left(n!\right)^4}{((2n)!)^2(2n+1)} = \frac{\pi}{2}\]
+\end{lemat}
+
+\begin{dd}
+    Wyjdźmy ($n\geq 2$) od $\int \sin^n x dx$
+    \[\int \sin^n(x) = \int (-\cos x)' \cdot (\sin x)^{n-1} dx =\]
+    \[- \cos x \cdot \left(\sin x\right)^{n-1} + \int (- \cos^2 x) (n - 1) (\sin x) ^ {n-2} dx =\]
+    \[- \cos x \cdot \left(\sin x\right)^{n-1} + (n-1) \int (\sin x)^{n-2} dx - (n-1) \int (\sin x)^n dx=\]
+    \[n \int \left(\sin x\right)^{n} dx = - \cos x \left(\sin x\right)^{n-1} + (n-1) \int (\sin x)^{n-2} dx\]
+    \[\int_{0}^{\frac{\pi}{2}} (\sin x)^{n} dx = \frac{n-1}{n} \int_{0}^{\frac{\pi}{2}} (\sin x)^{n-2} dx\]
+    Doprowadziliśmy do wzoru rekurencyjnego, mamy:
+    \[\int_{0}^{\frac{\pi}{2}} (\sin x)^{0} dx = \frac{\pi}{2}\]
+    \[\int_{0}^{\frac{\pi}{2}} (\sin x)^{1} dx = 1\]
+    Następnie:
+    \[\int_{0}^{\frac{\pi}{2}} (\sin x)^{2} dx = \frac{2-1}{2} \cdot \frac{\pi}{2} \]
+    \[\int_{0}^{\frac{\pi}{2}} (\sin x)^{4} dx = \frac{4-1}{4} \cdot \frac{2-1}{2} \cdot \frac{\pi}{2} \]
+    Wprowadźmy dwa ciągi:
+    \[s_n = \int_{0}^{\frac{\pi}{2}} (\sin x)^{2n} dx = \prod_{k=1}^{n} \frac{2k-1}{2k} \cdot \frac{\pi}{2}\]
+    \[c_n = \int_{0}^{\frac{\pi}{2}} (\sin x)^{2n+1} dx = \prod_{k=1}^{n} \frac{2k}{2k+1} \cdot 1\]
+    Zatem:
+    \[\lim_{n\rightarrow \infty} \left(\prod_{k=1}^{n} \frac{2k}{2k-1}\right) \cdot \left(\prod_{k=1}^{n} \frac{2k}{2k+1}\right)=\]
+    \[=\lim_{n\rightarrow \infty} \frac{\pi}{2} \cdot \frac{1}{s_n} \cdot c_n\]
+    Pokażmy, że $\lim_{n\rightarrow \infty} \frac{c_n}{s_n} = 1$.\\
+    Stwórzmy nierówność dla $x\in\left(0,\frac{\pi}{2}\right)$:
+    \begin{align}
+        (\sin x)^{2n+2} &< (\sin x)^{2n+1} < (\sin x)^{2n}\\
+        s_{n+1} &< c_n < s_n\\
+        \frac{s_{n+1}}{s_n} &< \frac{c_n}{s_n} < 1\\
+        \frac{2(n+1)-1}{2(n+1)} &< \frac{c_n}{s_n} < 1
+    \end{align}
+    Spójrzmy, że:
+    \begin{align}
+        &\lim_{n\rightarrow \infty} \frac{2(n+1)-1}{2(n+1)} = 1\\
+        &\lim_{n\rightarrow \infty} 1 = 1
+    \end{align}
+    Zatem z twiedzenia o trzech ciągach:
+    \[\lim_{n\rightarrow \infty} \frac{c_n}{s_n} = 1\]
+\end{dd}
+
+\begin{de}
+    Niech:
+    \[a_n = \frac{n!}{\sqrt{2n} \cdot \left(\frac{n}{e}\right)^n}\]
+    Cel: pokazać, że $a_n \rightarrow \sqrt{\pi}$
+\end{de}
+
+\begin{dd}
+    Z lematu 1:
+    \[1 = \lim_{n\rightarrow \infty} \frac{a_n}{c} \implies a_n \approx C \implies n! \approx C\cdot \sqrt{2n} \left(\frac{n}{e}\right)^n\]
+    Podstawmy to do wzoru Wallisa:
+    \[\frac{\pi}{2} = \lim_{n\rightarrow \infty} \frac{2^{4n} \cdot C^4 \cdot (2n)^2 \cdot \left(\frac{n}{e}\right)^{4n}}{\left[C\cdot\sqrt{4n} \cdot \left(\frac{2n}{e}\right)^2n\right]^2 (2n+1)}=\]
+    \[\lim_{n\rightarrow \infty} \frac{C^4 \cdot 2^{4n} \cdot 4n^2 \cdot \left(\frac{n}{e}\right)^{4n}}{C^2\cdot 4n \cdot 2^{4n} \cdot \left(\frac{n}{e}\right)^{4n} (2n+1)}=\]
+    \[\lim_{n\rightarrow \infty} \frac{C^2\cdot n}{2n +1} = \frac{C^2}{2} \implies C=\sqrt{\pi}\qed\]
+\end{dd}
+
+\subsection{Pomoc dowodowa}
+
+Szereg:
+\[\sum_{m=1}^{\infty} \frac{1}{m(m+1)} = \lim_{n\rightarrow \infty} \sum_{m=1}^{n} \frac{1}{m(m+1)} = \lim_{n\rightarrow \infty} s_n\]
+\[s_n = \sum_{m=1}^{n} \frac{1}{m} - \frac{1}{m+1} = 1 - \frac{1}{m+1}\]
+\[\lim s_n = 1\]
+Cos:
+\[- \cos^2 x = 1 - \sin^2 x\]
+
+\subsection{Wnioski}
+
+Wzór Stirlinga:
+\[n! \approx \sqrt{2\pi n} \cdot \left(\frac{n}{e}\right)^n\]
+
+Wzór Stirlinga dokładniej:
+\[n! \approx \sqrt{2\pi n} \cdot \left(\frac{n}{e}\right)^n \cdot e^{f(n)}\]
+\[\frac{1}{12n+1} < f(n) < \frac{1}{12n}\]
+
+\end{document}
