@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  3 APR 2024 12:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  4 APR 2024 14:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/rafisto/Uni/analiza2/calculus2
-(/home/rafisto/Uni/analiza2/calculus2.tex
+**/home/rafisto/Uni/dyskretna/wzor-stirlinga
+(/home/rafisto/Uni/dyskretna/wzor-stirlinga.tex
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/article.cls
@@ -383,35 +383,37 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 \Hy@SectionHShift=\skip59
 )
 \c@de=\count299
-\c@tw=\count300
-\c@pk=\count301
+\c@dd=\count300
+\c@tw=\count301
+\c@lemat=\count302
+\c@pk=\count303
  (/usr/local/texlive/2023/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2023-10-10 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count302
+\l__color_backend_stack_int=\count304
 \l__pdf_internal_box=\box56
-) (./calculus2.aux)
-\openout1 = `calculus2.aux'.
+) (./wzor-stirlinga.aux)
+\openout1 = `wzor-stirlinga.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -449,16 +451,16 @@ LaTeX Font Info:    ... okay on input line 37.
 
 (/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count303
+\scratchcounter=\count305
 \scratchdimen=\dimen187
 \scratchbox=\box57
-\nofMPsegments=\count304
-\nofMParguments=\count305
+\nofMPsegments=\count306
+\nofMParguments=\count307
 \everyMPshowfont=\toks36
-\MPscratchCnt=\count306
+\MPscratchCnt=\count308
 \MPscratchDim=\dimen188
-\MPnumerator=\count307
-\makeMPintoPDFobject=\count308
+\MPnumerator=\count309
+\makeMPintoPDFobject=\count310
 \everyMPtoPDFconversion=\toks37
 ) (/usr/local/texlive/2023/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -474,246 +476,111 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ))
-Package hyperref Info: Link coloring OFF on input line 37.
- (./calculus2.out) (./calculus2.out)
+Package hyperref Info: Link coloring OFF on input line 43.
+ (./wzor-stirlinga.out) (./wzor-stirlinga.out)
 \@outlinefile=\write3
-\openout3 = `calculus2.out'.
+\openout3 = `wzor-stirlinga.out'.
 
-LaTeX Font Info:    Trying to load font information for OML+plm on input line 40.
+LaTeX Font Info:    Trying to load font information for OML+plm on input line 46.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/polski/omlplm.fd
 File: omlplm.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Trying to load font information for OMS+plsy on input line 40.
+LaTeX Font Info:    Trying to load font information for OMS+plsy on input line 46.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/polski/omsplsy.fd
 File: omsplsy.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Trying to load font information for OMX+plex on input line 40.
+LaTeX Font Info:    Trying to load font information for OMX+plex on input line 46.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/polski/omxplex.fd
 File: omxplex.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <12> on input line 40.
+(Font)              <12> on input line 46.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <8> on input line 40.
+(Font)              <8> on input line 46.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <6> on input line 40.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 40.
+(Font)              <6> on input line 46.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 46.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 46.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <10> on input line 45.
+(Font)              <10> on input line 50.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <7> on input line 45.
+(Font)              <7> on input line 50.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <5> on input line 45.
-
-Underfull \hbox (badness 10000) in paragraph at lines 64--65
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 97--100
-
- []
-
-[1
-
-{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plme.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 104--110
-
- []
-
-[2{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plsc.enc}] [3{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 229--233
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 248--251
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 277--278
-
- []
-
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 291--298
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 304--312
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 315--322
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 315--322
-
- []
-
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 352--361
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 352--361
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 387--391
-
- []
-
-[6]
-Overfull \hbox (40.30856pt too wide) in paragraph at lines 402--405
-[][]\T1/cmr/bx/n/10 Twierdzenie 3.1.1. []\T1/cmr/m/n/10 Za-kªa-damy, »e $\OML/plm/m/it/10 f \OT4/cmr/m/n/10 : \U/msb/m/n/10 R[] \OMS/plsy/m/n/10 ! \U/msb/m/n/10 R[]$ \T1/cmr/m/n/10 jest ró»-nicz-ko-walna. Niech: $\OML/plm/m/it/10 f \OT4/cmr/m/n/10 = (\OML/plm/m/it/10 f[]; f[]; [] ; f[]\OT4/cmr/m/n/10 )\OML/plm/m/it/10 ; f[] \OT4/cmr/m/n/10 :
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 428--430
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 448--452
-
- []
-
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 462--463
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 490--493
-
- []
-
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 540--543
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 540--543
-
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 577--582
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 603--604
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 605--607
-
- []
-
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 647--651
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 647--651
-
- []
-
-[11]
-Underfull \hbox (badness 10000) in paragraph at lines 712--713
-
- []
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 746--748
-
- []
-
-[13]
-Overfull \hbox (91.52432pt too wide) detected at line 786
-\OT4/cmr/m/n/10 (\OML/plm/m/it/10 D[]\OT4/cmr/m/n/10 )[](\OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 a[]; a[]\OT4/cmr/m/n/10 )) = []\OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 a[]; a[]\OT4/cmr/m/n/10 )\OML/plm/m/it/10 x[]x[] \OT4/cmr/m/n/10 + []\OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 a[]; a[]\OT4/cmr/m/n/10 )\OML/plm/m/it/10 x[]x[] \OT4/cmr/m/n/10 + []\OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 a[]; a[]\OT4/cmr/m/n/10 )\OML/plm/m/it/10 x[]x[] \OT4/cmr/m/n/10 + []\OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 a[]; a[]\OT4/cmr/m/n/10 )\OML/plm/m/it/10 x[]x[] \OT4/cmr/m/n/10 =
- []
-
-[14]
-Underfull \hbox (badness 10000) in paragraph at lines 798--801
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 804--805
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 824--828
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 828--833
-
- []
-
-[15]
-Overfull \hbox (31.35297pt too wide) in paragraph at lines 847--850
-[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x[]\OT4/cmr/m/n/10 ) = 0\OML/plm/m/it/10 ; f[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x[]\OT4/cmr/m/n/10 ) = 0\OML/plm/m/it/10 ; [] $ \T1/cmr/m/n/10 (gra-dient jest zero). Ozna-czamy $\OML/plm/m/it/10 a[] \OT4/cmr/m/n/10 = \OML/plm/m/it/10 f[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x[]\OT4/cmr/m/n/10 ) = \OML/plm/m/it/10 f[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x[]; x[]; [] x[]\OT4/cmr/m/n/10 )$ 
- []
-
-
-Overfull \hbox (13.01233pt too wide) in paragraph at lines 853--854
-[]\T1/cmr/m/n/10 Je»eli ww. forma kwa-dra-towa jest nie-okre-±lona to $\OML/plm/m/it/10 f$ \T1/cmr/m/n/10 nie ma w punk-cie $\OML/plm/m/it/10 x[] \OT4/cmr/m/n/10 = (\OML/plm/m/it/10 x[]; x[]; [] ; x[]\OT4/cmr/m/n/10 )$
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 857--874
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 857--874
-
- []
-
-[16] [17] [18] (./calculus2.aux)
+(Font)              <5> on input line 50.
+ [1
+
+{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plrm.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plme.enc}]
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.95     \end{align}
+                    
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.95     \end{align}
+                     [2
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.115 ...pi}{2}} (\sin x)^{0} dx = \frac{\pi}{2}\]
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.115 ...pi}{2}} (\sin x)^{0} dx = \frac{\pi}{2}\]
+                                                  {/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/pl/plsc.enc}]
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.133     \end{align}
+                     
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.133     \end{align}
+                     
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.3}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.133     \end{align}
+                     
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.138     \end{align}
+                     
+pdfTeX warning (ext4): destination with the same identifier (name{equation.1.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.138     \end{align}
+                      [3] [4] [5] (./wzor-stirlinga.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
-Package rerunfilecheck Info: File `calculus2.out' has not changed.
-(rerunfilecheck)             Checksum: B4D9567C0657D4FFABEFA17B646E10A6;3587.
+Package rerunfilecheck Info: File `wzor-stirlinga.out' has not changed.
+(rerunfilecheck)             Checksum: 105C5A647D588F9521BB19CAEC5FBA89;537.
  ) 
 Here is how much of TeX's memory you used:
- 12607 strings out of 474504
- 196830 string characters out of 5752696
- 1944040 words of memory out of 5000000
- 34207 multiletter control sequences out of 15000+600000
+ 12469 strings out of 474504
+ 195494 string characters out of 5752696
+ 1941040 words of memory out of 5000000
+ 34194 multiletter control sequences out of 15000+600000
  574946 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,79p,569b,737s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus2.pdf (18 pages, 248741 bytes).
+ 75i,10n,79p,575b,595s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
+Output written on wzor-stirlinga.pdf (5 pages, 164146 bytes).
 PDF statistics:
- 424 PDF objects out of 1000 (max. 8388607)
- 363 compressed objects within 4 object streams
- 150 named destinations out of 1000 (max. 500000)
- 201 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 157 PDF objects out of 1000 (max. 8388607)
+ 115 compressed objects within 2 object streams
+ 25 named destinations out of 1000 (max. 500000)
+ 33 words of extra memory for PDF output out of 10000 (max. 10000000)
 
