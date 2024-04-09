@@ -13,28 +13,22 @@
 
 int main(const int argc, const char *const argv[])
 {
-    if (argc < 2)
+    if (argc < 3)
     {
-        std::cerr << "Usage: " << argv[0] << " [o|c|p|s] [additional arguments...]" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " [o|c|p|s] [at least one additional argument...]" << std::endl;
         return 1;
     }
+
+    Figure *figure = nullptr;
 
     switch (argv[1][0])
     {
     case 'o':
         std::cout << "Option o selected" << std::endl;
-        if (argc < 3)
-        {
-            std::cerr << "Radius not provided." << std::endl;
-            return 1;
-        }
         try
         {
             const auto radius = StringConverter::stringToVal<double>(std::string(argv[2]));
-            Circle circle(radius);
-            std::cout << "Area of the figure: " << circle.area() << std::endl;
-            std::cout << "Perimeter of the figure: " << circle.perimeter() << std::endl;
-            std::cout << "Name of the figure: " << circle.name() << std::endl;
+            figure = new Circle(radius);
         }
         catch (const std::invalid_argument &e)
         {
@@ -43,7 +37,6 @@ int main(const int argc, const char *const argv[])
         }
         break;
     case 'c':
-        // Handle case 'c'
         std::cout << "Option c selected" << std::endl;
         if (argc < 7)
         {
@@ -59,22 +52,19 @@ int main(const int argc, const char *const argv[])
             const auto angle = StringConverter::stringToVal<double>(std::string(argv[6]));
             if (FigureUtils::isSquare(side1, side2, side3, side4, angle))
             {
-                Square square(side1);
-                FigureUtils::printFigureInfo(square);
+                figure = new Square(side1);
             }
             else if (FigureUtils::isRhombus(side1, side2, side3, side4))
             {
-                Rhombus rhombus(side1, angle);
-                FigureUtils::printFigureInfo(rhombus);
+                figure = new Rhombus(side1, angle);
             }
             else if (FigureUtils::isRectangle(side1, side2, side3, side4, angle))
             {
-                Rectangle rectangle(side1, side2);
-                FigureUtils::printFigureInfo(rectangle);
+                figure = new Rectangle(side1, side2);
             }
             else
             {
-                throw std::invalid_argument("Invalid Quadrilateral");
+                throw std::invalid_argument("Invalid Quadrilateral.");
             }
         }
         catch (const std::invalid_argument &e)
@@ -84,20 +74,11 @@ int main(const int argc, const char *const argv[])
         }
         break;
     case 'p':
-        // Handle case 'p'
         std::cout << "Option p selected" << std::endl;
-        if (argc < 3)
-        {
-            std::cerr << "Side length not provided." << std::endl;
-            return 1;
-        }
         try
         {
             const auto side_length = StringConverter::stringToVal<double>(std::string(argv[2]));
-            Pentagon pentagon(side_length);
-            std::cout << "Area of the figure: " << pentagon.area() << std::endl;
-            std::cout << "Perimeter of the figure: " << pentagon.perimeter() << std::endl;
-            std::cout << "Name of the figure: " << pentagon.name() << std::endl;
+            figure = new Pentagon(side_length);
         }
         catch (const std::invalid_argument &e)
         {
@@ -106,20 +87,11 @@ int main(const int argc, const char *const argv[])
         }
         break;
     case 's':
-        // Handle case 's'
         std::cout << "Option s selected" << std::endl;
-        if (argc < 3)
-        {
-            std::cerr << "Side length not provided." << std::endl;
-            return 1;
-        }
         try
         {
             const auto side_length = StringConverter::stringToVal<double>(std::string(argv[2]));
-            Hexagon hexagon(side_length);
-            std::cout << "Area of the figure: " << hexagon.area() << std::endl;
-            std::cout << "Perimeter of the figure: " << hexagon.perimeter() << std::endl;
-            std::cout << "Name of the figure: " << hexagon.name() << std::endl;
+            figure = new Hexagon(side_length);
         }
         catch (const std::invalid_argument &e)
         {
@@ -128,9 +100,12 @@ int main(const int argc, const char *const argv[])
         }
         break;
     default:
-        // Throw an exception for invalid input
         throw std::invalid_argument("Invalid option");
     }
+
+    FigureUtils::printFigureInfo(*figure);
+
+    delete figure;
 
     return 0;
 }

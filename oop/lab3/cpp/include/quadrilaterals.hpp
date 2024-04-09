@@ -1,7 +1,3 @@
-//
-// Created by Rafist0 on 4/1/2024.
-//
-
 #ifndef CPP_QUADRILATERALS_H
 #define CPP_QUADRILATERALS_H
 
@@ -21,22 +17,10 @@ private:
     double side;
 
 public:
-    Square(double s) : side(s) {}
-
-    double area() const override
-    {
-        return side * side;
-    }
-
-    double perimeter() const override
-    {
-        return 4 * side;
-    }
-
-    const char *name() const override
-    {
-        return "Square";
-    }
+    Square(double s) noexcept(false);
+    double area() const noexcept(true) override;
+    double perimeter() const noexcept(true) override;
+    const char *name() const noexcept(true) override;
 };
 
 /*
@@ -54,22 +38,10 @@ private:
     double width;
 
 public:
-    Rectangle(double l, double w) : length(l), width(w) {}
-
-    double area() const override
-    {
-        return length * width;
-    }
-
-    double perimeter() const override
-    {
-        return 2 * (length + width);
-    }
-
-    const char *name() const override
-    {
-        return "Rectangle";
-    }
+    Rectangle(double l, double w) noexcept(false);
+    double area() const noexcept(true) override;
+    double perimeter() const noexcept(true) override;
+    const char *name() const noexcept(true) override;
 };
 
 /*
@@ -87,22 +59,10 @@ private:
     double angle;
 
 public:
-    Rhombus(double s, double a) : side(s), angle(a) {}
-
-    double area() const override
-    {
-        return side * side * sin(angle);
-    }
-
-    double perimeter() const override
-    {
-        return 4 * side;
-    }
-
-    const char *name() const override
-    {
-        return "Rhombus";
-    }
+    Rhombus(double s, double a) noexcept(false);
+    double area() const noexcept(true) override;
+    double perimeter() const noexcept(true) override;
+    const char *name() const noexcept(true) override;
 };
 
 #endif // CPP_QUADRILATERALS_H

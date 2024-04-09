@@ -1,7 +1,3 @@
-//
-// Created by Rafist0 on 4/1/2024.
-//
-
 #include <stdexcept>
 #include <cmath>
 
@@ -26,29 +22,10 @@ private:
     double side;
 
 public:
-    Hexagon(double s) noexcept(false)
-    {
-        if (s <= 0)
-        {
-            throw std::invalid_argument("Side length must be greater than 0.");
-        }
-        this->side = s;
-    }
-
-    double area() const override
-    {
-        return 3 * sqrt(3) * this->side * this->side / 2;
-    }
-
-    double perimeter() const override
-    {
-        return 6 * this->side;
-    }
-
-    const char *name() const override
-    {
-        return "Hexagon";
-    }
+    Hexagon(double s) noexcept(false);
+    double area() const noexcept(true) override;
+    double perimeter() const noexcept(true) override;
+    const char *name() const noexcept(true) override;
 };
 
 #endif // CPP_HEXAGON_H

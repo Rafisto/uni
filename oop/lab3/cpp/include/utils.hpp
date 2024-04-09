@@ -9,62 +9,19 @@
 
 #include <algorithm>
 #include <cmath>
-#include <figure.hpp>
-#include <quadrilateral.hpp>
+#include <iostream>
 
-class FigureUtils
-{
+#include "figure.hpp"
+
+class FigureUtils {
 public:
     FigureUtils() = delete;
     ~FigureUtils() = delete;
 
-    static bool isSquare(double a, double b, double c, double d, double angle)
-    {
-        if (fabs(angle - 90) > TOLERANCE)
-            return false;
-
-        double sides[4] = {a, b, c, d};
-        std::sort(sides, sides + 4);
-
-        if (fabs(sides[0] - sides[3]) < TOLERANCE)
-            return true;
-        else
-            return false;
-    }
-
-    static bool isRhombus(double a, double b, double c, double d)
-    {
-        double sides[4] = {a, b, c, d};
-        std::sort(sides, sides + 4);
-
-        if (fabs(sides[0] - sides[3]) < TOLERANCE)
-            return true;
-        else
-            return false;
-    }
-
-    static bool isRectangle(double a, double b, double c, double d, double angle)
-    {
-        if (fabs(angle - 90) > TOLERANCE)
-            return false;
-
-        double sides[4] = {a, b, c, d};
-        std::sort(sides, sides + 4);
-
-        if (fabs(sides[0] - sides[1]) < TOLERANCE &&
-            fabs(sides[2] - sides[3]) < TOLERANCE &&
-            fabs(sides[1] - sides[2]) > TOLERANCE)
-            return true;
-        else
-            return false;
-    }
-
-    static void printFigureInfo(const Figure &figure)
-    {
-        std::cout << "Area of the figure: " << figure.area() << std::endl;
-        std::cout << "Perimeter of the figure: " << figure.perimeter() << std::endl;
-        std::cout << "Name of the figure: " << figure.name() << std::endl;
-    }
+    static bool isSquare(double a, double b, double c, double d, double angle);
+    static bool isRhombus(double a, double b, double c, double d);
+    static bool isRectangle(double a, double b, double c, double d, double angle);
+    static void printFigureInfo(const Figure &figure);
 };
 
-#endif // CPP_FIGUREUTILS_H
+#endif //CPP_FIGUREUTILS_H

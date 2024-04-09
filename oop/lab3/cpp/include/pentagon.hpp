@@ -1,7 +1,3 @@
-//
-// Created by Rafist0 on 4/1/2024.
-//
-
 #include <stdexcept>
 #include <cmath>
 
@@ -26,29 +22,10 @@ private:
     double side;
 
 public:
-    Pentagon(double s)
-    {
-        if (s <= 0)
-        {
-            throw std::invalid_argument("Side length must be greater than 0.");
-        }
-        this->side = s;
-    }
-
-    double area() const override
-    {
-        return 0.25 * sqrt(5 * (5 + 2 * sqrt(5))) * this->side * this->side;
-    }
-
-    double perimeter() const override
-    {
-        return 5 * this->side;
-    }
-
-    const char *name() const override
-    {
-        return "Pentagon";
-    }
+    Pentagon(double s);
+    double area() const noexcept(true) override;
+    double perimeter() const noexcept(true) override;
+    const char *name() const noexcept(true) override;
 };
 
 #endif // CPP_PENTAGON_H
