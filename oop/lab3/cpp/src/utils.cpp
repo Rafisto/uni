@@ -11,12 +11,12 @@ bool FigureUtils::isSquare(double a, double b, double c, double d, double angle)
     return (fabs(sides[0] - sides[3]) < TOLERANCE);
 }
 
-bool FigureUtils::isRhombus(double a, double b, double c, double d)
+bool FigureUtils::isRhombus(double a, double b, double c, double d, double angle)
 {
     double sides[4] = {a, b, c, d};
     std::sort(sides, sides + 4);
 
-    return (fabs(sides[0] - sides[3]) < TOLERANCE);
+    return (fabs(sides[0] - sides[3]) < TOLERANCE) && 0 < angle && angle < 180;
 }
 
 bool FigureUtils::isRectangle(double a, double b, double c, double d, double angle)

@@ -1,5 +1,1 @@
-public interface Figure {
-    double area();
-    double perimeter();
-    String name();
-}
+public abstract class Figure implements FigureInterface {}

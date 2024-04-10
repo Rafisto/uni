@@ -54,7 +54,7 @@ int main(const int argc, const char *const argv[])
             {
                 figure = new Square(side1);
             }
-            else if (FigureUtils::isRhombus(side1, side2, side3, side4))
+            else if (FigureUtils::isRhombus(side1, side2, side3, side4, angle))
             {
                 figure = new Rhombus(side1, angle);
             }

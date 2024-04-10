@@ -1,4 +1,4 @@
-public class Pentagon implements Figure {
+public class Pentagon extends Figure {
     private double side;
 
     public Pentagon(double s) throws IllegalArgumentException {

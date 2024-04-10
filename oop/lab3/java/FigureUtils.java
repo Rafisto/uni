@@ -3,7 +3,8 @@ import java.util.Arrays;
 public class FigureUtils {
     private static final double TOLERANCE = 1e-4;
 
-    private FigureUtils() {
+    private FigureUtils() throws InstantiationError {
+        throw new InstantiationError("This is a static class!");
     }
 
     public static boolean isSquare(double a, double b, double c, double d, double angle) {
@@ -11,9 +12,9 @@ public class FigureUtils {
                 && Math.abs(d - a) < TOLERANCE && Math.abs(angle - 90) < TOLERANCE;
     }
 
-    public static boolean isRhombus(double a, double b, double c, double d) {
+    public static boolean isRhombus(double a, double b, double c, double d, double angle) {
         return Math.abs(a - b) < TOLERANCE && Math.abs(b - c) < TOLERANCE && Math.abs(c - d) < TOLERANCE
-                && Math.abs(d - a) < TOLERANCE;
+                && Math.abs(d - a) < TOLERANCE && 0 < angle && angle < 180;
     }
 
     public static boolean isRectangle(double a, double b, double c, double d, double angle) {

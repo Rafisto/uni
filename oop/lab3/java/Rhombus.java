@@ -3,7 +3,7 @@ public class Rhombus extends Quadrilateral {
     private double angle;
 
     public Rhombus(double s, double a) throws IllegalArgumentException {
-        if (s <= 0 || a <= 0) {
+        if (s <= 0 || a <= 0 || a > 180) {
             throw new IllegalArgumentException("Side length and angle must be positive.");
         }
         this.side = s;

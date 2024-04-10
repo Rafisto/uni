@@ -32,7 +32,7 @@ public class Main {
                     double angle = Double.parseDouble(args[5]);
                     if (FigureUtils.isSquare(side1, side2, side3, side4, angle)) {
                         figure = new Square(side1);
-                    } else if (FigureUtils.isRhombus(side1, side2, side3, side4)) {
+                    } else if (FigureUtils.isRhombus(side1, side2, side3, side4, angle)) {
                         figure = new Rhombus(side1, angle);
                     } else if (FigureUtils.isRectangle(side1, side2, side3, side4, angle)) {
                         figure = new Rectangle(side1, side2);

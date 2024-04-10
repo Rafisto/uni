@@ -1,7 +1,6 @@
 import java.lang.Math;
 
-// Circle.java
-public class Circle implements Figure {
+public class Circle extends Figure {
     private double radius;
 
     public Circle(double radius) throws IllegalArgumentException {

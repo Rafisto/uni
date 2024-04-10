@@ -54,9 +54,13 @@ const char *Rectangle::name() const noexcept(true)
 
 Rhombus::Rhombus(double s, double a) noexcept(false)
 {
-    if (s <= 0 || a <= 0)
+    if (s <= 0)
     {
         throw std::invalid_argument("Side length and angle must be greater than 0.");
+    }
+    if (a <= 0 || a >= 180) 
+    {
+        throw std::invalid_argument("Angle must be between 0 and 180 degrees.");
     }
     side = s;
     angle = a;

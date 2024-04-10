@@ -1,4 +1,4 @@
-public class Hexagon implements Figure {
+public class Hexagon extends Figure {
     private double side;
 
     public Hexagon(double s) throws IllegalArgumentException {

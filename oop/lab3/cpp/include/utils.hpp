@@ -19,7 +19,7 @@ public:
     ~FigureUtils() = delete;
 
     static bool isSquare(double a, double b, double c, double d, double angle);
-    static bool isRhombus(double a, double b, double c, double d);
+    static bool isRhombus(double a, double b, double c, double d, double angle);
     static bool isRectangle(double a, double b, double c, double d, double angle);
     static void printFigureInfo(const Figure &figure);
 };
