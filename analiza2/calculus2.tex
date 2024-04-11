@@ -954,4 +954,205 @@ $\frac{d}{dt} F(x(t),y(t)) = \frac{\partial F}{\partial x} x'(t) + \frac{\partia
     ($z-z_0=A(x-x_0)+B(y-y_0)$) - równanie płaszczyzny przechodzącej przez $(x_0,y_0,z_0)$
 \end{tw}
 
+\section{Wykład VI}
+
+\subsection{Mnożniki Lagrange'a}
+
+$f, g : \mathbb{R}^2 \rightarrow \mathbb{R}$
+Max/Min $f(x_1,x_2)$ pod warunkiem $g(x_1,x_2)$\\
+Np. Znaleźć Max/Min $x^2+y^2$ pod warunkiem $xy=2$\\
+$f(x,y)=x^2+y^2$\\
+$g(x,y)=xy-2$\\
+$\Phi(x,y,\lambda)=f(x,y)-\lambda g(x,y) = x^2+y^2 - \lambda(xy) + 2\lambda$\\
+$\frac{\partial \Phi}{\partial x} = 2x - \lambda y = 0$\\
+$\frac{\partial \Phi}{\partial x} = 2y - \lambda x = 0$\\
+$ \begin{bmatrix}
+    2 & -\lambda \\
+    -\lambda & 2 
+    \end{bmatrix}
+\begin{bmatrix}
+    x\\
+    y
+\end{bmatrix}
+=
+$
+$
+\begin{bmatrix}
+0\\
+0
+\end{bmatrix}
+$
+\begin{enumerate}
+    \item $\det \begin{bmatrix}
+        2 & -\lambda \\
+        -\lambda & 2 
+        \end{bmatrix} \neq 0$, nie spełnia $xy=2$
+    \item $\det \begin{bmatrix}
+        2 & -\lambda \\
+        -\lambda & 2 
+        \end{bmatrix} = 0$\\
+        $4-\lambda^2 =0$\\
+        $\lambda = \pm 2$
+    \item $\lambda = -2$\\
+    $2x+2y=0\iff x=-y$\\
+    Wtedy $2=(-y)y = -y^2\leq 0$, nie ma ekstremów
+    \item $\lambda = 2$\\
+    $2x-2y = 0 \iff x=y$\\
+    $x^2=2$ dwa punkty podejrzane $(\pm\sqrt{2},\pm\sqrt{2})$\\
+    Sprawdzamy warunek dostateczny dla funkcji $f(x,y)=x^2+y^2$\\
+    Policzmy Hessian:\\
+    $f_{xx}(x,y)=2, f_{xx} (\sqrt{2},\sqrt{2}) > 0$\\
+    $W(\sqrt{2},\sqrt{2})=4>0$\\
+    W punktach $(\sqrt{2},\sqrt{2}), (-\sqrt{2},-\sqrt{2})$ mamy minima lokalne.
+\end{enumerate}
+
+Teoria ($n=2$)
+\begin{de}
+    Punkt $a\in\mathbb{R}^n$ jest punktem regularnym zbioru $\{x\in\mathbb{R}^n:  g(x)=0\}$ jest $g(a)=0$ oraz gradient funkcji $g$ w punkcie $a$ jest różny od $0$.
+\end{de}
+
+\begin{tw}
+    Jeśli $f:\mathbb{R}^n\rightarrow\mathbb{R}$ ma ekstremum lokalne w punkcie $a\in\mathbb{R}^n$ pod warunkiem, że $g(a)=0$, to istnieje
+    $\lambda$, takie że $\nabla(f - \lambda g)_{x=a} = 0$ o ile $a$ jest punktem regularnym.
+\end{tw}
+
+Przykład:\\
+$f(x,y)=xy$\\
+$g(x,y)=\frac{x^2}{8}+\frac{y^2}{2}-1=0$\\
+$\Phi(x,y,\lambda) = xy - \lambda (\frac{x^2}{8} + \frac{y^2}{2}-1)$\\
+$\frac{\partial \Phi}{\partial x} = y - \frac{\lambda x}{4} =0$\\
+$\frac{\partial \Phi}{\partial y} = x - \lambda y = 0 $\\
+$\begin{bmatrix}
+-\frac{\lambda}{4} & 1\\
+1 & -\lambda
+\end{bmatrix}$
+$\begin{bmatrix}
+    x\\
+    y
+\end{bmatrix}
+=
+$
+$
+\begin{bmatrix}
+0\\
+0
+\end{bmatrix}$\\
+\begin{enumerate}
+    \item $\det A \neq 0$\\
+    $x=y=0$, nie ma rozwiązań
+    \item $\det A = 0 \left(\lambda = 2 \lor \lambda = -2\right)$\\
+    $\lambda = 2 \implies \left(y=\frac{1}{2} x \land \frac{x^2}{8} + \frac{y^2}{2} - 1 =0\right)$\\
+    $\left(2,1\right), \left(-2,-1\right)$\\
+    \item $\lambda = -2 \implies \left(y=-\frac{1}{2}x \land \frac{x^2}{8}+\frac{y^2}{2} - 1 = 0\right)$\\
+    $\left(2,-1\right), \left(-2,1\right)$\\
+    Badamy max/min:
+    \begin{enumerate}
+        \item $f(2,1)=2$ max lok
+        \item $f(-2,-1)=2$ max lok
+        \item $f(2,-1)=2$ min lok
+        \item $f(-2,1)=-2$ min lok
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Całka Lebesgue'a}
+
+Przedziały $a_1 \leq b_1, a_2 \leq b_2, \dots, a_n \leq b_n$.
+$\Pi = [a_1, b_1] \times [a_2, b_2] \times \dots \times [a_n, b_n]$
+Przedział domknięty na $\mathbb{R}^n$. 
+
+\begin{de}
+    Wnętrze przedziału oznaczamy:
+    \[\text{Int}([a_1,b_1]\times\dots\times[a_n,b_n]) = (a_1,b_1)\times\dots\times(a_n,b_n)\]
+\end{de}
+
+\begin{de}
+    Niech $\Pi, \Delta$ będą przedziałami. Mówimy, że $\Pi, \Delta$ nie zachodzą na siebie
+    i piszemy, że $\Pi \bot \Delta$ jeśli:
+        \[\text{Int} \Pi \cap \text{Int} \Delta = \emptyset\]
+\end{de}
+
+\begin{de}
+    Rodzina przedziałów $P$ jest rozbiciem przedziałów $\Pi$ jeśli:
+    \begin{enumerate}
+        \item $\bigcup P = \Pi$
+        \item $\forall P,Q \in P \left(P\neq Q =\implies P \bot Q \right)$
+    \end{enumerate}
+\end{de}
+
+\begin{de}
+    $\text{Vol}\left(\prod_{i=1}^{n} [a_i,b_i]\right) = \prod_{i=1}^{n} (b_1-a_1)$
+\end{de}
+
+\begin{pk}
+    \begin{enumerate}
+        \item $\text{Vol}([a,b]) = b-a$
+        \item $\text{Vol}([a,b]\times[c,d]) = (b-a)(c-d)$
+        \item $\text{Vol}([a,b]\times[c,d]\times[e,f]) = (b-a)(c-d)(e-f)$
+    \end{enumerate}
+\end{pk}
+
+\begin{tw}
+    Jeśli $P$ jest rozbiciem $\Pi$ to:
+    \[\text{Vol}(\Pi) = \sum_{p\in P} \text{Vol}(p)\]
+\end{tw}
+
+Własności:
+\begin{enumerate}
+    \item $\Pi \subset \Delta \implies \text{Vol}(\Pi) \leq \text{Vol}(\Delta)$
+    \item $\Pi \subset \Delta_1 \cup \Delta_2 \cup \dots \cup \Delta_n$
+    to $\text{Vol}(\Pi) \leq \sum_{i=1}^{n} \text{Vol}{\Delta_i}$
+\end{enumerate}
+
+\begin{de}
+    Miara zewnętrzna Lebesgue'a. Ustalamy $n$, $A\subseteq \mathbb{R}^n$, $A$ - ograniczony.
+    \[\lambda^{*}(A) = \inf \left\{\sum \text{Vol}(\pi_i) \left(\forall_i \right)(\pi_i \text{ jest produktem} \land A\subset \bigcup_{n\geq 0} \pi_n)\right\}\]
+    Oznaczamy $|A|=\lambda^{*}(A)$
+\end{de}
+
+\begin{enumerate}
+    \item $0 \leq |A| \leq \infty$
+    \item $A\subseteq B \implies |A| \leq |B|$
+    \item $\bigcup_{n=1}^{\infty} A_n \leq \sum_{n=1}^{\infty} |A_n|$
+\end{enumerate}
+
+\begin{tw}
+    $\Pi$ jest przedziałem:
+    \[\lambda^{*}(\Pi) = \text{Vol}(\Pi)\]
+\end{tw}
+
+\begin{de}
+    Zbiór $A\subseteq \mathbb{R}^n$ jest zbiorem miary 0, jeśli $\lambda^{*}(A)=0$.
+    \begin{enumerate}
+        \item $n=2$, $A = (a,b) \subset \mathbb{R}^2$\\
+        $\lambda^{*}(B)=(b-a)2\varepsilon$\\
+        $\lambda^{*}(A)=0$
+        \item $\qed\in \mathbb{R}^3$ jest miary zero\\
+        $\lambda^{*}(\mathbb{Q})=\lambda^{*}(\bigcup_{n\in\mathbb{N}} \{P_n\}) \leq \sum_{n\in\mathbb{N}} \{P_n\} = \sum_{n\in\mathbb{N}} 0 = 0$
+    \end{enumerate}
+\end{de}
+
+\begin{de}
+    Zbiór $A\subset \mathbb{R}^n$ jest mierzalny wedug Lebesgue'a jeśli:
+    \[\forall Z\subseteq \mathbb{R}^n \left(\lambda^{*}(Z\cap A) + \lambda^{*}(Z\cap A^C) = \lambda^{*}(Z)\right)\]
+\end{de}
+
+\begin{de}
+    $M_n$ - rodzina zbiorów mierzalnych. Miarą Lebesgue'a na $M_n$ nazywamy funkcję:
+    \[\lambda(A) = \lambda^{*}(A)\]
+\end{de}
+Funkcje proste $A\subseteq \mathbb{R}^n$, Niech $B\subseteq A$.
+\[
+\textbf{1} =
+\begin{cases}
+    1 \text{ dla } x\in B\\
+    0 \text{ dla } x\in A-B
+\end{cases}
+\]
+
+\begin{de}
+    Niech $A\in M_n$. Funkcję prostą o nośniku $A$ nazywamy funkcję postaci:
+    \[ f(x) = \sum_{i=1}^{n} a_i \cdot \textbf{1}_{A,B} (x), a_i\in\mathbb{R}\]
+    Gdzie $(B_i)_{i=1}^{n}$ jest rodziną zbiorów parami rozłącznych, mierzalnych, zawartych w $A$.
+\end{de}
+
 \end{document}

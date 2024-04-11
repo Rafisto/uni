@@ -3,7 +3,7 @@ CXX_OPT := -O3
 CXX_DBG := # -ggdb3
 CXX_WARN := -Weverything -Wno-c++98-compat-pedantic -Wno-shadow-field-in-constructor \
  			-Wno-weak-vtables -Wno-padded -Wno-global-constructors -Wno-exit-time-destructors \
-			-Wno-unsupported-cb -Wno-newline-eof
+			-Wno-unsupported-cb -Wno-newline-eof -Wno-unsafe-buffer-usage
 
 CXX_FLAGS = $(CXX_OPT) $(CXX_DBG) $(CXX_WARN)
 

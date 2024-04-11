@@ -1,3 +1,7 @@
+/*
+ * Figures class having two enums for single parameter and two parameter figure
+ * ~ The Third Exercise
+ */
 public class Figures {
     interface SingleParameterFigure {
         double area(double a);
@@ -15,7 +19,7 @@ public class Figures {
         String name();
     }
 
-    public enum SingleParameterFigureEnum {
+    public enum SingleParameterFigureEnum implements SingleParameterFigure {
         CIRCLE {
             @Override
             public double area(double a) {
@@ -89,15 +93,15 @@ public class Figures {
 
     }
 
-    public enum TwoParameterFigureEnum {
+    public enum TwoParameterFigureEnum implements TwoParameterFigure {
         RECTANGLE {
             @Override
-            public double area(double a, double b) {
+            public double area(double a, double b) throws IllegalArgumentException {
                 return new Rectangle(a, b).area();
             }
 
             @Override
-            public double perimeter(double a, double b) {
+            public double perimeter(double a, double b) throws IllegalArgumentException {
                 return new Rectangle(a, b).perimeter();
             }
 
@@ -108,12 +112,12 @@ public class Figures {
         },
         RHOMBUS {
             @Override
-            public double area(double a, double b) {
+            public double area(double a, double b) throws IllegalArgumentException {
                 return new Rhombus(a, b).area();
             }
 
             @Override
-            public double perimeter(double a, double b) {
+            public double perimeter(double a, double b) throws IllegalArgumentException {
                 return new Rhombus(a, b).perimeter();
             }
 

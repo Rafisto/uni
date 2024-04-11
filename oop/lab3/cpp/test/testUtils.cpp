@@ -3,6 +3,8 @@
 
 #include <utils.hpp>
 
+void testUtils() noexcept(true);
+
 void testUtils() noexcept(true)
 {
     assert(FigureUtils::isSquare(10, 10, 10, 10, 90) == true);

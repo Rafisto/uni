@@ -13,7 +13,7 @@ public class Main {
                 try {
                     double radius = Double.parseDouble(args[1]);
                     figure = new Circle(radius);
-                } catch (NumberFormatException e) {
+                } catch (IllegalArgumentException e) {
                     System.err.println("Invalid Argument Error: " + e.getMessage());
                     System.exit(1);
                 }
@@ -39,7 +39,7 @@ public class Main {
                     } else {
                         throw new IllegalArgumentException("Invalid Quadrilateral.");
                     }
-                } catch (NumberFormatException e) {
+                } catch (IllegalArgumentException e) {
                     System.err.println("Invalid Argument Error: " + e.getMessage());
                     System.exit(1);
                 }
@@ -49,7 +49,7 @@ public class Main {
                 try {
                     double sideLength = Double.parseDouble(args[1]);
                     figure = new Pentagon(sideLength);
-                } catch (NumberFormatException e) {
+                } catch (IllegalArgumentException e) {
                     System.err.println("Invalid Argument Error: " + e.getMessage());
                     System.exit(1);
                 }
@@ -59,7 +59,7 @@ public class Main {
                 try {
                     double sideLength = Double.parseDouble(args[1]);
                     figure = new Hexagon(sideLength);
-                } catch (NumberFormatException e) {
+                } catch (IllegalArgumentException e) {
                     System.err.println("Invalid Argument Error: " + e.getMessage());
                     System.exit(1);
                 }

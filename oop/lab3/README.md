@@ -43,3 +43,9 @@ The `figure_generator` program returns 0 on success, and non-zero values on fail
   ```
   figure_generator -s 7
   ```
+
+# Java Test
+
+```bash
+java -ea Test
+```

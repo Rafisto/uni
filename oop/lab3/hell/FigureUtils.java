@@ -48,4 +48,10 @@ public final class FigureUtils {
         System.out.println("Area: " + figure.area());
         System.out.println("Perimeter: " + figure.perimeter());
     }
+
+    public static void printFigureInfo(String name, double area, double perimeter) {
+        System.out.println("Figure name: " + name);
+        System.out.println("Area: " + area);
+        System.out.println("Perimeter: " + perimeter);
+    }
 }
