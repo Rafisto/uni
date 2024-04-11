@@ -35,7 +35,13 @@ public class Main {
                     } else if (FigureUtils.isRhombus(side1, side2, side3, side4, angle)) {
                         figure = new Rhombus(side1, angle);
                     } else if (FigureUtils.isRectangle(side1, side2, side3, side4, angle)) {
-                        figure = new Rectangle(side1, side2);
+                        if (Math.abs(side1 - side2) < 1e-6 && Math.abs(side3 - side4) < 1e-6) {
+                            figure = new Rectangle(side1, side3);
+                        } else if ((Math.abs(side1 - side3) < 1e-6 && Math.abs(side2 - side4) < 1e-6) || (Math.abs(side1 - side4) < 1e-6 && Math.abs(side2 - side3) < 1e-6)) {
+                            figure = new Rectangle(side1, side2);
+                        } else {
+                            throw new IllegalArgumentException("Invalid Rectangle: There should be at least 2 pairs of equal side lengths");
+                        }
                     } else {
                         throw new IllegalArgumentException("Invalid Quadrilateral.");
                     }
@@ -65,7 +71,8 @@ public class Main {
                 }
                 break;
             default:
-                throw new IllegalArgumentException("Invalid option");
+                System.err.println("Invalid Figure option");
+                System.exit(1);
         }
 
         FigureUtils.printFigureInfo(figure);

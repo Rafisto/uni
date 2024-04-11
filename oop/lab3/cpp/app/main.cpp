@@ -25,6 +25,11 @@ int main(const int argc, const char *const argv[])
     {
     case 'o':
         std::cout << "Option o selected" << std::endl;
+        if (argc > 3)
+        {
+            std::cerr << "Too many arguments" << std::endl;
+            return 1;
+        }
         try
         {
             const auto radius = StringConverter::stringToVal<double>(std::string(argv[2]));
@@ -41,6 +46,11 @@ int main(const int argc, const char *const argv[])
         if (argc < 7)
         {
             std::cerr << "4 side lengths and angle not provided." << std::endl;
+            return 1;
+        }
+        if (argc > 7)
+        {
+            std::cerr << "Too many arguments" << std::endl;
             return 1;
         }
         try
@@ -60,7 +70,17 @@ int main(const int argc, const char *const argv[])
             }
             else if (FigureUtils::isRectangle(side1, side2, side3, side4, angle))
             {
-                figure = new Rectangle(side1, side2);
+                if (std::fabs(side1 - side2) < 1e-6 && std::fabs(side3 - side4) < 1e-6) {
+                    figure = new Rectangle(side1, side3);
+                }
+                else if ((std::fabs(side1 - side3) < 1e-6 && std::fabs(side2 - side4) < 1e-6) || (std::fabs(side1 - side4) < 1e-6 && std::fabs(side2 - side3) < 1e-6))
+                {
+                    figure = new Rectangle(side1, side2);
+                } 
+                else
+                {
+                    throw std::invalid_argument("Invalid Rectangle: There should be at least 2 pairs of equal side lengths");
+                }
             }
             else
             {
@@ -75,6 +95,11 @@ int main(const int argc, const char *const argv[])
         break;
     case 'p':
         std::cout << "Option p selected" << std::endl;
+        if (argc > 3)
+        {
+            std::cerr << "Too many arguments" << std::endl;
+            return 1;
+        }
         try
         {
             const auto side_length = StringConverter::stringToVal<double>(std::string(argv[2]));
@@ -88,6 +113,11 @@ int main(const int argc, const char *const argv[])
         break;
     case 's':
         std::cout << "Option s selected" << std::endl;
+        if (argc > 3)
+        {
+            std::cerr << "Too many arguments" << std::endl;
+            return 1;
+        }
         try
         {
             const auto side_length = StringConverter::stringToVal<double>(std::string(argv[2]));
@@ -100,7 +130,8 @@ int main(const int argc, const char *const argv[])
         }
         break;
     default:
-        throw std::invalid_argument("Invalid option");
+        std::cerr << "Invalid option [c|o|p|s]" << std::endl;
+        return 1;
     }
 
     FigureUtils::printFigureInfo(*figure);
