@@ -1155,4 +1155,134 @@ Funkcje proste $A\subseteq \mathbb{R}^n$, Niech $B\subseteq A$.
     Gdzie $(B_i)_{i=1}^{n}$ jest rodziną zbiorów parami rozłącznych, mierzalnych, zawartych w $A$.
 \end{de}
 
+\section{Wykład VII}
+
+\begin{de}
+    $f$ prosta $f=\sum_{i=1}^{n} a_i \textbf{1}_{A,B_i}$.
+    \[\int_{A} f = \sum{i=1}^{n} a_i \lambda(B_i)\]
+\end{de}
+
+\subsection{Przykład całki Lebesgue'a}
+
+Przykład:
+$A\subset \mathbb{R}^m, m=1$\\
+$f(x)=1 \cdot$
+$\textbf{1}_{A,B_1} (x)$
+$+ 2 \cdot \textbf{1}_{A,B_2} (x)$
+$+ 4 \cdot \textbf{1}_{A,B_3} (x)$\\
+\[\int_{A} f = 1\lambda(B_1) + 2\lambda(B_2) + 4\lambda(B_3)\]
+$D(x)=\begin{cases}
+    1, x\in \mathbb{Q} \cap [0,1]\\
+    0, x\in [0,1] - \mathbb{Q}
+\end{cases}$
+$A=[0,1], B_1 = \mathbb{Q} \cap [0,1], B_2=[0,1] - \mathbb{Q}$\\
+$D(x) = 1 \cdot \textbf{1}_{A,B_1} (x) + 0 \cdot \textbf{1}_{A,B}$
+\[\int_{[0,1]} 1\lambda(\mathbb{Q}\cap[0,1]) + 0\lambda(B_2)=0\]
+Całkowalna w sensie Lebesgue'a, nie istnieje cała Riemanna.\\
+Corollary:
+$f: \mathbb{R}^m \rightarrow \mathbb{R}, g: \mathbb{R}^m \rightarrow \mathbb{R}$.
+$\{x\in\mathbb{R}^n f(x)\neq g(x)\}$ jest miary zero. Wówczas $g$ jest całkowalna:
+$\int_{\mathbb{R}^m} g = \int_{\mathbb{R}^m} f$\\
+\[\int g = \int f\]
+
+\subsection{Całki wielokrotne}
+
+Całkowanie po wielu zmiennych można wykonać po kolei.
+
+\begin{align}
+    \int_{0}^{1} \int_{0}^{1} xy dx dy =\\
+    =\int_{0}^{1} \left(\int_{0}^{1} xy dx \right) dy=\\
+    =\int_{0}^{1} \left(\left[\frac{x^2y}{2}\right]_{x=0}^{x=1}\right) dy=\\
+    =\int_{0}^{1} \left(\frac{y}{2}\right) dy = \left[\frac{1}{4} y^2\right]_{0}^{1}=\\
+    =\frac{1}{4} 
+\end{align}
+
+\subsection{Twierdzenie Fubiniego}
+
+\begin{tw}
+    Zakładamy, że funkcja $f:\mathbb{R}^n \times \mathbb{R}^m \rightarrow \mathbb{R}$
+    jest nieujemna lub całkowalna. Niech $x\in\mathbb{R}^n$, $y\in\mathbb{R}^m$. Dla $x\in\mathbb{R}^n$ definiujemy:
+    \[f_x(y) = f(x,y)\]
+    Wtedy:
+    \begin{itemize}
+        \item dla prawie wszystkich $x$ funkcje $f_x$ są całkowalne
+        \item $\int_{\mathbb{R}^n\times\mathbb{R}^m} = \int_{\mathbb{R}^n} \left(\int_{\mathbb{R}^m} f\right)$
+    \end{itemize}
+\end{tw}
+
+Przykład:
+$x=(x_1,x_2,\dots,x_n), y=(y_1,y_2,\dots, y_m)$\\
+$\int \dots \int_{(n+m) R^n\times R^m} f(x_1,x_2,\dots,x_n,y_1,y_2,\dots,y_n) dx_1, dx_2 \dots, dy_1, dy_2, \dots, dy_n =$\\
+$=\int \int_{\mathbb{R}^n} \left(\int \int_{\mathbb{R}^m} f(x_1,\dots, y_n) dy_1, dy_2, \dots, dy_n\right) dx_1, dx_2, \dots, dx_n$
+
+\subsection{Suma wielokrotna}
+\[\sum_{k=1}^{\infty}\sum_{k=1}^{\infty} a_{ik} = A\]
+\[A=\sum_{k=1}^{\infty}\left(\sum_{i=1}^{\infty} a_{ik}\right)= \sum_{i=1}^{\infty}\left(\sum_{k=1}^{\infty} a_{ik}\right)\]
+
+\begin{tw}
+    Inna wersja twierdzenia Fubiniego.\\
+    Niech $A\subset \mathbb{R}^n, B\subseteq \mathbb{R}^m$
+    $A, B$ - mierzalne,
+    $f: A\times B \rightarrow \mathbb{R}$ - nieujemna lub całkowalna.\\
+    Dla $x\in A$ definiujemy:
+    \[f_x(y) = f(x,y)\]
+    Wtedy:
+    \begin{itemize}
+        \item dla prawie wszystkich $x$ funkcje $f_x$ są całkowalne
+        \item $\int \int_{A\times B} f(x,y) dx dy = \int_A \left(\int_B f_x(y) \right) dy dx$
+    \end{itemize}
+\end{tw}
+
+Funkcja dwóch zmiennych jest całkowalna jeżeli istnieje oszacowanie:
+\[|f(x,y)| \leq g(x,y)\]
+Prowadzący nt. powyższego "Lepiej żeby to po prostu nie było napisane"
+
+\begin{pk}
+    \[\int_{[0,1]} \int_{[0,1]} \int_{[0,1]} (2x+2y+2z) dx dy dz\]
+    Rozbijmy to na całki iterowane:
+    \begin{align}
+        \int_0^1 \left( \int_0^1 \left( \int_0^1 (2x+2y+2z) dx \right) dy \right) dz =\\
+        =\int_0^1 \left( \int_0^1 \left[x^2 + (2y+2z)x\right]_0^1 \right) dy dz= \\
+        =\int_0^1 \left( \int_0^1 1+2y+2z dy \right) dz=\\
+        =\int_0^1 \left[(1+2z)y + y^2\right]_0^1 dz=\\
+        =\int_0^1 (2+2z) dz = \left[2z+z^2\right]_0^1 = 3
+    \end{align}
+    Integrate[2x+2y+2z,(x,0,1),(y,0,1),(z,0,1)]
+\end{pk}
+$\text{vol}([a,b]\times[c,d]\times[e,f]) = \lambda_3(\dots) = \int\int\int_P 1 dx dy dz$
+
+$\int \dots \int_{[0,1]^n} (x_1^2 + x_2^2 + \dots + x_n^2) dx_1dx_2 \dots dx_n = n \frac{1}{3}$\\
+$=\sum_{i=1}^{\infty} \int \dots \int_{[0,1]^2} (x_i^2) dx_1 dx_2 \dots dx_n = n \frac{1}{3}$\\
+$\int_0^1 x_1^2 dx_1 = \left[\frac{x_1^2}{3}\right]_0^1 = \frac{1}{3}$\\
+$(\frac{b_n^3}{3} - \frac{a_n^3}{3})(b_{n-1} - a_{n-1})(b_{n-2} - a_{n-1})\dots(b_1-a_1)$\\
+
+\subsection{Pole koła}
+
+$K=\{(x,y): x^2 + y^2 \leq r^2\}$\\
+$y=\pm\sqrt{r^2-x^2}$\\
+$-r \leq x \leq r$\\
+$-\sqrt{r^2-x^2} \leq y \leq \sqrt{r^2-x^2}$
+\[\int \int 1 dx dy = \lambda(k) = \pi r^2 dx_n = \int_{-r}^{r} \left(\int_{-\sqrt{r^2-x^2}}^{\sqrt{r^2-x^2}} 1 dy \right) dx =\]
+\[=\int_{-r}^{r} 2\sqrt{r^2-x^2} dx = 2 \int_{-r}^{r} \sqrt{r^2-x^2} dx = 2 \frac{pi}{2} r^2 = \pi r^2\]
+
+Integrate($sqrt(r^2-x^2)$,$(x,-r,r)$)\\
+
+$\int_{-r}^{r} \sqrt{r^2-x^2} = 2\int_{0}^{r} \sqrt{r^2-x^2} dx$\\
+Podstawmy $x=rt, dx = r dt$, zatem:
+$=2r^2 \int_0^1 \sqrt{1-t^2} dt = r^2 \frac{\pi}{2}$
+
+\begin{pk}
+Policzmy następującą całkę:\\
+$\int \int_{\Delta} (x+y) dx dy, x=0,y=0, x+y=1$\\
+$0 \leq x \leq 1, 0 \leq y \leq 1-x$\\
+zatem:
+\[A=\int_0^1 \left( \int_0^1 (x+y) dy\right) dx = \frac{1}{3}\]
+Obliczenia:
+\[\int_0^1 \left(x(1-x) + \frac{(1-x)^2}{2}\right) dx=\]
+\[=\int_0^1 (x-x^2+\frac{1}{2} + \frac{x^2}{2} - x) dx=\]
+\[=\int_0^1 \frac{1}{2} - \frac{x^2}{2} dx = \left[\frac{1}{2} x - \frac{x^3}{3}\right]_0^1 = \frac{1}{2} - \frac{1}{6} = \frac{1}{3}\]
+\end{pk}
+
+$A=\int_0^1 \int_0^{1-y} (x+y) dx dy$
+
 \end{document}
