@@ -1285,4 +1285,127 @@ Obliczenia:
 
 $A=\int_0^1 \int_0^{1-y} (x+y) dx dy$
 
+\section{Wykład VII}
+
+\subsection{Twierdzenie o zamianie zmiennych}
+
+\begin{tw}
+    O zamianie zmiennych $:\varphi: \mathbb{R}^n \rightarrow \mathbb{R}^n$ jest $1-1$ i $\mathbb{C}^{1}$ (różniczkowalna i ciągłe pochodne cząstkowe)
+    $\varphi(x_1,x_2,\dots,x_n)=\left(\varphi_1(x_1,x_2,\dots,x_n), \varphi_2(x_1,x_2,\dots,x_n), \dots \varphi_n(x_1,x_2,\dots,x_n)\right)$.
+    Rozważamy macierz Jacobiego:
+    \[\mathbf {J} ={\begin{bmatrix}{\dfrac {\partial \varphi_{1}}{\partial x_{1}}}&\cdots &{\dfrac {\partial \varphi_{1}}{\partial x_{n}}}\\\vdots &\ddots &\vdots \\{\dfrac {\partial \varphi_{n}}{\partial x_{1}}}&\cdots &{\dfrac {\partial \varphi_{m}}{\partial x_{n}}}\end{bmatrix}}\]
+    $\det\left(\mathbf {J}_{\varphi(x)}\right) \neq 0$
+    Niech $f:\varphi(D)\rightarrow\mathbb{R}$ ciągła.
+    \[\int_{\varphi(D)}^{n}\int f(y) dy_1 dy_2 \dots dy_n = \int_{D}^{n} \int f(x) \cdot \left|\det\mathbf{J}_{\varphi(x)}\right| dx_1 dx_2 \dots dx_n\]
+\end{tw}
+
+\subsection{Współrzędne biegunowe}
+
+\begin{pk}
+    Współrzędne biegunowe $(x,y)\in\mathbb{R}^2$, $x=r\cos(\alpha)$, $y=r\sin(\alpha)$\\
+    $r\in\left[0,\infty\right), \alpha \in [0,2\pi]$\\
+    $\varphi(r,\alpha) = \left(r\cos(\alpha),r\sin(\alpha)\right)$\\
+    $\varphi : \mathbb{R}^2 \rightarrow \mathbb{R}^2$\\
+    \[\mathbf{J}_{\varphi(r,\alpha)} = \begin{bmatrix}\frac{\partial \varphi_1}{\partial r}&\frac{\partial \varphi_1}{\partial \alpha}\\\frac{\partial \varphi_2}{\partial r}&\frac{\partial \varphi_2}{\partial \alpha}\end{bmatrix}\]
+    \[\mathbf{J}_{\varphi(r,\alpha)} = \begin{bmatrix}\cos(\alpha)&r(-\sin(\alpha))\\\sin(\alpha)&r\cos(\alpha)\end{bmatrix} |\det(\mathbf{J}_{\alpha(r,\alpha)})| = |r\cos^2\alpha + r\sin^2 \alpha| = |r| = r\]
+    \[\int_{\varphi{D}} \int f(x,y) dx dy = \int_D \int f(r,\alpha) r dr d\alpha\]
+\end{pk}
+
+\begin{pk}
+    Pole koła o promieniu $R$
+    \[\int\int_{x^2+y^2\leq R^2} 1 dx dy =\]
+    Podstawmy $x=r\cos(\alpha)$, $y=r\sin(\alpha)$, $r$: mamy:\\
+    \[\int_{0}^{2\pi}\left(\int_{0}^{2\pi} r d\alpha\right) dr = \int_{0}^{R} 2\pi r dr = \left|\frac{2\pi r^2}{2}\right|_{0}^{R} = \pi R^2\]
+    \[\int\int_{r^2\leq R^2} r dr d\alpha = \int_0^{2\pi} \int_0^R r dr d\alpha = \int_0^{2\pi} \left[\frac{r^2}{2}\right]_0^R d\alpha = \int_0^{2\pi} \frac{R^2}{2} d\alpha = \pi R^2\]
+\end{pk}
+
+\begin{pk}
+    \[\int_{\varphi(D)}\int f(x,y) dxdy = \int_{D}\int f(r,\alpha) r dr d\alpha\]
+    \[\int\int_{x^2+y^2\leq R^2} xy dx dy = \int_{r\in[0,R]}\int_{\alpha[0,2\pi]} r\cos(\alpha) r\sin(\alpha) r dr d\alpha\]
+\end{pk}
+
+\begin{pk}
+    $D, B$ - jakiś przedział,  $\int_D f(y) dy$. Podstawmy $y=\varphi(x), y\in D, x\in B$\\
+    \[\int_D f(y) dy = \int_B f(\varphi(x)) \varphi'(x) dx\]
+    $\int_{a}^{b} (x^+1)^2 dx$ (zob. $x^2+1=y$, $B=[(a^2+1),(b^2+1)]$, $D=[a,b]$)
+\end{pk}
+
+\begin{pk}
+    Objętość elipsoidy obrotowej.
+    \[E: \frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} \leq 1\]
+    \[\text{Vol}(E) = \int\int\int_{E} dx dy dz\]
+    \[\varphi(x_1,y_1,z_1) = (x_1 a, y_1 b, z_1 c)\]
+    \[\mathbf{J}_{\varphi(x_1,y_1,z_1)} = \begin{bmatrix}\frac{d}{dx_1}(x_1,a) & \frac{d}{dy_1}(x_1,a) & \frac{d}{dz_1}(x_1,a)\\ \frac{d}{dx_1}(y_1,b) & \frac{d}{dy_1}(y_1,b) & \frac{d}{dz_1}(y_1,b)\\ \frac{d}{dx_1}(z_1,c) & \frac{d}{dy_1}(z_1,c) & \frac{d}{dz_1}(z_1,c)\end{bmatrix}\]
+    \[\mathbf{J}_{\varphi(x_1,y_1,z_1)} = \begin{bmatrix}a & 0 & 0\\0 & b & 0\\0 & 0 & c\end{bmatrix}\]
+    \[\int\int\int_{E} dx dy dz = \int\int\int abc dx_1 dy_1 dz_2 = abc \int\int\int dx_1dy_1dz_1= abc \text{Vol}\left(K(0,0,0),1\right)\]
+    Oszukujemy $V=\frac{4}{3}\pi r^3$, zatem:
+    \[\text{Vol}=\frac{4}{3}abc \pi\]
+\end{pk}
+
+\begin{pk}
+    Error function. 
+    \[\int_{0}^{\infty} e^{-x^2} = \frac{\sqrt{\pi}}{2}, \mathbb{R}^{+} \in [0,\infty)\]
+    \begin{align}
+        \left(\int_{0}^{\infty} e^{-x^2} dx\right)\left(\int_{0}^{\infty} e^{-y^2} dy\right)=\\
+        =\left(\int_{\mathbb{R}^{+}} e^{-x^2} dx\right)\left(\int_{\mathbb{R}^{+} e^{-y^2}} dy\right)=\\
+        =\int\int_{\mathbb{R}^{+}\times\mathbb{R}^{+}} e^{-x^2} e^{-y^2} dxdy=\\
+        =\int_{\mathbb{R}^{+}} \left(\int_{\mathbb{R}^{+}} e^{-x^2} e^{-y^2} dx\right) dy=\\
+        =\int_{\mathbb{R}^{+}} e^{-y^2} \left(\int_{\mathbb{R}^{+}} e^{-x^2} dx\right) dy=\\
+        =\int\int_{r\in[0,\infty]} e^{-r^2} r d\alpha dr\\
+        = \frac{\pi}{2} \int_{0}^{\infty} e^{-r^2} r dr=\\
+        \left|\frac{\pi}{2} \frac{-e^{-r^2}}{2} \right|_{0}^{\infty} = \frac{\pi}{4}\\
+    \end{align}
+    Następnie:
+    \begin{align}
+        \int_{0}^{\infty} \int_{0}^{\frac{\pi}{2}} e^{-r^2} r d\alpha dr=\\
+        =\int_{0}^{\infty} e^{-r^2} r \int_{0}^{\frac{\pi}{2}} d\alpha =\\
+        =\int_{0}^{\infty} e^{-r^2} \cdot r \frac{\pi}{2}\\
+        \int_{-\infty}^{\infty} e^{-x^2} dx =\\
+        =\sqrt{\pi}
+    \end{align}
+\end{pk}
+
+\subsection{Współrzędne walcowe}
+
+\begin{pk}
+    Współrzędne walcowe $(x,y,z)\in\mathbb{R}^3$, $x=r\cos(\alpha)$, $y=r\sin(\alpha)$, $z=z$\\
+    $r\in[0,\infty)$, $\alpha\in[0,2\pi]$, $z\in\mathbb{R}$\\
+    $\varphi(r,\alpha,z) = (r\cos(\alpha),r\sin(\alpha),z)$\\
+    $\mathbf{J}_{\varphi(r,\alpha,z)} = \begin{bmatrix}\cos(\alpha)&r(-\sin(\alpha))&0\\\sin(\alpha)&r\cos(\alpha)&0\\0&0&1\end{bmatrix}$\\
+    $|\det(\mathbf{J}_{\varphi(r,\alpha,z)})| = |1\left(r\cos^2\alpha + r\sin^2\alpha\right)| = |r| = r$\\
+    $\int\int\int_{K} f(x,y,z) dx dy dz = \int\int\int_{K} f(r,\alpha,z) r dr d\alpha dz$
+\end{pk}
+
+\begin{pk}
+    Objętość walca (o promieniu $R$ i wysokości $H$):
+    \[\text{Vol}(W) = \int\int\int_{W} dx dy dz = \int\int\int_{W} r dr d\alpha dz =\] 
+    \[\int_{0}^{2\pi} \int_{0}^{R} \int_{0}^{H} r dr d\alpha dz = \left(\int_{0}^{2\pi}\right) \left(\int_{0}^{R} rdr\right) \left(\int_{0}^{H} 1dz\right) = \pi R^2 H\]
+\end{pk}
+
+\begin{pk}
+    Wielokrotnie zastosujmy twierdzenie Fubiniego:
+    \[\int\int\int_{x\in A, y\in B, z\in C} f(x)g(x)h(z) dxdydz = \left(\int_A f(x)dx\right)\left(\int_B g(y) dy\right)\left(\int_C h(z) dz\right)\]
+\end{pk}
+
+\begin{pk}
+    Weźmy punkt $P(x,y,z)$. $\Theta $ - kąt z osią OZ.\\
+    $\cos\Theta = \frac{z}{r} \implies z=r\cos\Theta$,
+    $\sin\Theta = \frac{\text{rzut}}{r} \implies \text{rzut} = r\sin\Theta$\\
+    $\cos\alpha = \frac{x}{r\sin\Theta}$,
+    $\sin\alpha = \frac{y}{r\sin\Theta}$\\
+    $z=r\cos\Theta, x=r\sin\Theta, y=r\sin\Theta \sin\alpha$,
+    $\alpha\in(0,2\pi), \Theta\in(0,\pi)$\\
+    Są to współrzędne sferyczne.    
+\end{pk}
+
+\begin{tw}
+    (prawdopodobnie)
+    Współrzędne sferyczne $(x,y,z)\in\mathbb{R}^3$, $x=r\sin\Theta\cos\alpha$, $y=r\sin\Theta\sin\alpha$, $z=r\cos\Theta$\\
+    $r\in[0,\infty)$, $\alpha\in[0,2\pi]$, $\Theta\in[0,\pi]$\\
+    $\varphi(r,\alpha,\Theta) = (r\sin\Theta\cos\alpha,r\sin\Theta\sin\alpha,r\cos\Theta)$\\
+    $\mathbf{J}_{\varphi(r,\alpha,\Theta)} = \begin{bmatrix}\sin\Theta\cos\alpha&r\cos\Theta\cos\alpha&-r\sin\Theta\sin\alpha\\ \sin\Theta\sin\alpha&r\cos\Theta\sin\alpha&r\sin\Theta\cos\alpha\\ \cos\Theta&-r\sin\Theta&0\end{bmatrix}$\\
+    $|\det(\mathbf{J}_{\varphi(r,\alpha,\Theta)})| = |r^2\sin^2\Theta\cos\Theta\cos^2\alpha + r^2\sin^2\Theta\cos\Theta\sin^2\alpha + r^2\sin^2\Theta\sin^2\alpha\sin^2\Theta + r^2\cos^2\Theta\sin^2\Theta\cos^2\alpha + r^2\cos^2\Theta\sin^2\Theta\sin^2\alpha + r^2\cos^2\Theta\cos^2\Theta| = r^2\sin\Theta$\\
+    $\int\int\int_{K} f(x,y,z) dx dy dz = \int\int\int_{K} f(r,\alpha,\Theta) r^2\sin\Theta dr d\alpha d\Theta$
+\end{tw}
+
 \end{document}

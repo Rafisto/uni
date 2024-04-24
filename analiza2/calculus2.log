@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  17 APR 2024 13:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  24 APR 2024 13:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -748,27 +748,77 @@ Underfull \hbox (badness 10000) in paragraph at lines 1268--1269
 
  []
 
-[23] (./calculus2.aux)
+
+Overfull \hbox (73.56189pt too wide) in paragraph at lines 1293--1296
+\T1/cmr/m/n/10 ci¡-gªe po-chodne cz¡st-kowe) $\OML/plm/m/it/10 '\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x[]; x[]; [] ; x[]\OT4/cmr/m/n/10 ) = []$\T1/cmr/m/n/10 .
+ []
+
+[23]
+Underfull \hbox (badness 10000) in paragraph at lines 1305--1309
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1316--1318
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1328--1329
+
+ []
+
+[24] [25] [26
+pdfTeX warning (ext4): destination with the same identifier (name{equation.8.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1382 ...ft(\int_{0}^{H} 1dz\right) = \pi R^2 H\]
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{equation.8.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1382 ...ft(\int_{0}^{H} 1dz\right) = \pi R^2 H\]
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{equation.8.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1382 ...ft(\int_{0}^{H} 1dz\right) = \pi R^2 H\]
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{equation.8.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1382 ...ft(\int_{0}^{H} 1dz\right) = \pi R^2 H\]
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{equation.8.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1382 ...ft(\int_{0}^{H} 1dz\right) = \pi R^2 H\]
+                                                  ]
+Overfull \hbox (12.72316pt too wide) in paragraph at lines 1402--1409
+[][]\T1/cmr/bx/n/10 Twierdzenie 8.3.1. []\T1/cmr/m/n/10 (praw-do-po-dob-nie) Wspóª-rz¦dne sfe-ryczne $\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x; y; z\OT4/cmr/m/n/10 ) \OMS/plsy/m/n/10 2 \U/msb/m/n/10 R[]$\T1/cmr/m/n/10 , $\OML/plm/m/it/10 x \OT4/cmr/m/n/10 = \OML/plm/m/it/10 r [] \OT4/cmr/m/n/10 ^^B [] \OML/plm/m/it/10 $\T1/cmr/m/n/10 ,
+ []
+
+[27] (./calculus2.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus2.out' has not changed.
-(rerunfilecheck)             Checksum: A0F973C6AFE36FF06D7706ECE9B87FCC;4845.
+(rerunfilecheck)             Checksum: 7F7BE5A837AE20475DD33FA5034320E8;5512.
  ) 
 Here is how much of TeX's memory you used:
- 12688 strings out of 474504
- 197623 string characters out of 5752696
+ 12727 strings out of 474504
+ 198024 string characters out of 5752696
  1944040 words of memory out of 5000000
- 34225 multiletter control sequences out of 15000+600000
- 576506 words of font info for 79 fonts, out of 8000000 for 9000
+ 34232 multiletter control sequences out of 15000+600000
+ 578027 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,79p,569b,737s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus2.pdf (23 pages, 279235 bytes).
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
+Output written on calculus2.pdf (27 pages, 315246 bytes).
 PDF statistics:
- 541 PDF objects out of 1000 (max. 8388607)
- 474 compressed objects within 5 object streams
- 211 named destinations out of 1000 (max. 500000)
- 273 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 613 PDF objects out of 1000 (max. 8388607)
+ 537 compressed objects within 6 object streams
+ 240 named destinations out of 1000 (max. 500000)
+ 305 words of extra memory for PDF output out of 10000 (max. 10000000)
 
