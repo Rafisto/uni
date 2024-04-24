@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
