@@ -1,23 +1,22 @@
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Binomials {
-    public static List<BigInteger> generateRow(int n) throws IllegalArgumentException {
+    public static List<Integer> generateRow(int n) throws IllegalArgumentException {
         if (n < 0) {
             throw new IllegalArgumentException("Parameter n should be >= 0, got " + n);
         }
 
-        List<BigInteger> row = new ArrayList<>();
-        row.add(BigInteger.ONE);
+        List<Integer> row = new ArrayList<>();
+        row.add(1);
 
-        BigInteger prev = BigInteger.ONE;
+        long prev = 1;
         for (int i = 1; i <= n; i++) {
-            BigInteger curr = prev.multiply(BigInteger.valueOf(n - i + 1)).divide(BigInteger.valueOf(i));
-            if (curr.compareTo(BigInteger.ZERO) < 0) {
+            long curr = prev * (n - i + 1) / i;
+            if ((int)curr < 0) {
                 throw new IllegalArgumentException("Parameter " + n + " causes an integer overflow at " + i + "-th iteration");
             }
-            row.add(curr);
+            row.add((int) curr);
             prev = curr;
         }
 
