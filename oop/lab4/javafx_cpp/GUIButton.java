@@ -1,4 +1,5 @@
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 
 public class GUIButton extends Button {
 
@@ -9,6 +10,7 @@ public class GUIButton extends Button {
     }
 
     private void setStyle() {
+        AnchorPane.setRightAnchor(this, 3.0);
         setAlignment(javafx.geometry.Pos.CENTER);
         setLayoutX(228.0);
         setLayoutY(4.0);

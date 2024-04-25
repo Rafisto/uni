@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 public class GUI {
     public GUI(Stage primaryStage) {
+        GUIEventHandler handler = new GUIEventHandler(primaryStage);
+
         BorderPane root = new BorderPane();
         root.setMaxHeight(Double.MAX_VALUE);
         root.setMaxWidth(Double.MAX_VALUE);
@@ -40,7 +42,7 @@ public class GUI {
 
         topGridPane.getRowConstraints().add(row);
 
-        GUILabel label = new GUILabel("Type in the number of rows (1-33)");
+        GUILabel label = new GUILabel("Type in the number of rows (1-34)");
         GridPane.setHalignment(label, javafx.geometry.HPos.CENTER);
         topGridPane.add(label, 0, 0);
 
@@ -57,7 +59,6 @@ public class GUI {
         anchorPane.setStyle("-fx-background-color: #121212;");
         splitPane.getItems().add(anchorPane);
 
-        
         GUIField sizeField = new GUIField("0");
         AnchorPane.setLeftAnchor(sizeField, 4.0);
         AnchorPane.setRightAnchor(sizeField, 72.0);
@@ -66,7 +67,7 @@ public class GUI {
         GUIResultPane resultPane = new GUIResultPane();
         root.setCenter(resultPane);
         
-        GUIButton displayButton = new GUIButton("Display", sizeField, resultPane);
+        GUIButton displayButton = new GUIButton("Display", sizeField, resultPane, handler);
         AnchorPane.setRightAnchor(displayButton, 3.0);
         anchorPane.getChildren().add(displayButton);
 

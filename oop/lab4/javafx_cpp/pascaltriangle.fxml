@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #121212;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <GridPane prefHeight="40.0" style="-fx-background-color: #121212;" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="TOP_LEFT" text="Type in the number of rows (1-33)" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" />
+            <SplitPane prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: #121212;" GridPane.columnIndex="1">
+               <items>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #121212;">
+                     <children>
+                        <Button fx:id="displayButton" alignment="CENTER" layoutX="228.0" layoutY="4.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" style="-fx-background-color: #242424; -fx-border-width: 1; -fx-border-color: #00aaff;" text="Display" textAlignment="CENTER" textFill="WHITE" AnchorPane.rightAnchor="3.0">
+                           <cursor>
+                              <Cursor fx:constant="OPEN_HAND" />
+                           </cursor>
+                        </Button>
+                        <TextField fx:id="sizeField" accessibleHelp="Number of rows" accessibleRoleDescription="Number of rows" accessibleText="Number of rows" alignment="CENTER" layoutX="4.0" layoutY="4.0" prefHeight="30.0" prefWidth="222.0" style="-fx-background-color: #242424; -fx-border-color: #00aaff; -fx-border-width: 1; -fx-text-fill: #ffffff;" text="0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="72.0" />
+                     </children>
+                  </AnchorPane>
+               </items>
+            </SplitPane>
+         </children>
+      </GridPane>
+   </top>
+   <center>
+      <ScrollPane fx:id="resultPane" prefHeight="200.0" prefWidth="600.0" style="-fx-background: #121212; -fx-border-color: #00aaff;" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
