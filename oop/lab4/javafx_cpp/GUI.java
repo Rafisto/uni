@@ -19,6 +19,7 @@ public class GUI {
 
         Scene scene = new Scene(gui.getRoot());
         primaryStage.setScene(scene);
+        primaryStage.setTitle("JavaFX Pascal Triangle");
         primaryStage.show();
         AppLogger.logger.info("Rendered the scene");
     }

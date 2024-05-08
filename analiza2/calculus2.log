@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  24 APR 2024 13:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  8 MAY 2024 12:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -798,27 +798,127 @@ Overfull \hbox (12.72316pt too wide) in paragraph at lines 1402--1409
 [][]\T1/cmr/bx/n/10 Twierdzenie 8.3.1. []\T1/cmr/m/n/10 (praw-do-po-dob-nie) Wspóª-rz¦dne sfe-ryczne $\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x; y; z\OT4/cmr/m/n/10 ) \OMS/plsy/m/n/10 2 \U/msb/m/n/10 R[]$\T1/cmr/m/n/10 , $\OML/plm/m/it/10 x \OT4/cmr/m/n/10 = \OML/plm/m/it/10 r [] \OT4/cmr/m/n/10 ^^B [] \OML/plm/m/it/10 $\T1/cmr/m/n/10 ,
  []
 
-[27] (./calculus2.aux)
+
+Underfull \hbox (badness 10000) in paragraph at lines 1414--1417
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1418--1420
+
+ []
+
+
+Overfull \hbox (19.9658pt too wide) detected at line 1424
+[] [] [][] \OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x; y; z\OT4/cmr/m/n/10 )\OML/plm/m/it/10 dxdydz \OT4/cmr/m/n/10 = [] [] [][] \OML/plm/m/it/10 f\OT4/cmr/m/n/10 (\OML/plm/m/it/10 r [] \OT4/cmr/m/n/10 ^^B [] \OML/plm/m/it/10 ; r [] \OT4/cmr/m/n/10 ^^B [] \OML/plm/m/it/10 ; r [] \OT4/cmr/m/n/10 ^^B)\OML/plm/m/it/10 r[] [] \OT4/cmr/m/n/10 ^^B\OML/plm/m/it/10 drdd\OT4/cmr/m/n/10 ^^B
+ []
+
+[27] [28
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1462     \item $
+                  n_0=n$. Popatrzmy na $K_{n+1}$:
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1462     \item $
+                  n_0=n$. Popatrzmy na $K_{n+1}$:
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1462     \item $
+                  n_0=n$. Popatrzmy na $K_{n+1}$:]
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1466     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1466     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1481     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1481     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.3}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1481     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.4}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1481     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.5}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1481     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.6}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1481     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.7}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1481     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1498     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1498     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.3}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1498     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.4}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1498     \end{align}
+                      
+pdfTeX warning (ext4): destination with the same identifier (name{equation.9.5}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1498     \end{align}
+                       [29] [30] (./calculus2.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus2.out' has not changed.
-(rerunfilecheck)             Checksum: 7F7BE5A837AE20475DD33FA5034320E8;5512.
+(rerunfilecheck)             Checksum: 61C5BC155D968039D2C94C59AFF6B877;6502.
  ) 
 Here is how much of TeX's memory you used:
- 12727 strings out of 474504
- 198024 string characters out of 5752696
- 1944040 words of memory out of 5000000
- 34232 multiletter control sequences out of 15000+600000
+ 12759 strings out of 474504
+ 198398 string characters out of 5752696
+ 1946040 words of memory out of 5000000
+ 34238 multiletter control sequences out of 15000+600000
  578027 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,79p,569b,737s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus2.pdf (27 pages, 315246 bytes).
+Output written on calculus2.pdf (30 pages, 327168 bytes).
 PDF statistics:
- 613 PDF objects out of 1000 (max. 8388607)
- 537 compressed objects within 6 object streams
- 240 named destinations out of 1000 (max. 500000)
- 305 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 672 PDF objects out of 1000 (max. 8388607)
+ 593 compressed objects within 6 object streams
+ 266 named destinations out of 1000 (max. 500000)
+ 353 words of extra memory for PDF output out of 10000 (max. 10000000)
 

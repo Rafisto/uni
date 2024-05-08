@@ -1285,7 +1285,7 @@ Obliczenia:
 
 $A=\int_0^1 \int_0^{1-y} (x+y) dx dy$
 
-\section{Wykład VII}
+\section{Wykład VIII}
 
 \subsection{Twierdzenie o zamianie zmiennych}
 
@@ -1407,5 +1407,119 @@ $A=\int_0^1 \int_0^{1-y} (x+y) dx dy$
     $|\det(\mathbf{J}_{\varphi(r,\alpha,\Theta)})| = |r^2\sin^2\Theta\cos\Theta\cos^2\alpha + r^2\sin^2\Theta\cos\Theta\sin^2\alpha + r^2\sin^2\Theta\sin^2\alpha\sin^2\Theta + r^2\cos^2\Theta\sin^2\Theta\cos^2\alpha + r^2\cos^2\Theta\sin^2\Theta\sin^2\alpha + r^2\cos^2\Theta\cos^2\Theta| = r^2\sin\Theta$\\
     $\int\int\int_{K} f(x,y,z) dx dy dz = \int\int\int_{K} f(r,\alpha,\Theta) r^2\sin\Theta dr d\alpha d\Theta$
 \end{tw}
+
+\section{Wykład IX}
+
+\subsection{Współrzędne sferyczne}
+$z=r\cos(\Theta), \Theta\in[0,\pi]\\$
+$y=r\sin(\Theta)\sin(\alpha), \alpha\in[0,2\pi)\\$
+$x=r\sin(\Theta)\cos(\alpha) r\in[0,\infty)$\\
+
+\[\varphi(r,\alpha,\Theta) = (r\sin(\Theta)cos(\alpha), r\sin(\Theta)\sin(\alpha), r\cos(\Theta))\]
+Jakobian $J_{\alpha}=(r,\alpha, \Theta) = r^2\sin(\Theta)$ Zapisane współrzędne:\\
+\[\frac{d}{dr} (r\sin(\Theta)\cos(\alpha)), \frac{d}{d\alpha} (r\sin(\Theta)\cos(\alpha)), \frac{d}{d\Theta} (r\sin(\Theta)\cos(\alpha))\]
+\[\frac{d}{dr} (r\sin(\Theta)\sin(\alpha)), \frac{d}{d\alpha} (r\sin(\Theta)\sin(\alpha)), \frac{d}{d\Theta} (r\sin(\Theta)\sin(\alpha))\]
+\[\frac{d}{dr} (r\cos(\alpha)), \frac{d}{d\alpha} (r\cos(\Theta)), \frac{d}{d\Theta} (r\cos(\Theta))\]
+
+\[\int\int\int_{\varphi(D)} f(x,y,z)dxdydz = \int\int\int_{D(r,\alpha,\Theta)} f(r\sin\Theta\cos\alpha, r\sin\Theta\sin\alpha, r\cos\Theta) r^2 \sin\Theta dr d\alpha d\Theta\]
+
+Objętość kuli $K_3((0,0,0),R)$ o promieniu $R$.
+\begin{align}
+    \int\int\int 1dxdydz =\\
+    \int\int\int_{r\in[0,R]} r^2\sin\Theta drd\alpha d\theta =\\
+    \int\left(\int\left(\int r^2 \sin\Theta dr\right) d\alpha\right) d\Theta =\\
+    \int_{0}^{\pi}\left(\int_{0}^{2\pi} \left(\frac{R^3}{3} \sin\Theta\right) d\alpha\right)d\Theta =\\
+    \int_{0}^{\pi}\left(\frac{2\pi R^3}{3} \sin\Theta\right) d\Theta =\\
+    \frac{2\pi R^3}{3}(-\cos\Theta)|_{0}^{\pi} =\\
+    \frac{4}{3}\pi R^3
+\end{align}
+
+Objętość $n$-wymiarowej kuli $K_n=\{(x_1,x_2,\dots,x_n)\in\mathbb{R}^n, x_1^2+x_2^2+\dots+x_n^2 \leq r^2\}$\\
+Miara Lebesgue'a $\lambda(K_1)=2r, \lambda(K_2)=\pi r^2, \lambda(K_3)=\frac{4}{3}\pi r^3$
+\[\lambda(K_n) = \frac{\pi^{\frac{n}{2}}r^n}{\Gamma(\frac{n}{2}+1)}\]
+Gdzie $\Gamma(a)=\int_{0}^{\infty} t^{a-1}e^{-t}dt, \Gamma(a+1)=a\Gamma(a),\Gamma(a+1)=a!$
+
+\subsection{Funkcja Beta}
+
+Niech $a,b>0$:
+\[B(a,b)=\int_{0}^{1} x^{a-1} (1-x)^{b-1} dx\]
+\[B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(ab)}\]
+
+Policzmy:
+
+\[\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}\]
+\begin{align}
+    \Gamma\left(\frac{1}{2}\right) = \int_{0}^{\infty} t^{-\frac{1}{2}} e^{-t} dt=\\
+    \text{Podstawmy } t=s^2, dt=2sds \text{, mamy:}\\
+    =2\int_{0}^{\infty} e^{-s^2} ds = 2 \frac{\sqrt{\pi}}{2} = \sqrt{\pi}
+\end{align}
+Pokażmy, że faktycznie:
+\[\lambda(K_n) = \frac{\pi^{\frac{n}{2}}r^n}{\Gamma(\frac{n}{2}+1)}\]
+D-d. Indukcja po $n$:
+\begin{enumerate}
+    \item $n=1$:
+    $\lambda(K_1)=\frac{\pi^{\frac{1}{2}}r}{\Gamma\left(\frac{3}{2}\right)}=2r$ super
+    \item $n_0=n$. Popatrzmy na $K_{n+1}$:
+    \begin{align}
+        x_1^2+x_2^2+\dots+x_{n+1}^2 &\leq r^2\\
+        x_1^2+x_2^2+\dots+x_n^2 &\leq r^2-x_{n+1}^2 = \left(\sqrt{r^2-x_{n+1}^2}\right)
+    \end{align}
+    Wyznaczmy $\lambda(K_{n+1})$: 
+    \begin{align}
+        \lambda(K_{n+1}) &= \int_{-r}^{r} \left(\int \dots \int_{K x_1,x_2,\dots,x_n} dx_1 dx_2 \dots dx_n\right) dx_{n+1}\\
+        &=\int_{-r}^{r} \frac{\pi^{\frac{n}{2}} \left(\sqrt{r^2-x_{n+1}^2}\right)^n}{\Gamma(\frac{n}{2}+1)}\\
+        &=\frac{\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)} \int_{-r}^{r} (r^2-x_{n+1}^2)^{\frac{n}{2}} dx_{n+1}\\
+        &\text {Podstawmy } x_{n+1}=rt, dx_{n+1} = rdt \text{, mamy:}\\
+        &=\frac{\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)}r^{n+1} \int_{-1}^{1} (1-t^2)^{\frac{n}{2}} dt\\
+        &=\frac{2r^{n+1}\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)} \int_{0}^{1} (1-t^2)^{\frac{n}{2}} dt\\
+        &\text {Podstawmy } t^2=y, dy=2t dt\\
+        &=\frac{2r^{n+1}\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)} \int_{0}^{1} (1-y)^{\frac{n}{2}-1+1} y^{-\frac{1}{2}} dy\\ 
+        &=\frac{2r^{n+1}\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)} B\left(\frac{n}{2}+1,\frac{1}{2}\right)\\
+        &=\frac{2r^{n+1}\pi^{\frac{n}{2}}}{\Gamma(\frac{n}{2}+1)} \cdot \frac{\Gamma(\frac{n}{2}+1)\Gamma(\frac{1}{2})}{\Gamma(\frac{n}{2} + 1 + \frac{1}{2})}\\
+        &=\frac{r^{n+1} \pi^{\frac{n}{2}} \sqrt{\pi}}{\Gamma(\frac{n+1}{2}+1)}\\
+        &=\frac{r^{n+1} \pi^{\frac{n+1}{2}}}{\Gamma(\frac{n+1}{2}+1)}\qed
+    \end{align}
+\end{enumerate}
+
+\subsection{Symplesks}
+
+\[S_n=\{(x_1,x_2,\dots,x_n)\in\mathbb{R}^n, x_1+x_2+\dots+x_n\leq a, x_1,x_2,\dots,x_n\geq 0\}\]
+\[\lambda{S_n}=\frac{a^n}{n!}\]
+D-d. indukcyjny:
+\begin{enumerate}
+    \item $n=1$, $0\leq x_1\leq a$, $\lambda(S_1)=a$ 
+    \item $\lambda(S_n)=\frac{a^n}{n!}$
+    \begin{align}
+        \lambda(S_{n+1})&=\\
+        &= \int\int dx_1 dx_2\dots dx_{n+1}\\
+        &= \int_{0}^{a} \frac{(a-x_{n+1})^n}{n!} dx_{n+1}\\
+        &= \frac{(-1)(a-x_{n+1})^{n+1}}{(n+1)!}|_{0}^{a}\\
+        &= \frac{a^{n+1}}{(n+1)!}
+    \end{align}
+\end{enumerate}
+
+\begin{de}
+    Splot funkcji. Dla odpowiednich funkcji $f,g:\mathbb{R}^n\rightarrow \mathbb{R}$
+    definiujemy splot:
+    \[(f*g)(x) = \int\dots\int_{\mathbb{R}^n} f(t)g(x-t) dt_1 dt_2 \dots dt_n\]
+    Dla $x=(x_1,x_2,\dots,x_n), t=(t_1,t_2,\dots,t_n), x-t=(x_1-t_1,x_2-t_2,\dots,x_n-t_n)$
+\end{de}
+
+\subsection{Wstęp do równań różniczkowych}
+
+Przykład równania różniczkowego:
+\[m'(t)=(-1)k \cdot m(t)\]
+Rozwiązanie - każda funkcja postaci:
+\[m(t)=Ce^{-kt}\]
+Zobaczmy:
+\[m'(t)=C (-k) e^{-kt} = (-k) m(t)\]
+
+\subsection{Krzywe całkowe równania różniczkowego}
+
+Wykres :cry:
+
+
+
+
 
 \end{document}
