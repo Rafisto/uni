@@ -4,12 +4,20 @@ import app.logger.AppLogger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Shape;
-
-import app.model.Circle;
 
 public class GUIController {
+    private AppState appState;
+    private Drawer drawer;
+    private ClickHandler clickHandler;
+
+    public GUIController() {
+        this.appState = new AppState();
+        this.drawer = new Drawer();
+        this.clickHandler = new ClickHandler();
+    }
+
     @FXML
     private MenuItem btn_openfile;
 
@@ -49,8 +57,7 @@ public class GUIController {
     @FXML
     public void btnDrawCirclePressed() {
         AppLogger.logger.info("Draw Circle button pressed");
-        Drawer d = new Drawer();
-        d.DrawShape(getDrawPane(), new Circle(5, 5, 3));
+        appState.switchToDrawMode();
     }
 
     @FXML
@@ -59,6 +66,7 @@ public class GUIController {
     @FXML
     public void btnDrawRectanglePressed() {
         AppLogger.logger.info("Draw Rectangle button pressed");
+        appState.switchToDrawMode();
     }
 
     @FXML
@@ -67,6 +75,7 @@ public class GUIController {
     @FXML
     public void btnDrawTrianglePressed() {
         AppLogger.logger.info("Draw Triangle button pressed");
+        appState.switchToDrawMode();
     }
 
     @FXML
@@ -84,6 +93,12 @@ public class GUIController {
 
     @FXML
     private AnchorPane draw_pane;
+
+    @FXML
+    public void drawPanePressed(MouseEvent e) {
+        AppLogger.logger.info("Draw Pane pressed at " + e.getX() + ", " + e.getY());
+        clickHandler.handleLPM(e, appState, drawer);
+    }
 
     public AnchorPane getDrawPane() {
         return draw_pane;

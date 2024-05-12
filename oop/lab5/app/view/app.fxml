@@ -65,7 +65,7 @@
         <Menu fx:id="btn_info" onAction="#btnInfoPressed" mnemonicParsing="false" text="Info" />
       </menus>
     </MenuBar>
-    <AnchorPane fx:id="draw_pane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="draw_pane" onMouseClicked="#drawPanePressed" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
         <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>
