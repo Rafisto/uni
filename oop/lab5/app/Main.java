@@ -1,5 +1,10 @@
+package app;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import app.view.GUI;
+import app.logger.AppLogger;
 
 public class Main extends Application {
 
@@ -10,7 +15,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         AppLogger.ConfigureLogger();
-        AppLogger.logger.info("Starting application...");
+        AppLogger.logger.info("Started the app");
         launch(args);
     }
 }
