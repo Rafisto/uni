@@ -1,14 +1,14 @@
 package app.controller;
 
-public class AppState {
+public class GUIState {
     public enum Mode {
         VISUAL,
-        DRAW
+        DRAW,
     }
     
     private Mode currentMode;
     
-    public AppState() {
+    public GUIState() {
         currentMode = Mode.VISUAL;
     }
     
@@ -17,8 +17,8 @@ public class AppState {
         System.out.println("Switched to Visual Mode");
     }
     
-    public void switchToDrawMode() {
-        currentMode = Mode.DRAW;
+    public void switchMode(Mode mode) {
+        currentMode = mode;
         System.out.println("Switched to Draw Mode");
     }
     

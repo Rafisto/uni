@@ -1,21 +1,22 @@
 package app.controller;
 
-import app.logger.AppLogger;
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+import app.controller.GUIState.Mode;
+import app.logger.AppLogger;
+
 public class GUIController {
-    private AppState appState;
+    private GUIState appState;
     private Drawer drawer;
-    private ClickHandler clickHandler;
+    private GUIClickHandler clickHandler;
 
     public GUIController() {
-        this.appState = new AppState();
-        this.drawer = new Drawer();
-        this.clickHandler = new ClickHandler();
+        this.appState = new GUIState();
+        this.drawer = new Drawer(draw_pane);
+        this.clickHandler = new GUIClickHandler();
     }
 
     @FXML
@@ -57,7 +58,8 @@ public class GUIController {
     @FXML
     public void btnDrawCirclePressed() {
         AppLogger.logger.info("Draw Circle button pressed");
-        appState.switchToDrawMode();
+        drawer.setShape(DrawerShape.CIRCLE);
+        appState.switchMode(Mode.DRAW);
     }
 
     @FXML
@@ -66,7 +68,8 @@ public class GUIController {
     @FXML
     public void btnDrawRectanglePressed() {
         AppLogger.logger.info("Draw Rectangle button pressed");
-        appState.switchToDrawMode();
+        drawer.setShape(DrawerShape.RECTANGLE);
+        appState.switchMode(Mode.DRAW);
     }
 
     @FXML
@@ -75,11 +78,12 @@ public class GUIController {
     @FXML
     public void btnDrawTrianglePressed() {
         AppLogger.logger.info("Draw Triangle button pressed");
-        appState.switchToDrawMode();
+        drawer.setShape(DrawerShape.TRIANGLE);
+        appState.switchMode(Mode.DRAW);
     }
 
     @FXML
-    private Menu btn_info;
+    private MenuItem btn_info;
 
     @FXML
     public void btnInfoPressed() {
@@ -97,10 +101,6 @@ public class GUIController {
     @FXML
     public void drawPanePressed(MouseEvent e) {
         AppLogger.logger.info("Draw Pane pressed at " + e.getX() + ", " + e.getY());
-        clickHandler.handleLPM(e, appState, drawer);
-    }
-
-    public AnchorPane getDrawPane() {
-        return draw_pane;
+        clickHandler.handleLPM(e, appState, drawer, draw_pane);
     }
 }

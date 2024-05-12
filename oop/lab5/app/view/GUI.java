@@ -6,8 +6,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import app.controller.AppState;
-import app.controller.ClickHandler;
+import app.controller.GUIState;
+import app.controller.GUIClickHandler;
 import app.controller.GUIController;
 import app.controller.Drawer;
 import app.logger.AppLogger;

@@ -1,7 +1,7 @@
 package app.model;
 
-public class Circle extends javafx.scene.shape.Circle implements IFigure, IFigureGUI {
-    public Circle(double centerX, double centerY, double radius) {
+public class MyCircle extends javafx.scene.shape.Circle implements IFigure, IFigureGUI {
+    public MyCircle(double centerX, double centerY, double radius) {
         super(centerX, centerY, radius);
     }
 
@@ -27,7 +27,8 @@ public class Circle extends javafx.scene.shape.Circle implements IFigure, IFigur
     }
 
     @Override
-    public void setOutline(double width) {
+    public void setOutline(double width, String color) {
         setStrokeWidth(width);
+        setStroke(javafx.scene.paint.Color.web(color));
     }
 }

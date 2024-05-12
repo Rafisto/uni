@@ -39,6 +39,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.GUIController">
@@ -52,7 +53,8 @@
             <MenuItem fx:id="btn_save" onAction="#btnSavePressed" mnemonicParsing="false" text="Save" />
             <MenuItem fx:id="btn_saveas" onAction="#btnSaveAsPressed" mnemonicParsing="false" text="Save As…" />
             <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="btn_quit" onAction="#btnQuitPressed" mnemonicParsing="false" text="Quit" />
+            <MenuItem fx:id="btn_info" onAction="#btnInfoPressed" mnemonicParsing="false" text="Info" />
+            <MenuItem fx:id="btn_quit" onAction="#btnQuitPressed" mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Draw">
@@ -62,10 +64,12 @@
                   <MenuItem fx:id="btn_draw_triangle" onAction="#btnDrawTrianglePressed" mnemonicParsing="false" text="Triangle" />
           </items>
         </Menu>
-        <Menu fx:id="btn_info" onAction="#btnInfoPressed" mnemonicParsing="false" text="Info" />
       </menus>
     </MenuBar>
     <AnchorPane fx:id="draw_pane" onMouseClicked="#drawPanePressed" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <clip>
+        <Rectangle width="${draw_pane.width}" height="${draw_pane.height}"/>
+      </clip>
       <children>
         <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>
