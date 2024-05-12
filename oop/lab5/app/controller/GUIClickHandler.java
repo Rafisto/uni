@@ -5,8 +5,6 @@ import app.logger.AppLogger;
 import app.model.IFigure;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -18,11 +16,7 @@ public class GUIClickHandler {
         Node target = (Node) clickEvent.getTarget();
         switch (currentMode.getCurrentMode()) {
             case VISUAL:
-                if (target instanceof Pane) {
-                    AppLogger.logger.info("No pane action in VISUAL mode");
-                    AppLogger.logger.info("Unselecting shapes");
-                    selectHandler.UnselectAll(draw_pane);
-                } else if (target instanceof IFigure) {
+                if (target instanceof IFigure) {
                     if (clickEvent.isControlDown()) {
                         AppLogger.logger.info("Ctrl + Clicked on a figure: " + target.getClass().getName());
                         AppLogger.logger.info("Deleting shape");
@@ -35,6 +29,11 @@ public class GUIClickHandler {
                         currentMode.switchMode(Mode.SELECT);
                     }
                 }
+                else {
+                    AppLogger.logger.info("No pane action in VISUAL mode");
+                    AppLogger.logger.info("Unselecting shapes");
+                    selectHandler.UnselectAll(draw_pane);
+                }
                 break;
             case DRAW:
                 AppLogger.logger.info("Draw mode");
@@ -46,14 +45,15 @@ public class GUIClickHandler {
                 break;
             case SELECT:
                 AppLogger.logger.info("Select mode");
-                if (target instanceof Pane) {
-                    AppLogger.logger.info("Unselecting shapes");
-                    selectHandler.UnselectAll(draw_pane);
-                    currentMode.switchMode(Mode.VISUAL);
-                } else if (target instanceof IFigure) {
+                if (target instanceof IFigure) {
                     AppLogger.logger.info("Clicked on a figure: " + target.getClass().getName());
                     AppLogger.logger.info("Selecting a new shape");
                     selectHandler.SelectShape(draw_pane, (IFigure) target);
+                }
+                else {
+                    AppLogger.logger.info("Unselecting shapes");
+                    selectHandler.UnselectAll(draw_pane);
+                    currentMode.switchMode(Mode.VISUAL);
                 }
                 break;
             default:
