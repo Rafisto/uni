@@ -1,28 +1,29 @@
 package app.controller;
 
-public class GUIState {
+import app.logger.AppLogger;
+
+public class GUIMode {
     public enum Mode {
         VISUAL,
         DRAW,
+        SELECT
     }
     
+    private GUIController controller;
     private Mode currentMode;
     
-    public GUIState() {
+    public GUIMode(GUIController controller) {
+        this.controller = controller;
         currentMode = Mode.VISUAL;
-    }
-    
-    public void switchToVisualMode() {
-        currentMode = Mode.VISUAL;
-        System.out.println("Switched to Visual Mode");
     }
     
     public void switchMode(Mode mode) {
         currentMode = mode;
-        System.out.println("Switched to Draw Mode");
+        controller.updateModeLabel();
+        AppLogger.logger.info("Switching mode to " + mode);
     }
     
     public Mode getCurrentMode() {
         return currentMode;
-    }
+    }   
 }

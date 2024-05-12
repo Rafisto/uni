@@ -1,6 +1,6 @@
 package app.model;
 
-public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure, IFigureGUI {
+public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure {
     public MyTriangle(double x1, double x2, double x3, double y1, double y2, double y3) {
         super(x1, y1, x2, y2, x3, y3);
     }

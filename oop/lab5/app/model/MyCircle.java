@@ -1,6 +1,6 @@
 package app.model;
 
-public class MyCircle extends javafx.scene.shape.Circle implements IFigure, IFigureGUI {
+public class MyCircle extends javafx.scene.shape.Circle implements IFigure {
     public MyCircle(double centerX, double centerY, double radius) {
         super(centerX, centerY, radius);
     }

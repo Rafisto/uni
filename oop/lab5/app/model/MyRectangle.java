@@ -1,6 +1,6 @@
 package app.model;
 
-public class MyRectangle extends javafx.scene.shape.Rectangle implements IFigure, IFigureGUI {
+public class MyRectangle extends javafx.scene.shape.Rectangle implements IFigure {
     public MyRectangle(double x1, double y1, double x2, double y2) {
         super();
         double topLeftX = Math.min(x1, x2);

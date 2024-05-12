@@ -1,21 +1,27 @@
 package app.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 
-import app.controller.GUIState.Mode;
+import app.controller.GUIMode.Mode;
 import app.logger.AppLogger;
 
 public class GUIController {
-    private GUIState appState;
+    private GUIMode appState;
     private Drawer drawer;
     private GUIClickHandler clickHandler;
+    private GUISelect selectHandler;
 
     public GUIController() {
-        this.appState = new GUIState();
-        this.drawer = new Drawer(draw_pane);
+        this.appState = new GUIMode(this);
+        this.selectHandler = new GUISelect(this);
+        this.drawer = new Drawer(draw_pane, selectHandler);
         this.clickHandler = new GUIClickHandler();
     }
 
@@ -101,6 +107,25 @@ public class GUIController {
     @FXML
     public void drawPanePressed(MouseEvent e) {
         AppLogger.logger.info("Draw Pane pressed at " + e.getX() + ", " + e.getY());
-        clickHandler.handleLPM(e, appState, drawer, draw_pane);
+        clickHandler.handleLPM(e, this.appState, this.drawer, this.draw_pane, this.selectHandler);
+    }
+
+    @FXML 
+    public void handlePaneMouseDrag(MouseEvent e) {
+        AppLogger.logger.fine("Draw Pane dragged at " + e.getX() + ", " + e.getY());
+        clickHandler.handleMouseDrag(e, this.appState, this.draw_pane, this.selectHandler);
+    }
+
+    @FXML
+    public void handlePaneScroll(ScrollEvent event) {
+        AppLogger.logger.fine("Scroll event: " + event.getDeltaY());
+        clickHandler.handleScroll(event, this.appState, this.draw_pane, this.selectHandler);
+    }
+
+    @FXML
+    private Label label_mode;
+
+    public void updateModeLabel() {
+        label_mode.setText("Mode: " + appState.getCurrentMode().toString());
     }
 }

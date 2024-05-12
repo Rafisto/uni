@@ -66,17 +66,13 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane fx:id="draw_pane" onMouseClicked="#drawPanePressed" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="draw_pane" onMouseClicked="#drawPanePressed" onMouseDragged="#handlePaneMouseDrag" onScroll="#handlePaneScroll" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <clip>
         <Rectangle width="${draw_pane.width}" height="${draw_pane.height}"/>
       </clip>
       <children>
-        <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
-          <font>
-            <Font size="18.0" />
-          </font>
-        </Label>
       </children>
     </AnchorPane>
+    <Label fx:id="label_mode" text="Mode: VISUAL" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10" style="-fx-background-color: rgba(0, 0, 0, 0.4); -fx-text-fill: #fff; -fx-padding: 5px;" />
   </children>
 </VBox>

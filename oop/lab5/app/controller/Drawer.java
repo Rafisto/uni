@@ -3,21 +3,20 @@ package app.controller;
 import java.util.ArrayList;
 
 import app.logger.AppLogger;
-import app.model.IFigureGUI;
 import app.model.MyCircle;
 import app.model.MyRectangle;
 import app.model.MyTriangle;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 
 public class Drawer {
     private ArrayList<Point2D> points;
     private DrawerShape drawer_shape;
+    private GUISelect selectHandler;
 
-    public Drawer(Pane draw_pane) {
+    public Drawer(Pane draw_pane, GUISelect selectHandler) {
+        this.selectHandler = selectHandler;
         points = new ArrayList<>();
     }
 
@@ -82,14 +81,7 @@ public class Drawer {
                 return;
         }
         this.points.clear();
-        s.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                AppLogger.logger.info("Mouse pressed on shape");
-                GUIShapes.SelectShape(draw_pane, (IFigureGUI) s);
-            }
-        });
-        GUIShapes.UnselectAll(draw_pane);
+        selectHandler.UnselectAll(draw_pane);
         draw_pane.getChildren().add(s);
     }
 }

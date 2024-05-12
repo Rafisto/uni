@@ -3,13 +3,11 @@ package app.view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import app.controller.GUIState;
-import app.controller.GUIClickHandler;
 import app.controller.GUIController;
-import app.controller.Drawer;
 import app.logger.AppLogger;
 
 public class GUI {
@@ -20,12 +18,12 @@ public class GUI {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("app.fxml"));
 
             GUIController controller = (GUIController) new GUIController();
-            
+
             Parent root = loader.load();
-            Scene scene = new Scene(root);       
-            
+            Scene scene = new Scene(root);
+
             controller.initialize();
-            
+
             primaryStage.setScene(scene);
             primaryStage.setTitle("Shape Editor");
             primaryStage.show();
