@@ -1,3 +1,5 @@
 package app.model;
 
-public interface IFigure extends IFigurePhysics, IFigureGUI {}
+public interface IFigure extends IFigurePhysics, IFigureGUI {
+    
+}

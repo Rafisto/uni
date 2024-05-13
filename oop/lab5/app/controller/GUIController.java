@@ -1,6 +1,8 @@
 package app.controller;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
@@ -12,6 +14,7 @@ import app.generator.CircleGenerator;
 import app.generator.RectangleGenerator;
 import app.generator.ShapeGenerator;
 import app.generator.TriangleGenerator;
+import app.io.PaneSerializer;
 import app.logger.AppLogger;
 
 public class GUIController {
@@ -29,20 +32,12 @@ public class GUIController {
     }
 
     @FXML
-    private MenuItem btn_openfile;
-
-    @FXML
-    public void btnOpenFilePressed() {
-        AppLogger.logger.info("Open File button pressed");
-        GUIFileDialog.openFile();
-    }
-
-    @FXML
     private MenuItem btn_save;
 
     @FXML
     public void btnSavePressed() {
         AppLogger.logger.info("Save button pressed");
+        PaneSerializer.serializePane(draw_pane.getChildren(), "info.txt");
     }
 
     @FXML
@@ -141,5 +136,19 @@ public class GUIController {
 
     public void updateModeLabel() {
         label_mode.setText("Mode: " + appState.getCurrentMode().toString());
+    }
+
+    @FXML
+    private MenuItem btn_openfile;
+
+    @FXML
+    public void btnOpenFilePressed() {
+        AppLogger.logger.info("Open File button pressed");
+        if (draw_pane == null) {
+            AppLogger.logger.warning("draw_pane is null");
+        }
+        ObservableList<Node> deserializedNodes = PaneSerializer.deserializePane("info.txt");
+
+        draw_pane.getChildren().addAll(deserializedNodes);
     }
 }

@@ -4,7 +4,6 @@ public class MyCircle extends javafx.scene.shape.Circle implements IFigure {
     public MyCircle(double centerX, double centerY, double radius) {
         super(centerX, centerY, radius);
     }
-
     
     /** 
      * @param scaleFactor
