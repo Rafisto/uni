@@ -1,12 +1,18 @@
 package app.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
+
 public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure {
     public MyTriangle(double x1, double x2, double x3, double y1, double y2, double y3) {
         super(x1, y1, x2, y2, x3, y3);
     }
 
-    
-    /** 
+    /**
      * @param scaleFactor
      */
     @Override
@@ -35,5 +41,31 @@ public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure {
     public void setOutline(double width, String color) {
         setStrokeWidth(width);
         setStroke(javafx.scene.paint.Color.web(color));
+    }
+
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        s.writeObject(getPoints());
+        s.writeDouble(getRotate());
+        s.writeDouble(getScaleX());
+        s.writeDouble(((Color) getFill()).getRed());
+        s.writeDouble(((Color) getFill()).getGreen());
+        s.writeDouble(((Color) getFill()).getBlue());
+    }
+
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        ObservableList<Double> points = (ObservableList<Double>) s.readObject();
+        
+        double rotate = s.readDouble();
+        double scale = s.readDouble();
+        double red = s.readDouble();
+        double green = s.readDouble();
+        double blue = s.readDouble();
+
+        getPoints().setAll(points);
+        setRotate(rotate);
+        setScaleX(scale);
+        setScaleY(scale);
+        setFill(new Color(red, green, blue, 1));
     }
 }

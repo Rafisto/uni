@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import java.io.*;
 
 import app.logger.AppLogger;
-import app.model.IFigure;
 
 public class PaneSerializer {
 
