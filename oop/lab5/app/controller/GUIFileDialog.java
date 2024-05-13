@@ -6,6 +6,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 public class GUIFileDialog {
+    
+    /** 
+     * @return File
+     */
     public static File openFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");

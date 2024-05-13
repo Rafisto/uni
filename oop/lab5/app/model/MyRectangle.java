@@ -14,6 +14,10 @@ public class MyRectangle extends javafx.scene.shape.Rectangle implements IFigure
         setHeight(bottomRightY - topLeftY);
     }
 
+    
+    /** 
+     * @param scaleFactor
+     */
     @Override
     public void scale(double scaleFactor) {
         setWidth(scaleFactor * getWidth());

@@ -5,6 +5,10 @@ public class MyCircle extends javafx.scene.shape.Circle implements IFigure {
         super(centerX, centerY, radius);
     }
 
+    
+    /** 
+     * @param scaleFactor
+     */
     @Override
     public void scale(double scaleFactor) {
         setRadius(getRadius() * scaleFactor);

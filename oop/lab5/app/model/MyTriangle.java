@@ -5,6 +5,10 @@ public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure {
         super(x1, y1, x2, y2, x3, y3);
     }
 
+    
+    /** 
+     * @param scaleFactor
+     */
     @Override
     public void scale(double scaleFactor) {
         setScaleX(getScaleX() * scaleFactor);

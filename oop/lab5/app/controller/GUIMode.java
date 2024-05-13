@@ -6,7 +6,8 @@ public class GUIMode {
     public enum Mode {
         VISUAL,
         DRAW,
-        SELECT
+        SELECT,
+        COLOR
     }
     
     private GUIController controller;
@@ -17,6 +18,10 @@ public class GUIMode {
         currentMode = Mode.VISUAL;
     }
     
+    
+    /** 
+     * @param mode
+     */
     public void switchMode(Mode mode) {
         currentMode = mode;
         controller.updateModeLabel();

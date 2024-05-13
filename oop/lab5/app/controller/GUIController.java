@@ -1,27 +1,30 @@
 package app.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-
 import app.controller.GUIMode.Mode;
+import app.generator.CircleGenerator;
+import app.generator.RectangleGenerator;
+import app.generator.ShapeGenerator;
+import app.generator.TriangleGenerator;
 import app.logger.AppLogger;
 
 public class GUIController {
     private GUIMode appState;
-    private Drawer drawer;
+    private ShapeGenerator generator;
     private GUIClickHandler clickHandler;
     private GUISelect selectHandler;
+    private GUIColorPicker guiColorPicker;
 
     public GUIController() {
         this.appState = new GUIMode(this);
-        this.selectHandler = new GUISelect(this);
-        this.drawer = new Drawer(draw_pane, selectHandler);
+        this.selectHandler = new GUISelect();
+        this.guiColorPicker = new GUIColorPicker(this.appState);
         this.clickHandler = new GUIClickHandler();
     }
 
@@ -64,7 +67,7 @@ public class GUIController {
     @FXML
     public void btnDrawCirclePressed() {
         AppLogger.logger.info("Draw Circle button pressed");
-        drawer.setShape(DrawerShape.CIRCLE);
+        generator = new CircleGenerator();
         appState.switchMode(Mode.DRAW);
     }
 
@@ -74,7 +77,7 @@ public class GUIController {
     @FXML
     public void btnDrawRectanglePressed() {
         AppLogger.logger.info("Draw Rectangle button pressed");
-        drawer.setShape(DrawerShape.RECTANGLE);
+        generator = new RectangleGenerator();
         appState.switchMode(Mode.DRAW);
     }
 
@@ -84,7 +87,7 @@ public class GUIController {
     @FXML
     public void btnDrawTrianglePressed() {
         AppLogger.logger.info("Draw Triangle button pressed");
-        drawer.setShape(DrawerShape.TRIANGLE);
+        generator = new TriangleGenerator();
         appState.switchMode(Mode.DRAW);
     }
 
@@ -104,10 +107,21 @@ public class GUIController {
     @FXML
     private AnchorPane draw_pane;
 
+    
+    /** 
+     * @param e
+     */
     @FXML
     public void drawPanePressed(MouseEvent e) {
-        AppLogger.logger.info("Draw Pane pressed at " + e.getX() + ", " + e.getY());
-        clickHandler.handleLPM(e, this.appState, this.drawer, this.draw_pane, this.selectHandler);
+        AppLogger.logger.info("Pressed: " + e.getButton().toString());
+        if (e.getButton() == MouseButton.PRIMARY) {
+            AppLogger.logger.info("Draw Pane LPM pressed at " + e.getX() + ", " + e.getY());
+            clickHandler.handleLPM(e, this.appState, this.generator, this.draw_pane, this.selectHandler, this.guiColorPicker);
+        }
+        else if (e.getButton() == MouseButton.SECONDARY) {
+            AppLogger.logger.info("Draw Pane RPM pressed at " + e.getX() + ", " + e.getY());
+            clickHandler.handleRPM(e, this.appState, this.generator, this.draw_pane, this.selectHandler, this.guiColorPicker);
+        }
     }
 
     @FXML 

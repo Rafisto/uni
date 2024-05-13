@@ -8,6 +8,10 @@ import app.logger.AppLogger;
 
 public class Main extends Application {
 
+    
+    /** 
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         new GUI(primaryStage);

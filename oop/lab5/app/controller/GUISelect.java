@@ -5,13 +5,15 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 public class GUISelect {
-    private GUIController controller;
     private IFigure selectedShape;
 
-    public GUISelect(GUIController controller) {
-        this.controller = controller;
-    }
+    public GUISelect() {}
 
+    
+    /** 
+     * @param pane
+     * @param s2
+     */
     public void SelectShape(Pane pane, IFigure s2) {
         for (Node s : pane.getChildren()) {
             if (s instanceof IFigure) {
