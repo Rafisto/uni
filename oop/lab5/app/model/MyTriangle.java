@@ -3,8 +3,6 @@ package app.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 
 public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure {
@@ -45,7 +43,9 @@ public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure {
 
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
-        s.writeObject(getPoints());
+        for (int i = 0; i < 6; i++) {
+            s.writeDouble(getPoints().get(i));
+        }
         s.writeDouble(getRotate());
         s.writeDouble(getScaleX());
         s.writeDouble(((Color) getFill()).getRed());
@@ -54,15 +54,15 @@ public class MyTriangle extends javafx.scene.shape.Polygon implements IFigure {
     }
 
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
-        ObservableList<Double> points = (ObservableList<Double>) s.readObject();
-        
+        for (int i = 0; i < 6; i++) {
+            getPoints().add(s.readDouble());
+        }
         double rotate = s.readDouble();
         double scale = s.readDouble();
         double red = s.readDouble();
         double green = s.readDouble();
         double blue = s.readDouble();
 
-        getPoints().setAll(points);
         setRotate(rotate);
         setScaleX(scale);
         setScaleY(scale);
