@@ -128,7 +128,7 @@ $$(a + I) \cdot (b + I) = (a \cdot b) + I$$
 Jeśli $G$ jest grupą skończoną, a $H$ jest podgrupą grupy $G$, to rząd grupy $H$ dzieli rząd grupy $G$.
 $$|G| = |H| \cdot [G:H]$$
 Lub inaczej
-$$|H| | |G|$$
+$$|H| \text{  } | \text{  } |G|$$
 
 ## Chińskie Twierdzenie o Resztach
 
