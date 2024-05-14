@@ -39,12 +39,12 @@ $$\ker f = \{a \in G: f(a) = e_H\}$$
 ## Obraz Homomorfizmu
 
 Obraz homomorfizmu to zbiór elementów grupy $H$ przekształconych przez homomorfizm $f$ z grupy $G$:
-$$\operatorname{Im} f = \{f(a) \in H: a \in G\}$$
+$$\text{Im} f = \{f(a) \in H: a \in G\}$$
 
 ## Rząd Elementu Grupy
 
 Rząd elementu grupy $G$ definiujemy jako:
-$$\operatorname{ord}(a) = \min\{n \in \mathbb{N}: a^n = e\}$$
+$$\text{ord}(a) = \min\{n \in \mathbb{N}: a^n = e\}$$
 
 Jeżeli taki $n$ nie istnieje, to element $a$ ma nieskończony rząd.
 
