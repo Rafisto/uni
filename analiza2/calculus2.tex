@@ -1527,4 +1527,216 @@ $$\begin{cases}
 Rozwiązanie:
 $m(t)=m_0 e^{-k(t-t_0)}$
 
+\section{Wykład X}
+
+\subsection{Równanie różniczkowe}
+
+\begin{de}
+    (Równanie różniczkowe) Zwyczanje pierwszego rzędu:
+    \[y' = f(t,y)\]
+    Ogólne:
+    \[F(t,y,y')=0\]
+\end{de}
+
+\begin{de}
+    $y(t)$ jest rozwiązaniem rr. $y'=f(t,y)$ na przedziale $(a,b)$ jeśli:
+    $y'(t)$ istnieje na przedziale $(a,b)$:
+    \[y'(t)=f(t,y(t))\]
+\end{de}
+
+\begin{de}
+    Wykres rozwiązania rr. to jego krzywa całkowa.
+\end{de}
+
+\begin{pk}
+    Rozwiążmy RR:
+    \begin{enumerate}
+        \item $y(t) = \frac{1}{1+t}$ jest rozwiązaniem rr. $y' + 2ty^2 = 0$ na $\mathbb{R}$
+        \begin{align}
+            y'(t) &= ((1+t^2)^{-1})' = (-1)2t (1+t^2)^{-2} = \frac{-2t}{(1+t^2)^2}\\
+            2t y^2(t) &= \frac{2t}{(1+t^2)^2}\\
+            y'(t) + 2ty^2(t) &= 0
+        \end{align}
+        Jak widać rozwiązanie działa.
+        \item $y(t)=\ln(t)$ jest rozwiązaniem rr. $y'=e^{-y}$ na $(0,\infty)$.
+        \begin{align}
+            y'(t) &= \frac{1}{t}\\
+            e^{-\ln(t)} &= \frac{1}{e^{\ln(t)}} = \frac{1}{t}
+        \end{align}
+    \end{enumerate}
+\end{pk}
+
+\subsection{Równanie różniczkowe z warunkiem}
+
+\begin{de}
+    Równanie różniczkowe wraz z warunkiem $y(t_0)=y_0$ nazywamy zagadnieniem początkowym.
+    Mówimy, że $y(t)$ jest rozwiązaniem zagadnienia początkowego, jeżeli jest rozwiązaniem równania różniczkowego 
+    $y'(t)=f(t,y)$ na pewnym przedziale zawierającym punkt $t_0$ i spełnia warunek $y(t_0)=y_0$:
+    $$
+    \begin{cases}
+        y'(t) = f(t,y(t))\\
+        y(t_0) = y_0
+    \end{cases}
+    $$
+\end{de}
+
+\begin{de}
+    RR, które można zapisać w postaci: 
+    \[y'(t)=g(t)h(y)\]
+    nazywamy rr. o zmiennych rozdzielonych.\\
+    Zakładamy, że funkcje $g(t), h(y)$ są ciągłe oraz $h(y)\neq 0$ dla każdego $y$. Wówczas całka rr. o rozdzielonych zmiennych dana jest wzorem:
+    \[\int \frac{dy}{h(y)} = \int g(t) dt + C\]
+    ($y'(t)=\frac{dy}{dt}$)\\
+    D-d.\\
+    \begin{align}
+        \frac{dy}{dt} &= g(t)h(y)\\
+        \frac{1}{h(y)} dy &= g(t)dt\\
+        \int \frac{dy}{h(y)} &= \int g(t) dt + C\qed
+    \end{align}
+    Jeżeli $h(y)=0$ dla pewnego $y_0$ to funkcja stała $y(t)=y_0$ jest jednym z rozwiązań rr. $y'(t)=g(t)h(y)$.
+    $y'=0, h(y(t))=h(y_0)=0\qed$
+\end{de}
+
+\begin{pk}
+    \[(1+e^y)yy'=e^t\]
+    \begin{align}
+        y' = e^t \frac{1}{(1+e^y)y}\\
+        (1+e^y)y\frac{dy}{dt} = e^t\\
+        (1+e^2)y dy = e^t dt\\
+        \int (1+e^y) y dy = \int e^t dt + C\\
+        \int (y + ye^y) dy = \int e^t dt + C\\
+        \frac{y^2}{2} + \int ye^y dt = e^t + C\\
+        \frac{y^2}{2} + e^y(y-1) = e^t + C
+    \end{align}
+    Metodami elementarnymi rozwikłanie tej funkcji jest niemożliwe. Wyjdzie prawdopodobnie specjalna funkcja d'Alemberta.
+    Wobec tego, w tym przypadku nie trzeba tego rozwikływać do funkcji $y(t)$
+\end{pk}
+
+\begin{tw}
+    Zakładamy, że funkcje $g(t), h(y)$ są ciągłe odpowiednio na przedziałach $(a,b), (c,d)$ oraz $h(y)\neq 0$.
+    dla każdego $y\in(c,d)$. Niech $t_0\in(a,b), y_0\in(c,d)$. Wówczas zagadnienie początkowe:
+    $$
+    \begin{cases}
+        y' = g(t)h(y)\\
+        y(t_0) = y_0
+    \end{cases}
+    $$
+    Ma dokładnie jedno rozwiązanie.
+\end{tw}
+
+\subsection{Równiaine różniczkowe jednorodne}
+
+\begin{de}
+    RR, które można zapisać w postaci:
+    \[y' = f\left(\frac{y}{t}\right)\]
+    nazywamy rr. jednorodnym.
+\end{de}
+
+\begin{pk}
+    $y'=f\left(\frac{y}{t}\right)$\\
+    Przykład:\\
+    \begin{align}
+        ty y' = y^2 - t^2\\
+        y' = \frac{x}{y} - \frac{1}{\frac{y}{t}}\\
+        f(u)=u-\frac{1}{u}
+    \end{align}
+\end{pk}
+
+\subsection{Równanie różniczkowe o rozdzielonych zmiennych}
+
+\begin{fakt}
+    Jeżeli $f(u)=u$, to rr. jednorodne przyjmuje następującą postać:
+    \[y' = \frac{y}{t}\]
+    jest to rr. o rozdzielonych zmiennych, którego rozwiązanie dane jest wzorem:
+    \[y(t)=Ct\]
+    D-d.\\
+    \begin{align}
+        y' &= \frac{y}{t}\\
+        \frac{dy}{dt} &= \frac{y}{t}\\
+        \frac{dy}{y} &= \frac{dt}{t}\\
+        \int \frac{dy}{y} &= \int \frac{dt}{t} + C\\
+        \ln(|y|) &= \ln(|t|) + C\\
+        |y| &= e^{\ln|t| + C}\\
+        |y| &= |t|e^{C}, e^{C} \in \mathbb{R^{+}}\\
+        y &= e^{C}t \lor y=(-e^{C}) t\\
+        y(t) &= C_1 t, C_1 \in \mathbb{R}-\{0\}
+    \end{align}
+\end{fakt}
+
+\subsection{Równanie różniczkowe przez zamianę zmiennych}
+
+\begin{tw}
+    RR. jednorodne przez zamianę zmiennych $y=ut$:
+    \[y(t)=u(t)t\]
+    Sprowadzamy do równania różniczkowego o zmiennych rozdzielonych:
+    \begin{align}
+        y'&=f\left(\frac{y}{t}\right)\\
+        y&=ut\\
+        y'&=u't+u(t)' =u't+u\\
+        u't+u &= f(u)\\
+        u't &= f(u)-u\\
+        \frac{du}{dt}t &= f(u)-u\\
+        \frac{du}{f(u)-u} &= \frac{dt}{t}\\
+        \int \frac{du}{f(u)-u} &= \int \frac{dt}{t}
+    \end{align}
+\end{tw}
+
+\begin{pk}
+    \begin{align}
+        ty' &= t + y\\
+        y'&=1+\frac{y}{t}\\
+        f(\frac{y}{t}) &= 1 + \frac{y}{t}\\
+        \text {podstawmy } y=ut&, y'=u't + u \cdot 1\\
+        ty' &= u't + u\\
+        t+y &= t+ut\\
+        u't^2 + ut &= t + ut\\
+        u't^2 &= t\\
+        \frac{du}{dt} &= \frac{1}{t}\\
+        du &= \frac{1}{t} dt\\
+        \int du &= \int \frac{dt}{t}\\
+        u(t) &= \ln|t| + C
+    \end{align}
+    Kolejno: $x(t)=t\left(\ln|t|+C\right)$
+\end{pk}
+
+\begin{tw}
+    Zakładamy, że funkcja $g(u)$ jest ciągła na $(a,b)$ 
+    oraz dla każdego $u\in(a,b),$ $g(u)\neq u$.
+    Wówczas zagadnienie początkowe:
+    $$
+    \begin{cases}
+        y' = g\left(\frac{y}{t}\right)
+        y(t_0)=y_0
+    \end{cases}
+    $$
+    $a < \frac{y_0}{t_0} < b$ ma dokładnie jedno rozwiązanie.
+\end{tw}
+
+\subsection{Równanie róniczkowe liniowe}
+
+\begin{de}
+    RR, które można zapisać w postaci:
+    \[y' + p(t)y = q(t)\]
+    Nazywamy równaniem liniowym pierwszego rzędu.
+    Jeżeli $q(t)\neq 0$ to równanie różniczkowe jest równaniem różniczkowym liniowym niejednorodnym.
+    Jeżeli $q(t)=0$: $y'+p(t)=0$ jest równaniem różniczkowym liniowym jednorodnym.
+\end{de}
+
+\begin{pk}
+    \begin{align}
+        y' + p(t)y(t) = 0\\
+        \frac{dy}{dt} = -p(t)y(t)\\
+        \frac{dy}{y} = -p(t)dt\\
+        \int \frac{dy}{y} = \int -p(t) dt\\
+        \ln|y| = \int -p(t) dt + C\\
+        |y| = e^{\int -p(t) dt} e^{c}\\
+        y=\pm e^C e^{\int -p(t) dt}\\
+        y(t) = c_1 e^{\int -p(t) dt} 
+    \end{align}
+\end{pk}
+
+\begin{pk}
+    $y' + ty = 0 \implies y(t) = c_1 e^{\int -t dt} = c_1 e^{-\frac{t^2}{2}}$
+\end{pk}
+
 \end{document}

@@ -11,7 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- * The INFO class provides a utility method to display an information popup dialog.
+ * The INFO class provides a utility method to display an information popup
+ * dialog.
  */
 public class INFO {
     /**
@@ -30,28 +31,27 @@ public class INFO {
     /**
      * Displays a popup dialog with the content of the instruction.txt file.
      */
-    
-public static void showInstructionPopup() {
-    try {
-        Path filePath = Paths.get("instruction.txt");
-        byte[] content = Files.readAllBytes(filePath);
+    public static void showInstructionPopup() {
+        try {
+            Path filePath = Paths.get("instruction.txt");
+            byte[] content = Files.readAllBytes(filePath);
 
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
 
-        VBox vBox = new VBox();
-        vBox.getChildren().add(new Text(new String(content)));
+            VBox vBox = new VBox();
+            vBox.getChildren().add(new Text(new String(content)));
 
-        scrollPane.setContent(vBox);
+            scrollPane.setContent(vBox);
 
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Instruction");
-        alert.setHeaderText(null);
-        alert.getDialogPane().setContent(scrollPane);
-        alert.showAndWait();
-    } catch (IOException e) {
-        e.printStackTrace();
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Instruction");
+            alert.setHeaderText(null);
+            alert.getDialogPane().setContent(scrollPane);
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 }
