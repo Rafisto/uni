@@ -7,8 +7,17 @@ import java.io.*;
 
 import app.logger.AppLogger;
 
+/**
+ * The `PaneSerializer` class provides methods to serialize and deserialize a list of nodes to/from a file.
+ */
 public class PaneSerializer {
 
+    /**
+     * Serializes the given list of nodes and saves it to a file.
+     *
+     * @param nodes    the list of nodes to be serialized
+     * @param filename the name of the file to save the serialized data to
+     */
     public static void serializePane(ObservableList<Node> nodes, String filename) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeInt(nodes.size());
@@ -24,6 +33,12 @@ public class PaneSerializer {
         }
     }
 
+    /**
+     * Deserializes the list of nodes from the specified file.
+     *
+     * @param filename the name of the file to deserialize the data from
+     * @return the deserialized list of nodes
+     */
     public static ObservableList<Node> deserializePane(String filename) {
         ObservableList<Node> nodes = FXCollections.observableArrayList();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {

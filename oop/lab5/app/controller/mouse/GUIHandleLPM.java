@@ -1,31 +1,35 @@
-package app.controller;
+package app.controller.mouse;
 
+import app.controller.GUIColorPicker;
+import app.controller.GUIMode;
 import app.controller.GUIMode.Mode;
+import app.controller.GUISelect;
 import app.generator.ShapeGenerator;
 import app.logger.AppLogger;
 import app.model.IFigure;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 
-public class GUIClickHandler {
-
-    private Point2D initialMousePos;
-
-    
-    /** 
-     * @param clickEvent
-     * @param currentMode
-     * @param d
-     * @param draw_pane
-     * @param selectHandler
-     * @param colorPicker
+/**
+ * This class handles the Left Mouse Button Press (LPM) event in the GUI.
+ */
+public class GUIHandleLPM {
+    /**
+     * Handles the Left Mouse Button Press (LPM) event in the GUI.
+     * 
+     * @param clickEvent      The MouseEvent representing the LPM event.
+     * @param currentMode     The current GUIMode.
+     * @param d               The ShapeGenerator for creating shapes.
+     * @param draw_pane       The Pane where the shapes are drawn.
+     * @param selectHandler   The GUISelect object for handling shape selection.
+     * @param colorPicker     The GUIColorPicker object for selecting colors.
+     * @param initialMousePos The initial mouse position when the LPM event started.
      */
-    public void handleLPM(MouseEvent clickEvent, GUIMode currentMode, ShapeGenerator d, Pane draw_pane,
-            GUISelect selectHandler, GUIColorPicker colorPicker) {
-        initialMousePos = new Point2D(clickEvent.getX(), clickEvent.getY());
+    public static void handleLPM(MouseEvent clickEvent, GUIMode currentMode, ShapeGenerator d, Pane draw_pane,
+            GUISelect selectHandler, GUIColorPicker colorPicker, GUIMousePosition initialMousePos) {
+        initialMousePos.setPoint(new Point2D(clickEvent.getX(), clickEvent.getY()));
         Node target = (Node) clickEvent.getTarget();
         switch (currentMode.getCurrentMode()) {
             case VISUAL:
@@ -54,7 +58,12 @@ public class GUIClickHandler {
                     selectHandler.UnselectAll(draw_pane);
                     draw_pane.getChildren().add((Node) d.createShape());
                     d.clearPoints();
-                    currentMode.switchMode(Mode.VISUAL);
+                    if (clickEvent.isControlDown()) {
+                        AppLogger.logger.info("Ctrl + Left Mouse Button Pressed in DRAW mode");
+                        AppLogger.logger.info("Not exiting draw mode");
+                    } else {
+                        currentMode.switchMode(Mode.VISUAL);
+                    }
                 }
                 break;
             case SELECT:
@@ -77,61 +86,13 @@ public class GUIClickHandler {
                     colorPicker.hideColorPicker();
                     currentMode.switchMode(Mode.VISUAL);
                 }
+                else {
+                    AppLogger.logger.info("Clicked on a figure: " + target.getClass().getName());
+                    AppLogger.logger.info("Selecting a new shape");
+                    selectHandler.SelectShape(draw_pane, (IFigure) target);
+                }
             default:
                 AppLogger.logger.warning("Unhandled mode");
-        }
-    }
-
-    public void handleRPM(MouseEvent clickEvent, GUIMode currentMode, ShapeGenerator d, Pane draw_pane,
-            GUISelect selectHandler, GUIColorPicker colorPicker) {
-        if (currentMode.getCurrentMode() == Mode.SELECT) {
-            Node target = (Node) clickEvent.getTarget();
-            AppLogger.logger.info("Selected node: " + target.toString());
-            double x = clickEvent.getX();
-            double y = clickEvent.getY();
-
-            if (target instanceof IFigure) {
-                colorPicker.showColorPicker(x, y, (IFigure) target, draw_pane);
-            }
-            currentMode.switchMode(Mode.COLOR);
-        }
-    }
-
-    public void handleMouseDrag(MouseEvent dragEvent, GUIMode currentMode, Pane draw_pane,
-            GUISelect selectHandler) {
-        if (dragEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-            if (currentMode.getCurrentMode() == Mode.SELECT) {
-                double deltaX = dragEvent.getX() - initialMousePos.getX();
-                double deltaY = dragEvent.getY() - initialMousePos.getY();
-
-                selectHandler.getSelectedShape();
-
-                if (selectHandler.getSelectedShape() != null) {
-                    selectHandler.getSelectedShape().move(deltaX, deltaY);
-                }
-
-                initialMousePos = new Point2D(dragEvent.getX(), dragEvent.getY());
-            }
-        }
-    }
-
-    public void handleScroll(ScrollEvent scrollEvent, GUIMode currentMode, Pane draw_pane, GUISelect selectHandler) {
-        if (selectHandler.getSelectedShape() == null || currentMode.getCurrentMode() != Mode.SELECT) {
-            return;
-        }
-
-        boolean isCtrlPressed = scrollEvent.isControlDown();
-
-        if (isCtrlPressed) {
-            double deltaY = scrollEvent.getDeltaY();
-            if (deltaY > 0) {
-                selectHandler.getSelectedShape().scale(1.1);
-            } else if (deltaY < 0) {
-                selectHandler.getSelectedShape().scale(0.9);
-            }
-        } else {
-            double deltaY = scrollEvent.getDeltaY();
-            selectHandler.getSelectedShape().rotate(deltaY * 0.1);
         }
     }
 }

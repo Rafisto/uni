@@ -3,14 +3,27 @@ package app.logger;
 import java.io.IOException;
 import java.util.logging.*;
 
+/**
+ * The AppLogger class provides logging functionality for the application.
+ * It configures the logger to log messages to the console and a file.
+ * This class cannot be instantiated as it is a full static class.
+ */
 public class AppLogger
 {
+    
     private AppLogger()
     {
         throw new InstantiationError("AppLogger is a full statc class");
     }
 
     public static final Logger logger = Logger.getGlobal();
+    
+    /**
+     * Configures the logger for the application.
+     * This method removes any existing handlers from the logger, sets the log format,
+     * adds a console handler with INFO level, and adds a file handler with ALL level.
+     * If the file handler cannot be created, a warning message is logged.
+     */
     public static void ConfigureLogger()
     {
         Handler[] handlers = logger.getHandlers();

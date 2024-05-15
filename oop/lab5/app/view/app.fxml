@@ -48,10 +48,9 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem fx:id="btn_openfile" onAction="#btnOpenFilePressed" mnemonicParsing="false" text="Open…" />
+            <MenuItem fx:id="btn_openfile" onAction="#btnOpenFilePressed" mnemonicParsing="false" text="Load" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="btn_save" onAction="#btnSavePressed" mnemonicParsing="false" text="Save" />
-            <MenuItem fx:id="btn_saveas" onAction="#btnSaveAsPressed" mnemonicParsing="false" text="Save As…" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="btn_info" onAction="#btnInfoPressed" mnemonicParsing="false" text="Info" />
             <MenuItem fx:id="btn_quit" onAction="#btnQuitPressed" mnemonicParsing="false" text="Quit" />
@@ -66,7 +65,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane fx:id="draw_pane" onMouseClicked="#drawPanePressed" onMouseDragged="#handlePaneMouseDrag" onScroll="#handlePaneScroll" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="draw_pane" onMouseClicked="#drawPanePressed" onMouseMoved="#handleMouseMoved" onMouseDragged="#handlePaneMouseDrag" onScroll="#handlePaneScroll" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <clip>
         <Rectangle width="${draw_pane.width}" height="${draw_pane.height}"/>
       </clip>

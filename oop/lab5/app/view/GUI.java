@@ -9,7 +9,16 @@ import java.io.IOException;
 import app.controller.GUIController;
 import app.logger.AppLogger;
 
+/**
+ * The GUI class represents the graphical user interface of the application.
+ * It is responsible for initializing and displaying the main window of the Shape Editor.
+ */
 public class GUI {
+    /**
+     * Constructs a new GUI object with the specified primaryStage.
+     *
+     * @param primaryStage the primary stage of the JavaFX application
+     */
     public GUI(Stage primaryStage) {
         try {
             AppLogger.logger.info("Initializing GUI...");
@@ -24,7 +33,7 @@ public class GUI {
             controller.initialize();
 
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Shape Editor");
+            primaryStage.setTitle("Paint it Black!");
             primaryStage.show();
 
             AppLogger.logger.info("GUI initialized successfully");
