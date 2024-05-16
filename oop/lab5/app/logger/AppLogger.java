@@ -36,7 +36,7 @@ public class AppLogger
         "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
 
         ConsoleHandler ch = new ConsoleHandler();
-        ch.setLevel(Level.INFO);
+        ch.setLevel(Level.WARNING);
         logger.addHandler(ch);
 
         try

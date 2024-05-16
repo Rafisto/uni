@@ -47,6 +47,37 @@ public class GUIController {
     }
 
     @FXML
+    private MenuItem btn_clearfile;
+
+    /**
+     * Event handler for the Clear File button.
+     */
+    @FXML
+    public void btnClearFilePressed() {
+        AppLogger.logger.info("Clear File button pressed");
+        draw_pane.getChildren().clear();
+    }
+
+
+    @FXML
+    private MenuItem btn_openfile;
+
+    /**
+     * Event handler for the Open File button.
+     */
+    @FXML
+    public void btnOpenFilePressed() {
+        AppLogger.logger.info("Open File button pressed");
+        if (draw_pane == null) {
+            AppLogger.logger.warning("draw_pane is null");
+        }
+        draw_pane.getChildren().clear();
+        ObservableList<Node> deserializedNodes = PaneSerializer.deserializePane("save.file");
+
+        draw_pane.getChildren().addAll(deserializedNodes);
+    }
+
+    @FXML
     private MenuItem btn_save;
 
     /**
@@ -54,7 +85,7 @@ public class GUIController {
      */
     @FXML
     public void btnSavePressed() {
-        AppLogger.logger.info("Save button pressed");
+        AppLogger.logger.info("Save File button pressed");
         PaneSerializer.serializePane(draw_pane.getChildren(), "save.file");
     }
 
@@ -179,23 +210,6 @@ public class GUIController {
      */
     public void updateModeLabel() {
         label_mode.setText("Mode: " + appState.getCurrentMode().toString());
-    }
-
-    @FXML
-    private MenuItem btn_openfile;
-
-    /**
-     * Event handler for the Open File button.
-     */
-    @FXML
-    public void btnOpenFilePressed() {
-        AppLogger.logger.info("Open File button pressed");
-        if (draw_pane == null) {
-            AppLogger.logger.warning("draw_pane is null");
-        }
-        ObservableList<Node> deserializedNodes = PaneSerializer.deserializePane("save.file");
-
-        draw_pane.getChildren().addAll(deserializedNodes);
     }
 
     /**

@@ -42,12 +42,13 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.GUIController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.401" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.GUIController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
+            <MenuItem fx:id="btn_clearfile" onAction="#btnClearFilePressed" mnemonicParsing="false" text="Clear" />
             <MenuItem fx:id="btn_openfile" onAction="#btnOpenFilePressed" mnemonicParsing="false" text="Load" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="btn_save" onAction="#btnSavePressed" mnemonicParsing="false" text="Save" />

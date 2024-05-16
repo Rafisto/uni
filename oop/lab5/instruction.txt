@@ -22,3 +22,9 @@ Handling Scroll Events:
 
 Scroll up/down to scale selected shapes in SELECT mode.
 Hold Ctrl while scrolling to rotate selected shapes.
+
+IO:
+
+Save: Save the current state of the pane to a file.
+Load: Clears the pane and loads the state from a file.
+Clear: Clears the pane.

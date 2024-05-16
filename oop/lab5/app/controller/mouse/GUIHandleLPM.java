@@ -92,7 +92,7 @@ public class GUIHandleLPM {
                     selectHandler.SelectShape(draw_pane, (IFigure) target);
                 }
             default:
-                AppLogger.logger.warning("Unhandled mode");
+                AppLogger.logger.info("Unhandled mode");
         }
     }
 }
