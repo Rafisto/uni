@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.GUIController">
+   <children>
+      <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="221.0" minWidth="10.0" prefWidth="152.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="178.0" minWidth="10.0" prefWidth="133.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="166.0" minWidth="10.0" prefWidth="166.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Speed [ms]" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="fieldSpeed" text="1000" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="90.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label text="Height" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="fieldHeight" text="20" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="60.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label text="Width" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="fieldWidth" text="30" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="60.0" />
+               </GridPane.margin>
+            </TextField>
+            <Label text="Probability [0-1]" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Slider fx:id="fieldProbability" value="50.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Slider>
+            <Label text="Initial Parameters" GridPane.halignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Button fx:id="buttonStart" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonStartPressed" text="Start" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="buttonClear" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonClearPressed" text="Clear" GridPane.columnIndex="3" />
+         </children>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </GridPane>
+      <Pane fx:id="displayPane" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+   </children>
+</VBox>
