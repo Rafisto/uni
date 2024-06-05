@@ -2,6 +2,8 @@ package app.model;
 
 import java.util.ArrayList;
 
+import app.logger.AppLogger;
+
 public class ModelGrid {
     private static ModelGrid instance;
     private boolean running;
@@ -24,7 +26,7 @@ public class ModelGrid {
         for (int i = 0; i < height; i++) {
             ArrayList<ModelCell> row = new ArrayList<>();
             for (int j = 0; j < width; j++) {
-                row.add(new ModelCell(i+j));
+                row.add(new ModelCell(i*height+j));
             }
             this.grid.add(row);
         }
@@ -50,14 +52,23 @@ public class ModelGrid {
     }
 
     public void Start() {
-        if (this.running) return;
+        if (this.running) {
+            AppLogger.logger.warning("Grid already running");
+            return;
+        }
 
+        AppLogger.logger.info("Starting grid");
+        AppLogger.logger.info("Grid size: " + this.grid.size() + "," + this.grid.get(0).size());
         this.running = true;
         for (ArrayList<ModelCell> row : this.grid) {
             for (ModelCell cell : row) {
                 cell.switchRunning();
             }
         }
+    }
+
+    public boolean isRunning() {
+        return this.running;
     }
 
     public ModelCell getCell(int i, int j) {

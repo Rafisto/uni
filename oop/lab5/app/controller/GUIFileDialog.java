@@ -8,7 +8,7 @@ import javafx.stage.Window;
 /**
  * The GUIFileDialog class provides methods for opening and saving files using a graphical user interface.
  */
-public class GUIFileDialog {
+public final class GUIFileDialog {
     
     /** 
      * Opens a file dialog for selecting a file to open.

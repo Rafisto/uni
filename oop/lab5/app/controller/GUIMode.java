@@ -6,7 +6,7 @@ import app.logger.AppLogger;
  * The GUIMode class represents the mode of the GUI application.
  * It allows switching between different modes such as visual, draw, select, and color.
  */
-public class GUIMode {
+public final class GUIMode {
     /**
      * The Mode enum represents the different modes of the GUI application.
      * It includes the modes: visual, draw, select, and color.

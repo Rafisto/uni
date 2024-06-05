@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 
-public class GUIHandleMouseMoved {
+public final class GUIHandleMouseMoved {
     static IFigure ghost;
     /**
      * Handles the mouse moved event in the GUI.
@@ -22,7 +22,7 @@ public class GUIHandleMouseMoved {
      * @param draw_pane the pane where the shapes are drawn
      * @param generator the shape generator used to create the ghost shape
      */
-    public static void handleMouseMoved(MouseEvent mouseEvent, GUIMode guimode, Pane draw_pane, ShapeGenerator generator)
+    public final static void handleMouseMoved(MouseEvent mouseEvent, GUIMode guimode, Pane draw_pane, ShapeGenerator generator)
     {
         if (guimode.getCurrentMode() == Mode.DRAW) 
         {

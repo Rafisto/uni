@@ -4,7 +4,7 @@ import app.model.IFigure;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-public class GUISelect {
+public final class GUISelect {
     private IFigure selectedShape;
 
     public GUISelect() {}
@@ -18,7 +18,7 @@ public class GUISelect {
      * @param pane The pane containing the shapes.
      * @param s2 The shape to be selected.
      */
-    public void SelectShape(Pane pane, IFigure s2) {
+    public final void SelectShape(Pane pane, IFigure s2) {
         for (Node s : pane.getChildren()) {
             if (s instanceof IFigure) {
                 ((IFigure) s).setUnselected();
@@ -35,7 +35,7 @@ public class GUISelect {
      * 
      * @param pane The pane containing the shapes.
      */
-    public void UnselectAll(Pane pane) {
+    public final void UnselectAll(Pane pane) {
         for (Node s : pane.getChildren()) {
             if (s instanceof IFigure) {
                 ((IFigure) s).setUnselected();
@@ -48,7 +48,7 @@ public class GUISelect {
      * 
      * @return The currently selected shape.
      */
-    public IFigure getSelectedShape() {
+    public final IFigure getSelectedShape() {
         return selectedShape;
     }
 }

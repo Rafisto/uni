@@ -9,7 +9,7 @@ import javafx.stage.Popup;
 /**
  * This class represents a color picker for selecting colors in the GUI.
  */
-public class GUIColorPicker {
+public final class GUIColorPicker {
     private ColorPicker colorPicker;
     private Popup popup;
     private IFigure target;

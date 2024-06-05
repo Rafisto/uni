@@ -8,7 +8,7 @@ import java.util.logging.*;
  * It configures the logger to log messages to the console and a file.
  * This class cannot be instantiated as it is a full static class.
  */
-public class AppLogger
+public final class AppLogger
 {
     
     private AppLogger()
@@ -24,7 +24,7 @@ public class AppLogger
      * adds a console handler with INFO level, and adds a file handler with ALL level.
      * If the file handler cannot be created, a warning message is logged.
      */
-    public static void ConfigureLogger()
+    public final static void ConfigureLogger()
     {
         Handler[] handlers = logger.getHandlers();
         for(Handler handler : handlers)

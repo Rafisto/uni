@@ -29,7 +29,7 @@ import app.view.INFO;
 /**
  * The GUIController class is responsible for handling user interactions and managing the GUI state.
  */
-public class GUIController {
+public final class GUIController {
     private GUIMode appState;
     private ShapeGenerator generator;
     private GUISelect selectHandler;

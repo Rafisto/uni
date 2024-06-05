@@ -15,7 +15,7 @@ import javafx.scene.layout.Pane;
 /**
  * This class handles the Left Mouse Button Press (LPM) event in the GUI.
  */
-public class GUIHandleLPM {
+public final class GUIHandleLPM {
     /**
      * Handles the Left Mouse Button Press (LPM) event in the GUI.
      * 
@@ -27,7 +27,7 @@ public class GUIHandleLPM {
      * @param colorPicker     The GUIColorPicker object for selecting colors.
      * @param initialMousePos The initial mouse position when the LPM event started.
      */
-    public static void handleLPM(MouseEvent clickEvent, GUIMode currentMode, ShapeGenerator d, Pane draw_pane,
+    public final static void handleLPM(MouseEvent clickEvent, GUIMode currentMode, ShapeGenerator d, Pane draw_pane,
             GUISelect selectHandler, GUIColorPicker colorPicker, GUIMousePosition initialMousePos) {
         initialMousePos.setPoint(new Point2D(clickEvent.getX(), clickEvent.getY()));
         Node target = (Node) clickEvent.getTarget();

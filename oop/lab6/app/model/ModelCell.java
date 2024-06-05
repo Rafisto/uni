@@ -1,6 +1,7 @@
 package app.model;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import app.logger.AppLogger;
 import app.utils.UtilsColor;
@@ -17,7 +18,7 @@ public class ModelCell {
 
     public ModelCell(int id) {
         this.id = id;
-        this.running = true;
+        this.running = false;
         this.thread = null;
         this.color = UtilsColor.randomColor();
         this.neighbors = new ArrayList<ModelCell>();
@@ -28,8 +29,18 @@ public class ModelCell {
         this.thread = new Thread(() -> {
             while (this.running) {
                 try {
-                    Thread.sleep((long) (UtilsRandom.randomTimeSpan(ModelParameters.getInstance().getSpeed())));
-                    this.color = UtilsColor.randomColor();
+                    TimeUnit.MILLISECONDS.sleep(UtilsRandom.randomTimeSpan(ModelParameters.getInstance().getSpeed()));
+                    if (UtilsRandom.coinFlip(ModelParameters.getInstance().getProbability())) {
+                        this.setColor(UtilsColor.randomColor());
+                    }
+                    else {
+                        ArrayList<Color> neighborColors = new ArrayList<>();
+                        for (ModelCell neighbor : this.neighbors) {
+                            neighborColors.add(neighbor.getColor());
+                        }
+                        this.setColor(UtilsColor.calculateNewColor(neighborColors));
+                    }
+                    
                 } catch (InterruptedException e) {
                     AppLogger.logger.warning("[ModelCell" + this.id + "] Thread interrupted: " + e.getMessage());
                     System.exit(-1);
@@ -56,10 +67,12 @@ public class ModelCell {
         this.running = !this.running;
         if (this.running) {
             this.start();
+        } else {
+            this.thread.interrupt();
         }
     }
 
-    public Color getColor() {
+    public synchronized Color getColor() {
         return this.color;
     }
 

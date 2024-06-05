@@ -10,7 +10,7 @@ import app.logger.AppLogger;
 /**
  * The `PaneSerializer` class provides methods to serialize and deserialize a list of nodes to/from a file.
  */
-public class PaneSerializer {
+public final class PaneSerializer {
 
     /**
      * Serializes the given list of nodes and saves it to a file.
@@ -18,7 +18,7 @@ public class PaneSerializer {
      * @param nodes    the list of nodes to be serialized
      * @param filename the name of the file to save the serialized data to
      */
-    public static void serializePane(ObservableList<Node> nodes, String filename) {
+    public final static void serializePane(ObservableList<Node> nodes, String filename) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeInt(nodes.size());
             for (Node n : nodes) {
@@ -39,7 +39,7 @@ public class PaneSerializer {
      * @param filename the name of the file to deserialize the data from
      * @return the deserialized list of nodes
      */
-    public static ObservableList<Node> deserializePane(String filename) {
+    public final static ObservableList<Node> deserializePane(String filename) {
         ObservableList<Node> nodes = FXCollections.observableArrayList();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
             int numNodes = ois.readInt();

@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 /**
  * Handles the mouse drag event for the selection mode.
  */
-public class GUIHandleDrag {
+public final class GUIHandleDrag {
     /**
     * Handles the mouse drag event for the selection mode.
     * 
@@ -21,7 +21,7 @@ public class GUIHandleDrag {
     * @param selectHandler  The GUISelect object for handling shape selection.
     * @param initialMousePos The initial mouse position when the drag event started.
     */
-    public static void handleMouseDrag(MouseEvent dragEvent, GUIMode currentMode, Pane draw_pane,
+    public final static void handleMouseDrag(MouseEvent dragEvent, GUIMode currentMode, Pane draw_pane,
             GUISelect selectHandler, GUIMousePosition initialMousePos) {
         if (initialMousePos == null) {
             AppLogger.logger.warning("Initial mouse position is null");

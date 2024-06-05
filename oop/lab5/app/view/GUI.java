@@ -13,7 +13,7 @@ import app.logger.AppLogger;
  * The GUI class represents the graphical user interface of the application.
  * It is responsible for initializing and displaying the main window of the Shape Editor.
  */
-public class GUI {
+public final class GUI {
     /**
      * Constructs a new GUI object with the specified primaryStage.
      *

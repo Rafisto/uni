@@ -5,7 +5,7 @@ import javafx.geometry.Point2D;
 /**
  * The GUIMousePosition class represents the position of the mouse in a GUI.
  */
-public class GUIMousePosition {
+public final class GUIMousePosition {
     private Point2D point;
 
     /**

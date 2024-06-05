@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 /**
  * This class handles the RPM (Right-Click Pressed) event in the GUI.
  */
-public class GUIHandleRPM {
+public final class GUIHandleRPM {
     /**
      * Handles the RPM event by performing specific actions based on the current GUI mode.
      * If the current mode is SELECT, it selects the clicked node and shows a color picker.
@@ -27,7 +27,7 @@ public class GUIHandleRPM {
      * @param selectHandler The GUISelect handler for selecting nodes.
      * @param colorPicker   The GUIColorPicker for choosing colors.
      */
-    public static void handleRPM(MouseEvent clickEvent, GUIMode currentMode, ShapeGenerator d, Pane draw_pane,
+    public final static void handleRPM(MouseEvent clickEvent, GUIMode currentMode, ShapeGenerator d, Pane draw_pane,
                                  GUISelect selectHandler, GUIColorPicker colorPicker) {
         if (currentMode.getCurrentMode() == Mode.SELECT || currentMode.getCurrentMode() == Mode.COLOR) {
             Node target = (Node) clickEvent.getTarget();

@@ -14,13 +14,13 @@ import javafx.scene.text.Text;
  * The INFO class provides a utility method to display an information popup
  * dialog.
  */
-public class INFO {
+public final class INFO {
     /**
      * Displays an information popup dialog with the specified message.
      *
      * @param message the message to be displayed in the popup dialog
      */
-    public static void showInfoPopup(String message) {
+    public final static void showInfoPopup(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(null);
@@ -31,7 +31,7 @@ public class INFO {
     /**
      * Displays a popup dialog with the content of the instruction.txt file.
      */
-    public static void showInstructionPopup() {
+    public final static void showInstructionPopup() {
         try {
             Path filePath = Paths.get("instruction.txt");
             byte[] content = Files.readAllBytes(filePath);

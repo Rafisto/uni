@@ -10,7 +10,7 @@ import app.logger.AppLogger;
  * The main class of the application.
  * This class extends the JavaFX Application class and is responsible for starting the application.
  */
-public class Main extends Application {
+public final class Main extends Application {
 
     /**
      * The entry point of the application.
@@ -20,7 +20,7 @@ public class Main extends Application {
      * @param primaryStage the primary stage of the application
      */
     @Override
-    public void start(Stage primaryStage) {
+    public final void start(Stage primaryStage) {
         new GUI(primaryStage);
     }
 
@@ -30,7 +30,7 @@ public class Main extends Application {
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public final static void main(String[] args) {
         AppLogger.ConfigureLogger();
         AppLogger.logger.info("Started the app");
         launch(args);

@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 /**
  * This class handles the scroll event in the GUI.
  */
-public class GUIHandleScroll {
+public final class GUIHandleScroll {
     /**
      * Handles the scroll event in the GUI.
      *
@@ -18,7 +18,7 @@ public class GUIHandleScroll {
      * @param draw_pane     The pane where the shapes are drawn.
      * @param selectHandler The handler for shape selection.
      */
-    public static void handleScroll(ScrollEvent scrollEvent, GUIMode currentMode, Pane draw_pane, GUISelect selectHandler) {
+    public final static void handleScroll(ScrollEvent scrollEvent, GUIMode currentMode, Pane draw_pane, GUISelect selectHandler) {
         if (selectHandler.getSelectedShape() == null || currentMode.getCurrentMode() != Mode.SELECT) {
             return;
         }
