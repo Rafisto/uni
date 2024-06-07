@@ -5,18 +5,10 @@ import java.util.ArrayList;
 import app.logger.AppLogger;
 
 public class ModelGrid {
-    private static ModelGrid instance;
     private boolean running;
     private ArrayList<ArrayList<ModelCell>> grid;
 
-    public static ModelGrid getInstance() {
-        if (instance == null) {
-            instance = new ModelGrid();
-        }
-        return instance;
-    }
-
-    private ModelGrid() {
+    public ModelGrid(Object locker) {
         this.running = false;
         this.grid = new ArrayList<>();
 
@@ -26,7 +18,7 @@ public class ModelGrid {
         for (int i = 0; i < height; i++) {
             ArrayList<ModelCell> row = new ArrayList<>();
             for (int j = 0; j < width; j++) {
-                row.add(new ModelCell(i*height+j));
+                row.add(new ModelCell(i*height+j, locker));
             }
             this.grid.add(row);
         }
@@ -62,7 +54,23 @@ public class ModelGrid {
         this.running = true;
         for (ArrayList<ModelCell> row : this.grid) {
             for (ModelCell cell : row) {
-                cell.switchRunning();
+                cell.InitializeCell();
+                cell.RunCell();
+            }
+        }
+    }
+
+    public void Stop() {
+        if (!this.running) {
+            AppLogger.logger.warning("Grid already stopped");
+            return;
+        }
+
+        AppLogger.logger.info("Stopping grid");
+        this.running = false;
+        for (ArrayList<ModelCell> row : this.grid) {
+            for (ModelCell cell : row) {
+                cell.SuspendCell();
             }
         }
     }

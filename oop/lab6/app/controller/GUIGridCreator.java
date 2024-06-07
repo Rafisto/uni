@@ -4,13 +4,14 @@ import app.logger.AppLogger;
 import app.model.ModelGrid;
 import app.model.ModelParameters;
 import app.model.ModelSize;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class GUIGridCreator {
-    public static void CreateGUIGrid(Pane drawPane) {
+    public static void CreateGUIGrid(Pane drawPane, ModelGrid modelGrid) {
         for (int i = 0; i < ModelParameters.getInstance().getHeight(); i++) {
             for (int j = 0; j < ModelParameters.getInstance().getWidth(); j++) {
                 Rectangle r = new Rectangle();
@@ -23,7 +24,13 @@ public class GUIGridCreator {
                 int id = i * ModelParameters.getInstance().getWidth() + j;
                 r.setOnMouseClicked((Event e) -> {
                     (new Thread(() -> {
-                        ModelGrid.getInstance().getCell(id).switchRunning();
+                        Platform.runLater(() -> {
+                            if (modelGrid.getCell(id).isRunning()) {
+                                modelGrid.getCell(id).SuspendCell();
+                            } else {
+                                modelGrid.getCell(id).RunCell();
+                            }
+                        });
                     })).start();
                 });
                 drawPane.getChildren().add(r);
@@ -31,11 +38,16 @@ public class GUIGridCreator {
         }
     }
 
-    public static void UpdateGUIGrid(Pane drawPane) {
+    public static void StopGUIGrid(Pane drawPane, ModelGrid modelGrid) {
+        modelGrid.Stop();
+        drawPane.getChildren().clear();
+    }
+
+    public static void UpdateGUIGrid(Pane drawPane, ModelGrid modelGrid) {
         for (int i = 0; i < ModelParameters.getInstance().getHeight(); i++) {
             for (int j = 0; j < ModelParameters.getInstance().getWidth(); j++) {
                 int id = i * ModelParameters.getInstance().getWidth() + j;
-                Color color = ModelGrid.getInstance().getCell(id).getColor();
+                Color color = modelGrid.getCell(id).getColor();
                 Rectangle rectangle = (Rectangle) drawPane.getChildren().get(id);
                 if (rectangle != null) {
                     rectangle.setFill(color);

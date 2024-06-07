@@ -12,9 +12,9 @@ import javafx.scene.layout.Pane;
 import javafx.animation.AnimationTimer;
 
 public class GUIController {
-    public GUIController() {
+    public final Object locker = new Object();
 
-    }
+    private ModelGrid modelGrid;
 
     @FXML
     private TextField fieldSpeed;
@@ -46,8 +46,8 @@ public class GUIController {
         return new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (ModelGrid.getInstance().isRunning()) {
-                    GUIGridCreator.UpdateGUIGrid(displayPane);
+                if (modelGrid.isRunning()) {
+                    GUIGridCreator.UpdateGUIGrid(displayPane, modelGrid);
                 }
             }
         };
@@ -64,9 +64,14 @@ public class GUIController {
             AppLogger.logger.info("Parameters set: speed=" + speed + ", probability=" + probability + ", width=" + width
                     + ", height=" + height);
             ModelParameters.getInstance().setParameters(speed, probability, width, height);
-            ModelGrid.getInstance().Start();
+            if (modelGrid != null) {
+                modelGrid.Stop();
+                GUIGridCreator.StopGUIGrid(displayPane, modelGrid);
+            }
+            modelGrid = new ModelGrid(locker);
+            modelGrid.Start();
             AppLogger.logger.info("Simulation model started");
-            GUIGridCreator.CreateGUIGrid(displayPane);
+            GUIGridCreator.CreateGUIGrid(displayPane, modelGrid);
             AppLogger.logger.info("Grid Created");
             GetAnimationTimer().start();
 

@@ -15,37 +15,40 @@ public class ModelCell {
     private boolean running;
     private Thread thread;
     private Color color;
+    private Object locker;
 
-    public ModelCell(int id) {
+    public ModelCell(int id, Object locker) {
         this.id = id;
         this.running = false;
         this.thread = null;
         this.color = UtilsColor.randomColor();
         this.neighbors = new ArrayList<ModelCell>();
+        this.locker = locker;
     }
 
     private void start() {
         AppLogger.logger.info("Starting cell thread");
         this.thread = new Thread(() -> {
-            while (this.running) {
+            while (true) {
                 try {
                     TimeUnit.MILLISECONDS.sleep(UtilsRandom.randomTimeSpan(ModelParameters.getInstance().getSpeed()));
-                    if (UtilsRandom.coinFlip(ModelParameters.getInstance().getProbability())) {
-                        this.setColor(UtilsColor.randomColor());
-                    }
-                    else {
-                        ArrayList<Color> neighborColors = new ArrayList<>();
-                        for (ModelCell neighbor : this.neighbors) {
-                            neighborColors.add(neighbor.getColor());
+                    AppLogger.logger.info("[ModelCell" + this.id + "] Running");
+                    synchronized(locker) {
+                        if (!this.isRunning()) continue;
+                        if (UtilsRandom.coinFlip(ModelParameters.getInstance().getProbability())) {
+                            this.setColor(UtilsColor.randomColor());
+                        } else {
+                            ArrayList<Color> neighborColors = new ArrayList<>();
+                            for (ModelCell neighbor : this.neighbors) {
+                                neighborColors.add(neighbor.getColor());
+                            }
+                            this.setColor(UtilsColor.calculateNewColor(neighborColors));
                         }
-                        this.setColor(UtilsColor.calculateNewColor(neighborColors));
                     }
-                    
+                    AppLogger.logger.info("[ModelCell" + this.id + "] New color: " + this.getColor());
                 } catch (InterruptedException e) {
                     AppLogger.logger.warning("[ModelCell" + this.id + "] Thread interrupted: " + e.getMessage());
-                    System.exit(-1);
                 }
-
             }
         });
         this.thread.start();
@@ -59,17 +62,20 @@ public class ModelCell {
         this.neighbors.addAll(neighbors);
     }
 
-    public boolean isRunning() {
+    public synchronized boolean isRunning() {
         return this.running;
     }
 
-    public void switchRunning() {
-        this.running = !this.running;
-        if (this.running) {
-            this.start();
-        } else {
-            this.thread.interrupt();
-        }
+    public synchronized void InitializeCell() {
+        this.start();
+    }
+
+    public synchronized void RunCell() {
+        this.running = true;
+    }
+
+    public synchronized void SuspendCell() {
+        this.running = false;
     }
 
     public synchronized Color getColor() {
@@ -77,6 +83,16 @@ public class ModelCell {
     }
 
     public synchronized void setColor(Color color) {
-        this.color = color;
+        synchronized(locker) {
+            synchronized(this.neighbors.get(0)) {
+                synchronized(this.neighbors.get(1)) {
+                    synchronized(this.neighbors.get(2)) {
+                        synchronized(this.neighbors.get(3)) {
+                            this.color = color;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
