@@ -4,12 +4,24 @@ import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
 
-public class UtilsColor {
-    public static Color randomColor() {
+public final class UtilsColor {
+
+    /**
+     * Creates a random color.
+     *
+     * @return a randomly generated color.
+     */
+    public static final Color randomColor() {
         return Color.rgb((int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
     }
 
-    public static Color calculateNewColor(ArrayList<Color> colors) {
+    /**
+     * Calculates the average color from a list of colors.
+     *
+     * @param colors The list of colors to calculate the average from.
+     * @return The average color.
+     */
+    public static final Color calculateNewColor(ArrayList<Color> colors) {
         if (colors.size() == 0) {
             return Color.WHITE;
         }
@@ -25,6 +37,5 @@ public class UtilsColor {
         }
 
         return Color.color(red / colors.size(), green / colors.size(), blue / colors.size());
-
     }
 }

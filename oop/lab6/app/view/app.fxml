@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.GUIController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.401" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.GUIController">
    <children>
       <GridPane>
         <columnConstraints>
@@ -40,7 +40,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="fieldHeight" text="20" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="fieldHeight" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="60.0" />
                </GridPane.margin>
@@ -50,7 +50,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="fieldWidth" text="30" GridPane.columnIndex="1">
+            <TextField fx:id="fieldWidth" text="4" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="60.0" />
                </GridPane.margin>
@@ -70,8 +70,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </Label>
-            <Button fx:id="buttonStart" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonStartPressed" text="Start" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Button fx:id="buttonClear" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonClearPressed" text="Clear" GridPane.columnIndex="3" />
+            <Button fx:id="buttonStart" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onButtonStartPressed" text="Start" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
          </children>
          <padding>
             <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

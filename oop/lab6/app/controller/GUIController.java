@@ -1,20 +1,14 @@
 package app.controller;
 
-import app.controller.validators.GUIFieldValidator;
 import app.logger.AppLogger;
-import app.model.ModelGrid;
-import app.model.ModelParameters;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.animation.AnimationTimer;
 
 public class GUIController {
-    public final Object locker = new Object();
-
-    private ModelGrid modelGrid;
+    public GUISimulation guiSimulation;
 
     @FXML
     private TextField fieldSpeed;
@@ -37,53 +31,24 @@ public class GUIController {
     @FXML
     private Pane displayPane;
 
+    /**
+        * Initializes the GUI Controller.
+        * This method is automatically called after the FXML file has been loaded.
+        * It sets up the GUI simulation by creating a new instance of GUISimulation
+        * with the specified parameters.
+        */
     @FXML
     public void initialize() {
         AppLogger.logger.info("Initializing GUI Controller...");
     }
 
-    public AnimationTimer GetAnimationTimer() {
-        return new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (modelGrid.isRunning()) {
-                    GUIGridCreator.UpdateGUIGrid(displayPane, modelGrid);
-                }
-            }
-        };
-    }
-
+    /**
+     * Called when the start button is pressed.
+     * Logs an information message indicating that the start button was pressed.
+     */
     @FXML
     public void onButtonStartPressed() {
-        AppLogger.logger.info("Start Button Pressed");
-        try {
-            double speed = GUIFieldValidator.validateSpeed(fieldSpeed.getText());
-            double probability = GUIFieldValidator.validateProbability(fieldProbability.getValue());
-            int width = GUIFieldValidator.validateWidth(fieldWidth.getText());
-            int height = GUIFieldValidator.validateHeight(fieldHeight.getText());
-            AppLogger.logger.info("Parameters set: speed=" + speed + ", probability=" + probability + ", width=" + width
-                    + ", height=" + height);
-            ModelParameters.getInstance().setParameters(speed, probability, width, height);
-            if (modelGrid != null) {
-                modelGrid.Stop();
-                GUIGridCreator.StopGUIGrid(displayPane, modelGrid);
-            }
-            modelGrid = new ModelGrid(locker);
-            modelGrid.Start();
-            AppLogger.logger.info("Simulation model started");
-            GUIGridCreator.CreateGUIGrid(displayPane, modelGrid);
-            AppLogger.logger.info("Grid Created");
-            GetAnimationTimer().start();
-
-        } catch (NumberFormatException e) {
-            AppLogger.logger.warning("Invalid input: " + e.getMessage());
-            return;
-        }
-    }
-
-    @FXML
-    public void onButtonClearPressed() {
-        AppLogger.logger.info("Clear Button Pressed");
-        // Code to clear the simulation
+        AppLogger.logger.info("Start button pressed");
+        guiSimulation = new GUISimulation(fieldSpeed, fieldProbability, fieldWidth, fieldHeight, displayPane);
     }
 }

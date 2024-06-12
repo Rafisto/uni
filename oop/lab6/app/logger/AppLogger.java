@@ -10,7 +10,6 @@ import java.util.logging.*;
  */
 public class AppLogger
 {
-    
     private AppLogger()
     {
         throw new InstantiationError("AppLogger is a full statc class");

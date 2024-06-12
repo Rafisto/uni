@@ -5,20 +5,27 @@ import java.util.ArrayList;
 import app.logger.AppLogger;
 
 public class ModelGrid {
-    private boolean running;
+    private final Object locker = new Object();
     private ArrayList<ArrayList<ModelCell>> grid;
 
-    public ModelGrid(Object locker) {
-        this.running = false;
+    /**
+     * Constructs a ModelGrid with the specified parameters.
+     * 
+     * @param speed       the speed value for each ModelCell in the grid
+     * @param probability the probability value for each ModelCell in the grid
+     * @param width       the width of the grid
+     * @param height      the height of the grid
+     * 
+     * @see ModelCell
+     */
+    public ModelGrid(double speed, double probability, int width, int height) {
         this.grid = new ArrayList<>();
-
-        int width = ModelParameters.getInstance().getWidth();
-        int height = ModelParameters.getInstance().getHeight();
 
         for (int i = 0; i < height; i++) {
             ArrayList<ModelCell> row = new ArrayList<>();
             for (int j = 0; j < width; j++) {
-                row.add(new ModelCell(i*height+j, locker));
+                AppLogger.logger.fine("Adding ModelCell to ModelGrid at row: " + i + ", column: " + j);
+                row.add(new ModelCell(i * width + j, speed, probability, this.locker));
             }
             this.grid.add(row);
         }
@@ -30,53 +37,30 @@ public class ModelGrid {
                 neighbors.add(this.grid.get(((i + 1) + height) % height).get(j));
                 neighbors.add(this.grid.get(i).get(((j - 1) + width) % width));
                 neighbors.add(this.grid.get(i).get(((j + 1) + width) % width));
-                this.grid.get(i).get(j).setNeighbors(neighbors);
+                this.getCell(i, j).setNeighbors(neighbors);
             }
         }
     }
 
+    /**
+     * Starts the simulation by calling the start method on each cell in the grid.
+     */
     public void Start() {
-        if (this.running) {
-            AppLogger.logger.warning("Grid already running");
-            return;
-        }
-
-        AppLogger.logger.info("Starting grid");
-        AppLogger.logger.info("Grid size: " + this.grid.size() + "," + this.grid.get(0).size());
-        this.running = true;
         for (ArrayList<ModelCell> row : this.grid) {
             for (ModelCell cell : row) {
-                cell.InitializeCell();
-                cell.RunCell();
+                cell.start();
             }
         }
     }
 
-    public void Stop() {
-        if (!this.running) {
-            AppLogger.logger.warning("Grid already stopped");
-            return;
-        }
-
-        AppLogger.logger.info("Stopping grid");
-        this.running = false;
-        for (ArrayList<ModelCell> row : this.grid) {
-            for (ModelCell cell : row) {
-                cell.SuspendCell();
-            }
-        }
-    }
-
-    public boolean isRunning() {
-        return this.running;
-    }
-
+    /**
+     * Returns the ModelCell at the specified position in the grid.
+     *
+     * @param i the row index of the cell
+     * @param j the column index of the cell
+     * @return the ModelCell at the specified position
+     */
     public ModelCell getCell(int i, int j) {
         return this.grid.get(i).get(j);
-    }
-
-    public ModelCell getCell(int id) {
-        int width = ModelParameters.getInstance().getWidth();
-        return this.grid.get(id / width).get(id % width);
     }
 }
