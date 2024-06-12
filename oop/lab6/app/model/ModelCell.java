@@ -33,8 +33,9 @@ public class ModelCell {
                 try {
                     TimeUnit.MILLISECONDS.sleep(UtilsRandom.randomTimeSpan(ModelParameters.getInstance().getSpeed()));
                     AppLogger.logger.info("[ModelCell" + this.id + "] Running");
-                    synchronized(locker) {
-                        if (!this.isRunning()) continue;
+                    synchronized (locker) {
+                        if (!this.isRunning())
+                            TimeUnit.MILLISECONDS.sleep(10);
                         if (UtilsRandom.coinFlip(ModelParameters.getInstance().getProbability())) {
                             this.setColor(UtilsColor.randomColor());
                         } else {
@@ -44,8 +45,8 @@ public class ModelCell {
                             }
                             this.setColor(UtilsColor.calculateNewColor(neighborColors));
                         }
+                        AppLogger.logger.info("[ModelCell" + this.id + "] New color: " + this.getColor());
                     }
-                    AppLogger.logger.info("[ModelCell" + this.id + "] New color: " + this.getColor());
                 } catch (InterruptedException e) {
                     AppLogger.logger.warning("[ModelCell" + this.id + "] Thread interrupted: " + e.getMessage());
                 }
@@ -66,7 +67,7 @@ public class ModelCell {
         return this.running;
     }
 
-    public synchronized void InitializeCell() {
+    public void InitializeCell() {
         this.start();
     }
 
@@ -76,6 +77,7 @@ public class ModelCell {
 
     public synchronized void SuspendCell() {
         this.running = false;
+
     }
 
     public synchronized Color getColor() {
@@ -83,13 +85,11 @@ public class ModelCell {
     }
 
     public synchronized void setColor(Color color) {
-        synchronized(locker) {
-            synchronized(this.neighbors.get(0)) {
-                synchronized(this.neighbors.get(1)) {
-                    synchronized(this.neighbors.get(2)) {
-                        synchronized(this.neighbors.get(3)) {
-                            this.color = color;
-                        }
+        synchronized (this.neighbors.get(0)) {
+            synchronized (this.neighbors.get(1)) {
+                synchronized (this.neighbors.get(2)) {
+                    synchronized (this.neighbors.get(3)) {
+                        this.color = color;
                     }
                 }
             }

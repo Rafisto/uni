@@ -26,18 +26,10 @@ public class ModelGrid {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 ArrayList<ModelCell> neighbors = new ArrayList<>();
-                if (i > 0) {
-                    neighbors.add(this.grid.get(i - 1).get(j));
-                }
-                if (i < height - 1) {
-                    neighbors.add(this.grid.get(i + 1).get(j));
-                }
-                if (j > 0) {
-                    neighbors.add(this.grid.get(i).get(j - 1));
-                }
-                if (j < width - 1) {
-                    neighbors.add(this.grid.get(i).get(j + 1));
-                }
+                neighbors.add(this.grid.get(((i - 1) + height) % height).get(j));
+                neighbors.add(this.grid.get(((i + 1) + height) % height).get(j));
+                neighbors.add(this.grid.get(i).get(((j - 1) + width) % width));
+                neighbors.add(this.grid.get(i).get(((j + 1) + width) % width));
                 this.grid.get(i).get(j).setNeighbors(neighbors);
             }
         }
