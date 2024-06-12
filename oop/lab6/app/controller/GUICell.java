@@ -7,7 +7,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
-public class GUICell extends Region {
+public class GUICell extends Region implements IGUICell {
     private final ModelCell modelCell;
     private Color color;
 
@@ -16,6 +16,7 @@ public class GUICell extends Region {
      *
      * @return the ModelCell associated with this GUICell
      */
+    @Override
     public final ModelCell getModelCell() {
         return modelCell;
     }
@@ -55,6 +56,7 @@ public class GUICell extends Region {
      *
      * @param color the color to update the GUICell with
      */
+    @Override
     public final void update(Color color) {
         if (color != null) {
             this.color = color;

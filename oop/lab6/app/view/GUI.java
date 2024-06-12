@@ -11,7 +11,8 @@ import app.logger.AppLogger;
 
 /**
  * The GUI class represents the graphical user interface of the application.
- * It is responsible for initializing and displaying the main window of the Shape Editor.
+ * It is responsible for initializing and displaying the main window of the
+ * Shape Editor.
  */
 public class GUI {
     /**
@@ -35,6 +36,9 @@ public class GUI {
             primaryStage.setScene(scene);
             primaryStage.setTitle("Threaded Color Tiles");
             primaryStage.show();
+            primaryStage.setOnCloseRequest(event -> {
+                System.exit(0);
+            });
 
             AppLogger.logger.info("GUI initialized successfully");
         } catch (IOException e) {

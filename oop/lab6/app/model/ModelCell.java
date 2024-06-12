@@ -111,7 +111,7 @@ public class ModelCell extends Thread {
      *
      * @param isRunning the running state to be set
      */
-    public synchronized final void changeRunningState(boolean isRunning) {
+    public synchronized final void changeRunningState() {
         synchronized (this) {
             this.isRunning = !isRunning;
 

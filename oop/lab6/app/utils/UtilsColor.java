@@ -23,7 +23,7 @@ public final class UtilsColor {
      */
     public static final Color calculateNewColor(ArrayList<Color> colors) {
         if (colors.size() == 0) {
-            return Color.WHITE;
+            return randomColor();
         }
 
         double red = 0;

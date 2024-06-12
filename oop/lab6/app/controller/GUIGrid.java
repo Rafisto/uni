@@ -2,6 +2,8 @@ package app.controller;
 
 import app.logger.AppLogger;
 import app.model.ModelGrid;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -34,6 +36,8 @@ public class GUIGrid extends GridPane {
         prefWidthProperty().bind(displayPane.widthProperty());
         prefHeightProperty().bind(displayPane.heightProperty());
         setVgrow(displayPane, Priority.ALWAYS);
+
+        setOnMousePressed(this::onModelGridPressed);
         
         AppLogger.logger.info("Creating ModelGrid with speed: " + speed + ", probability: " + probability + ", width: " + width + ", height: " + height);
         modelGrid = new ModelGrid(speed, probability, width, height);
@@ -52,5 +56,18 @@ public class GUIGrid extends GridPane {
 
         AppLogger.logger.info("Starting ModelGrid");
         modelGrid.Start();
+    }
+
+    /**
+     * Event handler for when the draw pane is pressed.
+     * 
+     * @param e The MouseEvent representing the press event.
+     */
+    public void onModelGridPressed(MouseEvent e) {
+        AppLogger.logger.info("Pressed: " + e.getButton().toString());
+        if (e.getButton() == MouseButton.PRIMARY) {
+            AppLogger.logger.info("Draw Pane LPM pressed at " + e.getX() + ", " + e.getY());
+            GUIClickHandler.handleLPM(e);
+        }
     }
 }
