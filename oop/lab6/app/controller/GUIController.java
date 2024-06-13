@@ -32,11 +32,11 @@ public class GUIController {
     private Pane displayPane;
 
     /**
-        * Initializes the GUI Controller.
-        * This method is automatically called after the FXML file has been loaded.
-        * It sets up the GUI simulation by creating a new instance of GUISimulation
-        * with the specified parameters.
-        */
+     * Initializes the GUI Controller.
+     * This method is automatically called after the FXML file has been loaded.
+     * It sets up the GUI simulation by creating a new instance of GUISimulation
+     * with the specified parameters.
+     */
     @FXML
     public void initialize() {
         AppLogger.logger.info("Initializing GUI Controller...");

@@ -11,7 +11,7 @@ public final class UtilsRandom {
      * @return a random time span within the range determined by the speed factor
      */
     public static final long randomTimeSpan(double speed) {
-        return (long) (speed * Math.random() * (HIGH_SPEED - LOW_SPEED) + LOW_SPEED);
+        return (long) (speed * (Math.random() * (HIGH_SPEED - LOW_SPEED) + LOW_SPEED));
     }
 
     /**

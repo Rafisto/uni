@@ -28,10 +28,10 @@ public class GUI {
 
             GUIController controller = (GUIController) new GUIController();
 
+            controller.initialize();
+
             Parent root = loader.load();
             Scene scene = new Scene(root);
-
-            controller.initialize();
 
             primaryStage.setScene(scene);
             primaryStage.setTitle("Threaded Color Tiles");

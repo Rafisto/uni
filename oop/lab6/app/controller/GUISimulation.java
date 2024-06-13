@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.controller.validators.GUIFieldValidator;
 import app.logger.AppLogger;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -28,8 +29,10 @@ public class GUISimulation {
         try {
             setParameters(fieldSpeed, fieldProbability, fieldWidth, fieldHeight);
             AppLogger.logger.info("Simulation parameters set successfully");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid input parameters");
+        } catch (NumberFormatException e) {
+            AppLogger.logger.severe("Invalid input parameters: " + e.getMessage());
+            GUIEventHandler.ErrorPopup(e.getMessage());
+            return;
         }
 
         GUIGrid grid = new GUIGrid(speed, probability, width, height, displayPane);
@@ -45,20 +48,20 @@ public class GUISimulation {
      * @param fieldProbability the Slider containing the probability value
      * @param fieldWidth      the TextField containing the width value
      * @param fieldHeight     the TextField containing the height value
-     * @throws IllegalArgumentException if any of the input parameters are invalid
+     * @throws NumberFormatException if any of the input parameters are invalid
      */
     public void setParameters(TextField fieldSpeed, Slider fieldProbability, TextField fieldWidth, TextField fieldHeight) throws IllegalArgumentException {
         try {
-            this.speed = Double.parseDouble(fieldSpeed.getText());
-            this.probability = fieldProbability.getValue() / 100.0;
-            this.width = Integer.parseInt(fieldWidth.getText());
-            this.height = Integer.parseInt(fieldHeight.getText());
+            this.speed = GUIFieldValidator.validateSpeed(fieldSpeed.getText());
+            this.probability = GUIFieldValidator.validateProbability(fieldProbability.getValue());
+            this.width = GUIFieldValidator.validateWidth(fieldWidth.getText());
+            this.height = GUIFieldValidator.validateHeight(fieldHeight.getText());
             AppLogger.logger.info("Speed: " + speed);
             AppLogger.logger.info("Probability: " + probability);
             AppLogger.logger.info("Width: " + width);
             AppLogger.logger.info("Height: " + height);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid input parameters");
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Invalid input parameters: " + e.getMessage());
         }
     }
 }
