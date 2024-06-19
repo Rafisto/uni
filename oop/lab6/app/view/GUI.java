@@ -34,7 +34,7 @@ public class GUI {
             Scene scene = new Scene(root);
 
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Threaded Color Tiles");
+            primaryStage.setTitle("Disco Panzer!!!");
             primaryStage.show();
             primaryStage.setOnCloseRequest(event -> {
                 System.exit(0);

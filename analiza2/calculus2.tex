@@ -1739,4 +1739,102 @@ $m(t)=m_0 e^{-k(t-t_0)}$
     $y' + ty = 0 \implies y(t) = c_1 e^{\int -t dt} = c_1 e^{-\frac{t^2}{2}}$
 \end{pk}
 
+\section{Wykład XI}
+
+\begin{de}
+    (Całka krzywoliniowa nieskierowana) Niech \( f:\mathbb{R}^n \rightarrow \mathbb{R} \), \( \gamma [a,b]\rightarrow\mathbb{R}^n\), $\gamma$ ma ciągłą pochodną.
+    Wtedy:
+    \[ \int_{\gamma} f dt = \int_{a}^{b} f(\gamma(t)) \cdot ||\gamma'(t)|| dt \]
+\end{de}
+
+\begin{pk}
+    Rozważmy przykłady krzywych gamma:
+    \begin{enumerate}
+        \item \( \gamma (t) = (t,t^2), t\in[0,1] \)
+        \item Okrąg o środku w punkcie $(x_0,y_0)$ i promieniu $r$. \( \gamma(t) = (x_0 + r\cos(t), y_0 + r\sin(t)), t \in [0,2\pi]\)
+        \item Odcinek łączący punkty $P(x_1,y_1,z_1), Q(x_2,y_2,z_2)$ \( \gamma(t) = (1-t)\cdot P + t\cdot Q\) ($tQ = (tx_2, ty_2, tz_2)$)
+    \end{enumerate}
+\end{pk}
+
+\begin{pk}
+    Policzmy następujące Całki:
+    \begin{enumerate}
+        \item \( f=1, \gamma(t)=(r\cos(t),r\sin(t)), t\in[0,2\pi], \gamma'(t) = ((r\cos(t))',(r\sin(t))') = (-\sin(t)r)\)
+        \[ \int_{\gamma} 1 dl = \int_{0}^{2\pi} \sqrt{(-\sin(t)r)^2 + (\cos(t)r)^2} dt \]
+        \item \(\gamma: [0,1]\rightarrow \mathbb{R}^2, \gamma(t) = (t,t^2), f(x,y)=3x + \sqrt{y}, \gamma'(t) = (1,2t), |\gamma'(t)|=\sqrt{1+4t^2}\)
+        \[ \int_{\gamma} f dl = \int_{0}^{1} (3t + \sqrt{t})\sqrt{1 + 4t^2} dt \]
+        \item \(\gamma [0,4] \rightarrow \mathbb{R}^2 \) 
+        $$\gamma(t)=
+        \begin{cases}
+            \gamma_1(t) = (t,0) \text{ dla } 0\leq t\leq 1\\
+            \gamma_2(t) = (1,t-1) \text{ dla } 1<t<2\\
+            \gamma_3(t) = (3-t,1) \text{ dla } 2\leq t <3\\
+            \gamma_4(t) = (0,4-t) \text{ dla } 3\leq t \leq 4
+        \end{cases}
+        $$
+        $\gamma = \gamma_1 \cup \gamma_2 \cup \gamma_3 \cup \gamma_4$
+        \[ \int_{\gamma} dl = \int_{\gamma_1} x^2 d + \int_{\gamma_2} x^2 dl + \int_{\gamma_3} x^2 dl + \int_{\gamma_4} x^2 dl \]
+        \( \gamma_1'(t) = (1,0), |\gamma_1'(t)| = \sqrt{1^2 + 0^2} = 1, \gamma_2'(t)=(0,1), |\gamma_2'(t)|=1, |\gamma_3'(t)=(-1,0), |\gamma_3'(t)|  = 1 ... \)
+    \end{enumerate}
+\end{pk}
+
+\begin{de}
+    (Pole wektorowe) \( F: \mathbb{R}^n \rightarrow \mathbb{R}^n \)
+    \[ F(x,y) = (x,y) \]
+    \[ G(x,y) = (-y,x) \]
+    \[ F = (F_1, F_2, \dots, F_n) \]
+    \[ F_i: \mathbb{R}^2 \rightarrow \mathbb{R} \]
+\end{de}
+
+\begin{de}
+    (Całka krzywoliniowa skierowana)
+    \[ \int_{\gamma} \vec{F} \circ \vec{dl} = \int_{\gamma} (F_1 dx_1 + F_2 dx_2 + \dots + F_n dx_n) = 
+    \int_{a}^{b} \left(\vec{F} (\gamma(t)) \circ \gamma'(t)\right) dt
+    \] gdzie $\circ$ to iloczyn skalarny.
+\end{de}
+
+\begin{pk}
+    Przykład:
+    \(\vec{F}(x,y) = (x,y), \gamma(t) = (\cos(t), \sin(t)), t\in[0,2\pi], \gamma'(t) = (-\sin(t),\cos(t))\)
+    \[\int_{\gamma} \vec{F} \circ \vec{dl} = \int_{0}^{2\pi} (\cos(t), \sin(t)) \circ (-\sin(t), \cos(t)) =\]
+    \[= \int_{0}^{2\pi} (-\cos(t)(\sin(t))) + \sin(t)\cos(t) dt = \int_{0}^{2\pi} 0 dt = 0\]
+    Dla $\vec{G}$
+    \[\int_{\gamma} \vec{G} \circ \vec{dl} = \int_{0}^{2\pi} (-\sin(t), \cos(t)) \circ (-\sin(t), \cos(t)) dt\]
+    \[= \int_{0}^{2\pi} (\sin^2(t) + \cos^2(t)) dt = \int_{0}^{2\pi} 1 dt = 2\pi\]
+\end{pk}
+
+Obszar jednospójny nie ma dziury w środku - Prowadzący.
+
+\begin{tw}
+    (Twierdzenie Greena) Jeśli $B$ jest obszarem jednospójnym, ograniczonym krzywą gładką $\vec{F}=(F_1,F_2)$ - pole wektorowe, które ma ciągłą pochodną na pewnym otoczeniu $B$.
+    \( \partial B \) - brzeg zorientowany dodatnio:
+    \[ \int_{\partial B} \vec{F} \circ \vec{dl} = \int\int_{B} \left(-\frac{\partial F_1}{\partial y} + \frac{\partial F_2}{\partial x}\right) dx dy\]
+\end{tw}
+
+\begin{pk}
+    Zastosujmy Tw. Greena. \( F(x,y) = \left((1-x^2)y, x(1+y^2)\right), (F_1(x,y),F_2(x,y))\)
+    , $B$ - koło $x^2+y^2\leq R^2$ zorientowane dodatnio:
+    \[ \int_{\partial B} \vec{F} \circ \vec{dl} = \int\int_{x^2+y^2\leq R^2} \left(- \frac{\partial F_1}{\partial y} + \frac{\partial F_2}{\partial x}\right) dx dy = \]
+    \[ \int\int_{x^2+y^2\leq R^2} (-(1-x^2)+(1+y^2)) dxdy= \int\int_{x^2+y^2\leq R^2} (x^2+y^2) dxdy =\]
+    \[ = \int_{0}^{2\pi} \int_{0}^{R} r^3 dr d\alpha = \int_{0}^{2\pi} \frac{R^4}{4} d\alpha = \frac{\pi}{2} R^4\]
+\end{pk}
+
+
+\begin{de}
+    (Całka powierzchniowa skierowana) $\sigma$ - mały element powierzchni
+    \[\int_{\partial B} \vec{F}\circ\vec{d\sigma} =_{def} \text{całka podwójna}\]  
+\end{de}
+
+\begin{tw}
+    (Twierdzenie Gaussa) (zamiana całki powierzchniowej skierowanej na całkę potrójną)
+    \[ \int_{\partial B} \vec{F} \circ \vec{d\sigma} = \int\int\int_{B} (\nabla \circ \vec{F}) dx dy dz \]
+\end{tw}
+
+\begin{pk}
+    $B: x^2 + y^2 + z^2 \leq R^2, OB: x^2+y^2+z^2 = R^2$
+    \[ \int_{\partial B} \vec{F} \circ \vec{d\sigma} = \int\int\int_{x^2+y^2+z^2 \leq R^2} \frac{\partial}{\partial x} (x) \frac{\partial}{\partial y} (y) \frac{\partial}{\partial z} (x) dxdydz = \int\int\int_{x^2+y^2+z^2 \leq R^2} 3 dx dy dz =\]
+    \[ = 3\cdot \frac{4}{3} \pi R^3 = 4\pi R^3\]
+\end{pk}
+
+
 \end{document}

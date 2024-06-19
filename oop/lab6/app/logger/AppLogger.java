@@ -50,6 +50,6 @@ public class AppLogger
             logger.warning("Unable to load output file 'log.txt'");
         }
 
-        logger.setLevel(Level.ALL);
+        logger.setLevel(Level.INFO);
     }
 }

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  15 MAY 2024 12:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  19 JUN 2024 12:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1128,27 +1128,42 @@ pdfTeX warning (ext4): destination with the same identifier (name{equation.10.8}
 <to be read again> 
                    \relax 
 l.1735     \end{align}
-                       [35] (./calculus2.aux)
+                       [35]
+Overfull \hbox (10.0229pt too wide) in paragraph at lines 1776--1778
+$\OML/plm/m/it/10 ^^M[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 t\OT4/cmr/m/n/10 ) = (1\OML/plm/m/it/10 ; \OT4/cmr/m/n/10 0)\OML/plm/m/it/10 ; \OMS/plsy/m/n/10 j\OML/plm/m/it/10 ^^M[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 t\OT4/cmr/m/n/10 )\OMS/plsy/m/n/10 j \OT4/cmr/m/n/10 = [] = 1\OML/plm/m/it/10 ; ^^M[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 t\OT4/cmr/m/n/10 ) = (0\OML/plm/m/it/10 ; \OT4/cmr/m/n/10 1)\OML/plm/m/it/10 ; \OMS/plsy/m/n/10 j\OML/plm/m/it/10 ^^M[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 t\OT4/cmr/m/n/10 )\OMS/plsy/m/n/10 j \OT4/cmr/m/n/10 = 1\OML/plm/m/it/10 ; \OMS/plsy/m/n/10 j\OML/plm/m/it/10 ^^M[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 t\OT4/cmr/m/n/10 ) = (\OMS/plsy/m/n/10 ^^@\OT4/cmr/m/n/10 1\OML/plm/m/it/10 ; \OT4/cmr/m/n/10 0)\OML/plm/m/it/10 ; \OMS/plsy/m/n/10 j\OML/plm/m/it/10 ^^M[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 t\OT4/cmr/m/n/10 )\OMS/plsy/m/n/10 j \OT4/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (19.62831pt too wide) in paragraph at lines 1815--1817
+[][]\T1/cmr/bx/n/10 Przykªad 11.0.4. []\T1/cmr/m/n/10 Za-sto-sujmy Tw. Gre-ena. $\OML/plm/m/it/10 F\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x; y\OT4/cmr/m/n/10 ) = [] \OML/plm/m/it/10 ; \OT4/cmr/m/n/10 (\OML/plm/m/it/10 F[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x; y\OT4/cmr/m/n/10 )\OML/plm/m/it/10 ; F[]\OT4/cmr/m/n/10 (\OML/plm/m/it/10 x; y\OT4/cmr/m/n/10 ))$
+ []
+
+[36]
+Overfull \hbox (0.2982pt too wide) detected at line 1835
+[][] [] \OMS/plsy/m/n/10 ^^N [] \OT4/cmr/m/n/10 = [] [] [][] [](\OML/plm/m/it/10 x\OT4/cmr/m/n/10 )[](\OML/plm/m/it/10 y\OT4/cmr/m/n/10 )[](\OML/plm/m/it/10 x\OT4/cmr/m/n/10 )\OML/plm/m/it/10 dxdydz \OT4/cmr/m/n/10 = [] [] [][] 3\OML/plm/m/it/10 dxdydz \OT4/cmr/m/n/10 =
+ []
+
+[37] (./calculus2.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `calculus2.out' has not changed.
-(rerunfilecheck)             Checksum: 6730AF6FE5F4DE6FE1687F810614EE22;8362.
+(rerunfilecheck)             Checksum: 8F0FA489AF811D3E7229CC7BB07C62C1;8458.
  ) 
 Here is how much of TeX's memory you used:
- 12810 strings out of 474504
- 198994 string characters out of 5752696
+ 12831 strings out of 474504
+ 199171 string characters out of 5752696
  1946040 words of memory out of 5000000
- 34246 multiletter control sequences out of 15000+600000
+ 34247 multiletter control sequences out of 15000+600000
  578027 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,79p,569b,737s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/pl/plsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on calculus2.pdf (35 pages, 342760 bytes).
+Output written on calculus2.pdf (37 pages, 351674 bytes).
 PDF statistics:
- 764 PDF objects out of 1000 (max. 8388607)
- 679 compressed objects within 7 object streams
- 309 named destinations out of 1000 (max. 500000)
- 417 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 801 PDF objects out of 1000 (max. 8388607)
+ 713 compressed objects within 8 object streams
+ 329 named destinations out of 1000 (max. 500000)
+ 425 words of extra memory for PDF output out of 10000 (max. 10000000)
 

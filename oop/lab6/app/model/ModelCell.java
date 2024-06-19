@@ -160,7 +160,9 @@ public class ModelCell extends Thread {
                                     }
                                     AppLogger.logger.fine("[NEIGHBORS] Cell " + this.id + " has fetched "
                                             + neighbor_colors.size() + " colors of operating neighbors");
-                                    this.color = UtilsColor.calculateNewColor(neighbor_colors);
+                                    if (neighbor_colors.size() != 0) {
+                                        this.color = UtilsColor.calculateNewColor(neighbor_colors);
+                                    }
                                 }
                                 this.updateGUI(this.color);
                                 AppLogger.logger.info("[END] Cell " + this.id + " changed color to " + color);
