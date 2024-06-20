@@ -2,7 +2,7 @@
 
 1. Napisz BST (Binary Search Tree) w c++/java - używając templates
 2. Dodaj CLI (Command Line Interface):
-    - which tree? `string, int, bool`
+    - which tree? `(i)nteger, (d)ouble, (s)tring`
     - `i 5` = `a 5` insert 5
     - `r 5` = `d 5` delete 5
     - `s 5` = `f 5` find 5 - is 5 in the tree?

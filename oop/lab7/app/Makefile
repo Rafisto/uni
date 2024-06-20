@@ -3,11 +3,11 @@ all: app
 .PHONY:app
 app:
 	javac Main.java
-	java app.Main
+	java Main
 
 .PHONY:run
 run:
-	java app.Main
+	java Main
 
 .PHONY:clean
 clean:
