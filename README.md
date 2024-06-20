@@ -3,7 +3,14 @@ I hereby present a treasure trove of resources covering various topics in mathem
 
 - 📊 **Mathematical Analysis** 📊. ✨***Full semester course notes***✨ purely in `LaTeX` is a must-have for any aspiring computer-scientist. 
     - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/analiza1/calculus.pdf)
-    - See [calculus2.pdf (ongoing | polish)](https://github.com/Rafisto/uni/raw/master/analiza2/calculus2.pdf)
+    - See [calculus2.pdf (polish)](https://github.com/Rafisto/uni/raw/master/analiza2/calculus2.pdf)
+- 🥶 **Discreete Mathematics** 🥶:
+    - See [notes.pdf (english)](https://github.com/Rafisto/uni/blob/master/dyskretna/notes.pdf)
+    - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/blob/master/dyskretna/wzor-stirlinga.pdf)
+- 🤔 **Algebra** 🤔:
+    - See [Groups, Rings and Complex Numbners (polish)](https://github.com/Rafisto/uni/blob/master/algebra/wyklad.pdf) - partial lecture notes
+    - See [Linear Algebra (polish)](https://github.com/Rafisto/uni/blob/master/algebra/kolokwium-2-tematy.md) - pre-exam repetition
+    - See [Algebra 2 (polish)](https://github.com/Rafisto/uni/blob/master/algebra2/notes.md) - definitions
 - 🕳 **Procedural Programming** 🕳 in `C`
     - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/wip/lab1/)
     - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/wip/lab2/)
@@ -17,6 +24,7 @@ I hereby present a treasure trove of resources covering various topics in mathem
     - [Exercise List 4](https://github.com/Rafisto/uni/tree/master/oop/lab4/) - Java Simple GUI
     - [Exercise List 5](https://github.com/Rafisto/uni/tree/master/oop/lab5/) - Java Figure "Paint"
     - [Exercise List 6](https://github.com/Rafisto/uni/tree/master/oop/lab6/) - Java Threaded Tiles (Concurrent programming)
+    - [Exercise List 7](https://github.com/Rafisto/uni/tree/master/oop/lab7/) - CLI for Binary Tree Search in Java and C++ 
 - 📚 **Many interesting programs** 📚
     - [Cn Addition table](https://github.com/Rafisto/uni/blob/master/algebra/programy/zadanie24-c.py) - $C_n: a + b \mod n$
     - [Zn Addition & Multiplication table](https://github.com/Rafisto/uni/blob/master/algebra/programy/zadanie24.py) - $Z_n: a + b, a * b \mod n$
