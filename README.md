@@ -4,7 +4,7 @@ I hereby present a treasure trove of resources covering various topics in mathem
 - 📊 **Mathematical Analysis** 📊. ✨***Full semester course notes***✨ purely in `LaTeX` is a must-have for any aspiring computer-scientist. 
     - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/analiza1/calculus.pdf)
     - See [calculus2.pdf (polish)](https://github.com/Rafisto/uni/raw/master/analiza2/calculus2.pdf)
-- 🥶 **Discreete Mathematics** 🥶:
+- 🥶 **Discrete Mathematics** 🥶:
     - See [notes.pdf (english)](https://github.com/Rafisto/uni/blob/master/dyskretna/notes.pdf)
     - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/blob/master/dyskretna/wzor-stirlinga.pdf)
 - 🤔 **Algebra** 🤔:
