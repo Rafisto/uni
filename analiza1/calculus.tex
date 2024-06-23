@@ -39,6 +39,8 @@
 
 \maketitle
 
+\tableofcontents
+
 \section{Wykład I}
 
 Liczby naturalne $\mathbb{N}=\{1,2,3,\dots\}$
@@ -188,6 +190,8 @@ $|a|=\begin{cases}
 drugi
 \section{Wykład II}
 
+\subsection{Ciąg Liczbowy}
+
 \begin{de}
     Ciąg liczbowy to funkcja z $\mathbb{N}$ w $\mathbb{R}$. Stosujemy zapis $a_1,a_2,\dots,a_n$. Przykłady:
     \begin{itemize}
@@ -197,6 +201,8 @@ drugi
         \item $d_{n+1}=2^{d_n}$ - rekurencyjny
     \end{itemize}
 \end{de}
+
+\subsection{Ciąg monotoniczny}
 
 \begin{de}
     Ciąg monotoniczny. 
@@ -212,6 +218,8 @@ drugi
     \end{enumerate}
 \end{de}
 
+\subsection{Granica ciągu liczbowego}
+
 \begin{de}
     Liczbą graniczną ciągu $a_n$ nazywamy liczbę $g$, taką że:
     \begin{center}
@@ -222,6 +230,8 @@ drugi
 \end{de}
 
 \section{Wykład III}
+
+\subsection{Twieddzenie o ciągu monotonicznym i ograniczonym}
 
 \begin{tw}
 Twierdzenie (o ciągu monotonicznym i ograniczonym)\\
@@ -259,6 +269,8 @@ $g_1=\frac{1+3}{2}=2$ lub $g_2=\frac{1-3}{2}=-1$, które nie zachodzi, zatem $li
 \end{center}
 \end{pk}
 
+\subsection{Podciąg ciągu}
+
 \begin{de}
 Podciąg ciągu\\
 Niech $a_n$ będzie dowolnym ciągiem. Niech $n_1, n_2, ... n_k$ będzie pewnym rosnącym ciągiem liczb naturalnych.
@@ -279,6 +291,8 @@ $a_{2k}=\frac{1}{2k}$ - podciąg o wyr. parzystych.\\
 $S=\{0, \infty\}$
 d) $sin(\frac{n\pi}{3})$ - $plot(sin(\frac{n\pi}{3}),(n,1,17)) \leftarrow$ wolframalpha
 \end{pk}
+
+\subsection{Punkt skupienia ciągu}
 
 \begin{de}
 Liczba $s$ jest punktem skupienia ciągu $a_n\iff s$ jest granicą właściwą lub niewłaściwą pewnego podciągu.
@@ -304,6 +318,8 @@ $\lim_{n\rightarrow \infty} inf(a_n) = \lim_{n\rightarrow\infty} a_n$
 
 $\lim inf(a_n)\leq \lim sup(a_n)$, równość dla granicy ciągu.
 
+\subsection{Twierdzenie Bolzano - Weierstrassa}
+
 \begin{tw}
 Twierdzenie (Bolzano - Weierstrassa). Każdy ciąg ograniczony ma podciąg zbieżny.
 \href{https://en.wikipedia.org/wiki/Bolzano%E2%80%93Weierstrass_theorem}{(English Wikipedia)}\\
@@ -318,6 +334,8 @@ $M_k-m_k=\frac{M_1-m_1}{2}$\\
 $M_k\rightarrow g_1; m_k\rightarrow g_2$, ponieważ $\frac{M_1-m_1}{2^k}\rightarrow 0$
 
 \end{tw}
+
+\subsection{Ciąg Cauchy'ego}
 
 \begin{de}
 Ciąg $a_n$ nazywamy ciągiem Cauchy'ego, wtedy i tylko wtedy, gdy:\\
@@ -431,7 +449,9 @@ $H_{k}\geq 1 + \frac{\log_2(k)}{2} \rightarrow \infty$\\
 Na mocy twierdenia o dwóch ciągach $H_k \rightarrow \infty$
 \end{pk}
 
-Następny wykład - kryteria zbieżności szeregów: kryterium kondensacyjne.
+\section{Wykład IV}
+
+\subsection{Warunek konieczny zbieżności szeregów}
 
 \begin{de}
     Warunek konieczny zbieżności szeregów. Jeżeli $\sum_{n=1}^{\infty} a_n$ jest zbieżny, to $lim_{n\rightarrow \infty} a_n = 0$. (dla $\sum_{n=1}^{\infty} a_n < \infty$).
@@ -439,8 +459,6 @@ Następny wykład - kryteria zbieżności szeregów: kryterium kondensacyjne.
 
 Szereg $\sum_{n=1}^{\infty} \frac{n}{n+1}$ jest rozbieżny, bo nie jest spełniony warunek konieczny\\ $lim_{n\rightarrow \infty} \frac{n}{n+1}=1$\\
 Warunek konieczny nie jest wystarczający.
-
-\section{Wykład IV}
 
 \subsection{Kryteria zbieżności szeregów}
 

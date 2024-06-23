@@ -12,3 +12,6 @@ log.txt
 *.blg
 *.log
 *.synctex.gz
+*.fdb_latexmk
+*.fls
+*.toc

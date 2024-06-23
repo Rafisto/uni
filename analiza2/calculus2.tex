@@ -16,6 +16,10 @@
 \usepackage{wrapfig}
 \usepackage{hyperref}
 \usepackage{etoolbox}
+\usepackage{tikz}
+
+\usetikzlibrary{calc}
+
 \AtBeginEnvironment{align}{\setcounter{equation}{0}}
 
 \theoremstyle{definition}
@@ -28,6 +32,15 @@
 \newtheorem{pk}{Przykład}[subsection]
 
 \theoremstyle{definition}
+\newtheorem*{wn}{Wniosek}
+
+\theoremstyle{definition}
+\newtheorem*{dw}{Dowód}
+
+\theoremstyle{definition}
+\newtheorem*{uw}{Uwaga}
+
+\theoremstyle{definition}
 \newtheorem*{fakt}{FAKT}
 
 \author{Rafal Wlodarczyk}
@@ -38,81 +51,119 @@
 
 \maketitle
 
+\tableofcontents
+
 \section{Wykład I}
 
 \subsection{Iloczyn skalarny}
 
-$\mathbb{R}^n=\{(x_1,x_2,\dots, x_n), x_i \in \mathbb{R}\}$
-
 \begin{de}
-Dla $x,y \in \mathbb{R}^n$ definiujemy iloczyn skalarny:
-\begin{center}
-    $<x,y> = \sum_{i=1}^{n} x_i y_i$
-\end{center}
-$(x=(x_1,x_2,\dots, x_n) y = (y_1,y_2,\dots, y_n))$\\
-$ax = (ax_1, ax_2, \dots, ax_n)$\\
-$\sqrt{\langle x,x \rangle} = \sqrt{x_1^2+x_2^2+\dots+x_n^2}$\\
-Własności:
-\begin{enumerate}
-    \item $\langle x,y \rangle = <y,x>$
-    \item $<ax,y> = <x,ay> = a<x,y>, a \in \mathbb{R}$
-    \item $<x+y,z>=<x,z>+<y,z>$
-\end{enumerate}
+    Przestrzeń \(\mathbb{R}^n\) jest zbiorem wszystkich \(n\)-wymiarowych wektorów o rzeczywistych współrzędnych.
+    \[
+    \mathbb{R}^n = \{ (x_1, x_2, \dots, x_n) \mid x_i \in \mathbb{R} \text{ dla } i = 1, 2, \dots, n \}
+    \]
+    Każdy wektor w \(\mathbb{R}^n\) można zapisać jako uporządkowany zbiór \(n\) rzeczywistych liczb, gdzie:
+    \[
+    x = (x_1, x_2, \dots, x_n)
+    \]
+    jest elementem przestrzeni \(\mathbb{R}^n\), a \(x_i\) są jego współrzędnymi.
 \end{de}
 
 \begin{de}
-    Długość wektora $x\in \mathbb{R}^n$\\
-    \begin{center}
-        $|x|=\sqrt{\langle x,x \rangle}$
-    \end{center}
+    Dla \(x, y \in \mathbb{R}^n\) definiujemy iloczyn skalarny jako:
+    \begin{equation*}
+        \langle x, y \rangle = \sum_{i=1}^{n} x_i y_i,
+    \end{equation*}
+    gdzie \( x = (x_1, x_2, \dots, x_n) \) i \( y = (y_1, y_2, \dots, y_n) \).
+    Dla dowolnego skalaru \( a \in \mathbb{R} \), mnożenie skalarne wektora \( x \) przez \( a \) jest zdefiniowane jako:
+    \[
+        ax = (ax_1, ax_2, \dots, ax_n).
+    \]
+    Norma (długość) wektora \( x \) jest dana wzorem:
+    \[
+        \|x\| = \sqrt{\langle x, x \rangle} = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2}.
+    \]
+    Iloczyn skalarny spełnia następujące własności (2. dla dowolnego \( a \in \mathbb{R} \)):
+    \begin{enumerate}
+        \item Przemienność: \(\langle x, y \rangle = \langle y, x \rangle\).
+        \item Dysocjatywność względem mnożenia przez skalar: \(\langle ax, y \rangle = \langle x, ay \rangle = a \langle x, y \rangle\) 
+        \item Rozdzielność względem dodawania wektorów: \(\langle x + y, z \rangle = \langle x, z \rangle + \langle y, z \rangle\).
+    \end{enumerate}
 \end{de}
 
 \begin{pk}
-	$\mathbb{R}$ : $|x|=|x_1|$ - oś liczbowa
-	$\mathbb{R}^2$ : $|x|=\sqrt{x_1^2+y_2^2}$ - płaszczyzna
+    Stwórzmy kilka prostych przestzeni:
+    \begin{itemize}
+        \item \(\mathbb{R}\): Przestrzeń jednowymiarowa, zwana także osią liczbową. Każdy punkt \(x \in \mathbb{R}\) jest liczbą rzeczywistą. Długość (moduł) liczby rzeczywistej \(x\) jest dana wzorem:
+        \[
+        |x| = |x_1|
+        \]
+        gdzie \(x_1\) to współrzędna punktu na osi liczbowej.
+        
+        \item \(\mathbb{R}^2\): Przestrzeń dwuwymiarowa, znana jako płaszczyzna kartezjańska. Każdy punkt \(x \in \mathbb{R}^2\) jest parą liczb rzeczywistych. Długość (norma) wektora \(x = (x_1, x_2)\) w tej przestrzeni jest dana wzorem:
+        \[
+        |x| = \sqrt{x_1^2 + x_2^2}
+        \]
+        gdzie \(x_1\) i \(x_2\) to współrzędne punktu na płaszczyźnie.
+    \end{itemize}
 \end{pk}
 
 \begin{tw}
-	$x\in\mathbb{R}^n$. Wówczas $|\langle x,y \rangle| \leq |x|\cdot |y|$\\
-	D-d. $x=(x_1,x_2,\dots,x_n)$, $y=(y_1,y_2,\dots, y_n)$\\
-	$|\langle x,y, \rangle| = |\sum_{i=1}^{n} x_i y_i| \leq \sqrt{\sum_{i=1}^{n} x_i^2} + \sqrt{\sum_{i=1}^{n} y_1^2}$\\
-	Nierówność Cauchy'ego Schwarza, a zatem dowód.
+    Niech \( x,y \in \mathbb{R}^n \). Wówczas:
+    \[
+        |\langle x,y \rangle| \leq \|x\| \cdot \|y\|
+    \]
+    D-d. \( x=(x_1,x_2,\dots,x_n) \), \( y=(y_1,y_2,\dots, y_n) \). Z definicji iloczynu skalarnego:
+    \[
+        |\langle x,y \rangle| = \left| \sum_{i=1}^{n} x_i y_i \right| \leq \sqrt{\sum_{i=1}^{n} x_i^2} \cdot \sqrt{\sum_{i=1}^{n} y_i^2}
+    \]
+    Otrzymaliśmy nierówność Cauchy'ego-Schwarza, a zatem dowód.
 \end{tw}
-Wniosek $x,y\in\mathbb{R}^n$.
+\begin{wn}
+Nierówność Trójkąta $x,y\in\mathbb{R}^n$.
 \begin{center}
 	$|x+y| \leq |x| + |y|$
 \end{center}
-D-d.\\
-$|x+y|^2=\langle x+y, x+y \rangle$
-$= \langle x, x+y \rangle + \langle y, x+y \rangle$
-$= \langle x, x \rangle + \langle x, y \rangle + \langle y, y \rangle + \langle y, x \rangle$
-$=|x|^2+|y|^2 + 2\langle x,y \rangle \leq |x|^2 |y|^2 + 2|x||y|$
-$=(|x|+|y|)^2$
-$=|x+y|^2 \leq (|x|+|y|)^2$
-$\iff$
-$|x+y| \leq |x| + |y|\qed$
+    \begin{dw}
+        $|x+y|^2=\langle x+y, x+y \rangle$
+        $= \langle x, x+y \rangle + \langle y, x+y \rangle$
+        $= \langle x, x \rangle + \langle x, y \rangle + \langle y, y \rangle + \langle y, x \rangle$
+        $=|x|^2+|y|^2 + 2\langle x,y \rangle \leq |x|^2 |y|^2 + 2|x||y|$
+        $=(|x|+|y|)^2$
+        $=|x+y|^2 \leq (|x|+|y|)^2$
+        $\iff$
+        $|x+y| \leq |x| + |y|\qed$
+    \end{dw}
+\end{wn}
 
 \subsection{Kąt między wektorami}
 
-$\overrightarrow{x_1}, \overrightarrow{x_2} \in \mathbb{R}^2$,
-$\overrightarrow{x_1} = (x_{11}, x_{12})$,
-$\overrightarrow{x_2} = (x_{21}, x_{22})$\\
+Niech \( \overrightarrow{x_1}, \overrightarrow{x_2} \in \mathbb{R}^2 \),
+\( \overrightarrow{x_1} = (x_{11}, x_{12}) \),
+\( \overrightarrow{x_2} = (x_{21}, x_{22}) \).
+
 \begin{center}
-    $\cos(\overrightarrow{x_1}, \overrightarrow{x_2})=$
-    $\frac{\overrightarrow{x_1} \odot \overrightarrow{x_2}}{|\overrightarrow{x_1}||\overrightarrow{x_2}|}$
+    \( \cos(\overrightarrow{x_1}, \overrightarrow{x_2}) = \frac{\overrightarrow{x_1} \odot \overrightarrow{x_2}}{\|\overrightarrow{x_1}\| \|\overrightarrow{x_2}\|} \)
 \end{center}
-Rozważmy funkcję:\\
-$d_n \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$\\
-$d_n(x,y) = |x-y|$, dla $n=2$:\\\\
-$x=(x_1,x_2), y=(y_1,y_2)$
-$|x-y| = \sqrt{(x_1-y_1)^2+(x_2-y_2)^2}$
-Własności:
+
+\subsection{Metryka}
+Rozważmy funkcję:
+\[ d_n: \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R} \]
+\(d_n\) jest metryką w \(\mathbb{R}^n\) jeśli spełnia następujące aksjomaty:
 \begin{enumerate}
-    \item $d_n(x,y)\geq 0$
-    \item $d_n(x,y)=0 \iff x=y$
-    \item $d_n(x,y)=d_n(y,x)$
-    \item $d_n(x,z)\leq d_n(x,y) + d_n(y,z)$ - nierówność trójkąta
+    \item \( d_n(x,y) \geq 0 \)
+    \item \( d_n(x,y) = 0 \iff x=y \)
+    \item \( d_n(x,y) = d_n(y,x) \)
+    \item \( d_n(x,z) \leq d_n(x,y) + d_n(y,z) \) -- nierówność trójkąta
 \end{enumerate}
+
+\begin{pk}
+    \( d_n(x,y) = |x-y| \).
+    Dla \( n=2 \):
+    \[
+        d_2(x,y) = |x-y| = \sqrt{(x_1-y_1)^2 + (x_2-y_2)^2}
+    \]
+\end{pk}
 
 \subsection{Przestrzeń metryczna}
 
@@ -128,114 +179,183 @@ która spełnia następujące aksjomaty:
 Funkcję $d$ nazywamy metryką, a wartość $d(x,y)$ odległością punktów.
 
 \end{de}
-Uwaga: aksjomat $1$ wynika z pozostałych aksjomatów\\
-D-d.\\
-$d(x,y) = \frac{1}{2} \left(d(x,y)+d(y,x)\right) \geq \frac{1}{2} d(x,x) = 0$, zatem $d(x,y)\geq 0$
+\begin{uw}
+    Aksjomat $1$ wynika z pozostałych aksjomatów.
+\end{uw}
+\(
+    d(x,y) = \frac{1}{2} \left(d(x,y)+d(y,x)\right) \geq \frac{1}{2} d(x,x) = 0$, zatem $d(x,y)\geq 0
+\)
 
 \begin{tw}
-Stwierdzenie. Niech $(X,d)$ (Corollary) będzie przestrzenią metryczną oraz $x_1,x_2,\dots,x_n\in X$.
-Wówczas:
-\begin{center}
-    $d(x_1,x_n)\leq\sum_{j=1}^{n-1} d(x_j,x_{j+1}), n\geq 2$
-\end{center}
-Dla $n=2$:\\
-    $d(x_1,x_2)\leq d(x_1,x_2)$ - oczywiste\\
-Dla $n=3$:\\
-    $d(x_1,x_3)\leq d(x_1,x_2) + d(x_2,x_3)$ - nierówność trójkąta\\
-Krok indukcyjny:\\
-    $d(x_1,x_{n+1})\leq d(x_1,x_2)+d(x_2,x_3)+\dots+d(x_n,x_{n+1})$\\
-    $d(x_1,x_{n+1})\leq d(x_1,x_n)+d(x_n,x_{n+1}) \leq_{ind}$
-    $d(x_1,x_2) + d(x_2,x_3) + \dots + d(x_{n-1}, x_n) + d(x_{n},x_{n+1})\qed$
-\end{tw}
+    Niech $(X,d)$ będzie przestrzenią metryczną oraz $x_1,x_2,\dots,x_n \in X$. Wówczas:
+    \[
+    d(x_1,x_n) \leq \sum_{j=1}^{n-1} d(x_j,x_{j+1}), \quad n \geq 2
+    \]
+    Dla $n=2$:
+    \[
+    d(x_1,x_2) \leq d(x_1,x_2) \quad \text{- oczywiste}
+    \]
+    Dla $n=3$:
+    \[
+    d(x_1,x_3) \leq d(x_1,x_2) + d(x_2,x_3) \quad \text{- nierówność trójkąta}
+    \]
+    Krok indukcyjny:
+    \[
+    d(x_1,x_{n+1}) \leq d(x_1,x_2) + d(x_2,x_3) + \dots + d(x_n,x_{n+1})
+    \]
+    \[
+    d(x_1,x_{n+1}) \leq d(x_1,x_n) + d(x_n,x_{n+1}) \leq_{ind}
+    d(x_1,x_2) + d(x_2,x_3) + \dots + d(x_{n-1}, x_n) + d(x_{n},x_{n+1}) \qed
+    \]
+\end{tw}   
 
 \subsection{Przestrzeń metryczna dyskretna}
 
-$X$ - dowolny zbiór i metryka określona wzorem:
-\begin{center}
-    $$d(x,y)=\begin{cases}
-        0 \text{ dla } x=y\\
-        1 \text{ dla } x\neq y
-    \end{cases}$$
-\end{center}
-Aksjomaty $1,2,3,4$ są oczywiste.
+Niech $X$ będzie dowolnym zbiorem, a metryka $d$ jest określona wzorem:
+\[
+d(x,y) = \begin{cases}
+    0 & \text{dla } x=y, \\
+    1 & \text{dla } x \neq y.
+\end{cases}
+\]
+Przestrzeń \((X,d)\) jest przestrzenią metryczną ponieważ spełnia jej aksjomaty:
+\begin{enumerate}
+    \item Dla wszystkich \( x, y \in X \), \( d(x, y) \geq 0 \):
+    
+    - Jeśli \( x = y \), to \( d(x, y) = 0 \geq 0 \).\\
+    - Jeśli \( x \neq y \), to \( d(x, y) = 1 \geq 0 \).
+    
+    Zatem w obu przypadkach \( d(x, y) \geq 0 \).
+    
+    \item \( d(x, y) = 0 \) wtedy i tylko wtedy, gdy \( x = y \):
+    
+    Jeśli \( d(x, y) = 0 \), to z definicji wiemy, że \( x = y \).
+
+    Z drugiej strony, jeśli \( x = y \), to metryka może mieć tylko jedną wartość \( d(x, y) = 0 \).
+
+    \item Symetria: \( d(x, y) = d(y, x) \):
+    
+    Ponieważ metryka dyskretna przyjmuje wartości 0 lub 1, to zarówno \( d(x, y) \) jak i \( d(y, x) \) są równe:\\
+    - Jeśli \( x = y \), to \( d(x, y) = 0 \) oraz \( d(y, x) = 0 \).\\
+    - Jeśli \( x \neq y \), to \( d(x, y) = 1 \) oraz \( d(y, x) = 1 \).
+    
+    Zatem w obu przypadkach \( d(x, y) = d(y, x) \).
+    
+    \item Nierówność trójkąta: \( d(x, z) \leq d(x, y) + d(y, z) \) dla wszystkich \( x, y, z \in X \):
+    
+    Rozważmy dowolne \( x, y, z \in X \).\\
+    - Jeśli \( x = z \), to \( d(x, z) = 0 \), a \( d(x, y) + d(y, z) \geq 0 \). Nierówność trójkąta jest spełniona.
+    
+    - Jeśli \( x \neq z \), to istnieją dwa przypadki:
+    \begin{itemize}
+        \item Jeśli \( x = y \) lub \( y = z \), ale \( x \neq z \), to \( d(x, y) = 0 \) lub \( d(y, z) = 0 \), ale \( d(x, z) = 1 \). Wtedy \( d(x, y) + d(y, z) = 0 + 1 = 1 \geq 1 = d(x, z) \).
+        
+        \item Jeśli \( x \neq y \) i \( y \neq z \), to \( d(x, y) = 1 \) i \( d(y, z) = 1 \). Wtedy \( d(x, y) + d(y, z) = 1 + 1 = 2 \geq 1 = d(x, z) \).
+    \end{itemize}
+    
+    W każdym przypadku nierówność trójkąta jest zachowana, co kończy dowód.
+\end{enumerate}
 
 \subsection{Metryka Euklidesowa}
 
-$d_n: \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$\\
-$x=(x_1,x_2,\dots, x_n)$\\
-$y=(y_1,y_2,\dots, y_n)$\\
-$d_n(x,y)=\sqrt{\sum_{i=1}^{n} (x_i-y_i)^2}$
+Metryka Euklidesowa \( d_n: \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R} \) jest określona przez:
+\[
+d_n(x,y) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2},
+\]
+gdzie \( x = (x_1, x_2, \dots, x_n) \) oraz \( y = (y_1, y_2, \dots, y_n) \).
 
 \subsection{Przestrzeń Hilberta}
 
-$x=(x_1,x_2,\dots, x_n)$\\
-$y=(y_1,y_2,\dots, y_n)$\\
-$\sum_{i=1}^{\infty} x_i^2\leq \infty, \sum_{i=1}^{\infty} y_i^2 < \infty$\\
-$x=\left(\frac{1}{1},\frac{1}{2},\frac{1}{3},\dots,\frac{1}{i}, \dots \right)$\\
-$\sum_{i=1}^{\infty} \frac{1}{i^2} \leq \infty$\\
-$\sum_{i=1}^{\infty} \left(\frac{1}{\sqrt{i}}\right)^2=\sum_{i=1}^{\infty} \frac{1}{i} = \infty$\\
-$y=\left(\frac{1}{\sqrt{1}},\frac{1}{\sqrt{2}},\dots \right)$
+Niech \( x = (x_1, x_2, \dots, x_n) \) oraz \( y = (y_1, y_2, \dots, y_n) \) będą wektorami w przestrzeni Hilberta, gdzie:
+\[
+\sum_{i=1}^{\infty} x_i^2 < \infty, \quad \sum_{i=1}^{\infty} y_i^2 < \infty.
+\]
+Przykłady wektorów:
+\[
+x = \left(\frac{1}{1}, \frac{1}{2}, \frac{1}{3}, \dots, \frac{1}{i}, \dots \right), \quad \sum_{i=1}^{\infty} \frac{1}{i^2} < \infty,
+\]
+co oznacza, że \( x \) należy do przestrzeni Hilberta.\\
+Natomiast wektor
+\[
+y = \left(\frac{1}{\sqrt{1}}, \frac{1}{\sqrt{2}}, \dots \right),
+\]
+spełnia warunek
+\[
+\sum_{i=1}^{\infty} \left(\frac{1}{\sqrt{i}}\right)^2 = \sum_{i=1}^{\infty} \frac{1}{i} = \infty,
+\]
+co oznacza, że \( y \) nie należy do przestrzeni Hilberta.
 
 \subsection{Metryka Manhattan}
 
-$d(x,y)=|x_1-y_1| + |x_2-y_2|$\\
-$d((x_1,x_2),(y_1,y_2))=|x_1-y_1|+|x_2-y_2|$
+Metryka Manhattan między dwoma punktami \( (x_1, x_2) \) i \( (y_1, y_2) \) w przestrzeni \( \mathbb{R}^2 \) jest określona jako:
+\[
+d((x_1, x_2), (y_1, y_2)) = |x_1 - y_1| + |x_2 - y_2|.
+\]
+Metryka ta mierzy sumę bezwzględnych różnic współrzędnych między punktami.
+Swoją nazwę zawdzięcza podobieństwu do liczenia odległości w miastach, gdzie trzeba poruszać się wzdłuż prostopadłych ulic i alei.
 
 \section{Wykład II}
 
 \subsection{Kula otwarta}
 
 \begin{de}
-Kula otwarta w przestrzeni metrycznej $Y$:
-\begin{center}
-    $K(y_0, r) = \{y\in Y: d(y, y_0) < r\}$
-\end{center}
-Gdzie:
+Kula otwarta w przestrzeni metrycznej \( Y \):
+\[
+K(y_0, r) = \{ y \in Y \mid d(y, y_0) < r \}
+\]
+gdzie:
 \begin{itemize}
-    \item $y_0$ - środek
-    \item $r$ - promień
-    \item Wnętrze okręgu w $\mathbb{R}^2$ - metryka Euklidesowa
-    \item Wnętrze kuli w $\mathbb{R}^3$
+    \item \( y_0 \) - środek kuli,
+    \item \( r \) - promień kuli,
+    \item \( d \) - funkcja metryczna określająca odległość między punktami w przestrzeni \( Y \).
 \end{itemize}
 \end{de}
 
 \begin{pk}
     Rozważmy następujący przykład: \\
-    $K((x_0,y_0),r)$ :: 
-    $\sqrt{(x-x_0)^2 + (y-y_0)^2} < r$ zachodzący warunek\\
-    (wyobraż sobie rysunek poglądowy)
+    \( K((x_0,y_0), r) \) to zbiór punktów \( (x,y) \) w przestrzeni \( \mathbb{R}^2 \), dla których zachodzi warunek:
+    \[
+    \sqrt{(x-x_0)^2 + (y-y_0)^2} < r.
+    \]
+    \begin{center}
+        \begin{tikzpicture}
+            \coordinate (center) at (0,0);
+            \def\radius{0.5};
+            \draw[thick, dotted] (center) circle (\radius);
+            \filldraw[black] (center) circle (0.5pt) node[anchor=west] at ($(center) + (0.8, 0)$) {\((x_0, y_0)\)};
+        \end{tikzpicture}
+    \end{center}
 \end{pk}
 
 \begin{de}
-    Niech $(X,d)$ będzie przestrzenią metryczną. Zbiór $U\subseteq X$ jest otwarty, jeśli:
-    \begin{center}
-        $\forall_{x\in U} \exists_{\varepsilon > 0} \left(K(x,\varepsilon) \subseteq U\right)$
-    \end{center}
-    (Kula otwarta o środku w punkcie $X$ i promieniu $\varepsilon > 0$)
+    Niech \( (X,d) \) będzie przestrzenią metryczną. Zbiór \( U \subseteq X \) jest otwarty, jeśli dla każdego \( x \in U \) istnieje \( \varepsilon > 0 \) takie, że
+    \[
+    K(x,\varepsilon) = \{ y \in X \mid d(y,x) < \varepsilon \} \subseteq U.
+    \]
+    gdzie \( K(x,\varepsilon) \) oznacza kulę otwartą o środku w punkcie \( x \) i promieniu \( \varepsilon > 0 \)
 \end{de}
 
 \begin{pk}
     Przykłady: \\
-    $(a,b)$ - jest otwarty\\
-    $[a,b)$ - nie jest otwarty
+    \( (a,b) \) - jest otwarty\\
+    \( [a,b) \) - nie jest otwarty
 \end{pk}
 
 \begin{de}
-    Niech $(X,d)$ będzie przestrzenią metryczną. Zbiór $D\subseteq X$ jest zbiorem domkniętym $\iff$ $X - D$ jest otwarty.\\
-    $[a,b] \subset \mathbb{R} \implies \mathbb{R} - [a,b] = (\infty, a) \cup (b,\infty)$ - zbiór otwarty
+    Niech \( (X,d) \) będzie przestrzenią metryczną. 
+    \begin{center}
+        Zbiór \( D \subseteq X \) jest zbiorem domkniętym \(\iff\) \( X - D \) jest otwarty.
+    \end{center}
+    Przykład: \( [a,b] \subset \mathbb{R} \implies \mathbb{R} - [a,b] = (-\infty, a) \cup (b, \infty) \) - zbiór otwarty.
 \end{de}
 
 \begin{de}
-    $(X,d_1), (Y, d_2)$ - przestrzenie metryczne\\
-    $F: X\rightarrow Y$\\
-    $\lim F(x) = b$ :: $x\rightarrow a$ :: $a\in X, b\in Y$\\
-    Przykład. Dla $X=\mathbb{N}, Y=\mathbb{R}$ - ciągi, dla obu $\mathbb{R}$ - funkcje\\
-    \begin{center}
-        $\forall_{\varepsilon>0} \exists_{\delta > 0} \forall_{x} (0 < d_1 (x,a) < \delta \implies d_2(F(x),b) < \varepsilon)$
-    \end{center}
-\end{de}
-
-\begin{tw}
+    Niech $(X,d_1)$ i $(Y, d_2)$ będą przestrzeniami metrycznymi, a $F: X \rightarrow Y$ będzie funkcją. 
+    Granicą funkcji $F(x)$ oznaczymy:
+    \[ 
+    \lim_{x \rightarrow a} F(x) = b.
+    \]
+    gdzie $a \in X$ i $b \in Y$.\\
     Warunki (1), (2) są równoważne:
     \begin{enumerate}
         \item $\lim_{x\rightarrow a} F(x) = b$
@@ -244,10 +364,15 @@ Gdzie:
         jeśli $\lim_{n\rightarrow a} x_n = a$ w metryce $d_1$ to
         $\lim_{n\rightarrow \infty} F(x_n) = b$
     \end{enumerate}
-\end{tw}
-$\lim_{n\rightarrow \infty} x_n = a \iff$
-$(\forall \varepsilon) (\exists n_0) (\forall n>n_0)$  $d_1(x_n,a)< \varepsilon$\\\\
-$(|x_n-a|<\varepsilon), x_n, a \in (X, d_1) \implies \lim_{n\rightarrow \infty} d_1(x_n,a) = 0$
+    \[ \lim_{x \rightarrow a} F(x) = b \iff (\forall \varepsilon > 0) (\exists \delta > 0) (\forall x \in X) (0 < d_1(x,a) < \delta) \implies d_2(F(x),b) < \varepsilon \]
+\end{de}
+
+\begin{uw}
+    Analogicznie dla granicy ciągów:
+    \[
+    \lim_{n \to \infty} x_n = a \iff (\forall \varepsilon > 0) (\exists n_0 \in \mathbb{N}) (\forall n > n_0) \, d_1(x_n,a) < \varepsilon
+    \]
+\end{uw}
 
 \begin{pk}
     $x_n\in\mathbb{R}, a\in X$\\
@@ -265,36 +390,45 @@ $(|x_n-a|<\varepsilon), x_n, a \in (X, d_1) \implies \lim_{n\rightarrow \infty} 
 \end{pk}
 
 \begin{de}
-    Ciągłość funkcji. $(X,d_1), (Y, d_2), F: X\rightarrow Y$. \\
-    Funkcja $F$ jest ciągła w punkcie $a$ jeśli:
-    \begin{center}
-        $\lim_{x\rightarrow a} F(x) = F(a)$
-    \end{center}
-    $x\rightarrow a$ w $d_1 \implies F(x)\rightarrow F(a)$ w $d_2$
+    Ciągłość funkcji. Niech $(X,d_1)$, $(Y, d_2)$ będą przestrzeniami metrycznymi, oraz niech $F: X \rightarrow Y$.
+    Funkcja $F$ jest ciągła w punkcie $a \in X$ jeśli zachodzi:
+    \[
+    \lim_{x \to a} F(x) = F(a)
+    \]
+    Innymi słowy, jeśli $x_n \to a$ w metryce $d_1$, to $F(x_n) \to F(a)$ w metryce $d_2$.
 \end{de}
 
 \begin{pk}
-    Weźmy funkcje $f: \mathbb{R}^2 \rightarrow \mathbb{R}$.\\
-    $$
+    Jak pokazać, że funkcja nie jest ciągła. Weźmy funkcję $f: \mathbb{R}^2 \rightarrow \mathbb{R}$.
+    \[
     f(x,y)=\begin{cases}
-        \frac{xy}{x^2+y^2} \text{ dla } x^2+y^2 > 0\\
-        0 \text{ dla } (x,y) = (0,0)
+        \frac{xy}{x^2+y^2} & \text{dla } (x,y) \neq (0,0) \\
+        0 & \text{dla } (x,y) = (0,0)
     \end{cases}
-    $$\\
-    Pokażmy, że $f$ nie jest ciągła w $(0,0)$\\
-    $(x_n,y_n) = (\frac{1}{n}, \frac{1}{n}) \rightarrow (0,0)$\\
-    $\lim_{n\rightarrow \infty} f(x_n, y_n)$\\
-    $f(\frac{1}{n}, \frac{1}{n}) = \frac{1}{2}$ - nie dąży do $0$ nie jest ciągła w $(0,0)$. 
+    \]
+    Pokażmy, że $f$ nie jest ciągła w $(0,0)$.
+    Rozważmy ciąg $(x_n, y_n) = \left( \frac{1}{n}, \frac{1}{n} \right) \rightarrow (0,0)$.
+    Obliczmy granicę $\lim_{n\rightarrow \infty} f(x_n, y_n)$:
+    \[
+    f\left( \frac{1}{n}, \frac{1}{n} \right) = \frac{\frac{1}{n} \cdot \frac{1}{n}}{\left( \frac{1}{n} \right)^2 + \left( \frac{1}{n} \right)^2} = \frac{\frac{1}{n^2}}{\frac{2}{n^2}} = \frac{1}{2}
+    \]
+    Zatem $\lim_{n\rightarrow \infty} f(x_n, y_n) = \frac{1}{2}$, co nie jest równe $0$.
+    Stąd funkcja $f$ nie jest ciągła w punkcie $(0,0)$.
 \end{pk}
 
 \begin{pk}
-    $f: \mathbb{R}^3 \rightarrow \mathbb{R}^2$\\
-    $f(x,y,z) = (x^2,y^2\cdot z)$\\
-    Zbadajmy ciąg $a=(x_0, y_0, z_0)$\\
-    $f(x_0, y_0, z_0) = (x_0^2, y_0^2\cdot z)$\\
-    $(x_n, y_n, z_n) \rightarrow (x_0, y_0, z_0)$\\
-    $x_n\rightarrow x_0 \land y_n \rightarrow y_0 \land z_n \rightarrow z_0$\\
-    $f(x_n,y_n,z_n) = (x_n^2, y_n z_n)$\\
+    Rozważmy funkcję $f: \mathbb{R}^3 \rightarrow \mathbb{R}^2$ określoną przez
+    \[
+    f(x,y,z) = (x^2, y^2 \cdot z)
+    \]
+    Zbadajmy ciąg $a=(x_0, y_0, z_0)$, gdzie
+    \[
+    f(x_0, y_0, z_0) = (x_0^2, y_0^2 \cdot z_0)
+    \]
+    Niech $(x_n, y_n, z_n) \rightarrow (x_0, y_0, z_0)$. Oznacza to, że $x_n \rightarrow x_0$, $y_n \rightarrow y_0$ oraz $z_n \rightarrow z_0$.
+    \[
+    \lim_{(x_n, y_n, z_n) \rightarrow (x_0, y_0, z_0)} f(x_n,y_n,z_n) = (x_0^2, y_0^2 \cdot z_0)
+    \]
 \end{pk}
 
 \begin{pk}
