@@ -31,7 +31,7 @@ I hereby present a treasure trove of resources covering various topics in mathem
     - [Euclidean Algorithm](https://github.com/Rafisto/uni/blob/master/algebra/programy/zadanie39.py) - $gcd(a, b)$
     - [Extended Euclidean Algorithm](https://github.com/Rafisto/uni/blob/master/algebra/programy/zadanie40.py) - $ax + by = \gcd(a, b)$
     - [An extravagend function analysis](https://github.com/Rafisto/uni/blob/master/algebra/programy/zadanie49.py) - analysis of $f(n)=\left|\{(a,b) \mid 1 \leq a,b \leq n, \gcd(a,b)=1\}\right| \cdot n^{-2}$
-    - [RSA Algorithm Exponent Brute-Forcer](https://github.com/Rafisto/uni/blob/master/algebra2/rsa34.py) - Crack RSA exponent
+    - [RSA Algorithm Exponent Brute-Forcer](https://github.com/Rafisto/uni/blob/master/algebra2/programs/rsa34.py) - Crack RSA exponent
     - [XOR Cipher](https://github.com/Rafisto/uni/blob/master/logika/programy/xorcipher.py) - One time pad encryption, decryption, key generation and key swap.
 
 Copyright 2024 © Rafał Włodarczyk
