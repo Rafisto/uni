@@ -5,3 +5,10 @@ res/
 *.class
 *.out
 log.txt
+
+# latex log and debug files
+*.aux
+*.bbl
+*.blg
+*.log
+*.synctex.gz
