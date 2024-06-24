@@ -26,7 +26,7 @@ public:
     /**
      * Runs the command line interface.
      */
-    void run() {
+    void run() noexcept(true) {
         std::string command;
         std::cin.ignore();
 
