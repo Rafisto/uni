@@ -26,11 +26,11 @@ private:
 
     Node* root;
 
-    void insertNode(Node* node, T value);
-    Node* deleteNode(Node* node, T value);
-    bool searchRecursive(Node* node, T value);
-    std::string printRecursive(Node* node, int indent);
-    void freeRecursive(Node * node);
+    void insertNode(Node* node, T value) const noexcept(true);
+    Node* deleteNode(Node* node, T value) const noexcept(true);
+    bool searchRecursive(const Node* node, T value) const noexcept(true);
+    std::string printRecursive(const Node* node, int indent) const noexcept(true);
+    void freeRecursive(Node * node) const noexcept(true);
 
 public:
     BST() : root(nullptr) {}
@@ -103,7 +103,7 @@ std::string BST<T>::print()
  * @param value The value to be inserted into the binary search tree.
  */
 template <typename T>
-void BST<T>::insertNode(Node *node, T value)
+void BST<T>::insertNode(Node *node, T value) const noexcept(true)
 {
     if (value < node->value)
     {
@@ -142,7 +142,7 @@ void BST<T>::insertNode(Node *node, T value)
  * @return A pointer to the root node of the modified binary search tree.
  */
 template <typename T>
-typename BST<T>::Node *BST<T>::deleteNode(Node *node, T value)
+typename BST<T>::Node *BST<T>::deleteNode(Node *node, T value) const noexcept(true)
 {
     if (node == nullptr)
     {
@@ -201,7 +201,7 @@ typename BST<T>::Node *BST<T>::deleteNode(Node *node, T value)
  * @return true if the value is found, false otherwise.
  */
 template <typename T>
-bool BST<T>::searchRecursive(Node *node, T value)
+bool BST<T>::searchRecursive(const Node *node, T value) const noexcept(true)
 {
     if (node == nullptr)
     {
@@ -228,7 +228,7 @@ bool BST<T>::searchRecursive(Node *node, T value)
  * @param indent The number of spaces to indent the output for each level of the tree.
  */
 template <typename T>
-std::string BST<T>::printRecursive(Node *node, int indent)
+std::string BST<T>::printRecursive(const Node *node, int indent) const noexcept(true)
 {
     std::stringstream ss;
     
@@ -268,7 +268,7 @@ void BST<T>::freeTree() {
  * @param node A pointer to the node from which to start freeing the memory.
  */
 template <typename T>
-void BST<T>::freeRecursive(Node * node) 
+void BST<T>::freeRecursive(Node * node) const noexcept(true)
 {
     if (node != nullptr) {
         freeRecursive(node->right);
