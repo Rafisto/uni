@@ -87,8 +87,4 @@ public:
     }
 };
 
-template class CLI<int>;
-template class CLI<std::string>;
-template class CLI<double>;
-
 #endif // CLI_HPP
