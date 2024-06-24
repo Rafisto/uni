@@ -10,10 +10,16 @@ CXX_FLAGS = $(CXX_OPT) $(CXX_DBG) $(CXX_WARN)
 .PHONY:all
 all:
 	$(MAKE) app --no-print-directory
+	$(MAKE) valgrind --no-print-directory
 
 .PHONY:app
 app:
 	$(CXX) $(CXX_FLAGS)  ./app/*.cpp -I./include -o ./app.out
+
+.PHONY:valgrind
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=1 ./app.out 
+
 
 .PHONY:test
 test:
