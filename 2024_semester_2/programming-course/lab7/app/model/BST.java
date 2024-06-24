@@ -25,7 +25,7 @@ public class BST<T extends Comparable<T>> {
      */
     public class Node<E extends Comparable<E>> {
         E value;
-        Node<E> left, right, parent;
+        Node<E> left, right;
 
         public Node(E value) {
             this.value = value;
