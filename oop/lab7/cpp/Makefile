@@ -13,16 +13,16 @@ all:
 
 .PHONY:app
 app:
-	$(CXX) $(CXX_FLAGS) ./src/*.cpp ./app/*.cpp -I./include -o ./app.out
+	$(CXX) $(CXX_FLAGS)  ./app/*.cpp -I./include -o ./app.out
 
 .PHONY:test
 test:
-	$(CXX) $(CXX_FLAGS) ./src/*.cpp ./test/*.cpp -I./include -o ./test.out
+	$(CXX) $(CXX_FLAGS)  ./test/*.cpp -I./include -o ./test.out
 
 .PHONY:analyze
 analyze: app test
-	clang++ --analyze -Xanalyzer -analyzer-output=text -I./include ./src/*.cpp ./app/*.cpp test/*.cpp
-	clang-tidy --quiet -checks=bugprone-*,-bugprone-easily-swappable-parameters,clang-analyzer-*,cert-*,concurrency-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type --warnings-as-errors=* ./app/*.cpp ./src/*.cpp -- -I./include
+	clang++ --analyze -Xanalyzer -analyzer-output=text -I./include  ./app/*.cpp test/*.cpp
+	clang-tidy --quiet -checks=bugprone-*,-bugprone-easily-swappable-parameters,clang-analyzer-*,cert-*,concurrency-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type --warnings-as-errors=* ./app/*.cpp  -- -I./include
 
 .PHONY:memcheck
 memcheck: test
@@ -37,14 +37,14 @@ sanitizer:
 sanitizer_address: CXX_FLAGS += -fsanitize=address -ggdb3
 sanitizer_address:
 	$(MAKE) clean --no-print-directory
-	$(CXX) $(CXX_FLAGS) ./src/*.cpp ./test/*.cpp -I./include -o ./test.out
+	$(CXX) $(CXX_FLAGS)  ./test/*.cpp -I./include -o ./test.out
 	./test.out
 
 .PHONY:sanitizer_undefined
 sanitizer_undefined: CXX_FLAGS += -fsanitize=undefined -ggdb3
 sanitizer_undefined:
 	$(MAKE) clean --no-print-directory
-	$(CXX) $(CXX_FLAGS) ./src/*.cpp ./test/*.cpp -I./include -o ./test.out
+	$(CXX) $(CXX_FLAGS)  ./test/*.cpp -I./include -o ./test.out
 	./test.out
 
 

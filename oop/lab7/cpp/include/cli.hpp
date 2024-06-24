@@ -8,6 +8,13 @@
 #include <bst.hpp>
 #include <stringConverter.hpp>
 
+/**
+ * @class CLI
+ * @brief Command Line Interface for interacting with a Binary Search Tree.
+ * 
+ * The CLI class provides a command line interface for performing operations on a Binary Search Tree (BST).
+ * It allows the user to insert, remove, search, and print the elements of the BST.
+ */
 template <typename T>
 class CLI {
 public:
@@ -16,15 +23,21 @@ public:
         tree = BST<T>();
     }
 
+    /**
+     * Runs the command line interface.
+     */
     void run() {
         std::string command;
         std::cin.ignore();
-        bool running = true;
 
-        while (running) {
+        while (true) {
             std::cout << "Enter a command: ";
-            std::string command;
             std::getline(std::cin, command); 
+
+            if (!std::cin) {
+                std::cout << "You want to quit! Go ahead." << std::endl;
+                break;
+            }
 
             std::cout << "Command: " << command << std::endl;
 
@@ -43,7 +56,14 @@ public:
                 continue;
             }
 
-            T convertedValue = StringConverter::stringToVal<T>(value);
+            T convertedValue;
+
+            try { 
+                convertedValue = StringConverter::stringToVal<T>(value);
+            } catch (std::invalid_argument& e) {
+                std::cout << e.what() << std::endl;
+                continue;
+            }
 
             if (operation == "i" || operation == "a") {
                 tree.insert(convertedValue);
@@ -56,6 +76,8 @@ public:
                 std::cout << "Invalid command." << std::endl;
             }
         }
+
+        tree.freeTree();
     }
 };
 
