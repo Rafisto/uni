@@ -273,7 +273,7 @@ void BST<T>::freeRecursive(Node * node) const noexcept(true)
     if (node != nullptr) {
         freeRecursive(node->right);
         freeRecursive(node->left);
-        free(node);
+        delete node;
     }
 }
 
