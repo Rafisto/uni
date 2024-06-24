@@ -18,9 +18,14 @@
 template <typename T>
 class CLI {
 public:
-    BST<T> tree;
+    BST<T>* tree;
+    
     CLI() {
-        tree = BST<T>();
+        tree = new BST<T>();
+    }
+
+    ~CLI() {
+        delete tree;
     }
 
     /**
@@ -43,7 +48,7 @@ public:
 
             if (command == "p") {
                 std::cout << "Printing the tree" << std::endl;
-                std::cout << tree.print() << std::endl;
+                std::cout << tree->print() << std::endl;
                 continue;
             }
 
@@ -66,18 +71,19 @@ public:
             }
 
             if (operation == "i" || operation == "a") {
-                tree.insert(convertedValue);
+                tree->insert(convertedValue);
             } else if (operation == "r" || operation == "d") {
-                tree.remove(convertedValue);
+                tree->remove(convertedValue);
             } else if (operation == "s" || operation == "f") {
-                bool found = tree.search(convertedValue);
+                bool found = tree->search(convertedValue);
                 std::cout << "Value " << value << " is " << (found ? "in" : "not in") << " the tree." << std::endl;
             } else {
                 std::cout << "Invalid command." << std::endl;
             }
         }
 
-        tree.freeTree();
+        std::cout << "Freeing the tree" << std::endl;
+        tree->freeTree();
     }
 };
 
