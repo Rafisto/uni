@@ -117,12 +117,12 @@
         \[\binom{n+1}{k+1} = \frac{n+1}{k+1} \binom{n}{k}\]
         \item Another identity.
         \[\binom{n}{k}\binom{k}{j} = \binom{n}{j}\binom{n-k}{k-j}\]
+        \item Bookkeeper sum.
+        \[\sum_{k=2}^{n} \binom{k}{2} = \binom{n}{3}\]
         \item Sum of coefficients.
         \[\sum_{k=0}^{n} \binom{n}{k} = 2^n\]
-        \item Sum of coefficients multiplied by an index (indices). $n\geq 0$
-        \[\sum_{k=0}^{n} \binom{n}{k} k  = n\cdot 2^{n-1}\]
-        \[\sum_{k=0}^{n} \binom{n}{k} k(k-1)  = n(n-1)\cdot 2^{n-1}\]
-        \item Diagonal Sums.
+        \[\sum_{k=0}^{n} \binom{n}{k} k^p = n^p 2^{n-1}\]
+        \item Pascal diagonal sums.
         \[\sum_{j=k}^{n} \binom{j}{k}=\binom{k}{k} + \binom{k+1}{k} + \binom{k+2}{k} + \dots + \binom{n}{k} = \binom{n+1}{k+1}\]
         \item Alternating Sums.
         \[\sum_{\substack{k=0 \\ k \text{ even}}}^{n} \binom{n}{k} =\sum_{\substack{k=0 \\ k \text{ odd}}}^{n} \binom{n}{k}\]
@@ -199,6 +199,11 @@
 
 \section{Asymptotic Notation}
 
+\begin{enumerate}
+    \item \(H_n \approx \ln(n)\)
+    \item \(\sum_{k=1}^{n} k^s \approx \frac{k^{s+1}}{s+1}\) \(\in O(k^{s+1})\)
+\end{enumerate}
+
 \subsection{Big O}
 
 \begin{definition}{Big O Asymptotic Notation}
@@ -241,14 +246,97 @@
 
 \section{Integral Sum Approximation}
 
-TBD.
+\begin{theorem}{Sum Approximation}
+Let \(a,b \in \mathbb{N}, f:[a,b]\rightarrow\mathbb{R}\) \textbf{non-decreasing}, differentiable. Then:
+
+\[
+f(a) + \int_{a}^{b} f(x) dx \leq \sum_{k=a}^{b} f(k) \leq \int_{a}^{b} f(x) dx + f(b)
+\]
+Analogically. Let \(a,b \in \mathbb{N}, f:[a,b]\rightarrow\mathbb{R}\) \textbf{non-increasing}, differentiable. Then:
+
+\[
+f(a) + \int_{a}^{b} f(x) dx \geq \sum_{k=a}^{b} f(k) \geq \int_{a}^{b} f(x) dx + f(b)
+\]  
+\end{theorem}
+
+\subsection{Stirling formula}
+
+\[n! \approx \sqrt{2\pi n} \cdot \left(\frac{n}{e}\right)^n\]
 
 \section{Stirling numbers of the second kind}
 
-TBD.
+We define \( \genfrac\{\}{0pt}{1}{n}{k} \) as the number of ways to partition a set of $n$ objects into $k$ non-empty subsets.
+
+\subsection{Basic values}
+
+\begin{enumerate}
+    \item \( \genfrac\{\}{0pt}{1}{0}{0} = 1, \genfrac\{\}{0pt}{1}{n}{0} = 0\)
+    \item \( \genfrac\{\}{0pt}{1}{n}{n} = \genfrac\{\}{0pt}{1}{n}{1} = 1\)
+    \item \( \genfrac\{\}{0pt}{1}{n}{n-1} = \binom{n}{2}\)
+    \item \( \genfrac\{\}{0pt}{1}{n}{2} = \frac{2^n-2}{2} = 2^{n-1}-1\)
+\end{enumerate}
+
+\subsection{Properties}
+
+\begin{enumerate}
+    \item Explicit formula
+    \[
+    \genfrac\{\}{0pt}{0}{n}{k} = \frac{1}{k!} \sum_{j=0}^{k} \binom{k}{j} (k-j)^n (-1)^j 
+    \]
+    \item Pascal identity:
+    \[
+    \genfrac\{\}{0pt}{0}{n}{k} = \genfrac\{\}{0pt}{0}{n-1}{k-1} + k \genfrac\{\}{0pt}{0}{n-1}{k}
+    \]
+    \item Expansion
+    \[
+    x^n = \sum_{k=0}^{n} \genfrac\{\}{0pt}{0}{n}{k} x^{\underline{k}}
+    \]
+    \item Boundary for triangle row inequality at \(k_n ~ \frac{n}{\ln(n)}\)
+    \[
+    \genfrac\{\}{0pt}{0}{n}{1} \leq \dots \leq \genfrac\{\}{0pt}{0}{n}{k_n} \geq ... \geq \genfrac\{\}{0pt}{0}{n}{n}
+    \]
+\end{enumerate}
+
+\subsection{Bell Numbers}
+
+Bell number $B_n$ is the number of all partitions of an $n$-element set:
+\[
+B_n = \sum_{k=0}^{n} \genfrac\{\}{0pt}{0}{n}{k}
+\]
+Bell numbers satisfiy the following recurrence relation:
+\[
+\begin{cases}
+B_{n+1} = \sum_{k=0}^{n} \binom{n}{k} B_k\\
+B_0 = 1
+\end{cases}
+\]
+
+\subsection{Stirling Number Combinatorics}
+
+\begin{information}{Choosing $k$ elements from $n$}
+    Let $n, k \in\mathbb{N}, k\leq n$. Combinatorial formulas for choosing \( k \) non empty subsets from a set of size \( n \):
+    \begin{enumerate}
+        \item TOP - Elements
+        \item SIDE - Subsets
+    \end{enumerate}
+    \begin{table}[htbp]
+        \centering
+        \bgroup
+        \def\arraystretch{1.5}%
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Selection Method} & \textbf{Distinguishable} & \textbf{Non-distinguishable} \\
+            \hline
+            Distinguishable & \( \genfrac\{\}{0pt}{1}{n}{k}\cdot k! (\text{surj.}) \) & \( \binom{n-1}{k-1} \) \\
+            \hline
+            Non-distinguishable & \( \genfrac\{\}{0pt}{1}{n}{k} \) & \( \binom{n+k-1}{k} \) \\
+            \hline
+        \end{tabular}
+        \egroup
+    \end{table}
+\end{information}
 
 \section{Permutations}
-
 
 \subsection{Permutation}
 A \textbf{permutation} of a set \(A\) is a bijection from the set \(A\) to itself. A permutation \(\sigma\) can be written as:
@@ -438,7 +526,7 @@ F_n & F_{n-1}
 
 The $n$-th Catalan number $C_n$ is the number of ways to triangulate a convex polygon with $n+2$ sides. $C_n$ can be defined using the binomial coefficients:
 \begin{equation}
-C_n = \frac{1}{n+1} \binom{2n}{n}
+C_n = \frac{1}{n+1} \binom{2n}{n} = \binom{2n}{n} - \binom{2n}{n+1}
 \end{equation}
 It can also be defined recursively as:
 \begin{equation}
@@ -447,6 +535,12 @@ C_0 = 1
 \begin{equation}
 C_{n+1} = \sum_{k=0}^{n} C_k C_{n-k} \quad \text{for} \quad n \geq 0
 \end{equation}
+\subsection{Asymptotic growth}
+
+\[
+c_n = \frac{1}{n+1} \cdot \binom{2n}{n} \approx \frac{1}{n} \frac{4^n}{\pi n} \text{ (Stirling approx.)}
+\]
+
 
 \subsection{Alternate definitions}
 
@@ -481,6 +575,63 @@ Let \( \{F_n\} \) denote the Fibonacci sequence defined by \( F_0 = 0, F_1 = 1 \
 
 The generating function for the binomial coefficient \( \binom{n}{k} \) is:
 \[ (1+x)^n = \sum_{k=0}^{n} \binom{n}{k} x^k \]
+
+\subsection{Generating function for n}
+
+Use derivation to find the generating function for the coefficient \( n \) is.
+\[ \sum_{n=0}^{\infty} n x^n = \frac{x}{1-x^2} \]
+\[ \sum_{n\geq 0} \binom{n+k}{k} x^n = \frac{1}{(1-x)^{k+1}}\]
+
+\subsection{Generating function 1/(x+1)}
+
+The generating function \( \frac{1}{1+x} \) is the sum:
+\[ \frac{1}{1+x} = \sum_{k=0}^{n} (-1)^k x^k \]
+
+\subsection{Identities}
+
+\begin{enumerate}
+    \item $A(x)+B(x)$ is the generating function for $c_n = a_n+b_n$
+    \item $cA(x)$ is the generating function for $c_n = c\cdot a_n$
+    \item $A(x)B(x)$ is the generating function for $c_n = \sum_{k=0}^{n} a_k b_{n-k}$ (convolution)
+    \item $A'(x)$ is the generating function for $c_n = (n+1) a_{n+1}$
+    \item $\frac{A(x)-a_0}{x}$ is the generating function for $c_n = a_{n+1}$
+\end{enumerate}
+
+\section{Counting functions}
+
+\subsection{Number of functions}
+
+\begin{enumerate}
+    \item Number of functions \(|f:[k]\rightarrow[n]| = n^k\) 
+    \item Number of 1-1 functions \(|f_{1-1}:[k]\rightarrow[n]| = n^{\underline{k}}\)
+    \item Number of surjective functions \(|f_{surj.}:[k]\rightarrow[n]| = \sum_{i=0}^{n} \binom{n}{i} (n-i) (-1)^{i} = k! \cdot \genfrac\{\}{0pt}{1}{n}{k}\)
+    \item Number of growing functions \(|f_{grow.}:[k]\rightarrow[n]| = \binom{n}{k}\)
+\end{enumerate}
+
+\subsection{Solutions to x_1 + x_2 + ... + x_k = n}
+
+For when $x_i\geq 1$. We can write $x' = x_i -1$, then $x' \in \{0,1,2,..\}$. But now:
+\[
+x_1' + x_2' + \dots + x_k' = n-k
+\]
+There are:
+\[
+\binom{k+(n-k-1)}{k-1} = \binom{n-1}{k-1}
+\]
+unique solutions to this equation.
+
+\subsection{Expansion coefficient}
+
+Coefficient for $a^{k_1} b^{k_2} \dots $ in the expansion of $(a+b+c+\dots)^n$
+\[
+\binom{n}{k_1, k_2, \dots, k_m} = \frac{n!}{k_1! k_2! \dots k_m!}
+\]
+
+\section{Helpful integrals}
+
+\begin{enumerate}
+    \item \(ln(x)\) \[\int \ln(x) dx = x\ln(x) - x + C\]
+\end{enumerate}
 
 \end{document}
 
