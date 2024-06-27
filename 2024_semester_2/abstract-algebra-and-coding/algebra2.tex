@@ -110,12 +110,12 @@ A group homomorphism is a function \( f: G \to H \) satisfying:
 \subsection{Kernel of a Homomorphism}
 
 The kernel of a homomorphism \( f \) is the set of elements in \( G \) mapped to the identity element in \( H \):
-\[ \ker f = \{ a \in G : f(a) = e_H \} \]
+\[ \ker f = \{ a \in G : f(a) = e_H \} \subseteq G \]
 
 \subsection{Image of a Homomorphism}
 
 The image of a homomorphism is the set of elements in \( H \) obtained by applying \( f \) to elements in \( G \):
-\[ \text{Im} f = \{ f(a) \in H : a \in G \} \]
+\[ \text{Im} f = \{ f(a) \in H : a \in G \} \subseteq H \]
 
 \subsection{Order of an Element in a Group}
 
@@ -129,6 +129,14 @@ If no such \( n \) exists, \( a \) has infinite order.
 An element \( a \) in a group \( G \) is a generator if:
 \[ \forall b \in G: \exists n \in \mathbb{Z}: b = a^n \]
 
+\subsection{Coset equivalence relation}
+
+Let \((G,\cdot)\) - group. \( H \leq G \). We define a relation \(\approx\) as:
+\[
+a \approx b \iff a^{-1} \cdot b \in H
+\]
+This is an equivalence relation, which divides $G$ into layers.
+
 \subsection{Coset of a Group}
 
 The coset of a subgroup \( H \) in a group \( G \) is defined as:
@@ -136,6 +144,13 @@ The coset of a subgroup \( H \) in a group \( G \) is defined as:
     \item Left coset: \( aH = \{ a \cdot h : h \in H \} \)
     \item Right coset: \( Ha = \{ h \cdot a : h \in H \} \)
     \item Double coset: \( aH = Ha \)
+\end{itemize}
+For example \(G=(\mathbb{Z},+), H=3\mathbb{Z}\), cosets:
+\begin{itemize}
+    \item \( 0 + 3\mathbb{Z}\)
+    \item \( 1 + 3\mathbb{Z}\)
+    \item \( 2 + 3\mathbb{Z}\)
+    \item \( 3 + 3\mathbb{Z} = 0 + 3\mathbb{Z}\)
 \end{itemize}
 
 \subsection{Cyclic Group}
@@ -151,7 +166,11 @@ The dihedral group \( D_n \) is the group of symmetries of a regular \( n \)-gon
 
 \subsection{Quotient Group}
 
-The quotient group \( G/H \) of a group \( G \) by a normal subgroup \( H \) is the set of cosets of \( H \) in \( G \) with the operation:
+The quotient group \( G/H \) of a group \( G \) by a normal subgroup \( H \) is the set of cosets of \( H \) in \( G \):
+\[
+G/H = \{aH : a\in G\}
+\]
+with the operation:
 \[ (aH) \cdot (bH) = (a \cdot b)H \]
 
 \subsection{Ring}
@@ -168,8 +187,8 @@ A ring \( R \) is a set with two operations \( + \) and \( \cdot \) satisfying:
 
 An element \( a \) in a ring \( R \) is invertible if there exists an element \( b \in R \) such that:
 \[ a \cdot b = b \cdot a = 1 \]
-
-The set of invertible elements is denoted as \( R^* = \{ a \in R : a \text{ is invertible} \} \)
+The set of invertible elements is denoted as \( R^* = \{ a \in R : a \text{ is invertible} \} \)\\
+For example: \(|\mathbb{Z}_n^{*}| = |\{a\in\{0,\dots,n-1\}: gcd(a,n)=1 \}| = \varphi(n)\)
 
 \subsection{Subring}
 
@@ -181,11 +200,12 @@ A subring of a ring \( R \) is a subset \( S \subseteq R \) with operations \( +
 
 \subsection{Ring Homomorphism}
 
-A ring homomorphism is a function \( f: R \to S \) satisfying:
+Let \((R,+,\cdot), (S,+,\cdot) \) - rings. A ring homomorphism is a function \( f: R \to S \) satisfying:
 \begin{enumerate}
     \item \( f \) is a group homomorphism: \( f(a + b) = f(a) + f(b) \)
     \item \( f \) is a ring homomorphism: \( f(a \cdot b) = f(a) \cdot f(b) \)
 \end{enumerate}
+$f: R\to S$ is injective \(\iff \text{Ker}(f) = \{e_R\}\)
 
 \subsection{Ideal}
 
@@ -208,7 +228,24 @@ The quotient ring \( R/I \) of a ring \( R \) by an ideal \( I \) is the set of 
 \[ (a + I) + (b + I) = (a + b) + I \]
 \[ (a + I) \cdot (b + I) = (a \cdot b) + I \]
 
+\subsection{Euler Phi function}
+
+Let \(k,l,n \in \mathbb{N}, p\in \mathbb{P}\) Then:
+\begin{enumerate}
+    \item \(\varphi(p^n) = p^n - p^{n-1} \)
+    \item \(\varphi(kl) = \varphi(k) \cdot \varphi(l)\)
+    \item \(\varphi(n) = n\cdot \Pi_{p|n} \left(1-\frac{1}{p}\right)\)
+\end{enumerate}
+
 \section{Theorems}
+
+\subsection{Cayley's Thorem}
+
+Every group \((G,\cdot)\) is isomorphic to a subgroup of a symmetric group $\text{Sym}(G)$. A function:
+\[
+F(g) : G \rightarrow \text{Sym}(G)
+\]
+is an injective homomorphism.
 
 \subsection{Lagrange's Theorem}
 
@@ -228,7 +265,86 @@ has exactly one solution modulo \( m_1 \cdot m_2 \cdot \ldots \cdot m_n \).
 For any integer \( a \) coprime to \( n \), it holds that:
 \[ a^{\varphi(n)} \equiv 1 \pmod{n} \]
 
-\end{document}
+\subsection{Wilson Theorem}
+
+For any prime \(p\in\mathbb{P}\) we have:
+\[
+(p-1)! \equiv -1 (\text{mod } p)
+\]
+
+\subsection{Cyclic group isomorphism}
+
+Let \((G,\cdot)\) - group. Then:
+\begin{enumerate}
+    \item If \(|G| = n\in\mathbb{N}\), then \(G \cong C_n\)
+    \item If \(|G| = \infty\), then \(G \cong (\mathbb{Z},+)\)    
+\end{enumerate}
+
+\subsection{Cyclic Subgroup}
+
+Subgroup of a cyclic group \(C_n\) is also cyclic. 
+
+\subsection{Cyclic isomorphisms}
+
+Let \(k, l\) coprime integers. Then a function \(\psi\):
+\[
+\psi: \mathbb{C}_{kl} \rightarrow \mathbb{C}_{k} \times \mathbb{C}_{l}
+\]
+\[
+\psi(n) = (n \text{ mod } k, n \text{ mod } l)
+\]
+is an isomorphism.
+
+\subsection{Ring }
+
+Let \(P, R\) - rings with \('1'\). Then:
+\[
+P \times R = \{(p,r): p\in P, r\in R\}
+\]
+is also a ring with \(e=(1,1)\) and \((P\times R)^{*} = P^* \times R^*\)
+
+
+\section{Homomorphism Thoerem}
+
+\subsection{Group Homomorphism Theorem}
+
+1. Let \(f: G \rightarrow H \) homomorphism, then:
+\begin{enumerate}
+    \item \(\text{Ker}(f) \lhd G \), normal subgroup
+    \item \(\text{Im}(f) \leq H \), subgroup
+\end{enumerate}
+2. If \(f: G \rightarrow H \) is surjective homomorphism, then:
+\[
+G/\text{Ker}(f) \cong H
+\]
+
+\subsection{Ring Homomorphism Theorem}
+
+1. Let \(f: P \rightarrow R \) ring homomorphism, then:
+\begin{enumerate}
+    \item \(\text{Ker}(f) \lhd P \), ideal
+    \item \(\text{Im}(f) \leq R \), subring
+    \item \(I \lhd R \implies f^{-1}[I] \lhd P\)
+\end{enumerate}
+2. Let \(I \lhd P\). Then the function \(f(a) = a + I, f: P\to P/I\) is a ring homomorphism.
+Additionally \(\text{Ker}(f) = I\).\\
+3. Let \(f: P\to R\) a surjective homomorphism. \(f: P/Ker(f) \to R\) is an isomorphism.
+
+
+
+\section{Facts}
+
+\begin{enumerate}
+    \item \(H \leq G \implies |aH| = |H|\), $G,H$ - groups, $a\in G$
+    \item \(g\in G\), then \(g^{|G|} = e\), $e$ - neutral element in $G$.
+    \item Let \(G = \langle a \rangle\), \(\text{ord}(a)=n\) 
+    then \(\langle a \rangle = \langle a^{\text{gcd}(n,k)} \rangle\)
+    \item \(G = \langle a^k \rangle \iff \text{gcd}(n,k) = 1\)
+    \item If \(\text{gcd}(a,n) = 1\), then \( \exists_{x,y\in \mathbb{Z}} ax+ny=1 \), \(x=a^{-1}\) (invertible element)
+    \item \(k,l\) coprime then \(\psi : \mathbb{Z}_{k\times l} \to \mathbb{Z}_{k} \times \mathbb{Z}_{l}, \psi(a) = (a \text{ mod } k, a \text{ mod } l)\) is a ring isomorphism.
+    \item \(\mathbb{Z}/k\mathbb{Z} \cong \mathbb{Z}_k\)
+    \item 
+\end{enumerate}
 
 
 \end{document}
