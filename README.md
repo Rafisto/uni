@@ -5,8 +5,8 @@ I hereby present a treasure trove of resources covering various topics in mathem
     - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2023_semester_1/mathematical-analysis-1/calculus.pdf)
     - See [calculus2.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/mathematical-analysis-2/calculus2.pdf)
 - 🥶 **Discrete Mathematics** 🥶:
-    - See [notes.pdf (english)](https://github.com/Rafisto/uni/blob/master/2024_semester_2/discrete-mathematics/notes.pdf)
-    - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/blob/master/2024_semester_2/discrete-mathematics/wzor-stirlinga.pdf)
+    - See [notes.pdf (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete-mathematics/notes.pdf)
+    - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete-mathematics/wzor-stirlinga.pdf)
 - 🤔 **Algebra** 🤔:
     - See [Groups, Rings and Complex Numbners (polish)](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra-and-analytic-geometry/wyklad.pdf) - partial lecture notes
     - See [Linear Algebra (polish)](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra-and-analytic-geometry/kolokwium-2-tematy.md) - pre-exam repetition
