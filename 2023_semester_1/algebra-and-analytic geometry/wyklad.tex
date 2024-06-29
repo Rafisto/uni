@@ -1,0 +1,859 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}                                                                    
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafal Wlodarczyk}
+\title{Algebra - Notatki z wykladu}  
+\date{INA 1 Sem.}
+
+\begin{document}
+
+\maketitle
+
+\section{Wyklad Pierwszy}
+
+\subsection{Symbole}
+
+\paragraph{Logika}
+
+$\neg, \land, \lor, \implies, \iff$
+
+\paragraph{Zbiory}
+
+$x\in A, A \cap B, A \cup B, A - B, A\backslash B, A^C, B^C, A\subseteq B, A\times B$
+
+\paragraph{Funkcje}
+
+$f: X\rightarrow Y, f: X\times Y\rightarrow A$ funkcja dwuargumentowa
+
+\paragraph{Własność}
+
+$\\\text{Dla } \mathbb{N}$
+$W(n) \forall_{x} (x|n)\implies x=1 \lor x=n$
+\\Jest to definicja liczb pierwszych.
+
+\subsection{Definicje}
+
+\begin{de}
+Niech $X$ - Zbiór. Działaniem na $X$ nazywamy każdą funkcję $f:X\cdot X\rightarrow X$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+\item[]
+\item $f(x,y)=x\cdot y$ Jest działaniem na $\mathbb{R}$ - tak
+\item $f(x,y)=x-y$ Jest działaniem na $\mathbb{N}$? - nie, ponieważ $\exists_{x,y} f(x,y)\notin \mathbb{N}$
+\end{itemize}
+\end{pk}
+
+\paragraph{Oznaczenie}
+
+$f(x,y)\iff x+y, x\cdot y, x\circ y$ - Działanie ogólne
+
+\begin{de}
+Niech $X$ - Zbiór. Działanie $\circ$ nazywamy łącznym, gdy:
+$\forall_{x,y,z\in X} (x\circ y)\circ z = x\circ (y\circ z)$
+Działanie $\circ$ nazywamy przemiennym, gdy:
+$\forall_{x,y\in X} x\circ y = y\circ x$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+\item[]
+\item $+$ na $\mathbb{R}$ jest łączne i przemienne
+\item $-$ na $\mathbb{R}$ nie jest ani łączne, ani nieprzemienne
+\end{itemize}
+\end{pk}
+
+\begin{de}
+Niech $\circ$ - działanie na zbiorze $X$. Element $e\in X$ nazywamy elementem neutralnym (dla $\circ$), gdy:
+$\forall_{x\in X} e\circ x = x\circ e = x$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+\item[]
+\item $0$ jest elementem neutralnym dla $+$ na $\mathbb{N}$
+\item $1$ jest elementem neutralnym dla $\cdot$ na $\mathbb{R}$
+\end{itemize}
+\end{pk}
+
+\begin{fakt}
+Niech $\circ$ - działanie na zbiorze $X$. Jeżeli $\circ$ ma element neutralny, to jest on jedyny.
+D-d. Niech $a,b$ oznaczają elementy neutralne. Działanie $\circ$ na $X$:
+\begin{itemize}
+\item $a\circ b = b$
+\item $a\circ b = a$
+\end{itemize}
+Zatem: $a=b\qed$
+\end{fakt}
+
+\begin{de}
+Niech $\circ$ - działanie na zbiorze $X$. Element $a\in X$ nazywamy elementem odwrotnym (dla $\circ$), gdy:
+$\forall_{x\in X} a\circ x = x\circ a = e$
+\end{de}
+
+\begin{pk}
+\begin{itemize}
+    \item[]
+    \item $-x$ jest elementem odwrotnym dla $+$ na $\mathbb{R}$
+    \item $\frac{1}{x}$ jest elementem odwrotnym dla $\cdot$ na $\mathbb{R}$
+    \item $x^2$ nie ma elementu odwrotnego dla $\cdot$ na $\mathbb{R}$
+    \item $x^2$ ma element odwrotny dla $\cdot$ na $\mathbb{R}^+$
+\end{itemize}
+\end{pk}
+
+\begin{fakt}
+Niech $\circ$ - działanie na $X, e\in X$ - element neutralny $x\in X$ - dowolny $x$. W działaniu łącznym liczba odwrotna może być co najwyżej jedna.
+Istnieje maksymalnie jeden element odwrotny do $x$.\\
+D-d. Niech $a,b$ ozn. el. odwrotne do $x$\\
+$(a\circ x)\circ b = a\circ (x\circ b)$ (z łączności)\\
+$e\circ b=a\circ e$\\
+$b=a\qed$
+\end{fakt}
+
+\begin{de}
+Grupą nazywamy parę elementów $(G,\circ)$, gdzie $G$ - zbiór. $\circ$ działanie na $G$, takie że:
+\begin{enumerate}
+\item $\circ$ jest działaniem na $G$
+\item $\forall_{a,b,c\in G} (a\circ b)\circ c = a\circ (b\circ c)$ - Łączność
+\item $\exists_{e\in G} \forall_{a\in G} a\circ e = e\circ a = a$ - Element neutralny
+\item $\forall_{a\in G} \exists_{b\in G} a\circ b = b\circ a = e$ - Element odwrotny
+\end{enumerate}
+\end{de}
+
+\section{Wykład drugi}
+... tbd
+\section{Wykład trzeci}
+... tbd
+\section{Wykład czwarty - Pierścienie}
+
+\begin{pk}
+$(\mathbb{Z},+,\cdot)$ - rozszerza grupę
+\end{pk}
+
+\begin{de}
+Pierścieniem nazywamy trójkę $(P,\oplus, \odot)$, gdzie $P$ - zbiór, $\oplus, \odot$ - działania na $P$, takie że:
+\begin{enumerate}
+\item $(P,\oplus)$ - grupa przemienna (abelowa)
+\item działanie na $\odot$ jest łączne na $P$
+\item $\forall_{x} \forall_{a,b} x\odot(a\oplus b) = (x\odot a)\oplus (x\odot b)$ oraz
+$(a\oplus b)\odot x = a\odot x \oplus b\odot x$
+\end{enumerate}
+\end{de}
+
+\begin{pk}
+$(\mathbb{Z},+,\cdot)$ jest pierścieniem, ponieważ:
+\begin{itemize}
+\item $(\mathbb{Z},+)$ - grupa przemienna
+\item $\cdot$ jest łączne na $\mathbb{Z}$
+\item Rozdzielność mnożenia względem dodawania
+\end{itemize}
+Rozważmy inne przykłady:
+\begin{itemize}
+\item $(\mathbb{R},+, \cdot), (\mathbb{Q},+,\cdot)$ - pierścienie
+\item $(\mathbb{N},+, \cdot)$ - nie jest pierścieniem
+\item $(\mathbb{R}[x],+,\cdot)$ - (el neu. $W(x)=0$, el odw. $-W(x)$) - zbiór wielomianów o współczynnikach $\mathbb{R}$
+\end{itemize}
+\end{pk}
+
+\subsection{Oznaczenia}
+Działania na $P$ oznaczamy $+, \cdot$, nazywamy dodawaniem i mnożeniem.
+\begin{itemize}
+\item Element neutralny $+$ oznaczamy $0$ i nazywamy zerem.
+\item Element przeciwny (odwrotny) do $a$ to $-a$, bo $(a+(-a))=0$
+\item Element neutralny $\cdot$ (nie musi istnieć) oznaczamy $1$ i nazywamy jedynką
+\item Element odwrotny do $a$ to $a^{-1}$
+\end{itemize}
+Analogicznie do $(\mathbb{Z},+,\cdot)$
+
+\begin{pk}
+\begin{itemize}
+\item[]
+\item Pierścień bez 1 to np. $(2\mathbb{Z},+,\cdot)$
+\item Istnieje pierścień z nieprzemiennym $\cdot$ - mnożeniem (pierścień macierzy) 
+\end{itemize}
+\end{pk}
+
+\subsection{Własności}
+
+\begin{fakt}
+Niech $(P,+,\cdot)$ - pierścień. Wtedy:
+\begin{enumerate}
+\item $\forall_{a\in P} a\cdot 0=0\cdot a = 0$\\
+D-d. $a\cdot 0=a\cdot(0+0)=^{rd} a\cdot 0 + a\cdot 0 | +(-(a\cdot 0))$\\
+$a\cdot 0 - (a\cdot 0) = a\cdot 0 + a\cdot 0 - a\cdot 0$\\
+$0=a\cdot 0 \qed$
+\item $\forall_{a,b\in P} (-a)\cdot b=-(a\cdot b)$\\
+D-d. $(-a)\cdot b=-(a\cdot b) | + (a\cdot b)$\\
+$(-a)\cdot b + a\cdot b =^{rd} (-a + a)\cdot b = 0\cdot b=^{1} 0$\\
+$(-a)\cdot b+ a\cdot b=0 |+(-(ab))$\\
+$(-a)\cdot b = -(ab)$
+\item $\forall_{a,b\in P} (-a)\cdot (-b) = a\cdot b$\\
+D-d. ćwiczenie
+\item $\forall_{a,-a\in P} (-1)\cdot a = -a$\\
+D-d. ćwiczenie
+\end{enumerate}
+\end{fakt}
+
+\begin{de}
+Niech $(P,+,\cdot)$ - pierścień oraz niech $A\subseteq P$. Zbiór niepusty $A$ nazywamy podpierścieniem, gdy:
+\begin{enumerate}
+\item $\forall_{a,b\in A} (a+b)\in A \land (-a)\in A$
+\item $\forall_{a,b\in A} (a\cdot b)\in A$ (odwrotność mnożenia nie jest wymagana)
+\end{enumerate}
+\end{de}
+
+\begin{pk}
+Niech $P=(\mathbb{R}, +, \cdot), A=\mathbb{Z}$. $\mathbb{Z}$ jest podpieścieniem, ponieważ:
+\begin{enumerate}
+\item $a,b \in \mathbb{Z} \implies a+b\in \mathbb{Z} \land (-a)\in \mathbb{Z}$
+\item $a,b \in \mathbb{Z} \implies a\cdot b\in \mathbb{Z}$
+\end{enumerate}
+$2\mathbb{Z}$ jest podpierścieniem $(P,+,\cdot)$\\
+$((0,\infty),+,\cdot)$ nie jest podpierścieniem bo $7\in (0,\infty), -7\notin (0,\infty)$
+\end{pk}
+
+\paragraph{Oznaczenie}
+$A\leq P$ oznaczamy, że $A$ jest podpierścieniem $P$
+
+\paragraph{Własności} Jeśli $(P,+,\cdot)$ - pierścień oraz $A\leq P$
+to $(A,+,\cdot)$ jest pierścieniem.\\
+
+D-d. $\leftarrow$ ćwiczenie.
+$(P,+,\cdot)$ posiada dwa podpierścienie $P\leq P$ i $\{0\}\leq P$
+
+\subsection{Produkt}
+Niech $(P,+,\cdot), (R,\oplus,\odot)$ - pierścienie\\
+Na zbiorze $P\times R$ definiujemy działania:
+\begin{enumerate}
+\item $(p_1, r_1) +_b (p_2, r_2) = (p_1+p_2,r_1 \oplus r_2)$ 
+\item $(p_1, r_1) \cdot_b (p_2,r_2) = (p_1\cdot p_2, r_1\odot r_2)$
+\end{enumerate}
+D-d. Sprawdzić listę własności z definicji pierścienia.
+
+\begin{pk}
+$\mathbb{Z}\times \mathbb{Z}$\\
+$(3,5) + (7,8) = (3+7, 5+8) = (10,13)$\\
+Element neutralny $(0,0)\in \mathbb{Z}\times \mathbb{Z}$\\
+Element przeciwny $-(a,b) = (-a,-b)$
+\end{pk}
+
+\begin{de}
+Niech $n\in \mathbb(N)^{+}$ $\mathbb{Z}_n=(\{0,1,2,\dots ,n-1\}, +_n, \cdot_n)$. 
+\end{de}
+
+\begin{fakt}
+$\mathbb{Z}_n$ jest pierścieniem skończonym.\\
+D-d.
+\begin{enumerate}
+\item $(\{0,1,\dots ,n-1\},+_n)$ - grupa przeciwna $(\mathbb{C}_n)$
+\item Łączność - $(a\cdot_n(b\cdot_n c))=(a\cdot b\cdot c) mod (n)$
+\item Rozdzielność - $L= a\cdot_n (x +_n y)=(a(x+y))mod (n)$\\
+$P=a\cdot_n x +_n a \cdot_n y =(ax+ay)mod (n)$\\
+$L=P$ z rodzielności dodatania w $(\mathbb{Z},+,\cdot)$
+\end{enumerate}
+\end{fakt}
+
+\begin{de}
+Niech $(P,+,\cdot), (R, \oplus, \odot)$ - pierścienie. Funkcję $f_{P\rightarrow R}$ nazywamy homomorfizmem, gdy:
+\begin{enumerate}
+\item $\forall_{a,b\in P} f(a+b)=f(a)\oplus f(b)$
+\item $\forall_{a,b\in P} f(a\cdot b)=f(a)\odot f(b)$
+\end{enumerate}
+\end{de}
+
+\begin{pk}
+\begin{enumerate}
+\item[]
+\item $(P,+,\cdot)$ oraz $f(a)=a :P\rightarrow P$ to $f$ jest homomorfizmem.
+\item $(P,+,\cdot)$ oraz $g(a)=- :P\rightarrow P$ to $g$ jest homomorfizmem.\\\\
+D-d. $g(a+b)=0=0+0=g(a)+g(b) \land g(a\cdot b)=0\cdot 0 = g(a)\cdot g(b)$
+\end{enumerate}
+\end{pk}
+
+\begin{pk}
+$\varphi_n(k)=k (mod(n)) : \mathbb(Z) \rightarrow {0,1,\dots, n-1}$\\
+$\varphi_n$ jest homomorficzna dla pierścieni $(\mathbb{Z},+,\cdot), (\mathbb(Z)_n,+_n,\cdot_n)$, ponieważ:
+\begin{enumerate}
+\item $\varphi_n (a+b)=(a+b) mod (n)$\\
+$(a (mod (n)) + b (mod (n))) mod (n)=\varphi_n(a) +_n \varphi_n(b)$
+\item ćwiczenie (dla mnożenia)
+\end{enumerate}
+\end{pk}
+
+\begin{fakt}
+Niech $(P,+,\cdot), (R, \oplus, \odot)$ - pierścienie. Oraz $f_{P\rightarrow R}$ homomorfizm. Wtedy:
+\begin{enumerate}
+\item $f(0_P)=0_R$\\\\
+D-d. $f(0_P)=f(0_P+0_P)=f(0_P)+f(0_P)$\\
+$f(0_P)=f(0_P)+f(0_P) | +(-f(0_P))$\\
+$0_R=f(0_P)\qed$
+\item $f(-a)=-f(a)$\\\\
+D-d. $f(-a)+f(a)=^{hom.} f((-a)+a)=f(0)=^{1}0 | + (-f(a))$\\
+$f(-a)=-f(a)$
+\item $f(1_P)=1_R$, o ile istnieje
+\item $f(a^{-1})=f(a)^{-1}$, o ile istnieje
+\end{enumerate}
+\end{fakt}
+
+\subsection{Zastosowanie}
+
+\paragraph{Reguła podzielności przez 3}
+Notacja. $a,b,c$ - cyfry $0,\dots, 9$, $a|b$ - $a$ dzieli $b$ \\ 
+$\overline{abc}=100a + 10b + c$\\
+$\overline{933}=933$\\
+Przypadek: $3|\overline{abc} \iff 3| (a+b+c)$\\
+$3|\overline(abcd) \iff \overline{abcd} (mod (3)) = 0$\\
+$\varphi_3(\overline{abcd})=0$\\
+$\varphi_3(1000a+100b+10c+d)=^{hom}$\\
+$\varphi_3(1000a)+\varphi(100b)+\varphi(10c)+\varphi(d)$\\
+$\varphi_3(10)^3+\varphi_3(10)^2+\varphi(10)^1+\varphi(a)+\varphi(b)+\varphi(c)+\varphi(d)=$\\
+$\varphi_3(a)+\varphi(b)+\varphi(c)+\varphi(d)=\varphi_3(a+b+c+d)$
+
+\section{Wykład piąty}
+tbd... 
+
+\section{Wykład szósty}
+
+\subsection{Liczby naturalne}
+$\mathbb{N}=\{0,1,2,3,...\}$
+
+\begin{de}
+Zasada dobrego uporządkowania (WO)
+Dla dowolnego $\emptyset \neq X \in \mathbb{N}$:
+\begin{center}
+    $(\exists_{a\in X} \forall_{b\in X}) a\leq b$    
+\end{center}
+Każdy niepusty podzbiór $\mathbb{N}$ ma element najmniejszy.\\
+$\mathbb{R} (0,1)$ NIE spełnia $WO$
+\end{de}
+
+\begin{de}
+    Zasada Indukcji:\\
+    Dla dowolnego $A\in \mathbb{N}$ zachodzi:
+    \begin{center}
+        $[(0\in A) \land ((\forall_K) K\in A \implies k + 1 \in A)] \implies A=\mathbb{N}$
+    \end{center}
+\end{de}
+
+\begin{tw}
+    Zasada indukcji wynika z zasady dobrego uporządkowania.\\
+    D-d. Nie wprost założmy że zasada indukcji nie jest prawdziwa. To znaczy, że poprzednik jest fałszywy a następnik prawdziwy.
+    \begin{center}
+        $0\in A \and (\forall_K k\in A \implies k+1 \in A) \land A \neq \mathbb{N}$\\
+    \end{center}
+    Wtedy niech $X=\mathbb{N}-A=A^c$\\
+    - $X\neq \emptyset, X\leq \mathbb{N}$\\
+    Z zasady WO $\exists_a \in X$, element najmniejszy w $X$\\
+    $a\neq 0$, bo $0\in A, a\in X$\\
+    $a\in X$, to $a\notin A$\\
+    $a-1\in A \implies a=a-1+1\in A$\\
+    Dwa ostatnie punkty dają sprzeczność, zatem założenie nie wprost jest fałszywe, a twierdzenie prawdziwe.   
+\end{tw}
+
+\begin{pk}
+    $\forall_n 1+3+5+\dots+2n+1=(n+1)^2$\\
+    D-d. Niech $A=\{n\in\mathbb{N}, 1+3+...+2n+1=(n+1)^2\}$\\
+    Dla $n=0, L=2\cdot0+1=(0+1)^2=P$\\
+    Niech $k\in a$ $\forall_{k>a}$, wtedy z założenia indukcyjnego:\\
+    $1+3+...+2k+1=(k+1)^2$\\
+    $1+3+...+2k+1+2(k+1)+1=(k+1)^2+2k+3=k^2+2k+1+2k+3=(k+2)^2$\\
+    Wtedy z zasady indukcji matematycznej wynika że $A=\mathbb{N}$\\
+    Wobec tego $\forall{n\in\mathbb{N}}$ $1+3+\dots+2n+1=(n+1)^2\qed$
+\end{pk}
+
+\begin{tw}
+    W liczbach naturalnych nie ma nieskończonego malejącego ciągu.\\
+    D-d. Zakładamy nie wprost, że istnieje ciąg l. naturalnych:\\
+    $\{a_n\}_{n\in \mathbb{N}}$ tak, że $\forall_{k\in\mathbb{N}} a_k\in\mathbb{N}$\\
+    $a_k>a_{k+1}$\\
+    Niech $X=\{a_1,a_2,...\}$, Mamy 
+    \begin{enumerate}
+        \item $X\leq N$
+        \item $X\neq 0$
+        \item $X$ nie ma elementu najmniejszego, bo\\
+        niech $a\in X$ to $a=a_k, k\in\mathbb{N}$, ale wtedy\\
+        $a_{k+1}<a_k=a$, zatem a nie jest najmniejszy. 
+    \end{enumerate}
+    1,2,3 są sprzeczne z zasadą dobrego uporządkowania.$\qed$
+\end{tw}
+
+\begin{de}
+    Niech $a,b\in \mathbb{N}$. Największym wspólnym dzielnikiem $a$ i $b$ nazywamy liczbę:
+    \begin{center}
+        $NWD(a,b)=max\{k\in\mathbb{N} : k|a \land k|b\}$
+    \end{center}
+    NWD(15,12)=3\\
+    Algorytm euklidesa, rokzład liczb na czynniki pierwsze.
+\end{de}
+
+\begin{pk}
+    Algorytm Euklidesa:\\
+    Większą zapisujemy resztą z dzielenia przez mniejszą:\\
+    Np. $(45,12)\implies(12, 45 mod 12)=(12,9)\implies(9,12 mod 9)=(9,3)\implies(3,0)$\\
+    W momencie kiedy dowolna z liczb to $0$ algorytm się kończy.\\
+    Wynikiem jest druga liczba, w tym wypadku $3$.
+\end{pk}
+
+\begin{fakt}
+    Aby obliczyć $NWD(a,b)$, wykonujemy do momentu gdy $a=0 \lor b=0$:\\
+    $(a,b)=([min(a,b)],[max(a,b)] \% [min(a,b)])$
+\end{fakt}
+
+\begin{fakt}
+    Dla dowolnych $a,b\in\mathbb{N}$ algorytm Euklidesa, 
+    zaczynający od pary $(a,b)$ zatrzymuje się.\\
+    D-d. Zakładamy nie wprost, że algorytm nie zatrzymuje się. 
+    Więc istnieje nieskończony ciąg par:\\
+    $(a_0,b_1)\implies(a_1,b_1)\implies(a_2,b_2)\implies\dots$\\
+    Wtedy $a_0+b_0, a_1+b_1, a_2+b_2, ...$ jest nieskończonym malejącym ciągiem liczb naturalnych.\\
+    Jest to sprzeczne z twierdzeniem 6.1.2, które mówi że w $\mathbb{N}$ nie ma nieskończonego malejącego ciągu.
+    A zatem fakt jest prawdziwy $\qed$.
+\end{fakt}
+
+Obserwacja. $a,b\in\mathbb{N}$, $r=a \mod b$, to $a=b\omega + r$\\
+D-d: Niech $k\in{1,...,n-1}$, wtedy należy dowieść, że:\\
+$\forall_{m} (m|a_k \land m| b_k) \iff m|a_{k+1} \land m|b_{k+1}$\\
+$\rightarrow$: Niech $m|a_k,b_k$, wtedy:\\
+$m|b_k=a_k+1$\\
+$b_{k+1}=a_k\mod b_k$. Istnieje liczba naturalna $w$, taka że:\\
+$a_k=b_k\cdot w + b_{k+1}$\\
+$\leftarrow$: Ćwiczenie.\\
+
+Niech $Z_0$ - zbiór wspólnych dzielników liczb $a_0,b_0$\\
+(*) $Z_0=Z_n$ - $NWD(a,b)=max(Z_0)=max(Z_n)=NWD(a_n,0)=a_n$
+
+
+\section{Wykład VII}
+
+Algorytm Euklidesa:\\
+$NWD(a,b), a>b$\\
+$(a,b),(b, a \mod b)=(a_1,b_1)...(a_n,0), a_n=NWD(a,b)$
+
+\subsection{Równania Diofantyczne}
+
+\begin{tw}
+    Niech $a,b \in \mathbb{Z}$. Równanie:
+    \begin{center}
+        $ax+by=c$
+    \end{center}
+    ma rozwiązanie $x,y\in \mathbb{Z}$
+    $\iff NWD(a,b)|c$
+\end{tw}
+
+\begin{pk}
+    Rozwiązanie RD za pomocą AE:
+\begin{center}
+    $42x + 15y = 3$\\
+    AE. $(42,12)\rightarrow(15,42\mod 15)\rightarrow(15,12)\rightarrow(12,3)\rightarrow(3,0), 3 = NWD(42,15)$\\
+    $15\cdot \square + 12\cdot \square = 3$\\
+    $15\cdot 1 + 15\cdot -1 = 3$, wiemy że:\\
+    $42\mod 15 = 12$\\
+    $42 = 15\cdot 2 + 12$\\
+    $12=42-15\cdot 2$, zatem:\\
+    $15\cdot 1 + (42-15\cdot 2)\cdot(-1)=3$\\
+    $15\cdot 1 - 42 + 15\cdot 2 = 3$\\
+    $15\cdot 3 + (-1) \cdot 42 = 3$\\
+    $x=-1 \land y = 3$\\
+    Idea polega na tym aby liczbę z końca algorytmu wyrazić za pomocą dwóch liczb.
+\end{center}
+\end{pk}
+
+D.d $\rightarrow$:
+Zakładamy, że równanie $ax+by=c$ ma rozwiązanie.
+\begin{center}
+    $NWD(a,b)|a \land NWD(a,b)|b$\\
+    $NWD(a,b)|ax \land NWD(a,b)|by$\\
+    $NWD(a,b)|(ax+by=c)\qed$
+\end{center}
+
+D.d $\leftarrow$:
+Pokażemy, że równanie $ax+by=NWD(a,b)$ ma rozwiązanie w liczbach całkowitych. 
+Niech $(a,b)=(a_0,b_0)\implies(a_1,b_1)\implies\dots\implies(a_n, b_n)=(a_n,0)$ to algorytm Euklidesa na parze $a, b$.\\
+Indukcja względem $n$:\\
+Dla: $n=0$ $NWD(a,b)=a_0=a$\\
+$ax+by=NWD(a,b)=a, x=1, y=0$ równanie ma rozwiązanie\\
+Dla: $n \rightarrow n+1$. Zakładamy, że dla każdej pary AE zatrzymuje się po $n$ krokach, dla każdej takiej pary równanie $ax+by=NWD(a,b)$ ma rozwiązanie.\\
+Teza: Dla każdej pary $(a,b)$, dla której algorytm Euklidesa zatrzymuje się po $n+1$ kroach, $\dots$ istnieje rozwiązanie równania.\\
+D-d kroku ind. Niech $(a,b)$ takie, że AE na $(a,b)$ zatrzymuje się po $n+1$ krokach:\\
+$(a_0,b_0)\implies(a_1,b_1)\implies\dots \implies(a_n,b_n)\implies(a_{n+1},b_{n+1})$\\
+Zauważmy, że AE na parze $(a_1,b_1)$ zatrzymuje się po $n$ krokach. Z założenia indukcyjnego musi on mieć rozwiązanie, tj. $\exists_{x', y' \in \mathbb{Z}} a_1\cdot x' + b_1\cdot y' = NWD(a_1,b_1)$.\\
+Zauważmy, że $NWD(a_1,b_1)=NWD(a,b)$\\
+$a_1=b, b_1=a \mod b \implies a = b \cdot z + b_1, z\in\mathbb{Z}$, więc:\\
+$NWD(a,b)=NWD(a_1,b_1)=a_1 x' + b_1 y' = b x' + (a-b\cdot z) y' = a y' + (x' - zy') b$\\
+Skrajne strony tej równości $ay' + b(x'-zy')=NWD(a,b)$. Skoro $y', x', zy' \in \mathbb{Z}$, to istnieje
+rozwiązanie dla pary $n+1$. Zatem na mocy zasady indukcji matematycznej twierdzenie jest prawdziwe dla każdego $n$.\\
+
+Elementy odwracalne pierścienia:
+W pierścieniu nie każdy element musi być odwracalny.\\
+Niech. $(P, +, \cdot)$ - pierścień z 1.
+$a\in P$ nazywamy odwracalnym, gdy $\exists_{b\in P} ab = 1$\\
+Np. w $(\mathbb{Z},+,\cdot)$ - tylko $1, -1$ są odwracalne.
+
+\begin{de}
+    Niech $(P,+,\cdot)$ - pierścień. Zbiorem elementów odwracalnych oznaczamy przez $P*$.
+    \begin{center}
+        $P* = {a\in P : \exists_{b\in P}: a\cdot b = 1}$
+    \end{center}
+\end{de}
+
+\begin{pk}
+    Rozważmy następujące pierścienie
+    \begin{itemize}
+        \item $(\mathbb{Z,+,\cdot}) \mathbb{Z}^*=\{1,2\}$
+        \item $(\mathbb{Z}_{6}, +_{6}, \cdot_{6}) \mathbb{Z}_6^*=\{1,5\}$ Odwracalna $a$ ma $NWD(a,6)=1$
+    \end{itemize}
+\end{pk}
+
+\begin{tw}
+    Niech $(P, +, \cdot)$ - pierścień z $1$. Wtedy $(P^*, \cdot)$ jest grupą.\\
+    D-d. 
+    \begin{enumerate}
+        \item $(\cdot)$ - jest działaniem na $P^*$. 
+        Niech $a,p\in P^*$, wtedy istnieją $b, q\in P$, takie że:
+        $a\cdot b = p\cdot q = 1$, wtedy:
+        $(a\cdot p)(q\cdot b) = a \cdot (p \cdot q) \cdot b = a \cdot 1 \cdot b = 1$,
+        więc $a\cdot p \in P^*$.
+        \item Działanie $\cdot$ jest łączne na $P^*$, ponieważ jest łączne na $P$.
+        \item $1\in P^*$, bo $1\cdot 1 = 1$ - element neutralny.
+        \item Niech $a\in P^*$, więc z def. $\exists_{b \in P} a\cdot b = 1$. Zauważmy, że:\\
+        również $b\in P^*$, ponieważ $b\cdot a = 1_{\square}$.
+    \end{enumerate}
+\end{tw}
+
+Grupa $Z_n^*$. Pierścień $Z_n = (\{0,1,...,n-1\},+_n, \cdot_n)$
+
+\begin{fakt}
+    $a\in\{0,1,...,n-1\}$ jest odwracalny wtedy i tylko wtedy gdy $NWD(a,n)=1$\\
+    D-d: $\leftarrow$\\
+    Niech $NWD(a,n)=1$, to znaczy że równanie $ax+ny=1$ ma rozwiązanie $x,y\in\mathbb{Z}$\\
+    Niech $b=x\mod n$, mamy:\\
+    $a\cdot_n b = a\cdot b \mod n = ax\mod n= (ax+ny)\mod n$\\
+    D-d: $\rightarrow$ Niewprost\\
+    Niech $NWD(a,b)=k > 1$, zatem $k|a \land k|n$, więc:\\
+    $\forall_{b\in\{0,1,...,n-1\}} k|ab$\\
+    $k(a\cdot b) \mod n$\\
+    $k | (ab) \mod n$, zatem:\\
+    $a\cdot_n b \neq 1$
+\end{fakt}
+
+Wniosek:
+\begin{center}
+$Z_n^* = \{k\in \{0,1,...,n-1\}: NWD(k,n)=1\}$
+\end{center}
+
+$(\{k\in \{0,1,...,n-1\}: NWD(k,n)=1\},\cdot_n)$ jest grupą.
+
+\begin{pk}
+    \item $\mathbb{Z}_6^*=(\{1,5\}, \cdot_6)$
+    \item $\mathbb{Z}_7^*=(\{1,2,3,4,5,6\}, \cdot_7)$ 
+\end{pk}
+
+Uwaga. Grupy $\mathbb{Z}_n^*$ są przemienne.
+ 
+$p\in P$ to $\mathbb{Z}_p^* = (\{1,2,\dots,p-1\}, \cdot_p)$
+
+\section{Wykład VIII}
+$+, \cdot$ na $\mathbb{N}$ - łączne, przemienne\\
+$a\leq b \implies a+x\leq b+x$
+
+\subsection{Liczby Pierwsze}
+
+\begin{de}
+    Liczbę naturalną $p$ nazywamy pierwszą, gdy $p\geq 2$ oraz:
+    \begin{center}
+        $\forall_{n} n|p \implies (n=1 \lor n=p)$
+    \end{center}
+\end{de}
+
+Zbiór wszystkich liczb pierwszych zaznaczamy $\mathbb{P}$
+\begin{center}
+    $\mathbb{P}=\{2,3,5,7,\dots\}$
+\end{center}
+
+\begin{fakt}
+    Każda liczba naturalna większa od $1$
+    dzieli się przez pewną liczbę pierwszą.\\\\
+    D-d. (WO) Nie istnieje nieskończony malejący ciąg liczb naturalnych.\\
+    Załóżmy nie wprost że istnieje liczba $n\in\mathbb{N} > 1$,
+    taka że $n$ nie dzieli się przez żadną liczbę pierwszą.\\
+    Wtedy:
+    \begin{enumerate}
+        \item $n$ nie może być liczbą pierwszą, bo z założenia nie dzieli się przez żadną liczbę pierwszą.
+        \item zatem $\exists_{n_1,n_2-\{0,1\}} n=n_1\cdot n_2$
+        \item zauważmy, że ani $n_1$ ani $n_2$ nie dzielą się przez żadną liczbę pierwszą. 
+        Bo gdyby tak było to $p|n_1 \implies p|n$
+        \item W szczególności $n_2<n$. 
+        \item Następnie podobnie dla $n_2$, która nie jest liczbą pierwszą, więc $\exists_{n_3,n_4-\{0,1\}} n_2=n_3\cdot n_4$
+        \item Wtedy $n_4$ nie dzieli się przez żadną liczbę pierwszą, ale oprócz tego $n_4<n_2$
+        \item Powtarzając ten krok otrzymamy nieskończenie malejący ciąg liczb naturalnych:\\
+        $n_1, n_2, n_4, \dots$, co jest sprzeczne z WO. 
+    \end{enumerate}
+    Zatem założenie nie wprost jest fałszywe, a fakt prawdziwy.
+\end{fakt}
+
+\begin{tw}
+    \underline{Euklides}. Istnieje nieskończenie wiele liczb pierwszych. Zbiór $\mathbb{P}$ ma nieskończenie wiele elementów.\\
+    D-d. Nie wprost, gdyby $\mathbb{P}$ było skończone, to $\exists_{p_1,p_2,\dots,p_n} \mathbb{P}=\{p_1,p_2,\dots,p_n\}, n\in\mathbb{N}$\\
+    Niech $m=p_1\cdot p_2\cdot \dots \cdot p_n + 1$. Zauważmy że wówczas $m\notin\mathbb{P}$, bo $m>1$ i $m$ nie dzieli się przez żadną liczbę pierwszą.
+    \begin{center}
+        $|\mathbb{P}|=\infty_\square$
+    \end{center}
+\end{tw}
+
+\begin{fakt}
+    Dla dowolnej liczby naturalnej $n>1$ istnieje rozkład na czynniki pierwsze. 
+    Istnieją (niekoniecznie różne) liczby $p_1,p_2,\dots,p_k \in \mathbb{P}$, takie że:
+    \begin{center}
+        $n=p_1\cdot p_2\cdot \dots p_k$
+    \end{center}
+    D-d. Z tw. Euklidesa $\exists_{p_1} \in \mathbb{P}$\\
+    $p_1|n$, więc $\exists_{n_1\in\mathbb{N}}$ $n=p_1\cdot n_1$, wtedy:\\
+    I. $n_1\in\mathbb{P}, n=p_1\cdot n_1$ jest szukanym rozkładem\\
+    II. $n_1\notin\mathbb{P} \exists_{p_2\in\mathbb{P}} p_2|n_1 n_1=p_2\cdot n_2 \dots$\\
+    Ten algorytm zatrzymuje się (inaczej $n, n_1, n_2, \dots, \infty$ ciąg $\mathbb{N}$)text\\
+    $n=p_1\cdot p_2\cdot \dots \cdot p_k \qed$
+\end{fakt}
+
+\begin{tw}
+    Niech $p$ - liczba naturalna. Wtedy $p$ jest liczbą pierwszą wtedy i tylko wtedy, gdy:
+    \begin{center}
+        $\forall_{x,y\in\mathbb{N}} p|xy \implies (p|x \lor p|y)$
+    \end{center}
+\end{tw}
+
+\begin{pk}
+    Rozważmy następujące przykłady:
+    \begin{itemize}
+    \item Dla n pierwszego np $n=3$
+    $3|xy \implies (3|x \lor 3|y)$
+    \item Ale dla n złożonego np $n=6$
+    $6|4\cdot 3$, ale $\neg 6|4 \land \neg 6|3$
+    \end{itemize}
+\end{pk}
+
+\begin{fakt}
+    Zasadnicze twierdzenie arytmetyki.
+    \begin{enumerate}
+        \item Każda liczba naturalna $n>1$ jest iloczynem liczb pierwszych.
+        \item Rozkład liczby $n$ na czynniki pierwsze jest jednoznaczny. Każda liczba $n>1$ ma jednoznaczny rozkład na czynniki pierwsze.
+        Jeżeli $n=p_1\cdot p_2\cdot \dots \cdot p_k$ oraz $n=q_1\cdot q_2\cdot \dots \cdot q_l$ to $k=l$ oraz
+        istnieje taka permutacja $\sigma$ zbioru $\{1,2,\dots,k\}$, że $p_i=q_{\sigma(i)}$ dla $i=1,2,\dots,k$. 
+    \end{enumerate}
+    D-d.
+    \begin{enumerate}
+        \item Każda liczba naturalna jest iloczynem liczb pierwszych. (Poprzedni fakt)
+        \item Założmy nie wprost, że rozkład nie jest jednoznaczny. 
+    \end{enumerate}
+        To znaczy istnieje jakaś liczba $n$ która ma dwa "istotnie różne" rozkłady na czynniki pierwsze:\\
+        $n=p_1\cdot p_2\cdot ... \cdot p_k$ oraz $n=q_1\cdot q_2\cdot ... \cdot q_l$, zatem:\\
+        $L=p_1\cdot p_2\cdot ... \cdot p_k = q_1\cdot q_2\cdot ... \cdot q_l=P$\\
+        Jeśli dla pewnego $i,j$ $p_i=q_j$ to możemy te je skrócić. BZO.\\
+        Po wykonaniu wszystkich takich skróceń, wiedząc że rozkłady są istotnie różne,
+        otrzymamy iloczyny liczb, które są względnie pierwsze.\\
+        Zatem otrzymamy $\forall_{i,j} q_i\neq p_j$ Mamy:\\
+        $p_1 | p_1\cdot p_2 ... p_k \implies p_1 | q_1 \cdot  (q_2 \cdot ... q_l)$\\
+        $p_1\in\mathbb{P}$ i $p_1 | q_1 \lor p_1 | (q_2\cdot q_3\cdot ... q_l)$\\
+        Nie jest możliwe żeby $p_1 | q_1$ i te liczby nie były sobie równe, zatem $p_1 | (q_2\cdot q_3\cdot ... q_l)$\\
+        zatem albo $p_1 | q_2 \lor p_1 | (q_3 \cdot ... q_l)$ ... $p_1 | q_l \leftarrow$ sprzeczność, a zatem dowód.
+\end{fakt}
+
+Niech $n=p_1^{\alpha_1}\cdot p_2^{\alpha_2}\cdot \dots \cdot p_n^{\alpha_n}$, $n\in\mathbb{P}, \alpha\in\mathbb{N}.$\\
+$m=p_1^{\beta_1}\cdot p_2^{\beta_2}\cdot \dots \cdot p_n^{\beta_n}$
+
+\begin{fakt}
+    Niech $k,m\in\mathbb{N}$ jw. wtedy: $m|k \iff \forall_{i=1,...,n}$ $\beta_i \leq \alpha_i$\\
+    D-d. $\leftarrow$ Zakładamy, że $\forall_{i=1,...,n}$ $\beta_i \leq \alpha_i$, wtedy:\\
+    $k=p_1^{\alpha_1}\cdot p_2^{\alpha_2}\cdot \dots \cdot p_n^{\alpha_n}$, skoro $\beta_i \leq \alpha_i$, to:\\
+    $k=p_1^{\beta_1}\cdot p_1^{\alpha_1-\beta_1} \dots \cdot p_n^{\beta_n}\cdot p_n^{\alpha_n-\beta_n}$, to:\\
+    $k=(p_1^{\beta_1}\cdot p_2^{\beta_2}\cdot p_n^{\beta_n}) \cdot (p_1^{\alpha_1-\beta_1} \dots \cdot p_n^{\alpha_n-\beta_n})$\\
+    $k=m\cdot l$, $\alpha_n - \beta_n \geq 0 \implies l\in\mathbb{N}$, więc $m|k$.\\
+    D-d. $\rightarrow$ Jako ćwiczenie.
+\end{fakt}
+
+\begin{itemize}
+\item Wniosek I: Jeśli $k,m$ jw. $NWD(k,m)=p_1^{min(\alpha_1, \beta_1)} \cdot p_2^{min(\alpha_2, \beta_2)} \cdot \dots \cdot p_n^{min(\alpha_n, \beta_n)}$\\
+D-d. ćwiczenie.
+
+\item Wniosek II: $NWW(k,m)=p_1^{max(\alpha_1,\beta_1)} \cdot p_2^{max(\alpha_2,\beta_2)} \cdot \dots \cdot p_n^{max(\alpha_n,\beta_1p_1^{max(\alpha_1,\beta_n)})}$\\
+D-d. jw. ćwiczenie
+\end{itemize}
+
+\begin{pk}
+    $NWD(k,m)\cdot NWW(k,m) = k\cdot m$\\
+    D-d: $NWD(k,m)\cdot NWW(k,m)=$\\
+    $p_1^{min(\alpha_1, \beta_1)} \cdot p_2^{min(\alpha_2, \beta_2)} \cdot \dots \cdot p_n^{min(\alpha_n, \beta_n)} \cdot$
+    $p_1^{max(\alpha_1,\beta_1)} \cdot p_2^{max(\alpha_2,\beta_2)} \cdot \dots \cdot p_n^{max(\alpha_n,\beta_1p_1^{max(\alpha_1,\beta_n)})}=$\\
+    Korzystając z zależności $min(k,m)+max(k,m)=k+m$, widzimy, że:
+    \begin{center}
+    $=p_1^{\alpha_1+\beta_1} + p_2^{\alpha_2+\beta_2} + \dots + p_n^{\alpha_n+\beta_n} = k\cdot m$
+    \end{center}
+\end{pk}
+
+\section{Wykład IX}
+
+\subsection{Liczby zespolone}
+
+Pojęcie liczby:\\
+- $\mathbb{N}\subseteq \mathbb{Z} \subseteq \mathbb{Q} \subseteq \mathbb{R} \subseteq \mathbb{C}$\\
+- $\exists_{x\in \mathbb{C}} W(x)=0$ - Liczby zespolone są algebraicznie domknięte.
+
+\begin{de}
+    Liczbą zespoloną nazywamy wyrażenie postaci:
+    \begin{center}
+        $a+bi, a,b\in\mathbb{R}$
+    \end{center}
+\end{de}
+
+\begin{pk}
+    Zobaczmy przykłady liczb zespolonych:
+    \begin{itemize}
+        \item $1+2i$
+        \item $3+(-2)i = 3-2i$
+        \item $5+0i = 5$
+    \end{itemize}
+\end{pk}
+
+\begin{de}
+    Liczba zespolona to wyrażenie postaci $z=a+bi$
+    \begin{itemize}
+        \item $Re(z)=a$ to część rzeczywista
+        \item $Im(z)=b$ to część urojona
+        \item $i$ to jednostka urojona
+        \item Zbiór wszystkich liczb zespolonych ozn. $\mathbb{C} = \{a+bi: a,b\in\mathbb{R}\}$
+    \end{itemize}
+\end{de}
+
+Działania na liczbach zespolonych wykonujemy jak na wyrażeniach algebraicznych, uwzględniając że $i\cdot i=i^2=-1$.\\
+
+\begin{pk}
+    Przykłady działań na liczbach zespolonych.
+    \begin{itemize}
+        \item $(7+3i) + (5+2i) = (7+5) + (3i + 2i) = 12 + 5i$
+        \item $(5+3i) - (2-7i) = (5-2) + (3i + 7i) = 3 + 10i$
+        \item $(2+i)(1+2i)=2+4i+i+2(i^2)=2+4i+i-2=0+5i=5i$
+        \item $(2+3i)(2-3i)=2\cdot 2 - 2\cdot 3i + 3i \cdot 2 - (3i)^2 = 4 - 9i^2 = 4 + 9 = 13$ (skróc. mn. działa)\\
+        Obserwacja: $(a+bi)(a-bi)=a^2-(bi)^2=a^2+b^2 \in \mathbb{R}$ 
+        \item $\frac{4+6i}{2}=2+3i$
+        \item $\frac{2+3i}{1+i}=\frac{(2+3i)(1-i)}{(1+i)(1-i)} = \frac{2-2i+3i+3}{2}= \frac{5+i}{2} = \frac{5}{2} + \frac{1}{2} i$  (mn. sprzężenie)
+        \item $\sqrt{-1}=i$, bo $i^2 = -1$
+        \item $\sqrt{-9}=\sqrt{9}\cdot\sqrt{-1}=3i$
+    \end{itemize}
+\end{pk}
+
+\begin{tw}
+    Na zbiorze $\mathbb{C}=\{a+bi, a,b\in\mathbb{R}\}$ wprowadzamy działania:
+    \begin{itemize}
+        \item $(a+bi)+(c+di)=(a+c)+(b+d)i$
+        \item $(a+bi)(c+di)=(ac-bd)+(ad+bc)i$
+    \end{itemize}
+\end{tw}
+
+\begin{tw}
+    $(\mathbb{C},+,\cdot)$ jest ciałem:\\
+    D-d. $\leftarrow$ ćw. - spr włas z def. ciała.
+\end{tw}
+
+Obliczenia:
+\begin{itemize}
+    \item $\frac{1}{1+i}=\frac{(1-i)}{(1+i)(1-i)}=\frac{1-i}{2}=\frac{1}{2} - \frac{1}{2} i$
+    \item $(1+i)z +2+i=1+2i$\\
+    $(1+i)z=-1+i$\\
+    $z=\frac{-1+i}{1+i}=...$\\
+    \item $\begin{cases}
+        x+y=1\\
+        ix-y=2
+    \end{cases}\implies (1+i)x=3 \implies x = \frac{3}{1+i}, y=\frac{1+2i}{1-i}$
+\end{itemize}
+
+\subsection{Równanie kwadratowe}
+$x^2+2x+10=0$\\
+$\Delta=b^2-4ac=4-4\cdot 10 = -36, \sqrt{\Delta}=6i$\\
+$x_{1,2}=\frac{-b \pm \sqrt{\Delta}}{2a}=-1\pm3i$
+
+\subsection{Moduł i sprzężenie liczby zespolonej}
+
+\begin{de}
+    Niech $z=a+bi \in \mathbb{C}; a,b \in \mathbb{R}$:
+    \begin{itemize}
+        \item Sprzężeniem $z$ nazywamy $\overline{z}=a-bi$
+        \item Modułem $z$ nazywamy $|z|=\sqrt{a^2+b^2}$
+    \end{itemize}
+\end{de}
+
+\begin{pk}
+    $z=3-7i$, $\overline{z}=3+7$, $|z|=\sqrt(3^2+(-7)^2)=\sqrt{3^2+7^2}$
+\end{pk}
+
+\begin{enumerate}
+    \item Własność. Niech $z,s\in\mathbb{C}$, wtedy:\\
+    1.1) $\overline{z+s}=\overline{z}+\overline{s}$\\
+    1.2) $\overline{z\cdot s}=\overline{z}\cdot \overline{s}$\\
+    D-d. Niech $z=a+bi, s=c+di$:\\
+    1.1d) $\overline{z+s}=\overline{a+bi+c+di}=\overline{a+c+(b+d)i}=(a+c)-(b+d)i$\\
+    $\overline{z}+\overline{s} = \overline{a+bi}+\overline{c+di}=(a+c)-(b+d)i$\\
+    Uwaga: $\overline{z-s}=\overline{z}-\overline{s}$\\
+    Uwaga: $\overline{\frac{z}{s}}=\frac{\overline{z}}{\overline{s}}$\\
+    Uwaga: $\overline{z^n}=(\overline{z})^n$\\
+    Uwaga: $r\in\mathbb{R}, \overline{r}=r$\\
+    Wniosek $f(z)=\overline{z}$ oraz $\mathbb{C}\rightarrow\mathbb{C}$ jest izomorfizmem.
+    \item $|z+s|\leq|z|+|s|$
+    \item $|z\cdot s|=|z|\cdot|s|$
+    \item $z\cdot \overline{z} = |z|^2$\\
+    D-d. Niech $z=a+bi$, wtedy:\\
+    $z\cdot \overline{z}=(a+bi)(a-bi)=a^2+b^2=\sqrt{a^2+b^2}^2=|z|^2$
+\end{enumerate}
+
+Liczby rzeczywiste możemy uporządkować liniowo - oś liczbowa.\\
+Jeżeli $a\leq b \land b\leq c \implies a\leq c$, $a\leq a$, $a\leq b, b\leq a \implies a=b$ - porządek liniowy.
+
+\begin{tw}
+    Nie istnieje liniowe uporządkowanie $\mathbb{C}$ spełniające:
+    \begin{enumerate}
+        \item $\forall_{a,b,x\in\mathbb{C}}: a\leq b \implies a+x \leq b+x$
+        \item $\forall_{a,b\in\mathbb{C}} \forall_{x\geq0}: a\leq b \implies ax \leq bx$
+        \item $\forall_{a,b\in\mathbb{C}} \forall_{x<0}: a\leq b \implies ax \geq bx$
+    \end{enumerate}
+    D-d. 
+    \begin{enumerate}
+        \item Koniecznie $0\leq 1$, bo inaczej (3) $1\leq0\implies0=1$ sprzeczność.
+        \item Koniecznie $-1\leq 0$, bo inaczej (1) sprzeczność.
+        \item Jeśli $i\leq 0 (|\cdot i)$ to $i\cdot i \geq 0 \implies -1 \geq 0$ sprzeczność.
+        \item Jeśli $i> 0 (|\cdot i)$ to $i\cdot i > 0 \implies -1 > 0$ sprzeczność.
+    \end{enumerate}
+\end{tw}
+
+Następne zaj. płaszczyzna zespolona.
+
+
+
+
+
+\end{document}
