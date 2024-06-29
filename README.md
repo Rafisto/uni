@@ -5,13 +5,13 @@ I hereby present a treasure trove of resources covering various topics in mathem
     - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2023_semester_1/calculus_1/calculus.pdf)
     - See [calculus2.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/calculus_2/calculus2.pdf)
 - 🥶 **Discrete Mathematics** 🥶:
-    - See [notes.pdf (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete-mathematics/notes.pdf)
-    - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete-mathematics/wzor-stirlinga.pdf)
+    - See [notes.pdf (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete_mathematics/notes.pdf)
+    - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete_mathematics/wzor-stirlinga.pdf)
 - 🤔 **Algebra** 🤔:
     - See [Groups, Rings and Complex Numbners (polish)](https://github.com/Rafisto/uni/raw/master/2023_semester_1/algebra_2/wyklad.pdf) - partial lecture notes
     - See [Linear Algebra (polish)](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra_2/kolokwium-2-tematy.md) - pre-exam repetition
-    - See [Algebra 2 notes (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/abstract-algebra-and-coding/algebra2.pdf) - definitions and theorems
-    - See [Algebra 2 mini notes (polish)](https://github.com/Rafisto/uni/blob/master/2024_semester_2/abstract-algebra-and-coding/notes.md) - definitions
+    - See [Algebra 2 notes (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/algebra_2/algebra2.pdf) - definitions and theorems
+    - See [Algebra 2 mini notes (polish)](https://github.com/Rafisto/uni/blob/master/2024_semester_2/algebra_2/notes.md) - definitions
 - 🕳 **Procedural Programming** 🕳 in `C`
     - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab1/)
     - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab2/)
@@ -32,7 +32,7 @@ I hereby present a treasure trove of resources covering various topics in mathem
     - [Euclidean Algorithm](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra_2/programy/zadanie39.py) - $gcd(a, b)$
     - [Extended Euclidean Algorithm](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra_2/programy/zadanie40.py) - $ax + by = \gcd(a, b)$
     - [An extravagant function analysis](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra_2/programy/zadanie49.py) - analysis of $f(n)=\left|\{(a,b) \mid 1 \leq a,b \leq n, \gcd(a,b)=1\}\right| \cdot n^{-2}$
-    - [RSA Algorithm Exponent Brute-Forcer](https://github.com/Rafisto/uni/blob/master/2024_semester_2/abstract-algebra-and-coding/programs/rsa34.py) - Crack RSA exponent
+    - [RSA Algorithm Exponent Brute-Forcer](https://github.com/Rafisto/uni/blob/master/2024_semester_2/algebra_2/programs/rsa34.py) - Crack RSA exponent
     - [XOR Cipher](https://github.com/Rafisto/uni/blob/master/2023_semester_1/logic_and_formal_structures/programy/xorcipher.py) - One time pad encryption, decryption, key generation and key swap.
 
 Copyright 2024 © Rafał Włodarczyk
