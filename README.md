@@ -12,12 +12,12 @@ I hereby present a treasure trove of resources covering various topics in mathem
     - See [Linear Algebra (polish)](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra_2/kolokwium-2-tematy.md) - pre-exam repetition
     - See [Algebra 2 notes (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/algebra_2/algebra2.pdf) - definitions and theorems
     - See [Algebra 2 mini notes (polish)](https://github.com/Rafisto/uni/blob/master/2024_semester_2/algebra_2/notes.md) - definitions
-- 🕳 **Procedural Programming** 🕳 in `C`
+- 🕳 **Procedural Programming (lab 5.0)** 🕳 in `C`
     - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab1/)
     - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab2/)
     - [Exercise List 3](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab3/)
     - [Exercise List 4](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab4/)
-- 💻 **Object-Oriented Programming** 💻
+- 💻 **Object-Oriented Programming (lab 5.5)** 💻
     Mastering the art of object-oriented programming in `C++` and `Java` (~~help me~~). Exercises:
     - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/2024_semester_2/oop/lab1/) - Prime Number Generator
     - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/2024_semester_2/oop/lab2/) - Pascal Triangle Row Generator
