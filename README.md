@@ -8,10 +8,12 @@ I hereby present a treasure trove of resources covering various topics in mathem
     - See [notes.pdf (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete_mathematics/notes.pdf)
     - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/discrete_mathematics/wzor-stirlinga.pdf)
 - 🤔 **Algebra** 🤔:
-    - See [Groups, Rings and Complex Numbners (polish)](https://github.com/Rafisto/uni/raw/master/2023_semester_1/algebra_2/wyklad.pdf) - partial lecture notes
-    - See [Linear Algebra (polish)](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra_2/kolokwium-2-tematy.md) - pre-exam repetition
+    - See [Groups, Rings and Complex Numbners (polish)](https://github.com/Rafisto/uni/raw/master/2023_semester_1/algebra_1/wyklad.pdf) - partial lecture notes
+    - See [Linear Algebra (polish)](https://github.com/Rafisto/uni/blob/master/2023_semester_1/algebra_1/kolokwium-2-tematy.md) - pre-exam repetition
     - See [Algebra 2 notes (english)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/algebra_2/algebra2.pdf) - definitions and theorems
     - See [Algebra 2 mini notes (polish)](https://github.com/Rafisto/uni/blob/master/2024_semester_2/algebra_2/notes.md) - definitions
+- 🌌 **Physics** 🌌:
+    - See [Physics 1 notes (polish)](https://github.com/Rafisto/uni/blob/master/2024_semester_2/physics_1/physics.pdf)
 - 🕳 **Procedural Programming (lab 5.0)** 🕳 in `C`
     - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab1/)
     - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/2023_semester_1/introduction_to_computer_science/lab2/)

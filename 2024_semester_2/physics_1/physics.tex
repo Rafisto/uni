@@ -1,0 +1,515 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}                                                                    
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{de}{Definicja}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Twierdzenie}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Przykład}[subsection]
+
+\theoremstyle{definition}
+\newtheorem*{fakt}{FAKT}
+
+\author{Rafał Włodarczyk}
+\title{Fizyka I}  
+\date{Informatyka Algorytmiczna 2 Semestr 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Wszechświat}
+
+\begin{itemize}
+\item Wiek Wszechświata określany jest na $13.787\pm0.020$ miliardów lat [według Lambda-CDM concordance model, 2021] (inaczej ok. $4.3 \cdot 10^{17}$s)
+\item Odwrotność wieku Wszechświata stanowi stała Hubble'a: 
+\[\frac{1}{T_{\text{universe}}} = 74.2\pm 3.6 \frac{\frac{km}{s}}{Mpc}\]
+Gdzie $pc$ - parsek, czyli odległość, dla której kąt paralaksy (równy połowie kąta całkowitej rocznej zmiany) położenia Ziemi widzianej prostopadle do płaszczyzny orbity wynosi 1 sekundę łuku.
+\item Rozmiary charakterystycznych obiektów:
+    \begin{enumerate}
+    \item Ziemia: $R_{\text{Earth}} = 6.5 \cdot 10^{6} m$, $D_{\text{Earth - Sun}} = 1\text{AU} \approx 150$ mln km
+    \item Słońce: $R_{\text{Sun}} = 4\cdot 10^{12} m$
+    \item Układ Słoneczny: $R_{\text{SolarSystem}} = 1921.56$ AU [Sedna]
+    \item Droga Mleczna: $R_{\text{MilkyWay}} \approx 4 \cdot 10^4 \cdot 10^{16} = 4\cdot 10^{20} m$
+    \item Klaster Galaktyk: $R_{\text{ClusterOfGalaxies}} \approx 10^{23} m$
+    \item Superklaster Galaktyk $R_{\text{SuperclusterOfGalaxies}} \approx 300$ mln ly ($1ly \approx 10^{16} m$ - rok świetlny)
+    \end{enumerate}
+\end{itemize}
+\subsection{Skala jednorodności}
+> doprecyzować
+\subsection{Zasada kosmologiczna}
+Wszechświat jest \underline{jednorodny} i \underline{izotropowy}. Żaden punkt nie jest wyróżniony, rozkład materii jest izotropowy - podobny w każdym kierunku, w którym spogląda obserwator.
+\section{Pojęcia podstawowe}
+\subsection{Absolutna przestrzeń oraz czas}
+(Postulat Mechaniki Klasycznej)
+Istnieje przestrzeń - arena wszystkich zdarzeń oraz niezależny, absolutny czas. Każdy obserwator mierzy ten sam czas, niezależnie od prędkości, z którą się porusza.
+\subsection{Stan układu}
+(Postulat Mechaniki Klasycznej)
+Stan układu to zbiór wewnętrznych zmiennych niezależnych opisujących układ. W mechanice klasycznej jest to położenie $\vec{x}$ oraz pęd $\vec{p}$. 
+\section{Zasady Dynamiki Newtona}
+\subsection*{Pierwsza zasada dynamiki Newtona}
+(Istnieje układ inercjalny) Jeżeli wypadkowa sił działających na ciało jest równa zeru, to ciało pozostaje w spoczynku lub porusza się ruchem jednostajnym prostoliniowym.
+\begin{equation}
+\sum \vec{F} = 0 \implies \frac{d\vec{v}}{dt} = 0
+\end{equation}
+\subsection*{Druga zasada dynamiki Newtona}
+Jeżeli wypadkowa sił działających na ciało nie jest równa zeru, to przyspieszenie ciała jest wprost proporcjonalne do tej siły i odwrotnie proporcjonalne do masy ciała.
+\begin{equation}
+\sum \vec{F} = m \vec{a}
+\end{equation}
+gdzie \(\vec{F}\) to wypadkowa siła, \(m\) to masa ciała, a \(\vec{a}\) to przyspieszenie.
+
+\subsection*{Trzecia zasada dynamiki Newtona}
+Jeżeli ciało A działa na ciało B siłą \(\vec{F}_{AB}\), to ciało B działa na ciało A siłą \(\vec{F}_{BA}\) równą co do wartości i przeciwnie skierowaną.
+\begin{equation}
+\vec{F}_{AB} = -\vec{F}_{BA}
+\end{equation}
+\section{Równanie ruchu}
+\subsection{W przypadku stałej siły}
+Zacznijmy od drugiej zasady dynamiki Newtona:
+
+\[ \vec{F} = m \vec{a} \]
+
+gdzie \( \vec{a} \) to przyspieszenie, a \( m \) to masa ciała. Przyspieszenie jest drugą pochodną wektora położenia \( \vec{r}(t) \) względem czasu, czyli:
+\[ \vec{a} = \frac{d^2 \vec{r}(t)}{dt^2} \]
+Podstawiając to do równania Newtona, otrzymujemy:
+\[ \vec{F} = m \frac{d^2 \vec{r}(t)}{dt^2} \]
+Rozwiązując to równanie dla \( \vec{r}(t) \), możemy skorzystać z metody rozdzielania zmiennych. Ponieważ \( \vec{F} \) jest stałe, możemy rozpatrywać ruch wzdłuż każdej osi współrzędnych osobno.
+Załóżmy, że \( \vec{F} = (F_x, F_y, F_z) \). Wtedy równania różniczkowe dla każdej składowej będą wyglądały następująco:
+\[ F_x = m \frac{d^2 x(t)}{dt^2} \]
+\[ F_y = m \frac{d^2 y(t)}{dt^2} \]
+\[ F_z = m \frac{d^2 z(t)}{dt^2} \]
+Rozwiążemy każde z tych równań po kolei. Na przykład dla składowej \( x \):
+\[ \frac{d^2 x(t)}{dt^2} = \frac{F_x}{m} \]
+Jest to równanie różniczkowe drugiego rzędu o stałym współczynniku. Rozwiązaniem tego równania jest:
+\[ x(t) = \frac{F_x}{2m} t^2 + v_{0x} t + x_0 \]
+gdzie \( v_{0x} \) to początkowa prędkość wzdłuż osi \( x \), a \( x_0 \) to początkowe położenie.
+Podobnie, rozwiązania dla \( y(t) \) i \( z(t) \) będą miały postać:
+\[ y(t) = \frac{F_y}{2m} t^2 + v_{0y} t + y_0 \]
+\[ z(t) = \frac{F_z}{2m} t^2 + v_{0z} t + z_0 \]
+Łącząc te wyniki, wektor położenia \( \vec{r}(t) \) w trzech wymiarach wynosi:
+\[ \vec{r}(t) = \left( \frac{F_x}{2m} t^2 + v_{0x} t + x_0, \frac{F_y}{2m} t^2 + v_{0y} t + y_0, \frac{F_z}{2m} t^2 + v_{0z} t + z_0 \right) \]
+Zatem wektor położenia \( \vec{r}(t) \) jako funkcja czasu dla ciała poruszającego się pod wpływem stałej siły \( \vec{F} \) wynosi:
+\[
+\boxed{
+\vec{r}(t) = \left( a_x t^2 + v_{0x} t + x_0, a_y t^2 + v_{0y} t + y_0, a_z t^2 + v_{0z} t + z_0 \right)
+}
+\]
+\subsection{W przypadku siły zależnej od prędkości}
+Aby sformułować oraz rozwiązać równanie ruchu w 3 wymiarach dla siły \( \vec{F} \) proporcjonalnej do prędkości \( \vec{v} \), zaczniemy od drugiej zasady dynamiki Newtona:
+\[ \vec{F} = m \vec{a} \]
+Zakładamy, że siła jest proporcjonalna do prędkości, czyli:
+\[ \vec{F} = -k \vec{v} \]
+gdzie \( k \) jest stałą proporcjonalności (współczynnikiem tłumienia), a \( \vec{v} = \frac{d\vec{r}}{dt} \) to prędkość. Równanie ruchu staje się więc:
+\[ m \frac{d\vec{v}}{dt} = -k \vec{v} \]
+Możemy to zapisać jako:
+\[ \frac{d\vec{v}}{dt} = -\frac{k}{m} \vec{v} \]
+To równanie różniczkowe jest liniowe i jednorodne. Rozwiążemy je metodą rozdzielania zmiennych.
+\[ \frac{d\vec{v}}{\vec{v}} = -\frac{k}{m} dt \]
+\[ \int \frac{d\vec{v}}{\vec{v}} = -\frac{k}{m} \int dt \]
+\[ \ln|\vec{v}| = -\frac{k}{m} t + C \]
+\[ \vec{v} = \vec{v}_0 e^{-\frac{k}{m} t} \]
+gdzie \( \vec{v}_0 \) to wektor początkowej prędkości.
+Teraz, aby znaleźć wektor położenia \( \vec{r}(t) \), musimy zintegrować prędkość:
+\[ \vec{v} = \frac{d\vec{r}}{dt} \]
+\[ \frac{d\vec{r}}{dt} = \vec{v}_0 e^{-\frac{k}{m} t} \]
+\[ \vec{r}(t) = \int \vec{v}_0 e^{-\frac{k}{m} t} dt \]
+Ponieważ \(\vec{v}_0\) jest stałe, możemy całkować każdy składnik osobno:
+\[ \vec{r}(t) = \vec{v}_0 \int e^{-\frac{k}{m} t} dt \]
+\[ \vec{r}(t) = \vec{v}_0 \left( -\frac{m}{k} e^{-\frac{k}{m} t} \right) + \vec{r}_0 \]
+gdzie \( \vec{r}_0 \) to wektor początkowego położenia.
+\[
+\boxed{
+\vec{r}(t) = \vec{r}_0 - \frac{m}{k} \vec{v}_0 e^{-\frac{k}{m} t}
+}
+\]
+
+\section{Ruch drgający}
+\subsection{Oscylator Harmoniczny}
+Oscylator harmoniczny – układ drgający wykonujący ruch harmoniczny.
+W układzie takim występuje siła sprężysta $F(x)$ proporcjonalna do przemieszczenia $x$ tego układu od jego położenia równowagi: 
+\[ F(x) = -kx \]
+
+\subsection{Położenie od czasu w ruchu harmonicznym}
+Zapiszmy powyższe równanie jako:
+\[ m\frac{d^2 x}{dt^2} = - kx \]
+Podstawmy:
+\[
+x(t) = e^{\alpha t}
+\]
+\[
+m\frac{dx}{dt} = \alpha e^{\alpha t}
+\]
+Obliczmy pierwszą i drugą pochodną tego wyrażenia:
+\[
+m\frac{d^2 x}{dt^2} = \alpha^2 e^{\alpha t}
+\]
+Podstawiamy teraz te pochodne do równania różniczkowego:
+\[
+\alpha^2 e^{\alpha t} = - \frac{k}{m} e^{\alpha t}
+\]
+Ponieważ \( e^{\alpha t} \neq 0 \) dla dowolnej wartości \( \alpha \), możemy podzielić obie strony równania przez \( e^{\alpha t} \):
+\[
+\alpha^2 = -\frac{k}{m}
+\]
+Stąd otrzymujemy:
+\[
+\alpha^2 = -\frac{k}{m}
+\]
+A więc:
+\[
+\alpha = \pm i\sqrt{\frac{k}{m}}
+\]
+To oznacza, że mamy dwa rozwiązania dla \( \alpha \):
+\[
+\alpha_1 = i\sqrt{\frac{k}{m}} \quad \text{oraz} \quad \alpha_2 = -i\sqrt{\frac{k}{m}}
+\]
+Ogólne rozwiązanie równania różniczkowego jest kombinacją liniową dwóch podstawowych rozwiązań:
+\[
+x(t) = C_1 e^{i\sqrt{\frac{k}{m}} t} + C_2 e^{-i\sqrt{\frac{k}{m}} t}
+\]
+Aby uzyskać rzeczywiste rozwiązanie, stosujemy tożsamości Eulera:
+\[
+e^{i\theta} = \cos(\theta) + i\sin(\theta) \quad \text{oraz} \quad e^{-i\theta} = \cos(\theta) - i\sin(\theta)
+\]
+Podstawiając \( \theta = \sqrt{\frac{k}{m}} t \):
+\[
+e^{i\sqrt{\frac{k}{m}} t} = \cos\left(\sqrt{\frac{k}{m}} t\right) + i\sin\left(\sqrt{\frac{k}{m}} t\right) \quad \text{oraz} \quad e^{-i\sqrt{\frac{k}{m}} t} = \cos\left(\sqrt{\frac{k}{m}} t\right) - i\sin\left(\sqrt{\frac{k}{m}} t\right)
+\]
+Zatem ogólne rozwiązanie można zapisać jako:
+\[
+x(t) = C_1 \left(\cos(\sqrt{\frac{k}{m}} t\right) + i\sin\left(\sqrt{\frac{k}{m}} t)\right) + C_2 (\cos\left(\sqrt{\frac{k}{m}} t\right) - i\sin\left(\sqrt{k} t)\right)
+\]
+Porządkując:
+\[
+x(t) = (C_1 + C_2) \cos\left(\sqrt{\frac{k}{m}} t\right) + i(C_1 - C_2) \sin\left(\sqrt{\frac{k}{m}} t\right)
+\]
+Aby rozwiązanie było rzeczywiste, współczynniki przy częściach urojonych muszą być zerowe. Zatem przyjmujemy nowe stałe:
+\[
+A = C_1 + C_2 \quad \text{oraz} \quad B = i(C_1 - C_2)
+\]
+W końcu, rzeczywiste ogólne rozwiązanie ruchu harmonicznego to:
+\[
+x(t) = A \cos\left(\sqrt{\frac{k}{m}} t\right) + B \sin\left(\sqrt{\frac{k}{m}} t\right)
+\]
+W przypadku bardziej ogólnego ruchu harmonicznego prostego, możemy zapisać:
+\[
+\boxed{
+x(t) = A \cos\left(\sqrt{\frac{k}{m}} t + \varphi\right)
+}
+\]
+gdzie \( C \) jest amplitudą, a \( \varphi \) fazą początkową, które można wyznaczyć z warunków początkowych.
+
+\subsection{Drgania tłumione}
+Drgania tłumione można opisać za pomocą następującego równania ruchu:
+\[ m \frac{d^2 x}{dt^2} = - b \frac{dx}{dt} - kx \]
+Gdzie $b$ jest współczynnikiem tłumienia. Metodą analogiczną do poprzedniego równania:
+\[
+\boxed {
+x(t) = A_0 e^{-\frac{b}{2m}t}\cos\left(\sqrt{\frac{k}{m}}t + \varphi\right)
+}\]
+
+\subsection{Drgania wymuszone}
+Drgania wymuszone można opisać za pomocą następującego równania ruchu:
+\[ m \frac{d^2 x}{dt^2} = -kx -b \frac{dx}{dt} + F_0 \sin\left(\sqrt{\frac{k}{m}t} + \varphi\right)\]
+(Nie rozważając stanu przejściowego) Po pewnym czasie układ ustabilizuje się z częstotliwością własną:
+\[
+\boxed {
+x(t) = A \cos\left(\sqrt{\frac{k}{m}} t + \varphi\right)
+}\]
+
+\section{Zasada Zachowania Energii}
+
+\boxed{\text{Całkowita energia w układzie izolowanego pozostaje stała}}
+
+\subsection{W Mechanice Klasycznej}
+
+Całkowita energia (suma energii potencjalnej i kinetycznej) w ukłądzie zamkniętym pozostaje stała, jeżeli działające w układzie siły są zachowawcze.
+
+\subsection{Siły Zachowawcze}
+Siły, których praca zależy tylko od początkowego i końcowego położenia ciała, bez względu na drogę, którą to ciało przebyło.
+\begin{itemize}
+    \item Siła grawitacji (Pole grawitacyjne jest polem zachowawczym)
+    \item Siła sprężystości
+    \item Siła Lorentza
+\end{itemize}
+
+\subsection{Siły Niezachowawcze}
+Siły, których praca zależy od drogi, którą przebyło ciało.
+\begin{itemize}
+    \item Siła tarcia
+    \item Siła oporu ośrodka
+\end{itemize}
+
+\section{Zasada zachowania pędu}
+
+\boxed{\text{Pęd wszystkich elementów układu izolowanego pozostaje stały}}\
+
+\subsection{Zderzenia idealnie sprężyste}
+
+Zderzenie, w którym zostaje zachowany pęd oraz energia mechaniczna. Ilość obiektów w stanie początkowym i końcowym jest taka sama,
+
+\subsection{Zderzenia idealnie niesprężyste}
+
+Zderzenie, w którym zostaje zachowany pęd, ale nie zostaje zachowana energia mechaniczna.
+
+\section{Zasada zachowania momentu pędu}
+Moment pędu układu cząstek wokół punktu, w ustalonym inercjalnym układzie odniesienia, jest zachowany, jeśli wypadkowy moment sił zewnętrznych względem tego punktu jest równy zero.
+\[
+\boxed{
+\frac{\vec{dL}}{dt} = 0
+}\]
+
+Przykłady wykorzystania zasady zachowania momentu pędu:
+\begin{enumerate}
+    \item (Obieg planet wokół słońca) Planety mają stały moment pędu względem Słońca, co wynika z braku zewnętrznych momentów sił działających w znaczący sposób na układ.
+    \item (Łyżwy) Gdy łyżwiarz zmniejsza moment bezwładności (np. przyciągając ramiona do ciała), prędkość kątowa rośnie, aby moment pędu pozostał stały. Podobny efekt można osiągnąć kręcąc się na krześle, kierując ręce i nogi na zmianę, do siebie oraz od siebie.
+    \item (Koła zamachowe) W niektórych maszynach koła zamachowe przechowują moment pędu, który pomaga utrzymać stabilność pracy maszyny.
+\end{enumerate}
+
+\section{Bryła Sztywna}
+Ciało fizyczne złożone ze zbioru punktów, które nie przemieszczają się względem siebie. 
+
+\subsection{Moment bezwładności}
+Moment bezwładności bryły sztywnej jest wielkością, która określa moment obrotowy potrzebny do uzyskania pożądanego przyspieszenia kątowego wokół osi obrotu, podobnie jak masa określa siłę potrzebną do uzyskania pożądanego przyspieszenia.
+
+\[ I = \sum_{i} m_i r_i^2 \]
+
+\subsection{Moment pędu w ruchu obrotowym}
+
+Moment pędu w ruchu obrotowym to wektorowa wielkość fizyczna opisująca stan ruchu obrotowego ciała względem określonej osi. Jest on analogiczny do pędu w ruchu prostoliniowym, ale dotyczy obrotu. Moment pędu jest oznaczany symbolem \(\vec{L}\) i definiowany jako iloczyn wektorowy wektora położenia \(\vec{r}\) i wektora pędu \(\vec{p}\):
+\[
+\vec{L} = \vec{r} \times \vec{p}
+\]
+Dla ciała o masie \(m\) poruszającego się z prędkością \(\vec{v}\), pęd \(\vec{p}\) jest równy \(m\vec{v}\), więc:
+
+\[
+\vec{L} = \vec{r} \times (m\vec{v}) = m (\vec{r} \times \vec{v})
+\]
+
+W przypadku ruchu obrotowego ciała sztywnego moment pędu można także wyrazić w zależności od momentu bezwładności \(I\) i prędkości kątowej \(\vec{\omega}\):
+
+\[
+\vec{L} = I \vec{\omega}
+\]
+
+\subsection{Równanie ruchu obrotowego - dla małych drgań}
+
+Wychodząc z momentu pędu:
+\[\vec{L} = \vec{r} \times \vec{p} = \vec{r} \times m \dot{\vec{r}}\]
+Różniczkując moment pędu względem czasu, otrzymujemy:
+\[
+\dot{\vec{L}} = \frac{d}{dt} \left( \vec{r} \times m \dot{\vec{r}} \right)
+\]
+Używając reguły iloczynu, dostajemy:
+\[
+\dot{\vec{L}} = \dot{\vec{r}} \times m \dot{\vec{r}} + \vec{r} \times m \ddot{\vec{r}}
+\]
+Pierwszy człon po prawej stronie zanika, ponieważ wektor prędkości $\dot{\vec{r}}$ jest równoległy do samego siebie:
+\[
+\dot{\vec{r}} \times m \dot{\vec{r}} = 0
+\]
+Pozostaje więc:
+\[
+\dot{\vec{L}} = \vec{r} \times m \ddot{\vec{r}} = \vec{r} \times \vec{F}
+\]
+Załóżmy, że ciało porusza się w osi $z$, po okręgu o promieniu \(R\) i kąt \(\alpha\) mierzy się od pionu. Wtedy położenie \(\vec{r}\) w układzie biegunowym można zapisać jako:
+\[
+\vec{r} = R (\sin(\alpha) \hat{i} + \cos(\alpha) \hat{j})
+\]
+Przy czym \(\vec{g}\) skierowane jest w dół, więc:
+\[
+\vec{g} = -g \hat{j}
+\]
+Moment siły wtedy jest równy:
+\[
+\vec{M} = R (\sin(\alpha) \hat{i} + \cos(\alpha) \hat{j}) \times m (-g \hat{j})
+\]
+Ponieważ \(\hat{j} \times \hat{j} = 0\) i \(\hat{i} \times \hat{j} = \hat{k}\), mamy:
+\[
+\vec{M} = R \sin(\alpha) \hat{i} \times (-mg \hat{j}) = -mgR \sin(\alpha) \hat{k}
+\]
+Moment bezwładności dla ruchu obrotowego \(I_0\) wokół osi przez środek obrotu wynosi:
+\[
+I_0 \frac{d^2 \alpha}{dt^2} = M_z
+\]
+gdzie \(M_z\) to składowa momentu siły w kierunku osi obrotu \(z\).
+\[
+I_0 \frac{d^2 \alpha}{dt^2} = -mgR \sin(\alpha)
+\]
+Dla małych drgań ($\alpha<\frac{\pi}{6}$, $\sin(\alpha)\approx \alpha$), przybliżenie \(\sin(\alpha) \approx \alpha\) jest uzasadnione. Mamy:
+\[
+I_0 \frac{d^2 \alpha}{dt^2} = -mgR \alpha
+\]
+Rozwiązaniem tego równania różniczkowego jest:
+\[
+\boxed{
+\alpha(t) = A\cos(\omega_0 t + \varphi)
+}
+\]
+
+\section{Ruch w mechanice klasycznej}
+
+\subsection{Zasada względności Galileusza}
+
+Prawa mechaniki są takie same w \underline{inercjalnym} układzie odniesienia.
+
+\subsection{Transfrmacje Galileusza}
+
+Załóżmy, że mamy dwa układy odniesienia: $S$ i $S^\prime$. Układ $S^\prime$ porusza się względem układu $S$ z prędkością $v$ wzdłuż osi OX.
+Transformacje Galileusza między $S(x,y,z,t), S^\prime(x^\prime,y^\prime,z^\prime,t^\prime)$ możemy opisać jako:
+\begin{itemize}
+    \item $x' = x-vt$
+    \item $y' = y$
+    \item $z' = z$
+    \item $t' = t$
+\end{itemize}
+Założenie, że czas jest absolutny jest nieprawdziwe.
+Założenie, że przestrzeń jest absolutna również jest nieprawdziwe.
+
+\subsection{Zasada względności Einsteina}
+
+\begin{enumerate}
+\item Prawa mechaniki są takie same w \underline{inercjalnym} układzie odniesienia.
+\item Prędkość światła jest niezmiennicza $c=inv.$ (invariant)
+\end{enumerate}
+
+\subsection{Transformacje Lorentza}
+
+Załóżmy, że mamy dwa układy odniesienia: $K$ i $K^\prime$. Dla każdego z nich postaje sferyczna fala świetlna:
+\begin{align}
+K&: x^2 + y^2 + z^2 = R^2 = (ct)^2\\
+K^\prime &: (x^\prime)^2 + (y^\prime)^2 + (z^\prime)^2 = (R^\prime)^2 = (ct^\prime)^2
+\end{align}
+Niech układ $K^\prime$ porusza się względem układu $K$ z prędkością $v$ wzdłuż osi OX, wtedy $y=y', z=z'$
+Spróbujmy wyprowadzić zależności między układami:\
+\[
+\begin{cases}
+x = a_{11} x^\prime + a_{12} t^\prime\\
+t = a_{21} x^\prime + a_{22} t^\prime
+\end{cases}
+\]
+Skoro promień świetlny jest linią prostą (idealnie prostą w próżni), to ta relacja musi być relacją liniową. Jej współczynniki wynoszą:
+\[\gamma=a_{11}=a_{22}=\frac{1}{\sqrt{1-\frac{u^2}{c^2}}}\]
+\[a_{12}=\frac{u}{\sqrt{1-\frac{u^2}{c^2}}}\]
+\[a_{21}=\frac{\frac{u}{c^2}}{\sqrt{1-\frac{u^2}{c^2}}}\]
+Zatem transformacje Lorentza możemy zapisać jako:
+\[
+\begin{cases}
+x = \gamma(x^\prime + ut^\prime)\\
+t = \gamma(t^\prime + \frac{ux^\prime}{c^2})
+\end{cases}
+\]
+
+\section{Efekty Szczególnej Teorii Względności}
+\subsection{Dylatacja czasu}
+
+Rozważmy dwa wydarzenia, które zachodzą w tym samym miejscu w układzie spoczynkowym \( S \). Czas między nimi dla obserwatora w \( S \) to \( \Delta t \). Chcemy znaleźć czas między tymi samymi wydarzeniami dla obserwatora poruszającego się z prędkością \( v \) w układzie \( S' \).
+Z transformacji Lorentza dla czasu, gdy \( \Delta x = 0 \):
+\[ t' = \gamma t \]
+Różnica czasów \( \Delta t' \) w układzie \( S' \) jest więc:
+\[ \Delta t' = \gamma \Delta t \]
+Podstawiając wartość \( \gamma \):
+\[ \Delta t' = \frac{\Delta t}{\sqrt{1 - \frac{v^2}{c^2}}} \]
+
+\subsection{Skrócenie długości}
+
+Rozważmy pręt poruszający się wzdłuż osi \( x \) w układzie spoczynkowym \( S \), gdzie jego długość wynosi \( L \). Chcemy znaleźć długość \( L' \) tego samego pręta w układzie \( S' \), poruszającym się z prędkością \( v \) względem \( S \).
+Z transformacji Lorentza dla przestrzeni:
+
+\[ x' = \gamma (x - vt) \]
+Długość pręta w układzie \( S' \) jest zdefiniowana jako odległość między dwoma końcami pręta, stąd:
+
+\[ L' = x'_2 - x'_1 = \gamma (x_2 - vt_2) - \gamma (x_1 - vt_1) \]
+\[ L' = \gamma [(x_2 - x_1) - v(t_2 - t_1)] \]
+Załóżmy, że pręt porusza się wzdłuż osi \( x \) i jest w spoczynku w układzie \( S \), więc \( x_2 - x_1 = L \). Czas trwania pomiaru długości pręta w obu układach to \( \Delta t = t_2 - t_1 \).
+Zatem:
+
+\[ L' = \gamma [L - v \Delta t] \]
+Podstawiając \( \gamma = \frac{1}{\sqrt{1 - \frac{v^2}{c^2}}} \):
+
+\[ L' = \frac{L}{\sqrt{1 - \frac{v^2}{c^2}}} \]
+
+\subsection{Relatywistyczne składanie prędkości}
+
+Rozważmy układ \( S \) i poruszający się względem niego z prędkością $v$, względem osi OX, układ \( S' \).
+Zgodnie z transformacją Lorentza:
+\[
+\begin{cases}
+    x' = \frac{x-vt}{\sqrt{1-\frac{v^2}{c^2}}}\\
+    y' = y\\
+    z' = z\\
+    t' = \frac{t-\frac{vx}{c^2}}{\sqrt{1-\frac{v^2}{c^2}}}
+\end{cases}
+\]
+Zapiszmy:
+\[ 
+dx' = \frac{dx - vdt}{\sqrt{1-\frac{v^2}{c^2}}} \text{ oraz } dt' = \frac{dt-\frac{v}{c^2} dx}{\sqrt{1-\frac{v^2}{c^2}}}
+\]
+Następnie:
+\[
+u_{x'} = \frac{dx'}{dt'} = \frac{dx-vdt}{dt-\frac{v}{c^2} dx} = \frac{\frac{dx}{dt}-v}{1-\frac{v}{c^2}\frac{dx}{dt}}=\frac{u_x - v}{1-\frac{v\cdot u_x}{c^2}}
+\]
+
+\section{Czasoprzestrzeń}
+\subsection{Interwał czasoprzestrzenny}
+
+Interwał czasoprzestrzenny między dwoma punktami w czasoprzestrzeni można zdefiniować jako różnicę pomiędzy kwadratem czasoprzestrzennych współrzędnych tych punktów.
+
+\[\tau^2 = (x)^2 - (ct)^2\]
+
+\subsection{Stożek świetlny}
+\subsection{Niezmienniczość interwału}
+
+\section{Diagram czasoprzestrzenny}
+\subsection{Ilustracja dylatacji czasu}
+\subsection{Ilustracja skrócenia długości}
+
+\section{Wprowadzenie do mechaniki kwantowej}
+\subsection{Widmo liniowe atomu wodoru}
+\subsection{Promieniowanie ciała doskonale czarnego}
+\subsection{Efekt fotoleketryczny}
+
+\section{Hipoteza Plancka}
+
+\section{Model Bohra}
+
+\section{Hipoteza de Broglie'a}
+
+\section{Dualizm korpuskularno falowy promieniowania oraz materii}
+
+\section{Funkcja falowa}
+\subsection{Równanie Schrödingera}
+
+\section{Pomoc matematyczna}
+\subsection{Iloczyn skalarny}
+Niech \(\vec{v}, \vec{w}\) - wektory. Iloczyn skalarny:
+\[
+\langle \vec{v}, \vec{w} \rangle = v \cdot w \cdot \cos(\alpha)
+\]
+
+\subsection{Iloczyn wektorowy}
+Niech \(\vec{v}, \vec{w}\) - wektory. Iloczyn wektorowy:
+\[
+\vec{v} \times \vec{w} = v \cdot w \cdot \sin(\alpha)
+\]
+
+\end{document}
