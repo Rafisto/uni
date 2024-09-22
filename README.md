@@ -1,6 +1,8 @@
 ### Notes Repository 🚀
 I hereby present a treasure trove of resources covering various topics in mathematics and computer science, I have created and gathered during my studies at Wroclaw University of Science and Technology. Whether you're a student looking for study materials, or a curious mind eager to learn, you've come to the right place.
 
+⭐ If you find this project helpful, please consider leaving a **star** ⭐
+
 - 📊 **Mathematical Analysis** 📊. ✨***Full semester course notes***✨ purely in `LaTeX` is a must-have for any aspiring computer-scientist. 
     - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2023_semester_1/calculus_1/calculus.pdf)
     - See [calculus2.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2024_semester_2/calculus_2/calculus2.pdf)
