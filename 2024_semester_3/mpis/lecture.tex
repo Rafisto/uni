@@ -1,0 +1,117 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\makeatletter
+
+\theoremstyle{definition}
+\newtheorem{de}{Defiition}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{tw}{Theorem}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{pk}{Example}[subsection]
+
+\theoremstyle{definition}
+\newtheorem{fakt}{Fact}
+
+\title{Probabilistic Methods and Statistics}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\begin{pk}
+    \begin{itemize}
+        \item Ustalmy przestrzeń \(\Omega\)
+        \item \(A,B\in \Omega, A\neq B, A,B\neq \empty, A,B\neq \Omega\)
+        \item Oznaczmy \(A=A^1,A^C=A^{-1}\)
+        \item Mamy 4 \"atomowe\" zbiory postaci \(A^i \cap B^j; i,j\in\{-1,1\}\)
+        \item Przy pomocy sumy zbiorów możemy z nich budowac bardziej złożone zbiory
+        \item Ile takich zbiorów możemy zbudować? 
+    \end{itemize}
+\end{pk}
+
+\begin{de}
+    Ustalmy przestrzeń \( \Omega \) Rodzinę \(S\in \mathcal{P}(\Omega)\) nazywamy ciałem podzbiorów zbioru \(\Omega\) (ang. field, alebra), jeśli:
+    \begin{itemize}
+        \item \(S\neq \emptyset\)
+        \item \(A\in S \implies A^C\)
+        \item \(A,B\in S \implies A\cup B \in S\)
+    \end{itemize}
+
+\end{de}
+
+\begin{fakt}
+    Weźmy \(A,B\in S \implies A^C,B^C\in S\), wtedy \(A^C\cup B^C\in S\), zatem z Prawa de Morgana \(A\cap B \in S\). Jak widać, wynika to z definicji ciała.
+\end{fakt}
+
+\begin{fakt}
+    \(\cap_{i\in I} A_i = \left(\cup_{i\in I} A^C\right)^C\in S \)
+\end{fakt}
+
+\begin{de}
+    Ustalmy przestrzeń \(\Omega\). Rodzinę \(S\in \mathcal{P}(\Omega)\) nazywamy $\sigma$-ciałem podzbiorów zbioru \(\Omega\), jeśli:
+    \begin{itemize}
+        \item \(S\neq \emptyset\)
+        \item \(A\in S \implies A^C \in S\)
+        \item \(A_1,A_2,\dots \in S \implies \bigcup_{i\geq 1} A_i \in S\)
+    \end{itemize}
+\end{de}
+
+\begin{fakt}
+    Niech \(S\) będzie $\sigma$-ciałem podzbiorów $\Omega$ i załóżm, że dla pewnego przeliczalnego zbioru indeksów $I$ zachodzi \(\forall i\in I A_i \in S\) wówczas:
+    \[\bigcap_{i\in I} A_i \in S\]
+\end{fakt}
+
+\begin{fakt}
+    Jeśli $S$ jest skończonym ciałem podzbiorów $\Omega$ to $S$ jest $\sigma$-ciałem podzbiorów $\Omega$
+\end{fakt}
+
+Istotnie, wówczas przeliczalne sumy "redukują się" do sum skończonych
+
+\begin{pk}
+    Trywialne sigma ciała:
+    \begin{itemize}
+        \item \(\mathcal{P}(\Omega)\) - zbiór potęgowy jest $\sigma$-ciałem
+        \item \(\{\emptyset, \omega\}\) - jest $\sigma$-ciałem
+    \end{itemize}
+\end{pk}
+
+\begin{pk}
+    Ustalmy zbiór $\Omega$. Niech $A\subseteq \Omega, A \neq \emptyset$.
+    \begin{itemize}
+        \item \(S=\{\emptyset, A, A^C, \Omega\}\) jest $\sigma$-ciałem.
+        \item Niech $\mathcal{F}$- dowolne $\sigma$-ciało zawierające $A$.\\
+        \(A^C \in \mathcal{F}\\
+        A^C\cup A = \Omega \in \mathcal{F}\\
+        \Omega^C=\emptyset\in\mathcal{F} \implies S\subseteq \mathcal{F}\)
+    \end{itemize} 
+\end{pk}
+
+\begin{fakt}
+    Przekrój $\sigma$-ciał jest $\sigma$-ciałem.
+\end{fakt}
+
+
+
+\end{document}
