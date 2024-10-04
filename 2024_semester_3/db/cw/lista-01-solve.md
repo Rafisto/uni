@@ -2,12 +2,40 @@
 
 ```sql
 SELECT Nazwisko_prezesa FROM Firma;
-SELECT UNIQUE Nazwisko_prezesa FROM Firma;
+SELECT DISTINCT Nazwisko_prezesa FROM Firma;
 ```
 
 2. Podaj nazwy wszystkich firm założonych przed 2000-01-01.
+
+```sql
+SELECT Nazwa FROM Firma WHERE Data_zalozenia < '2000-01-01'; 
+```
+
 3. Wyświetl firmy zatrudniające przynajmniej 10 pracowników.
+
+Zatrudniały podczas całego działania
+
+```sql
+SELECT Nazwa_firmy, COUNT(Nazwa_firmy)
+FROM Zatrudnienie 
+GROUP BY Nazwa_firmy
+HAVING COUNT(Nazwa_firmy) > 1;
+```
+
+Zatrudniają obecnie:
+
+```sql
+SELECT Nazwa_firmy, COUNT(Nazwa_firmy)
+FROM Zatrudnienie
+WHERE Data_zwolnienia IS NULL
+GROUP BY Nazwa_firmy
+HAVING COUNT(Nazwa_firmy) > 0;
+```
+
 4. Wyświetl nazwiska tych prezesów, którzy widnieją jako pracownicy własnej firmy.
+
+
+
 5. Wyświetl nazwy wszystkich firm, imię i nazwisko prezesa każdej oraz miesiąc i rok, w których firma zanotowała stratę (wydatki przekroczyły przychody).
 6. Dla wszystkich firm, których prezes ma na nazwisko Kowalski, podaj ich nazwę i roczne obroty, czyli rok i zysk bądź stratę (w uproszczeniu: przychód - wydatki).
 7. Wyświetl imiona i nazwiska prezesów oraz nazwy firm, które nie zatrudniają pracownika o nazwisku Fikcyjny.

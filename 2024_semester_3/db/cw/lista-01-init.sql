@@ -45,7 +45,8 @@ INSERT INTO Pracownicy (Imie, Nazwisko, Pesel)
 VALUES 
 ('Mateusz', 'Kaminski', '11122233344'),
 ('Magda', 'Wisniewska', '55566677788'),
-('Tomasz', 'Lewandowski', '99988877766');
+('Tomasz', 'Lewandowski', '99988877766'),
+('Tomasz', 'Nazwiskowy', '12345678901');
 
 INSERT INTO Obroty (Nazwa_firmy, Rok, Miesiac, Przychod, Wydatki) 
 VALUES 
@@ -60,4 +61,5 @@ INSERT INTO Zatrudnienie (Id_pracownika, Nazwa_firmy, Data_zatrudnienia, Data_zw
 VALUES 
 (1, 'TechCorp', '2020-06-01', NULL, 120000),
 (2, 'EcoSolutions', '2019-04-15', '2023-07-30', 110000),
-(3, 'MediCare', '2021-09-20', NULL, 130000);
+(3, 'MediCare', '2021-09-20', NULL, 130000),
+(4, 'TechCorp', '2020-06-01', NULL, 100000);

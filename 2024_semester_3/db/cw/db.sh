@@ -15,6 +15,7 @@ if [ "${mode}" == "start" ]; then
     docker compose up -d
 elif [ "${mode}" == "stop" ]; then
     echo "Stopping database"
+    export INIT_SQL_FILE="${filename}"
     docker compose down
     docker volume rm cw_db_data
 elif [ "${mode}" == "exec" ]; then
