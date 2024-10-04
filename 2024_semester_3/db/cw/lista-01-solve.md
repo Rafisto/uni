@@ -34,8 +34,6 @@ HAVING COUNT(Nazwa_firmy) > 0;
 
 4. Wyświetl nazwiska tych prezesów, którzy widnieją jako pracownicy własnej firmy.
 
-
-
 5. Wyświetl nazwy wszystkich firm, imię i nazwisko prezesa każdej oraz miesiąc i rok, w których firma zanotowała stratę (wydatki przekroczyły przychody).
 6. Dla wszystkich firm, których prezes ma na nazwisko Kowalski, podaj ich nazwę i roczne obroty, czyli rok i zysk bądź stratę (w uproszczeniu: przychód - wydatki).
 7. Wyświetl imiona i nazwiska prezesów oraz nazwy firm, które nie zatrudniają pracownika o nazwisku Fikcyjny.
