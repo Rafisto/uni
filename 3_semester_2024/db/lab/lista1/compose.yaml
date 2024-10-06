@@ -1,0 +1,24 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: db2024
+      MYSQL_USER: rafisto
+      MYSQL_PASSWORD: rafistopassword
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sources/sakila-schema.sql:/docker-entrypoint-initdb.d/001-init-schema.sql
+      - ./sources/sakila-data.sql:/docker-entrypoint-initdb.d/002-init-data.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - mariadb-network
+
+volumes:
+  db_data:
+
+networks:
+  mariadb-network:
+    driver: bridge
