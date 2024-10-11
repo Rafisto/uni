@@ -50,6 +50,8 @@ VALUES
 
 INSERT INTO Obroty (Nazwa_firmy, Rok, Miesiac, Przychod, Wydatki) 
 VALUES 
+('TechCorp', 2010, 1, 500000, 200000),
+('UltraCorp', 1999, 1, 550000, 10000),
 ('TechCorp', 2023, 1, 500000, 200000),
 ('TechCorp', 2023, 2, 550000, 210000),
 ('EcoSolutions', 2023, 1, 300000, 150000),
