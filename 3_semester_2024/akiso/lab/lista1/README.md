@@ -331,17 +331,26 @@ Source: https://github.com/churchers/vm-bhyve
 This doesn't look scary:
 
 ```bash
-1. pkg install vm-bhyve
-2. zfs create pool/vm
-3. sysrc vm_enable="YES"
-4. sysrc vm_dir="zfs:pool/vm"
-5. vm init
-6. vm switch create public
-7. vm switch add public em0
-8. vm iso https://download.freebsd.org/ftp/releases/ISO-IMAGES/14.1/FreeBSD-14.1-RELEASE-amd64-bootonly.iso
-9. vm create myguest
-10. vm install [-f] myguest FreeBSD-14.1-RELEASE-amd64-bootonly.iso
-11. vm console myguest
+pkg install vm-bhyve
+```
+
+```bash
+zfs create pool/vm
+sysrc vm_enable="YES"
+sysrc vm_dir="zfs:pool/vm"
+```
+
+```bash
+vm init
+vm switch create public
+vm switch add public em0
+```
+
+```bash
+vm iso https://download.freebsd.org/ftp/releases/ISO-IMAGES/14.1/FreeBSD-14.1-RELEASE-amd64-bootonly.iso
+vm create myguest
+vm install [-f] myguest FreeBSD-14.1-RELEASE-amd64-bootonly.iso
+vm console myguest
 ```
 
 Exit vm via Shift+` and then Ctrl+D [EOT]
