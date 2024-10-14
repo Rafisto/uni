@@ -338,7 +338,7 @@ This doesn't look scary:
 5. vm init
 6. vm switch create public
 7. vm switch add public em0
-8. vm iso https://download.freebsd.org/ftp/releases/ISO-IMAGES/11.2/FreeBSD-14.1-RELEASE-amd64-bootonly.iso
+8. vm iso https://download.freebsd.org/ftp/releases/ISO-IMAGES/14.1/FreeBSD-14.1-RELEASE-amd64-bootonly.iso
 9. vm create myguest
 10. vm install [-f] myguest FreeBSD-14.1-RELEASE-amd64-bootonly.iso
 11. vm console myguest
