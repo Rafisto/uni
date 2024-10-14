@@ -11,7 +11,7 @@
     - [UEFI](#uefi)
     - [GPT](#gpt)
     - [MBR](#mbr)
-    - [System Plików](#system-plików)
+    - [Filesystemw](#filesystemw)
     - [FreeBSD](#freebsd)
     - [`jails`](#jails)
     - [`bhyve`](#bhyve)
@@ -30,6 +30,8 @@
   - [Zadanie 1, 2, 3](#zadanie-1-2-3)
   - [Zadanie 4](#zadanie-4)
   - [Zadanie 5](#zadanie-5)
+    - [`bhyve`](#bhyve-1)
+    - [`vm-bhyve`](#vm-bhyve)
 
 # Słownik
 
@@ -67,7 +69,7 @@ It is a toolkit to manage virtualization platforms. It is a C toolkit that offer
 
 Very difficult to repartiotion, replaced by GPT.
 
-### System Plików
+### Filesystemw
 
 **Filesystem** is a method of organizing data on a storage device. It specifies how data is stored, retrieved, and updated.
 
@@ -103,10 +105,9 @@ It is a hypervisor that runs on FreeBSD. It is a type-2 hypervisor that runs on 
 
 A bootloader is a small program that loads the operating system into the computer's memory. It is the first program that runs when you start your computer.
 
-<section>
-<details>
 An example bootloader:
-</details>
+
+<details>
 
 ```s
 # r-os
@@ -142,7 +143,7 @@ msg: .ascii "[nos] version 0.01\r\Not an operating system\r\n"
 .word 0xaa55 # little endian
 ```
 
-</section>
+</details>
 
 ### NCQ
 
@@ -177,10 +178,9 @@ msg: .ascii "[nos] version 0.01\r\Not an operating system\r\n"
 
 ## Zadanie 1, 2, 3
 
-<section>
-<details>
 Installation backlog (UEFI)
-</details>
+
+<details>
 
 1. Ensure `efivars` are loaded `ls /sys/firmware/efi/efivars`
 2. `fdisk` setup should return the following partition table:
@@ -265,7 +265,7 @@ pacman -S grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 ```
 
-</section>
+</details>
 
 ## Zadanie 4
 
@@ -290,3 +290,58 @@ gdb ./kernel
 ## Zadanie 5
 
 Install FreeBSD.
+
+Install xfce4 on FreeBSD
+
+```sh
+pkg install xorg xfce4 xfce4-goodies
+sysrc dbus_enable="YES"
+sysrc hald_enable="YES"
+sysrc slim_enable="YES"
+#
+echo "exec /usr/local/bin/startxfce4" > ~/.xinitrc
+startx
+```
+
+### `bhyve`
+
+Bhyve - is a hypervisor that runs on FreeBSD. It is a type-2 hypervisor that runs on top of an existing operating system.
+
+I run bhyve on a FreeBSD VM machine, therefore a few steps are required to set it up:
+- `VBoxManage modfyvm "freebsd" --nested-hw-virt on` - enable nested virtualization
+- Turn on `VT-x` and enable nested paging.
+
+This looks scary:
+
+```sh
+bhyve -c 1 -m 256M \
+-s 0:0,hostbridge \
+-s 3:0,ahci-cd,/path/to/freebsd.iso \
+-s 4:0,virtio-blk,freebsd.img \
+-s 5:0,virtio-net,tap0 \
+freebsd
+```
+
+### `vm-bhyve`
+
+Install `vm-bhyve` - a tool that allows you to run FreeBSD virtual machines on FreeBSD.
+
+Source: https://github.com/churchers/vm-bhyve
+
+This doesn't look scary:
+
+```bash
+1. pkg install vm-bhyve
+2. zfs create pool/vm
+3. sysrc vm_enable="YES"
+4. sysrc vm_dir="zfs:pool/vm"
+5. vm init
+6. vm switch create public
+7. vm switch add public em0
+8. vm iso https://download.freebsd.org/ftp/releases/ISO-IMAGES/11.2/FreeBSD-14.1-RELEASE-amd64-bootonly.iso
+9. vm create myguest
+10. vm install [-f] myguest FreeBSD-14.1-RELEASE-amd64-bootonly.iso
+11. vm console myguest
+```
+
+Exit vm via Shift+` and then Ctrl+D [EOT]
