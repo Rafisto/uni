@@ -308,8 +308,8 @@ startx
 Bhyve - is a hypervisor that runs on FreeBSD. It is a type-2 hypervisor that runs on top of an existing operating system.
 
 I run bhyve on a FreeBSD VM machine, therefore a few steps are required to set it up:
-- `VBoxManage modfyvm "freebsd" --nested-hw-virt on` - enable nested virtualization
-- Turn on `VT-x` and enable nested paging.
+- `VBoxManage modifyvm "freebsd" --nested-hw-virt on` - enable nested virtualization
+- Turn on `VT-x`, enable nested paging and `PAE`.
 
 This looks scary:
 

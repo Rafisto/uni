@@ -10,6 +10,9 @@
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
 - [Zadanie 5](#zadanie-5)
+  - [Zadanie 5.1](#zadanie-51)
+  - [Zadanie 5.2](#zadanie-52)
+  - [Zadanie 5.3](#zadanie-53)
 - [Zadanie 6 - BCD](#zadanie-6---bcd)
 - [Zadanie 7 - Unicode](#zadanie-7---unicode)
 - [Zadanie 8 - Gray Codes](#zadanie-8---gray-codes)
@@ -212,6 +215,40 @@ Base 3:
 
 # Zadanie 5
 
+Check whether exists such p that:
+
+## Zadanie 5.1
+
+$(BEE)_p = (2699)_10$
+
+$(BEE)_p = p^2 + 14p + 14 = 2699$
+$p^2 + 14p - 2685 = 0$
+
+Neither $p_1$ nor $p_2$ are integers.
+
+## Zadanie 5.2
+
+$(365)_p = (194)_10$
+$(365)_p = 3p^2 + 6p + 5 = 194$
+$3p^2 + 6p - 189 = 0$
+$p_1 = 7$
+$p_2 = -9$
+
+Answer: $p = 7$ because for $p = -9$ the number is negative.
+
+## Zadanie 5.3
+
+$((34)_p + (24)_p) * (21)_p = (1480)_p$
+$(3*p+4 + 2*p+4) * (2*p+1) = 1480$
+$(5*p+8) * (2*p+1) = 1480$
+$10*p^2 + 5*p + 16*p + 8 = 1480$
+$10*p^2 + 21*p + 8 = 1480$
+$10*p^2 + 21*p - 1472 = 0$
+$p_1 = 8$
+$p_2 = -18$
+
+Answer: $p = 8$ because for $p = -18$ the number is negative.
+
 # Zadanie 6 - BCD
 
 127 - `0001 0010 0111`
@@ -254,3 +291,5 @@ float InvSqrt(float x)
     return x;
 }
 ```
+
+This is drastically difficult to understand.
