@@ -61,7 +61,7 @@ It is a toolkit to manage virtualization platforms. It is a C toolkit that offer
 
 ### GPT
 
-**General Partition Table** is a standard for the layout of the partition table on a physical hard disk. It is a part of the UEFI standard.
+**GUID Partition Table** is a standard for the layout of the partition table on a physical hard disk. It is a part of the UEFI standard.
 
 ### MBR
 
