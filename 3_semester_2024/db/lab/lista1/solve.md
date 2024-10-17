@@ -113,7 +113,8 @@ SELECT actor.first_name, actor.last_name, film.title
 FROM film
 INNER JOIN film_actor ON film.film_id=film_actor.film_id
 INNER JOIN actor ON film_actor.actor_id=actor.actor_id
-WHERE film.special_features='Deleted Scenes';
+WHERE film.special_features LIKE '%Deleted Scenes%'
+GROUP BY actor.actor_id;
 ```
 
 10.  Wypisz imiona oraz nazwiska wszystkich klientów, których wypożyczenie i odpowiadająca mu płatność były obsłużone przez 2 różnych pracowników.
