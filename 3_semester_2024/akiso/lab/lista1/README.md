@@ -32,6 +32,9 @@
   - [Zadanie 5](#zadanie-5)
     - [`bhyve`](#bhyve-1)
     - [`vm-bhyve`](#vm-bhyve)
+  - [Lab Notes](#lab-notes)
+    - [Concepts](#concepts)
+    - [How to clear the data - forensics](#how-to-clear-the-data---forensics)
 
 # Słownik
 
@@ -354,3 +357,18 @@ vm console myguest
 ```
 
 Exit vm via Shift+` and then Ctrl+D [EOT]
+
+## Lab Notes
+
+### Concepts
+
+- Mikrokernel - Symbian as an example (old Nokia phones)
+- SOHO - Small Office Home Office
+- Fragmentation / Defragmentation - rewrite the data to make it contiguous
+
+### How to clear the data - forensics
+
+Logic Level rewriting - the 1/0 interpretation of the data depends on the voltage level, 
+which changes over time and can probably be rewritten.
+
+> użyjmy pliku wymiany

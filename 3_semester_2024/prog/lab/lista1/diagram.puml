@@ -1,0 +1,46 @@
+@startuml
+class Agency {
+    - trips: List<Trip>
+    + newTrip(trip: Trip): void
+    + getTrips(): List<Trip>
+}
+
+class Main {
+    <<static>>
+    + main(args: String[]): void
+}
+
+class Tourist {
+    - name: String
+    - surname: String
+    - money: double
+    + Tourist(name: String, surname: String, money: double)
+    + getName(): String
+    + setName(name: String): void
+    + getSurname(): String
+    + setSurname(surname: String): void
+    + getMoney(): double
+    + setMoney(money: double): void
+}
+
+class Trip {
+    - destination: String
+    - length: int
+    - cost: double
+    - tourists: List<Tourist>
+    + Trip(destination: String, length: int, cost: double)
+    + describeTrip(): String
+    + getDestination(): String
+    + setDestination(destination: String): void
+    + getLength(): int
+    + setLength(length: int): void
+    + getCost(): double
+    + setCost(cost: double): void
+    + getTourists(): List<Tourist>m
+    + addTourist(tourist: Tourist): void
+    + removeTourist(tourist: Tourist): void
+}
+
+Agency "1" *-- "*" Trip : contains
+Trip "1" *-- "*" Tourist : contains
+@enduml

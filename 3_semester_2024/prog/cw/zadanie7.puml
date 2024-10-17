@@ -1,0 +1,51 @@
+@startuml zadanie7
+class Produkt {
+    -nazwa: String
+    -cena: Float
+    -kategoria: String
+    -ilośćNaStanie: Int
+}
+
+class Transakcja {
+    -data: Date
+    -listaProduktów: List<Produkt>
+    -kwota: Float
+    -metodaPłatności: String
+}
+
+class Płatność {
+    -metodaPłatności: String
+    -kwota: Float
+    -statusPłatności: String
+}
+
+class Klient {
+    -imię: String
+    -nazwisko: String
+    -punktyLojalnościowe: Int
+}
+
+class Raport {
+    -zakresCzasowy: DateRange
+    -sumaSprzedaży: Float
+    -najpopularniejszeProdukty: List<Produkt>
+}
+
+class Magazyn {
+    -listaProduktów: List<Produkt>
+    -stanyMagazynowe: Map<Produkt, Int>
+    -alertyONiskimStanie: List<Produkt>
+}
+
+class SystemLojalnościowy {
+    -punktyLojalnościowe: Int
+    -historiaTransakcji: List<Transakcja>
+}
+
+Produkt --> Transakcja
+Płatność --> Transakcja
+Klient --> Transakcja
+Transakcja --> Raport
+Magazyn --> Produkt
+SystemLojalnościowy --> Klient
+@enduml

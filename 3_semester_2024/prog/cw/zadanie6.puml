@@ -1,0 +1,23 @@
+@startuml zadanie6
+actor Kasjer
+actor Menadżer
+actor Klient
+actor SystemPłatności
+actor SystemLojalnościowy
+
+Kasjer --> (Zarządzanie Produktami)
+Kasjer --> (Rejestracja Sprzedaży)
+Kasjer --> (Obsługa Płatności)
+Kasjer --> (Generowanie Paragonów i Faktur)
+Kasjer --> (Obsługa Rabatów i Promocji)
+Kasjer --> (Obsługa Zwrotów)
+
+Menadżer --> (Zarządzanie Magazynem)
+Menadżer --> (Generowanie Raportów)
+
+Klient --> (Obsługa Lojalności)
+
+SystemPłatności --> (Obsługa Płatności)
+
+SystemLojalnościowy --> (Obsługa Lojalności)
+@enduml

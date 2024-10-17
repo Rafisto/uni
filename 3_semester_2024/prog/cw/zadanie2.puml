@@ -1,0 +1,43 @@
+@startuml zadanie2
+actor "Pracownik działu stypendiów" as Worker
+actor "Student" as Student
+actor "System UsosWeb" as System
+
+title "Przyznawanie stypendiów"
+
+' Warunki początkowe
+System --> Worker : Wnioski o stypendium dostępne
+System --> Student : Wniosek złożony przez studenta
+
+' Scenariusz główny
+Worker -> System : Logowanie do systemu
+Worker -> System : Przeglądanie wniosków o stypendium
+Worker -> System : Wybór wniosku studenta
+System --> Worker : Wyświetlenie danych wniosku i studenta
+Worker -> Worker : Analiza wniosku
+Worker -> System : Decyzja (przyznanie lub odrzucenie)
+System --> System : Aktualizacja statusu wniosku
+System -> Student : Wysłanie powiadomienia o decyzji
+
+' Scenariusz alternatywny A: Wniosek niekompletny
+alt Wniosek niekompletny
+   System --> Worker : Wniosek niekompletny (brak dokumentów)
+   Worker -> System : Odesłanie wniosku do studenta
+   System -> Student : Powiadomienie o niekompletnym wniosku
+end
+
+' Scenariusz alternatywny B: Błędne dane
+alt Błędne dane
+   Worker -> System : Błędne dane we wniosku
+   Worker -> System : Odesłanie wniosku do studenta
+   System -> Student : Prośba o korektę danych
+end
+
+' Scenariusz alternatywny C: Odrzucenie wniosku
+alt Odrzucenie wniosku
+   Worker -> System : Odrzucenie wniosku
+   System --> System : Aktualizacja statusu wniosku na "Odrzucony"
+   System -> Student : Powiadomienie o odrzuceniu wniosku
+end
+
+@enduml

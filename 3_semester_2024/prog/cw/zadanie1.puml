@@ -1,0 +1,37 @@
+@startuml zadanie1
+actor Uzytkownik
+actor Administrator
+actor Dzial_Stypendiow
+
+usecase "Logowanie do systemu" as UC1
+usecase "Przeglądanie planu zajęć" as UC2
+usecase "Rejestracja na zajęcia" as UC3
+usecase "Sprawdzanie ocen" as UC4
+usecase "Składanie podań" as UC5
+usecase "Zarządzanie przedmiotami" as UC6
+usecase "Generowanie raportów" as UC7
+usecase "Przyznawanie stypendiów" as UC8
+usecase "Zarządzanie użytkownikami" as UC9
+
+Uzytkownik -- UC1
+Uzytkownik --> UC2 : << includes >>
+Uzytkownik --> UC3 : << includes >>
+Uzytkownik --> UC4 : << includes >>
+Uzytkownik --> UC5 : << includes >>
+
+Administrator -- UC6
+Administrator -- UC7
+Administrator --> UC9 : << includes >>
+
+Dzial_Stypendiow -- UC8
+
+UC1 --> UC2 : << enables >>
+UC1 --> UC3 : << enables >>
+UC1 --> UC4 : << enables >>
+UC1 --> UC5 : << enables >>
+UC3 --> UC6 : << communicates >>
+UC5 --> UC8 : << informs >>
+
+UC6 --> UC7 : << informs >>
+UC9 --> UC6 : << manages >>
+@enduml

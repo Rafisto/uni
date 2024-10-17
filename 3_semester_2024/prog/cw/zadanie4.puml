@@ -1,0 +1,44 @@
+@startuml zadanie4
+class Kurs {
+    - kursID : int
+    - nazwa : string
+    - liczbaECTS : int
+    - opis : string
+    + getOpis() : string
+}
+
+class GrupaZajeciowa {
+    - grupaID : int
+    - termin : string
+    - prowadzący : string
+    + getTermin() : string
+}
+
+class Student {
+    - studentID : int
+    - imie : string
+    - nazwisko : string
+    - indeks : string
+    + zarejestrujNaKurs(Kurs)
+    + zarejestrujNaGrupe(GrupaZajeciowa)
+}
+
+class Rejestracja {
+    - dataRozpoczecia : Date
+    - dataZakonczenia : Date
+    + rozpocznijRejestracje()
+    + zakonczRejestracje()
+}
+
+class ECTS {
+    - punkty : int
+    + getPunkty() : int
+}
+
+Kurs "1" -- "*" GrupaZajeciowa : "ma"
+Kurs "1" -- "*" ECTS : "przydziela"
+Student "1" -- "*" Kurs : "rejestruje się na"
+Student "1" -- "*" GrupaZajeciowa : "uczestniczy w"
+Rejestracja "1" -- "*" Kurs : "dotyczy"
+Rejestracja "1" -- "*" Student : "dotyczy"
+@enduml
