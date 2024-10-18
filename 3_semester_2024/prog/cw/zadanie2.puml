@@ -3,7 +3,7 @@ actor "Pracownik działu stypendiów" as Worker
 actor "Student" as Student
 actor "System UsosWeb" as System
 
-title "Przyznawanie stypendiów"
+title "Przyznawanie stypendiów w systemie UsosWeb"
 
 ' Warunki początkowe
 System --> Worker : Wnioski o stypendium dostępne

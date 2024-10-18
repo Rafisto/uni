@@ -10,6 +10,21 @@ plantuml *.puml
 
 ## Zadanie 2
 
+Przypadek użycia: Przyznawanie stypendiów w systemie UsosWeb
+- Nr przypadku użycia: UC1
+- Aktor główny: Pracownik dziekanatu
+- Interesariusz: Pracownik dziekanatu, student
+
+Warunki początkowe:
+- Student uczelni złożył wniosek o stypendium
+- Wnioski o stypendia są przetwarzane w systemie USOSWeb
+- Pracownik dziekanatu ma dostęp do systemu UsosWeb
+- Pracownik dziekanatu ma uprawnienia do przyznawania stypendiów
+
+Warunki końcowe:
+- System wysyła studentowi informację zwrotną
+- System aktualizuje status wniosku
+
 ![zadanie](./zadanie2.png)
 
 ## Zadanie 3
