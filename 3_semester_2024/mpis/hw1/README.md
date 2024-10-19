@@ -14,15 +14,21 @@ Simulation output:
 
 - $f_1=\sqrt[3]{x}$
 
-![f1k=5](./f1=cuberoot_x_and_k=5.png)
-![f1k=50](./f1=cuberoot_x_and_k=50.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="./f1=cuberoot_x_and_k=5.png" alt="f1k=5" style="width: 48%;">
+  <img src="./f1=cuberoot_x_and_k=50.png" alt="f1k=50" style="width: 48%;">
+</div>
 
 - $f_2=\sin(x)$
 
-![f2k=5](./f2=sin_x_and_k=5.png)
-![f2k=50](./f2=sin_x_and_k=50.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="./f2=sin_x_and_k=5.png" alt="f2k=5" style="width: 48%;">
+  <img src="./f2=sin_x_and_k=50.png" alt="f2k=50" style="width: 48%;">
+</div>
 
 - $f_3=4x(1-x)^3$
 
-![f3k=5](./f3=4x1-x3_x_and_k=5.png)
-![f3k=50](./f3=4x1-x3_x_and_k=50.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="./f3=4x1-x3_x_and_k=5.png" alt="f3k=5" style="width: 48%;">
+  <img src="./f3=4x1-x3_x_and_k=50.png" alt="f3k=50" style="width: 48%;">
+</div>
