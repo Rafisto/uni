@@ -20,7 +20,8 @@ class Simulation(object):
         self.function = function
 
         if not isinstance(interval, tuple) or len(interval) != 2 or not all(isinstance(i, (int, float)) for i in interval):
-            raise TypeError("The range must be a tuple of two integers / floats")
+            raise TypeError(
+                "The range must be a tuple of two integers / floats")
         if interval[0] > interval[1]:
             raise ValueError(
                 "The range start must be lower than the range end")
@@ -125,6 +126,15 @@ class TestFunctions():
         """
         return 4*x*(1-x)**3
 
+    @staticmethod
+    def fpi(x: float) -> float:
+        """
+        A quarter of a circle with radius 1, times four will have area equal to pi
+        :param x: an float
+        :return: fpi(x) = sqrt(1-x^2)
+        """
+        return 4*np.sqrt(1-x**2)
+
 
 def run_simulation(test_function, function_name, interval, limsup, n_range, K, true_value, graph_title, graph_subtitle, filename_template):
     sim = Simulation(test_function, interval, limsup)
@@ -156,7 +166,7 @@ if __name__ == "__main__":
     # Sim 1
     Nmin, Nmax, Nstep = 50, 5000, 50
     true_value = 12  # wolframalpha: integrate from 0 to 8 x^(1/3) dx
-    limsup = 2 # limsup of f1(x) = x^(1/3) in [0, 8]
+    limsup = 2  # limsup of f1(x) = x^(1/3) in [0, 8]
 
     # Sim 1 K=5
     run_simulation(
@@ -188,7 +198,7 @@ if __name__ == "__main__":
 
     # Sim 2
     true_value = 2  # wolframalpha: integrate from 0 to pi sin(x) dx
-    limsup = 1 # limsup of f2(x) = sin(x) in [0, pi]
+    limsup = 1  # limsup of f2(x) = sin(x) in [0, pi]
 
     # Sim 2 K=5
     run_simulation(
@@ -220,7 +230,7 @@ if __name__ == "__main__":
 
     # Sim 3
     true_value = 0.2  # wolframalpha: integrate from 0 to 1 4x(1-x)^3 dx
-    limsup = 0.421875 # limsup of f3(x) = 4x(1-x)^3 in [0, 1]
+    limsup = 0.421875  # limsup of f3(x) = 4x(1-x)^3 in [0, 1]
 
     # Sim 3 K=5
     run_simulation(
@@ -248,4 +258,36 @@ if __name__ == "__main__":
         graph_title="Simulation of $f_3(x) = 4x(1-x)^3$",
         graph_subtitle="Nmin=50, Nmax=5000, Nstep=50, K=50",
         filename_template="f3=4x1-x3_x_and_k={K}.png"
+    )
+
+    # Sim pi
+    true_value = np.pi # wolframalpha: integrate from 0 to 1 4*sqrt(1-x^2) dx
+    limsup = 4  # limsup of fpi(x) = sqrt(1-x^2) in [0, 1]
+
+    # Sim pi K=5
+    run_simulation(
+        test_function=TestFunctions.fpi,
+        function_name="fpi(x) = 4*sqrt(1-x^2)",
+        interval=(0, 1),
+        limsup=limsup,
+        n_range=(Nmin, Nmax, Nstep),
+        K=5,
+        true_value=true_value,
+        graph_title="Simulation of $f_{\\pi}(x) = 4\\cdot\\sqrt{1-x^2}$",
+        graph_subtitle="Nmin=50, Nmax=5000, Nstep=50, K=5",
+        filename_template="fpi=sqrt1-x2_x_and_k={K}.png"
+    )
+
+    # Sim pi K=50
+    run_simulation(
+        test_function=TestFunctions.fpi,
+        function_name="fpi(x) = 4*sqrt(1-x^2)",
+        interval=(0, 1),
+        limsup=limsup,
+        n_range=(Nmin, Nmax, Nstep),
+        K=50,
+        true_value=true_value,
+        graph_title="Simulation of $f_{\\pi}(x) = 4\\cdot\\sqrt{1-x^2}$",
+        graph_subtitle="Nmin=50, Nmax=5000, Nstep=50, K=50",
+        filename_template="fpi=sqrt1-x2_x_and_k={K}.png"
     )
