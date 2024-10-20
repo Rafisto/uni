@@ -111,7 +111,7 @@ ORDER BY film.title DESC;
 9.  Wypisz imiona i nazwiska wszystkich aktorów, którzy wystąpili w filmach zawierających usunięte sceny.
 
 ```sql
-SELECT actor.first_name, actor.last_name, film.title
+SELECT actor.first_name, actor.last_name
 FROM film
 INNER JOIN film_actor ON film.film_id=film_actor.film_id
 INNER JOIN actor ON film_actor.actor_id=actor.actor_id
