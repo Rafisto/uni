@@ -99,11 +99,13 @@ GROUP BY rating;
 Wypożyczonych, ale niekoniecznie zwróconych
 
 ```sql
-SELECT film.title, rental.rental_date
+SELECT film.title
 FROM film
 INNER JOIN inventory ON film.film_id=inventory.film_id
-INNER JOIN rental ON inventory.inventory_id=rental.rental_id
-WHERE rental.rental_date > "2005-05-31" AND rental.rental_date < "2005-06-30"; 
+INNER JOIN rental ON inventory.inventory_id=rental.inventory_id
+WHERE rental.rental_date > "2005-05-31" AND rental.rental_date < "2005-06-30"
+GROUP BY film.title
+ORDER BY film.title DESC;
 ```
 
 9.  Wypisz imiona i nazwiska wszystkich aktorów, którzy wystąpili w filmach zawierających usunięte sceny.
