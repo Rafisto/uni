@@ -122,11 +122,12 @@ GROUP BY actor.actor_id;
 10.  Wypisz imiona oraz nazwiska wszystkich klientów, których wypożyczenie i odpowiadająca mu płatność były obsłużone przez 2 różnych pracowników.
 
 ```sql
-SELECT DISTINCT customer.first_name, customer.last_name
+SELECT customer.first_name, customer.last_name
 FROM customer
 INNER JOIN rental ON customer.customer_id = rental.customer_id
 INNER JOIN payment ON rental.rental_id = payment.rental_id
-WHERE rental.staff_id != payment.staff_id;
+WHERE rental.staff_id != payment.staff_id
+GROUP BY customer.customer_id;
 ```
 
 11. Wypisz imiona i nazwiska wszystkich klientów, którzy wypożyczyli więcej filmów niż klient o e-mailu `MARY.SMITH@sakilacustomer.org`.
