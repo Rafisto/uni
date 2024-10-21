@@ -1,9 +1,3 @@
-#ifndef BASE_KEYBOARD
-#define BASE_KEYBOARD
-
-unsigned char inb(unsigned short port);
-unsigned char read_char();
-
 unsigned char inb(unsigned short port) {
     unsigned char result;
     __asm__ volatile("inb %1, %0" : "=a"(result) : "Nd"(port));
@@ -17,6 +11,14 @@ unsigned char read_char() {
         scancode = inb(0x60); 
 
         if (scancode < 0x80) {
+            break;
+        }
+    }
+
+    while (1) {
+        unsigned char keyup = inb(0x60);
+
+        if (keyup == (scancode + 0x80)) {
             break;
         }
     }
@@ -58,8 +60,10 @@ unsigned char read_char() {
         case 0x09: return '8';
         case 0x0A: return '9';
         case 0x0B: return '0';
-        default: return '?';  
+        // return
+        case 0x1C: return '\n';
+        // whitespace
+        case 0x39: return ' ';
+        default: return '?';
     }
 }
-
-#endif

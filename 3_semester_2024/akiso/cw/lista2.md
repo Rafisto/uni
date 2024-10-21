@@ -240,22 +240,43 @@ Answer: $p = 7$ because for $p = -9$ the number is negative.
 
 $((34)_p + (24)_p) * (21)_p = (1480)_p$
 $(3*p+4 + 2*p+4) * (2*p+1) = 1480$
-$(5*p+8) * (2*p+1) = 1480$
-$10*p^2 + 5*p + 16*p + 8 = 1480$
-$10*p^2 + 21*p + 8 = 1480$
-$10*p^2 + 21*p - 1472 = 0$
-$p_1 = 8$
-$p_2 = -18$
+$10p^2 + 21p + 8 = p^3 + 4p^2 + 8p$
+$ p^3 - 6p^2 - 13p - 8 = 0$
+$p ~= 7.8$
 
-Answer: $p = 8$ because for $p = -18$ the number is negative.
+Baza $4$ oraz baza $8$ nie może być poniewaz mamy $8$ z zapisie $1480$, wobec tego nie ma takiej podstawy `p` która spełnia równianie.
 
 # Zadanie 6 - BCD
+
+- Łatwo się czyta - 4 bity rzutem oka można ogarnąć
+- Nieoptymalny (10 znaków, a 16 możliwych do zakodowania)
 
 127 - `0001 0010 0111`
 1616 - `0001 0110 0110 0110`
 2017 - `0010 0000 0001 0111`
 
+> (*) How to do arithmetic operations in BCD
+> (*) Construct: Binary to channel encoder.
+
 # Zadanie 7 - Unicode
+
+[UTF-8 Character List](https://www.fileformat.info/info/charset/UTF-8/list.htm)
+
+Encoding schema (any length):
+1. **0**xxxxxxx <- char (7)
+2. **110**xxxxx**10**xxxxxx (11)
+3. **1110** ... **10 ... **10**
+4. **11110** ... **10** ... **10** ... **10** ...
+
+Encoding a single character:
+
+`ę` = U+$0119_{16}$ = $0000 0001 0001 1001_2$ - interesting bits `100011001` - there are 9 of them
+Choose encoding schema - 2:
+
+`1100 0100 1001 1001` = `c499`
+**110**00100**10**011001$
+
+UTF-8 is backwards compatible with ASCII.
 
 `pięść` = `0x70 0x69 0xc4 0x99 0xc5 0x9b 0xc4 0x87`
 
@@ -277,6 +298,21 @@ Gray code construction is a recursive process. It ensures that successive number
 2 bit gray codes: $00, 01, 11, 10$
 3 bit gray codes: $000, 001, 011, 010, 110, 111, 101, 100$
 4 bit gray codes: $0000, 0001, 0011, 0010, 0110, 0111, 0101, 0100, 1100, 1101, 1111, 1110, 1010, 1011, 1001, 1000$
+
+XOR-ujemy z ją samą przesuniętą o jeden.
+
+- $(7)_10 = 0111$
+- $(8)_10 = 1000$
+
+```bash
+0 - 000
+1 - 001 -> 001 (001 xor 000 = 001)
+2 - 010 -> 011 (010 xor 001 = 011)
+3 - 011 -> 010
+4 - 100 -> 110
+```
+
+- Może być na kolokwium unicode + gray codes
 
 # Zadanie 9 - Fast inverse square root
 
