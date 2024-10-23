@@ -2,6 +2,43 @@
 ## Rafał Włodarczyk 
 ### 2024-10-06
 
+- [Lab 1](#lab-1)
+  - [Rafał Włodarczyk](#rafał-włodarczyk)
+    - [2024-10-06](#2024-10-06)
+- [Container Setup](#container-setup)
+- [Solves](#solves)
+
+# Container Setup
+
+MariaDB Setup:
+
+```yaml
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: db2024
+      MYSQL_USER: rafisto
+      MYSQL_PASSWORD: rafistopassword
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sources/sakila-schema.sql:/docker-entrypoint-initdb.d/001-init-schema.sql
+      - ./sources/sakila-data.sql:/docker-entrypoint-initdb.d/002-init-data.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - mariadb-network
+
+volumes:
+  db_data:
+
+networks:
+  mariadb-network:
+    driver: bridge
+```
+
 Download the sources via:
 
 - [index](https://dev.mysql.com/doc/index-other.html)
@@ -45,16 +82,28 @@ Zakładamy większe-równe dwie godziny.
 SELECT title 
 FROM film 
 WHERE length > 120;
+-- 457 rows
 ```
 
 3. Wypisz tytuły 4 najkrótszych filmów o kategorii wiekowej PG-13.
 
 ```sql
-SELECT title, length 
+SELECT title
 FROM film
 WHERE rating='PG-13' 
 ORDER BY length ASC 
 LIMIT 4;
+```
+
+```s
++---------------------+
+| title               |
++---------------------+
+| RIDGEMONT SUBMARINE |
+| KWAI HOMEWARD       |
+| LABYRINTH LEAGUE    |
+| HAWK CHILL          |
++---------------------+
 ```
 
 4. Wypisz tytuły filmów oraz ich język, dla wszystkich filmów, w których opisie występuje słowo Drama.
@@ -64,6 +113,7 @@ SELECT film.title, language.name
 FROM film 
 INNER JOIN language ON film.language_id=language.language_id 
 WHERE description LIKE '%Drama%';
+-- 106
 ```
 
 5. Wypisz tytuły filmów z kategorii Family, które w swoim opisie zawierają słowo Documentary.
@@ -74,6 +124,20 @@ FROM film
 INNER JOIN film_category ON film.film_id=film_category.film_id
 INNER JOIN category ON film_category.category_id=category.category_id
 WHERE category.name="Family" AND film.description LIKE "%Documentary%";
+-- 6
+```
+
+```s
++------------------+
+| title            |
++------------------+
+| AFRICAN EGG      |
+| BLANKET BEVERLY  |
+| BLUES INSTINCT   |
+| CHISUM BEHAVIOR  |
+| HOMICIDE PEACH   |
+| RANGE MOONWALKER |
++------------------+
 ```
 
 6. Wypisz tytuły filmów z kategorii Children, które nie należą do kategorii wiekowej PG-13.
@@ -84,6 +148,7 @@ FROM film
 INNER JOIN film_category ON film.film_id=film_category.film_id
 INNER JOIN category ON film_category.category_id=category.category_id
 WHERE category.name="Children" AND film.rating!="PG-13";
+-- 46
 ```
 
 7. Dla każdej kategorii wiekowej filmów (G, PG-13, PG, NC-17, R) wypisz liczbę filmów do niej należących.
@@ -92,6 +157,18 @@ WHERE category.name="Children" AND film.rating!="PG-13";
 SELECT rating, COUNT(film_id)
 FROM film
 GROUP BY rating;
+```
+
+```s
++--------+----------------+
+| rating | COUNT(film_id) |
++--------+----------------+
+| G      |            178 |
+| PG     |            194 |
+| PG-13  |            223 |
+| R      |            195 |
+| NC-17  |            210 |
++--------+----------------+
 ```
 
 8. Wypisz tytuły filmów wypożyczonych pomiędzy 31 maja a 30 czerwca 2005. Wyniki posortuj w odwrotnej kolejności alfabetycznej.
@@ -106,6 +183,7 @@ INNER JOIN rental ON inventory.inventory_id=rental.inventory_id
 WHERE rental.rental_date > "2005-05-31" AND rental.rental_date < "2005-06-30"
 GROUP BY film.title
 ORDER BY film.title DESC;
+-- 900
 ```
 
 9.  Wypisz imiona i nazwiska wszystkich aktorów, którzy wystąpili w filmach zawierających usunięte sceny.
@@ -117,6 +195,7 @@ INNER JOIN film_actor ON film.film_id=film_actor.film_id
 INNER JOIN actor ON film_actor.actor_id=actor.actor_id
 WHERE film.special_features LIKE '%Deleted Scenes%'
 GROUP BY actor.actor_id;
+-- 200
 ```
 
 10.  Wypisz imiona oraz nazwiska wszystkich klientów, których wypożyczenie i odpowiadająca mu płatność były obsłużone przez 2 różnych pracowników.
@@ -128,6 +207,7 @@ INNER JOIN rental ON customer.customer_id = rental.customer_id
 INNER JOIN payment ON rental.rental_id = payment.rental_id
 WHERE rental.staff_id != payment.staff_id
 GROUP BY customer.customer_id;
+-- 599
 ```
 
 11. Wypisz imiona i nazwiska wszystkich klientów, którzy wypożyczyli więcej filmów niż klient o e-mailu `MARY.SMITH@sakilacustomer.org`.
@@ -144,7 +224,9 @@ HAVING COUNT(rental.rental_id) > (
     WHERE customer.email = 'MARY.SMITH@sakilacustomer.org'
 )
 ORDER BY rental_count DESC;
+-- 77
 ```
+
 12. Wypisz wszystkie pary aktorów, którzy wystąpili razem w więcej niż jednym filmie. Każda para powinna występować co najwyżej raz. Jeśli występuje para (X, Y ), to nie wypisuj pary (Y, X)
 
 Zliczmy ile wspólnych, ale z joinem tak, że pierwszy index aktora jest zawsze mniejszy od drugiego (bez powtórzeń par XY YX) 
@@ -161,6 +243,7 @@ INNER JOIN actor act1 ON a1.actor_id = act1.actor_id
 INNER JOIN actor act2 ON a2.actor_id = act2.actor_id
 GROUP BY a1.actor_id, a2.actor_id
 HAVING common_films > 1;
+-- 3843
 ```
 
 13. Wypisz nazwiska aktorów, którzy nie wystąpili w żadnym filmie, którego tytuł zaczyna się na literę C.
@@ -179,9 +262,30 @@ INNER JOIN film_actor ON film.film_id=film_actor.film_id
 INNER JOIN actor ON film_actor.actor_id=actor.actor_id
 WHERE title LIKE "C%"
 );
+-- 13>
 ```
 
-14. Wypisz nazwiska aktorów, którzy zagrali w większej liczbie horrorów niż filmów akcji
+```s
++------------+-------------+
+| first_name | last_name   |
++------------+-------------+
+| JENNIFER   | DAVIS       |
+| WOODY      | HOFFMAN     |
+| SANDRA     | PECK        |
+| CARMEN     | HUNT        |
+| DAN        | HARRIS      |
+| CHRISTIAN  | NEESON      |
+| MICHELLE   | MCCONAUGHEY |
+| ADAM       | GRANT       |
+| GROUCHO    | SINATRA     |
+| JIM        | MOSTEL      |
+| HARRISON   | BALE        |
+| CHRIS      | DEPP        |
+| KENNETH    | HOFFMAN     |
++------------+-------------+
+```
+
+1.  Wypisz nazwiska aktorów, którzy zagrali w większej liczbie horrorów niż filmów akcji
 
 Zliczmy horrory i akcje następnie having.
 
@@ -197,6 +301,7 @@ INNER JOIN category ON film_category.category_id = category.category_id
 GROUP BY actor.actor_id
 HAVING SUM(CASE WHEN category.name = 'Horror' THEN 1 ELSE 0 END) > 
        SUM(CASE WHEN category.name = 'Action' THEN 1 ELSE 0 END);
+-- 61
 ```
 
 15. Wypisz wszystkich klientów, których średnia opłata za wypożyczony film jest niższa niż średnia opłata dokonana `30 lipca 2005`
@@ -210,7 +315,7 @@ FROM payment
 WHERE payment.payment_date > "2005-07-30" 
 AND payment.payment_date < "2005-07-31";
 
--- fianl query
+-- final query
 SELECT customer.first_name, customer.last_name, AVG(payment.amount) AS avg_payment
 FROM customer
 INNER JOIN payment ON customer.customer_id = payment.customer_id
@@ -222,6 +327,7 @@ HAVING AVG(payment.amount) < (
     AND payment.payment_date < '2005-07-31'
 )
 ORDER BY avg_payment DESC;
+-- 431
 ```
 
 16. Zmień język filmu `YOUNG LANGUAGE` na włoski.
@@ -281,6 +387,7 @@ SET language.films_no = (
     FROM film
     WHERE film.language_id = language.language_id
 );
+-- 7
 ```
 
 19. Usuń kolumnę `release_year` z tabeli film
