@@ -1,5 +1,25 @@
 # List 2
 
+- [List 2](#list-2)
+- [Exercises](#exercises)
+  - [Exercise 1 - /dev /proc /sys dd and hexdump](#exercise-1---dev-proc-sys-dd-and-hexdump)
+    - [/dev](#dev)
+    - [/proc](#proc)
+    - [/sys](#sys)
+    - [Read first sector of a disk using dd](#read-first-sector-of-a-disk-using-dd)
+    - [Hexdump -C of the first sector of a disk](#hexdump--c-of-the-first-sector-of-a-disk)
+    - [List memory, cpu and disk partitions with /proc](#list-memory-cpu-and-disk-partitions-with-proc)
+  - [Exercise 2 - ps](#exercise-2---ps)
+  - [`ps` filters](#ps-filters)
+  - [Show tty devices](#show-tty-devices)
+  - [Exercise 3 - `gcc`](#exercise-3---gcc)
+  - [Exercise 4 - `jobs`, `fg`, `bg`, `kill`](#exercise-4---jobs-fg-bg-kill)
+  - [Exercise 5 - `mkfifo`](#exercise-5---mkfifo)
+  - [Exercise 6 - ANSI Colors](#exercise-6---ansi-colors)
+  - [Exercise 7 - Lowercaser](#exercise-7---lowercaser)
+  - [Exercise 8 - `hello-os` ANSI Colors](#exercise-8---hello-os-ansi-colors)
+  - [Exercise 9 - Ptrace redirector](#exercise-9---ptrace-redirector)
+
 # Exercises
 
 ## Exercise 1 - /dev /proc /sys dd and hexdump
