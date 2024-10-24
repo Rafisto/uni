@@ -32,6 +32,7 @@ Table of Contents
 - [Computer Architecture and Operating Systems (polish)](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso) - Main notes directory
 - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/cw)
 - [Lab List 1](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/lab/lista1)
+- [Lab List 2](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/lab/lista2)
 
 ## 🤔 **Algebra** 🤔
 
