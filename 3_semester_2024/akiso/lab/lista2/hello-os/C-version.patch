@@ -1,0 +1,93 @@
+diff --git a/.gdbinit b/.gdbinit
+index 5746c44..02a6710 100644
+--- a/.gdbinit
++++ b/.gdbinit
+@@ -1,2 +1,2 @@
+ target remote localhost:1234
+-symbol-file kernel.bin
++symbol-file build/kernel.bin
+diff --git a/Makefile b/Makefile
+index bbf1f4d..efa7213 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,10 +1,17 @@
++CC = gcc
++LD = ld
++CFLAGS = -ffreestanding -nostdlib -nodefaultlibs -no-pie -fno-pic -static -fno-stack-protector -O2 -m32
++LDFLAGS = -m elf_i386
++
+ kernel := build/kernel.bin
+ iso := build/hello.iso
+ 
+ linker_script := linker.ld
+ grub_cfg := grub.cfg
+-assembly_source_files := $(wildcard *.asm)
+-assembly_object_files := $(patsubst %.asm, build/%.o, $(assembly_source_files))
++assembly_source_files := multiboot_header.asm
++assembly_object_files := build/multiboot_header.o
++c_source_files := $(wildcard *.c)
++c_object_files := $(patsubst %.c, build/%.o, $(c_source_files))
+ 
+ .PHONY: all clean iso kernel qemu qemu-gdb
+ 
+@@ -28,13 +35,21 @@ $(iso): $(kernel) $(grub_cfg)
+ 	mkdir -p build/isofiles/boot/grub
+ 	cp $(kernel) build/isofiles/boot/kernel.bin
+ 	cp $(grub_cfg) build/isofiles/boot/grub
+-	grub2-mkrescue -o $(iso) build/isofiles #2> /dev/null
++	grub-mkrescue -o $(iso) build/isofiles #2> /dev/null
++
++#$(kernel): $(assembly_object_files) $(linker_script)
++#	ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
++
++$(kernel): $(c_object_files) $(assembly_object_files) $(linker_script)
++	echo $(c_object_files)
++	ld $(LDFLAGS) -T $(linker_script) -o $(kernel) $(assembly_object_files) $(c_object_files)
+ 
+-$(kernel): $(assembly_object_files) $(linker_script)
+-	ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
++
++build/%.o: %.c
++	@mkdir -p $(shell dirname $@)
++	$(CC) $(CFLAGS) -c $< -o $@
+ 
+ # compile assembly files
+ build/%.o: %.asm
+ 	@mkdir -p $(shell dirname $@)
+-	nasm -felf64 $< -o $@
+-
++	nasm -felf32 $< -o $@
+diff --git a/boot.c b/boot.c
+new file mode 100644
+index 0000000..770a18f
+--- /dev/null
++++ b/boot.c
+@@ -0,0 +1,15 @@
++// boot.c
++
++void main() {
++    char *video_memory = (char*) 0xB8000;
++    char *message = "Hello, World!                          ";
++
++    unsigned char color = 0x02;
++
++    for (int i = 0; message[i] != '\0'; i++) {
++        video_memory[i * 2] = message[i];
++        video_memory[i * 2 + 1] = color;
++    }
++
++    while(1);
++}
+diff --git a/linker.ld b/linker.ld
+index 6fb8a82..e0f10a1 100644
+--- a/linker.ld
++++ b/linker.ld
+@@ -1,4 +1,4 @@
+-ENTRY(start)
++ENTRY(main)
+ 
+ SECTIONS {
+     . = 0x100000; /* Tells GRUB to load the kernel starting at the 1MiB mark */
+-- 
+2.47.0
+
