@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="list-2">List 2</h1>
+<ul>
+<li><a href="#list-2">List 2</a></li>
+<li><a href="#exercises">Exercises</a>
+<ul>
+<li><a href="#exercise-1---dev-proc-sys-dd-and-hexdump">Exercise 1 - /dev /proc /sys dd and hexdump</a>
+<ul>
+<li><a href="#dev">/dev</a></li>
+<li><a href="#proc">/proc</a></li>
+<li><a href="#sys">/sys</a></li>
+<li><a href="#read-first-sector-of-a-disk-using-dd">Read first sector of a disk using dd</a></li>
+<li><a href="#hexdump--c-of-the-first-sector-of-a-disk">Hexdump -C of the first sector of a disk</a></li>
+<li><a href="#list-memory-cpu-and-disk-partitions-with-proc">List memory, cpu and disk partitions with /proc</a></li>
+</ul>
+</li>
+<li><a href="#exercise-2---ps">Exercise 2 - ps</a></li>
+<li><a href="#ps-filters"><code>ps</code> filters</a></li>
+<li><a href="#show-tty-devices">Show tty devices</a></li>
+<li><a href="#exercise-3---gcc">Exercise 3 - <code>gcc</code></a></li>
+<li><a href="#exercise-4---jobs-fg-bg-kill">Exercise 4 - <code>jobs</code>, <code>fg</code>, <code>bg</code>, <code>kill</code></a></li>
+<li><a href="#exercise-5---mkfifo">Exercise 5 - <code>mkfifo</code></a></li>
+<li><a href="#exercise-6---ansi-colors">Exercise 6 - ANSI Colors</a></li>
+<li><a href="#exercise-7---lowercaser">Exercise 7 - Lowercaser</a></li>
+<li><a href="#exercise-8---hello-os-ansi-colors">Exercise 8 - <code>hello-os</code> ANSI Colors</a></li>
+<li><a href="#exercise-9---ptrace-redirector">Exercise 9 - Ptrace redirector</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="exercises">Exercises</h1>
+<h2 id="exercise-1---dev-proc-sys-dd-and-hexdump">Exercise 1 - /dev /proc /sys dd and hexdump</h2>
+<p>Task: (5pt) Wytłumacz jakie pliki zawierają katalogi /dev, /proc oraz /sys. Wykorzystując polecenie dd odczytaj pierwszy sektor z dysku głównego (uwaga na prawa dostępu) lub podpiętego pendrive'a i wyświetl przez hexdump -C. Z katalogu proc wyświetl informacje o pamięci, procesorze i partycjach.</p>
+<h3 id="dev">/dev</h3>
+<p>List all files in <code>/dev</code> directory:</p>
+<pre class="hljs"><code><div>ls /dev
+</div></code></pre>
+<p>Inside the <code>/dev</code> (device) directory there are file descriptors of devices. They can be accessed by the system and are used to communicate with the hardware:</p>
+<ul>
+<li><code>stdin, stdout, stderr</code> - standard input, output, error</li>
+<li><code>sda, nvme</code> - hard drives</li>
+<li><code>tty</code> - terminal devices</li>
+<li><code>vcs, vcsa, vcsu</code> - virtual console memory</li>
+<li><code>random, urandom</code> - random number generators</li>
+<li><code>/dev/net/tun</code> - TUN/TAP virtual network device</li>
+<li><code>null</code> - a device that discards all data written to it</li>
+<li><code>zero</code> - a device that provides null bytes when read</li>
+</ul>
+<h3 id="proc">/proc</h3>
+<p>Inside the <code>/proc</code> (process) directory there are files containing process (incl. system process) information:</p>
+<ul>
+<li><code>&lt;number&gt;</code> - process information by PID</li>
+<li><code>cpuinfo</code> - CPU information</li>
+<li><code>meminfo</code> - memory information</li>
+<li><code>uptime</code> - system uptime</li>
+</ul>
+<h3 id="sys">/sys</h3>
+<p>Inside the <code>/sys</code> (system) directory there are files containing system information:</p>
+<ul>
+<li><code>block</code> - block devices</li>
+<li><code>bus</code> - buses</li>
+<li><code>class</code> - device classes</li>
+<li><code>devices</code> - devices</li>
+<li><code>firmware</code> - firmware</li>
+<li><code>fs</code> - filesystems</li>
+<li><code>kernel</code> - kernel</li>
+<li><code>module</code> - kernel modules</li>
+<li><code>power</code> - power management</li>
+</ul>
+<h3 id="read-first-sector-of-a-disk-using-dd">Read first sector of a disk using dd</h3>
+<p>Log to stdout the first sector of a disk:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># mntd as /</span>
+dd <span class="hljs-keyword">if</span>=/dev/nvme0n1p4 of=/dev/stdout bs=512 count=1
+</div></code></pre>
+<p>Output (LUKS partition):</p>
+<pre class="hljs"><code><div>LUKS [...] @sha256 [...]
+1+0 records <span class="hljs-keyword">in</span>
+1+0 records out
+512 bytes copied, 4.4091e-05 s, 11.6 MB/s
+</div></code></pre>
+<h3 id="hexdump--c-of-the-first-sector-of-a-disk">Hexdump -C of the first sector of a disk</h3>
+<p>Log to stdout the first sector of a disk in hexadecimal format:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># mntd as /</span>
+dd <span class="hljs-keyword">if</span>=/dev/nvme0n1p4 bs=512 count=1 | hexdump -C
+
+<span class="hljs-comment"># OUTPUT (EFI partition mntd as /efi)</span>
+<span class="hljs-comment"># 1+0 records in</span>
+<span class="hljs-comment"># 1+0 records out</span>
+<span class="hljs-comment"># 512 bytes copied, 5.4618e-05 s, 9.4 MB/s</span>
+<span class="hljs-comment"># 00000000  eb 58 90 6d 6b 66 73 2e  66 61 74 00 02 08 20 00  |.X.mkfs.fat... .|</span>
+<span class="hljs-comment"># 00000010  02 00 00 00 00 f8 00 00  20 00 40 00 00 08 00 00  |........ .@.....|</span>
+<span class="hljs-comment"># 00000020  00 00 10 00 00 04 00 00  00 00 00 00 02 00 00 00  |................|</span>
+<span class="hljs-comment"># 00000030  01 00 06 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span>
+<span class="hljs-comment"># 00000040  80 01 29 7d 56 47 99 4e  4f 20 4e 41 4d 45 20 20  |..)}VG.NO NAME  |</span>
+<span class="hljs-comment"># 00000050  20 20 46 41 54 33 32 20  20 20 0e 1f be 77 7c ac  |  FAT32   ...w|.|</span>
+<span class="hljs-comment"># 00000060  22 c0 74 0b 56 b4 0e bb  07 00 cd 10 5e eb f0 32  |".t.V.......^..2|</span>
+<span class="hljs-comment"># 00000070  e4 cd 16 cd 19 eb fe 54  68 69 73 20 69 73 20 6e  |.......This is n|</span>
+<span class="hljs-comment"># 00000080  6f 74 20 61 20 62 6f 6f  74 61 62 6c 65 20 64 69  |ot a bootable di|</span>
+<span class="hljs-comment"># 00000090  73 6b 2e 20 20 50 6c 65  61 73 65 20 69 6e 73 65  |sk.  Please inse|</span>
+<span class="hljs-comment"># 000000a0  72 74 20 61 20 62 6f 6f  74 61 62 6c 65 20 66 6c  |rt a bootable fl|</span>
+<span class="hljs-comment"># 000000b0  6f 70 70 79 20 61 6e 64  0d 0a 70 72 65 73 73 20  |oppy and..press |</span>
+<span class="hljs-comment"># 000000c0  61 6e 79 20 6b 65 79 20  74 6f 20 74 72 79 20 61  |any key to try a|</span>
+<span class="hljs-comment"># 000000d0  67 61 69 6e 20 2e 2e 2e  20 0d 0a 00 00 00 00 00  |gain ... .......|</span>
+<span class="hljs-comment"># 000000e0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span>
+</div></code></pre>
+<h3 id="list-memory-cpu-and-disk-partitions-with-proc">List memory, cpu and disk partitions with /proc</h3>
+<pre class="hljs"><code><div>cat /proc/meminfo
+cat /proc/cpuinfo
+cat /proc/partitions
+</div></code></pre>
+<h2 id="exercise-2---ps">Exercise 2 - ps</h2>
+<p>Task: (5pt) Zapoznaj się z programem ps (man ps). Naucz się posługiwać tym programem, aby umieć sprawdzać co najmniej istnienie i parametry wybranych procesów (PID procesu i rodzica, stan procesu, priorytet, nice, ilość pamięci, zużycie czasu procesora). Uruchom też kilka terminali pokaż jakie urządzenie tty wykorzystują. Wykonując komendę ps axjf pokaż wszystkie procesy które podpięte są do tych terminali (kolumna TTY).</p>
+<p>Read <code>ps</code> man page:</p>
+<pre class="hljs"><code><div>man ps
+</div></code></pre>
+<h2 id="ps-filters"><code>ps</code> filters</h2>
+<ul>
+<li>Show all processes</li>
+</ul>
+<pre class="hljs"><code><div>ps -ef <span class="hljs-comment"># show all processes</span>
+</div></code></pre>
+<ul>
+<li>Show process information</li>
+</ul>
+<pre class="hljs"><code><div>
+ps -q 3496
+<span class="hljs-comment"># PID TTY          TIME CMD</span>
+<span class="hljs-comment"># 3496 ?        00:00:11 Discord</span>
+</div></code></pre>
+<ul>
+<li>Show parent PID</li>
+</ul>
+<pre class="hljs"><code><div>ps -q 3496 -o pid,ppid
+<span class="hljs-comment"># PID    PPID COMMAND</span>
+<span class="hljs-comment"># 3496    1458 Discord</span>
+</div></code></pre>
+<ul>
+<li>Show process state</li>
+</ul>
+<pre class="hljs"><code><div>ps -q 3496 -o comm,state
+<span class="hljs-comment"># PID    PPID COMMAND</span>
+<span class="hljs-comment"># 3496    1458 Discord</span>
+</div></code></pre>
+<ul>
+<li>Show process priority</li>
+</ul>
+<pre class="hljs"><code><div>ps -q 3496 -o comm,pri
+<span class="hljs-comment"># COMMAND         PRI</span>
+<span class="hljs-comment"># Discord          19</span>
+</div></code></pre>
+<ul>
+<li>Show process nice</li>
+</ul>
+<pre class="hljs"><code><div>ps -q 3496 -o comm,nice
+<span class="hljs-comment"># COMMAND          NI</span>
+<span class="hljs-comment"># Discord           0</span>
+</div></code></pre>
+<ul>
+<li>Show memory usage</li>
+</ul>
+<pre class="hljs"><code><div>ps -q 3496 -o comm,vsz,rss
+<span class="hljs-comment"># COMMAND            VSZ   RSS</span>
+<span class="hljs-comment"># Discord         1212462624 210596</span>
+</div></code></pre>
+<ul>
+<li>Show CPU time usage</li>
+</ul>
+<pre class="hljs"><code><div>ps -q 3496 -o comm,time
+<span class="hljs-comment"># COMMAND             TIMEs</span>
+<span class="hljs-comment"># Discord         00:00:12</span>
+</div></code></pre>
+<h2 id="show-tty-devices">Show tty devices</h2>
+<pre class="hljs"><code><div>ps axjf
+</div></code></pre>
+<p>I have created four gnome terminals each of them is attached to a different tty device:</p>
+<pre class="hljs"><code><div>[uni] ps
+PID TTY          TIME CMD
+7001 pts/0    00:00:02 zsh
+25902 pts/0    00:00:00 ps
+
+[uni] ps axjf
+6196    7001    7001    7001 pts/0      26143 Ss    1000   0:02  |   |   \_ /usr/bin/zsh -i
+7001   26143   26143    7001 pts/0      26143 R+    1000   0:00  |   |       \_ ps axjf
+</div></code></pre>
+<p>As we can see, the gnome terminal is attached to the <code>pts/0</code> device which is a pseudo-terminal and runs the <code>zsh</code> shell and my command.</p>
+<h2 id="exercise-3---gcc">Exercise 3 - <code>gcc</code></h2>
+<p>Task: (5pt) Zapoznaj się z kompilatorem języka C (polecenie gcc) oraz języka C++ (polecenie g++). Uruchom poniższy program w języku C.</p>
+<pre class="hljs"><code><div>$ cat &gt; test.c
+<span class="hljs-comment">#include &lt;stdio.h&gt;</span>
+
+int main(int argc, char *argv[])
+{
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Hello, World!\n"</span>);
+    <span class="hljs-built_in">return</span> 0;
+}
+^D
+$ gcc -Wall -pedantic test.c
+$ ./a.out
+</div></code></pre>
+<p>Wytłumacz każdy z powyższych kroków. Co oznaczają opcje -Wall oraz -pedantic? Zobacz man gcc.</p>
+<p>Steps exmplanation:</p>
+<ul>
+<li><code>cat &gt; test.c</code> - create a file <code>test.c</code> and write until SIGINT is sent</li>
+<li><code>gcc -Wall -pedantic test.c</code> - compile the <code>test.c</code>:
+<ul>
+<li><code>-Wall</code> - show baseline warnings</li>
+<li><code>-pedantic</code> - Issue all the warnings demanded by strict ISO C and ISO C++</li>
+</ul>
+</li>
+<li><code>./a.out</code> - run the compiled program (default output file name) - <code>./</code> for the files in the current directory</li>
+</ul>
+<p>See <code>man gcc</code> for more information.</p>
+<h2 id="exercise-4---jobs-fg-bg-kill">Exercise 4 - <code>jobs</code>, <code>fg</code>, <code>bg</code>, <code>kill</code></h2>
+<p>Task: (5pt) Pokaż na przykładzie (np. sleep 1000, sleep 1001, ...) zarządzanie zadaniami wykorzystując &lt;polecenie&gt; &amp; - uruchamianie w tle (background) oraz jobs, fg, bg, kill oraz ^Z. Uruchom kilka zadań w tle i pokaż jak można nimi zarządzać, czyli zatrzymywać, wznawiać oraz kończyć ich działanie. Pokaż jak uruchomione zadanie (nie w tle), można w czasie działania uruchomić w tle np. wykonując komendę sleep 100 (bez &amp;) w czasie działanie przełącz je do działania w tle.</p>
+<p>Run a few <code>sleep</code> commands in the background:</p>
+<pre class="hljs"><code><div>sleep 1000 &amp;
+sleep 1001 &amp;
+sleep 1002 &amp;
+</div></code></pre>
+<p>List all background jobs:</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">jobs</span>
+[1]    running    sleep 1000
+[2]  - running    sleep 1001
+[3]  + running    sleep 1002
+</div></code></pre>
+<p>The + sign indicates the current job, the - sign indicates the previous job.</p>
+<p>Stop the job with <code>^Z</code>:</p>
+<pre class="hljs"><code><div>^Z
+[1]+  Suspended                 sleep 1002
+</div></code></pre>
+<p>List all jobs:</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">jobs</span>
+[1]  + suspended    sleep 1000
+[2]  - suspended    sleep 1001
+[3]  + suspended    sleep 1002
+</div></code></pre>
+<p>Resume the job with <code>fg</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">fg</span> %1 <span class="hljs-comment"># zsh uses %i for the i-th job</span>
+</div></code></pre>
+<p>Resume the job in the background with <code>bg</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">bg</span> %1
+</div></code></pre>
+<p>Run a job then suspend it and run it in the background:</p>
+<pre class="hljs"><code><div>sleep 100 <span class="hljs-comment"># ^Z to suspend</span>
+<span class="hljs-built_in">jobs</span>
+<span class="hljs-built_in">bg</span> %1
+</div></code></pre>
+<h2 id="exercise-5---mkfifo">Exercise 5 - <code>mkfifo</code></h2>
+<p>Task: (5pt) Poleceniem mkfifo (man mkfifo) utwórz potok nazwany (ang. named FIFO). Wywołując polecenie cat w różnych terminalach spowoduj wpisywanie danych do potoku przez jeden(ne) proces(y), i odczytywanie i wyświetlanie ich przez inne. Zaobserwuj, kiedy polecenie cat czytające z potoku czeka na więcej danych, a kiedy kończy pracę. Analogicznie, kiedy czeka na więcej danych (z klawiatury) polecenie cat piszące do potoku?</p>
+<p>TBD</p>
+<h2 id="exercise-6---ansi-colors">Exercise 6 - ANSI Colors</h2>
+<p>Task: (8pt) Napisz program w języku C, który wykorzystując sekwencje Esc (ang. escape sequences) standardu ANSI wyświetli na ekranie napis &quot;Hello, World!&quot;, po kolei we wszystkich dostępnych przez terminal kolorach. Czy terminal może wyświetlić 256 lub więcej kolorów?</p>
+<p>ANSI Escape Codes at https://en.wikipedia.org/wiki/ANSI_escape_code</p>
+<p>Depends on the terminal emulator. Most of the terminal emulators support 256 colors, however for example GNOME Terminal can support ascii sequences for 16 million colors (see truecolor https://en.wikipedia.org/wiki/ANSI_escape_code#24-bit)</p>
+<pre class="hljs"><code><div>ESC[38;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB foreground color
+ESC[48;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB background color
+</div></code></pre>
+<p>The program is available in <a href="./ex6/ansi_colors.c">ansi_colors.c</a>.</p>
+<h2 id="exercise-7---lowercaser">Exercise 7 - Lowercaser</h2>
+<p>Task: (10pt) Napisz potok poleceń (może być w skrypcie), który zamienia wszystkie nazwy plików w danym katalogu (bez podkatalogów) na małe litery, czyli wszystkie duże litery występujące w nazwach plików zostaną zamienione na małe, a małe litery pozostają oczywiście dalej małe. Skrypt powinien działać poprawnie na takich nazwach plików jak &quot; ABC DEF&quot;, &quot;-AbC aBc&quot; i &quot;--ABC DEF&quot;. Przy oddawaniu, proszę podane nazwy plików zakładać w konsoli korzystając z polecenia touch.</p>
+<p>The script is available in <a href="./ex7/lowercaser.sh">lowercaser.sh</a>.</p>
+<p>Manual tests:</p>
+<pre class="hljs"><code><div>$ touch -- <span class="hljs-string">"ABC DEF"</span> <span class="hljs-string">"-AbC aBc"</span> <span class="hljs-string">"--ABC DEF"</span>
+$ ./lowercaser.sh
+Renaming -AbC aBc to -abc abc
+Renaming --ABC DEF to --abc def
+Renaming ABC DEF to abc def
+
+$ ls
+<span class="hljs-string">'-abc abc'</span>  <span class="hljs-string">'--abc def'</span>  <span class="hljs-string">'abc def'</span>
+$ rm -- <span class="hljs-string">"abc def"</span> <span class="hljs-string">"-abc abc"</span> <span class="hljs-string">"--abc def"</span>
+</div></code></pre>
+<h2 id="exercise-8---hello-os-ansi-colors">Exercise 8 - <code>hello-os</code> ANSI Colors</h2>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/mars-research/hello-os.git hello-os
+<span class="hljs-built_in">cd</span> hello-os
+<span class="hljs-comment"># http basic auth to fetch the patch</span>
+wget https://cs.pwr.edu.pl/zawada/so/download/C-version.patch --user ... --password ...
+patch -p1 -i C-version.patch
+<span class="hljs-comment"># magically modify boot.c to print "Hello, World!" in ANSI colors</span>
+</div></code></pre>
+<p>Did <a href="./ex8/">the magic to make it possible</a> (scroll is available with <code>k</code> and <code>j</code>). Run with:</p>
+<pre class="hljs"><code><div>make qemu
+</div></code></pre>
+<p>The patch is available in <a href="./ex8/C-version.patch">C-version.patch</a>.</p>
+<h2 id="exercise-9---ptrace-redirector">Exercise 9 - Ptrace redirector</h2>
+<p>Research led to this article <a href="http://omeranson.github.io/blog/2018/04/08/ptrace-magic-redirect-a-running-programme">ptrace magic: Redirect a running programme</a> -&gt; <a href="https://github.com/omeranson/redirect/blob/master/redirect_x86_64.c">redirect_x86_64</a></p>
+
+</body>
+</html>

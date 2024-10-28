@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="lista-1">Lista 1</h1>
+<ul>
+<li><a href="#lista-1">Lista 1</a></li>
+<li><a href="#s%C5%82ownik">Słownik</a>
+<ul>
+<li><a href="#zadanie-1">Zadanie 1</a>
+<ul>
+<li><a href="#virtualbox">VirtualBox</a></li>
+<li><a href="#qemu">QEMU</a></li>
+<li><a href="#libvirt"><code>libvirt</code></a></li>
+</ul>
+</li>
+<li><a href="#zadanie-2">Zadanie 2</a>
+<ul>
+<li><a href="#bios">BIOS</a></li>
+<li><a href="#uefi">UEFI</a></li>
+<li><a href="#gpt">GPT</a></li>
+<li><a href="#mbr">MBR</a></li>
+<li><a href="#filesystemw">Filesystemw</a></li>
+<li><a href="#freebsd">FreeBSD</a></li>
+<li><a href="#jails"><code>jails</code></a></li>
+<li><a href="#bhyve"><code>bhyve</code></a></li>
+</ul>
+</li>
+<li><a href="#terminy-od-ww">Terminy od WW</a>
+<ul>
+<li><a href="#smart">S.M.A.R.T.</a></li>
+<li><a href="#post">POST</a></li>
+<li><a href="#bootloader">Bootloader</a></li>
+<li><a href="#ncq">NCQ</a></li>
+<li><a href="#lba">LBA</a></li>
+<li><a href="#scsi">SCSI</a></li>
+<li><a href="#dma">DMA</a></li>
+<li><a href="#int--irq">INT / IRQ</a></li>
+<li><a href="#eprom--eeprom">EPROM / EEPROM</a></li>
+<li><a href="#flash">Flash</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#zadania">Zadania</a>
+<ul>
+<li><a href="#zadanie-1-2-3">Zadanie 1, 2, 3</a></li>
+<li><a href="#zadanie-4">Zadanie 4</a></li>
+<li><a href="#zadanie-5">Zadanie 5</a>
+<ul>
+<li><a href="#bhyve-1"><code>bhyve</code></a></li>
+<li><a href="#vm-bhyve"><code>vm-bhyve</code></a></li>
+</ul>
+</li>
+<li><a href="#lab-notes">Lab Notes</a>
+<ul>
+<li><a href="#concepts">Concepts</a></li>
+<li><a href="#how-to-clear-the-data---forensics">How to clear the data - forensics</a></li>
+<li><a href="#jails-1"><code>jails</code></a>
+<ul>
+<li><a href="#pve-vs-bhyve">PVE vs <code>bhyve</code></a></li>
+<li><a href="#docker-vs-jails">Docker vs <code>jails</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="s%C5%82ownik">Słownik</h1>
+<h2 id="zadanie-1">Zadanie 1</h2>
+<h3 id="virtualbox">VirtualBox</h3>
+<p>Made by Oracle. It is a virtualization software that allows you to run multiple operating systems on a single machine.</p>
+<h3 id="qemu">QEMU</h3>
+<p>It is a generic and open source machine emulator and virtualizer.</p>
+<h3 id="libvirt"><code>libvirt</code></h3>
+<p>It is a toolkit to manage virtualization platforms. It is a C toolkit that offers a high-level API for managing virtualization.</p>
+<h2 id="zadanie-2">Zadanie 2</h2>
+<h3 id="bios">BIOS</h3>
+<p><strong>Basic Input/Output System</strong> is a firmware that is used to perform hardware initialization during the booting process. It is the first software that runs when you start your computer.</p>
+<h3 id="uefi">UEFI</h3>
+<p><strong>Unified Extensible Firmware Interface</strong> is an interface between the operating system and the platform firmware. It is a replacement for the BIOS.</p>
+<h3 id="gpt">GPT</h3>
+<p><strong>GUID Partition Table</strong> is a standard for the layout of the partition table on a physical hard disk. It is a part of the UEFI standard.</p>
+<h3 id="mbr">MBR</h3>
+<p><strong>Master Boot Record</strong> is a special type of boot sector at the very beginning of partitioned computer mass storage devices like fixed disks or removable drives.</p>
+<p>Very difficult to repartiotion, replaced by GPT.</p>
+<h3 id="filesystemw">Filesystemw</h3>
+<p><strong>Filesystem</strong> is a method of organizing data on a storage device. It specifies how data is stored, retrieved, and updated.</p>
+<p>Linux mainly uses:</p>
+<ul>
+<li><strong>EXT4</strong> - Extended File System 4 - is the default file system for many Linux distributions.</li>
+<li><strong>ZFS</strong> - Zettabyte File System - is a combined file system and logical volume manager designed by Sun Microsystems. Nobody understands it, pure magic.</li>
+</ul>
+<h3 id="freebsd">FreeBSD</h3>
+<p>FreeBSD is an open-source operating system. It is a Unix-like operating system based on the Berkeley Software Distribution (BSD).</p>
+<p>MacOS is a close relative to FreeBSD.</p>
+<h3 id="jails"><code>jails</code></h3>
+<p>FreeBSD jails are a lightweight virtualization technology that allows you to run multiple instances of FreeBSD on a single host.</p>
+<h3 id="bhyve"><code>bhyve</code></h3>
+<p>It is a hypervisor that runs on FreeBSD. It is a type-2 hypervisor that runs on top of an existing operating system.</p>
+<h2 id="terminy-od-ww">Terminy od WW</h2>
+<h3 id="smart">S.M.A.R.T.</h3>
+<p><strong>Self-Monitoring, Analysis, and Reporting Technology</strong> is a monitoring system included in computer hard disk drives (HDDs), solid-state drives (SSDs), and eMMC drives.</p>
+<h3 id="post">POST</h3>
+<p><strong>Power-On Self-Test</strong> is a diagnostic testing sequence run by the computer's BIOS as the computer boots.</p>
+<h3 id="bootloader">Bootloader</h3>
+<p>A bootloader is a small program that loads the operating system into the computer's memory. It is the first program that runs when you start your computer.</p>
+<p>An example bootloader:</p>
+<details>
+<pre class="hljs"><code><div># r-os
+# rafal wlodarczyk 2024
+# qemu-system-x86_64 boot.bin
+# bootloader must be a 512 byte binary file that contains 0x55AA at the end (a magic number)
+
+# at the beginning the CPU runs in the 16 bit real mode
+.code16 # using 16-bit mode for x86
+.global _start # _start is the entry point of the bootloader
+
+_start:
+  mov $msg, %si # loads the address of msg into si
+  mov $0xe, %ah # loads 0xe (function number for int 0x10) into ah
+
+print_char:
+  lodsb # loads the byte from the address in si into al and increments si
+  cmp $0, %al # compares content in AL with zero
+  je done # if al == 0, go to &quot;done&quot;
+  int $0x10 # prints the character in al to screen
+  jmp print_char # repeat with next byte
+
+done:
+  hlt # stop execution
+
+msg: .ascii &quot;[nos] version 0.01\r\Not an operating system\r\n&quot;
+
+# .fill creates a block of memory filled with a specific value
+# .fill &lt;size&gt;, &lt;repetitions&gt;, &lt;value&gt;
+.fill 510-(.-_start), 1, 0 # fill the rest of the 510 bytes with zeros
+
+# add the magic number at the end of the bootloader
+.word 0xaa55 # little endian
+</div></code></pre>
+</details>
+<h3 id="ncq">NCQ</h3>
+<p><strong>Native Command Queuing</strong> is an extension of the Serial ATA protocol that allows hard disk drives to internally optimize the order in which read and write commands are executed</p>
+<h3 id="lba">LBA</h3>
+<p><strong>Logical Block Addressing</strong> is a common scheme used for specifying the location of blocks of data stored on computer storage devices, generally secondary storage systems such as hard disks.</p>
+<h3 id="scsi">SCSI</h3>
+<p><strong>Small Computer System Interface</strong> is a set of standards for physically connecting and transferring data between computers and peripheral devices.</p>
+<h3 id="dma">DMA</h3>
+<p><strong>Direct Memory Access</strong> is a feature of computer systems that allows certain hardware subsystems to access main system memory independently of the central processing unit (CPU).</p>
+<h3 id="int--irq">INT / IRQ</h3>
+<p><strong>Interrupt Request</strong> is a signal sent to the computer processor to stop the current process and perform a specific task.</p>
+<h3 id="eprom--eeprom">EPROM / EEPROM</h3>
+<p><strong>Erasable Programmable Read-Only Memory</strong> is a type of non-volatile memory that can be erased and reprogrammed.
+<strong>Electrically Erasable Programmable Read-Only Memory</strong> is a type of non-volatile memory that can be erased and reprogrammed using an electric field.</p>
+<h3 id="flash">Flash</h3>
+<p><strong>Flash memory</strong> is a type of non-volatile storage that can be electrically erased and reprogrammed. It is used in memory cards, USB flash drives, and solid-state drives.</p>
+<h1 id="zadania">Zadania</h1>
+<h2 id="zadanie-1-2-3">Zadanie 1, 2, 3</h2>
+<p>Installation backlog (UEFI)</p>
+<details>
+<ol>
+<li>Ensure <code>efivars</code> are loaded <code>ls /sys/firmware/efi/efivars</code></li>
+<li><code>fdisk</code> setup should return the following partition table:</li>
+</ol>
+<pre class="hljs"><code><div>Device            Start        End   Sectors   Size Type
+/dev/nvme0n1p1     2048    2099199   2097152     1G EFI System
+/dev/nvme0n1p2  2099200   10487807   8388608     4G Linux swap
+/dev/nvme0n1p3 10487808 1000214527 989726720 471.9G Linux filesystem
+</div></code></pre>
+<ol start="3">
+<li>Run <code>mkfs</code> on efi and filesystem</li>
+</ol>
+<pre class="hljs"><code><div>mkfs.fat -F 32 /dev/nvme0n1p1
+mkfs.ext4 /dev/nvme0n1p3
+</div></code></pre>
+<ol start="4">
+<li>Run <code>mkswap</code></li>
+</ol>
+<pre class="hljs"><code><div>mkswap /dev/nvme0n1p2
+swapon /dev/nvme0n1p2
+</div></code></pre>
+<ol start="5">
+<li>Mount <code>fs</code>:</li>
+</ol>
+<pre class="hljs"><code><div>mount /dev/nvme0n1p3 /mnt
+mount --mkdir /dev/nvme0n1p1 /mnt/boot
+</div></code></pre>
+<ol start="6">
+<li>Pacstrap the base packages</li>
+</ol>
+<pre class="hljs"><code><div>pacstrap -K /mnt base linux linux-firmware gnome gdm networkmanager
+</div></code></pre>
+<ol start="7">
+<li>Gen <code>fstab</code> at <code>rootfs</code></li>
+</ol>
+<pre class="hljs"><code><div>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</div></code></pre>
+<ol start="8">
+<li>Chroot <code>arch</code></li>
+</ol>
+<pre class="hljs"><code><div>arch-chroot /mnt
+</div></code></pre>
+<ol start="9">
+<li>Set clock</li>
+</ol>
+<pre class="hljs"><code><div>ls /usr/share/zoneinfo/
+ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+hwclock --systohc
+</div></code></pre>
+<ol start="10">
+<li>Set locale and hostname</li>
+</ol>
+<pre class="hljs"><code><div>vim /etc/locale.gen (uncomment en_US.UTF-8 UTF-8)
+locale-gen
+<span class="hljs-built_in">echo</span> LANG=en_US.UTF-8 &gt; /etc/locale.conf
+<span class="hljs-comment"># hostname</span>
+<span class="hljs-built_in">echo</span> vmkitty &gt; /etc/hostname
+</div></code></pre>
+<ol start="11">
+<li>Create user:</li>
+</ol>
+<pre class="hljs"><code><div>useradd -m -G wheel --shell /bin/bash yourusername
+passwd yourusername
+visudo
+<span class="hljs-comment"># ---&gt; Uncomment "%wheel ALL=(ALL) ALL"</span>
+</div></code></pre>
+<ol start="12">
+<li>Setup GRUB:</li>
+</ol>
+<pre class="hljs"><code><div>pacman -S grub efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+</div></code></pre>
+</details>
+<h2 id="zadanie-4">Zadanie 4</h2>
+<p>Setup backlog</p>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/mit-pdos/xv6-public.git xv6
+<span class="hljs-built_in">cd</span> xv6
+wget https://cs.pwr.edu.pl/zawada/so/xv6.patch
+patch -p1 -i xv6.patch
+
+make qemu-nox
+make qemu-nox-gdb
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"set auto-load safe-path /"</span> &gt;&gt;~/.gdbinit
+
+gdb ./kernel
+(gdb) <span class="hljs-built_in">break</span> *0x7c00 <span class="hljs-comment"># This breakpoint represents the boot section.</span>
+(gdb) c
+</div></code></pre>
+<h2 id="zadanie-5">Zadanie 5</h2>
+<p>Install FreeBSD.</p>
+<pre class="hljs"><code><div>root:root
+</div></code></pre>
+<p>Install xfce4 on FreeBSD</p>
+<pre class="hljs"><code><div>pkg install xorg xfce4 xfce4-goodies
+sysrc dbus_enable=<span class="hljs-string">"YES"</span>
+sysrc hald_enable=<span class="hljs-string">"YES"</span>
+sysrc slim_enable=<span class="hljs-string">"YES"</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"exec /usr/local/bin/startxfce4"</span> &gt; ~/.xinitrc
+startx
+</div></code></pre>
+<h3 id="bhyve"><code>bhyve</code></h3>
+<p>Bhyve - is a hypervisor that runs on FreeBSD. It is a type-2 hypervisor that runs on top of an existing operating system.</p>
+<p>I run bhyve on a FreeBSD VM machine, therefore a few steps are required to set it up:</p>
+<ul>
+<li><code>VBoxManage modifyvm &quot;freebsd&quot; --nested-hw-virt on</code> - enable nested virtualization</li>
+<li>Turn on <code>VT-x</code>, enable nested paging and <code>PAE</code>.</li>
+</ul>
+<p>This looks scary:</p>
+<pre class="hljs"><code><div>bhyve -c 1 -m 256M \
+-s 0:0,hostbridge \
+-s 3:0,ahci-cd,/path/to/freebsd.iso \
+-s 4:0,virtio-blk,freebsd.img \
+-s 5:0,virtio-net,tap0 \
+freebsd
+</div></code></pre>
+<h3 id="vm-bhyve"><code>vm-bhyve</code></h3>
+<p>Install <code>vm-bhyve</code> - a tool that allows you to run FreeBSD virtual machines on FreeBSD.</p>
+<p>Source: https://github.com/churchers/vm-bhyve</p>
+<p>This doesn't look scary:</p>
+<pre class="hljs"><code><div>pkg install vm-bhyve
+</div></code></pre>
+<pre class="hljs"><code><div>zfs create pool/vm
+sysrc vm_enable=<span class="hljs-string">"YES"</span>
+sysrc vm_dir=<span class="hljs-string">"zfs:pool/vm"</span>
+</div></code></pre>
+<pre class="hljs"><code><div>vm init
+vm switch create public
+vm switch add public em0
+</div></code></pre>
+<pre class="hljs"><code><div>vm iso https://download.freebsd.org/ftp/releases/ISO-IMAGES/14.1/FreeBSD-14.1-RELEASE-amd64-bootonly.iso
+vm create myguest
+vm install [-f] myguest FreeBSD-14.1-RELEASE-amd64-bootonly.iso
+vm console myguest
+</div></code></pre>
+<p>Exit vm via Shift+` and then Ctrl+D [EOT]</p>
+<h2 id="lab-notes">Lab Notes</h2>
+<h3 id="concepts">Concepts</h3>
+<ul>
+<li>Mikrokernel - Symbian as an example (old Nokia phones)</li>
+<li>SOHO - Small Office Home Office</li>
+<li>Fragmentation / Defragmentation - rewrite the data to make it contiguous</li>
+</ul>
+<h3 id="how-to-clear-the-data---forensics">How to clear the data - forensics</h3>
+<p>Logic Level rewriting - the 1/0 interpretation of the data depends on the voltage level,
+which changes over time and can probably be rewritten.</p>
+<blockquote>
+<p>użyjmy pliku wymiany</p>
+</blockquote>
+<h3 id="jails"><code>jails</code></h3>
+<p>Quickstart - https://docs.freebsd.org/en/books/handbook/jails/
+Works just like docker but the container fs is not created via a Dockerfile (jail is a dir)</p>
+<p>Create zfs datasets:</p>
+<pre class="hljs"><code><div>zfs create -o mountpoint=/jails zroot/jails
+zfs create zroot/jails/media
+zfs create zroot/jails/templates
+zfs create zroot/jails/containers
+</div></code></pre>
+<p>Create jail conf in <code>/etc/jail.conf.d/jail.conf</code>:</p>
+<pre class="hljs"><code><div>jail {
+  exec.start = "/bin/sh /etc/rc"<span class="hljs-comment">;</span>
+  exec.stop = "/bin/sh /etc/rc.shutdown"<span class="hljs-comment">;</span>
+  exec.consolelog = "/var/log/jail_console_${name}.log"<span class="hljs-comment">;</span>
+
+  allow.raw_sockets<span class="hljs-comment">;</span>
+  exec.clean<span class="hljs-comment">;</span>
+  mount.devfs<span class="hljs-comment">;</span>
+
+  host.hostname = "${name}"<span class="hljs-comment">;</span>
+  path = "/jails/containers/${name}"<span class="hljs-comment">;</span>
+
+}
+</div></code></pre>
+<p>Copy jailfs:</p>
+<pre class="hljs"><code><div>fetch https://download.freebsd.org/ftp/releases/amd64/amd64/14.0-RELEASE/base.txz -o /jails/media/14.0-RELEASE-base.txz
+mkdir -p /jails/containers/jail
+tar -xf /jails/media/14.0-RELEASE-base.txz -C /usr/<span class="hljs-built_in">local</span>/jails/containers/jail --unlink
+</div></code></pre>
+<p>Start jail:</p>
+<pre class="hljs"><code><div>service jail start jail
+jexec -u root jail <span class="hljs-comment"># will exec.start (/bin/sh) in the jail</span>
+<span class="hljs-comment"># to stop the jail</span>
+service jail stop jail
+</div></code></pre>
+<h4 id="pve-vs-bhyve">PVE vs <code>bhyve</code></h4>
+<table>
+<thead>
+<tr>
+<th>PVE</th>
+<th>bhyve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>debian-based hypervisor</td>
+<td>FreeBSD-based hypervisor</td>
+</tr>
+<tr>
+<td>Type-1 hypervisor (bare metal)</td>
+<td>Type-2 hypervisor (runs on OS)</td>
+</tr>
+<tr>
+<td>filesystem: uses ext4, (xen can use zfs)</td>
+<td>storage: uses ZFS (instant snapshots)</td>
+</tr>
+<tr>
+<td>uses KVM</td>
+<td>uses vm (FreeBSD)</td>
+</tr>
+<tr>
+<td>has a web-based management interface</td>
+<td>uses command-line interface</td>
+</tr>
+<tr>
+<td>supports clustering</td>
+<td>supports basic virtualization</td>
+</tr>
+<tr>
+<td>has integrated backup solutions</td>
+<td>relies on external tools for backup</td>
+</tr>
+<tr>
+<td>provides GUI-based resource monitoring</td>
+<td>provides text-based resource monitoring</td>
+</tr>
+<tr>
+<td>supports all VMs</td>
+<td>supports primarily FreeBSD and Linux VMs</td>
+</tr>
+<tr>
+<td>has commercial support available</td>
+<td>has community support</td>
+</tr>
+</tbody>
+</table>
+<h4 id="docker-vs-jails">Docker vs <code>jails</code></h4>
+<table>
+<thead>
+<tr>
+<th>Docker</th>
+<th>jails</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a containerization platform</td>
+<td>lightweight virtualization technology</td>
+</tr>
+<tr>
+<td>runs on: linux</td>
+<td>runs on: FreeBSD</td>
+</tr>
+<tr>
+<td>dockerd (podman is deamonless though)</td>
+<td>service</td>
+</tr>
+<tr>
+<td>declarative manifest: <code>Dockefile</code></td>
+<td>declarative manifest: none</td>
+</tr>
+<tr>
+<td>runtime manifest: dockerd api</td>
+<td>runtime: service cli</td>
+</tr>
+<tr>
+<td>Container</td>
+<td>jail</td>
+</tr>
+<tr>
+<td>Container Image</td>
+<td>Jail Filesystem</td>
+</tr>
+<tr>
+<td>Volume - Mountpoint (can be virtual)</td>
+<td>ZFS dataset</td>
+</tr>
+<tr>
+<td>Virtual network interfaces (br, host)</td>
+<td>vnet interface</td>
+</tr>
+<tr>
+<td>Swarm / Kubernetes</td>
+<td>Farm</td>
+</tr>
+<tr>
+<td>Container Registry (OCI)</td>
+<td>FreeBSD package repository (http host)</td>
+</tr>
+<tr>
+<td>CLI contains a recipe build system</td>
+<td>uses a shell script for the build system</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
