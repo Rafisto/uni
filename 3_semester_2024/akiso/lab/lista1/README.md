@@ -36,6 +36,8 @@
     - [Concepts](#concepts)
     - [How to clear the data - forensics](#how-to-clear-the-data---forensics)
     - [`jails`](#jails-1)
+      - [PVE vs `bhyve`](#pve-vs-bhyve)
+      - [Docker vs `jails`](#docker-vs-jails)
 
 # Słownik
 
@@ -78,6 +80,7 @@ Very difficult to repartiotion, replaced by GPT.
 **Filesystem** is a method of organizing data on a storage device. It specifies how data is stored, retrieved, and updated.
 
 Linux mainly uses:
+
 - **EXT4** - Extended File System 4 - is the default file system for many Linux distributions.
 - **ZFS** - Zettabyte File System - is a combined file system and logical volume manager designed by Sun Microsystems. Nobody understands it, pure magic.
 
@@ -123,19 +126,19 @@ An example bootloader:
 .code16 # using 16-bit mode for x86
 .global _start # _start is the entry point of the bootloader
 
-_start: 
-  mov $msg, %si # loads the address of msg into si 
-  mov $0xe, %ah # loads 0xe (function number for int 0x10) into ah 
+_start:
+  mov $msg, %si # loads the address of msg into si
+  mov $0xe, %ah # loads 0xe (function number for int 0x10) into ah
 
-print_char: 
-  lodsb # loads the byte from the address in si into al and increments si 
-  cmp $0, %al # compares content in AL with zero 
-  je done # if al == 0, go to "done" 
-  int $0x10 # prints the character in al to screen 
-  jmp print_char # repeat with next byte 
+print_char:
+  lodsb # loads the byte from the address in si into al and increments si
+  cmp $0, %al # compares content in AL with zero
+  je done # if al == 0, go to "done"
+  int $0x10 # prints the character in al to screen
+  jmp print_char # repeat with next byte
 
-done: 
-  hlt # stop execution 
+done:
+  hlt # stop execution
 
 msg: .ascii "[nos] version 0.01\r\Not an operating system\r\n"
 
@@ -316,6 +319,7 @@ startx
 Bhyve - is a hypervisor that runs on FreeBSD. It is a type-2 hypervisor that runs on top of an existing operating system.
 
 I run bhyve on a FreeBSD VM machine, therefore a few steps are required to set it up:
+
 - `VBoxManage modifyvm "freebsd" --nested-hw-virt on` - enable nested virtualization
 - Turn on `VT-x`, enable nested paging and `PAE`.
 
@@ -373,7 +377,7 @@ Exit vm via Shift+` and then Ctrl+D [EOT]
 
 ### How to clear the data - forensics
 
-Logic Level rewriting - the 1/0 interpretation of the data depends on the voltage level, 
+Logic Level rewriting - the 1/0 interpretation of the data depends on the voltage level,
 which changes over time and can probably be rewritten.
 
 > użyjmy pliku wymiany
@@ -395,17 +399,17 @@ zfs create zroot/jails/containers
 Create jail conf in `/etc/jail.conf.d/jail.conf`:
 
 ```ini
-jail { 
-  exec.start = "/bin/sh /etc/rc"; 
-  exec.stop = "/bin/sh /etc/rc.shutdown"; 
-  exec.consolelog = "/var/log/jail_console_${name}.log"; 
+jail {
+  exec.start = "/bin/sh /etc/rc";
+  exec.stop = "/bin/sh /etc/rc.shutdown";
+  exec.consolelog = "/var/log/jail_console_${name}.log";
 
-  allow.raw_sockets; 
-  exec.clean; 
-  mount.devfs; 
+  allow.raw_sockets;
+  exec.clean;
+  mount.devfs;
 
-  host.hostname = "${name}"; 
-  path = "/jails/containers/${name}"; 
+  host.hostname = "${name}";
+  path = "/jails/containers/${name}";
 
 }
 ```
@@ -426,3 +430,35 @@ jexec -u root jail # will exec.start (/bin/sh) in the jail
 # to stop the jail
 service jail stop jail
 ```
+
+#### PVE vs `bhyve`
+
+| PVE                                      | bhyve                                    |
+| ---------------------------------------- | ---------------------------------------- |
+| debian-based hypervisor                  | FreeBSD-based hypervisor                 |
+| Type-1 hypervisor (bare metal)           | Type-2 hypervisor (runs on OS)           |
+| filesystem: uses ext4, (xen can use zfs) | storage: uses ZFS (instant snapshots)    |
+| uses KVM                                 | uses vm (FreeBSD)                        |
+| has a web-based management interface     | uses command-line interface              |
+| supports clustering                      | supports basic virtualization            |
+| has integrated backup solutions          | relies on external tools for backup      |
+| provides GUI-based resource monitoring   | provides text-based resource monitoring  |
+| supports all VMs                         | supports primarily FreeBSD and Linux VMs |
+| has commercial support available         | has community support                    |
+
+#### Docker vs `jails`
+
+| Docker                                | jails                                    |
+| ------------------------------------- | ---------------------------------------- |
+| a containerization platform           | lightweight virtualization technology    |
+| runs on: linux                        | runs on: FreeBSD                         |
+| dockerd (podman is deamonless though) | service                                  |
+| declarative manifest: `Dockefile`     | declarative manifest: none               |
+| runtime manifest: dockerd api         | runtime: service cli                     |
+| Container                             | jail                                     |
+| Container Image                       | Jail Filesystem                          |
+| Volume - Mountpoint (can be virtual)  | ZFS dataset                              |
+| Virtual network interfaces (br, host) | vnet interface                           |
+| Swarm / Kubernetes                    | Farm                                     |
+| Container Registry (OCI)              | FreeBSD package repository (http host)   |
+| CLI contains a recipe build system    | uses a shell script for the build system |
