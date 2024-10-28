@@ -35,6 +35,7 @@
   - [Lab Notes](#lab-notes)
     - [Concepts](#concepts)
     - [How to clear the data - forensics](#how-to-clear-the-data---forensics)
+    - [`jails`](#jails-1)
 
 # Słownik
 
@@ -294,6 +295,10 @@ gdb ./kernel
 
 Install FreeBSD.
 
+```sh
+root:root
+```
+
 Install xfce4 on FreeBSD
 
 ```sh
@@ -372,3 +377,52 @@ Logic Level rewriting - the 1/0 interpretation of the data depends on the voltag
 which changes over time and can probably be rewritten.
 
 > użyjmy pliku wymiany
+
+### `jails`
+
+Quickstart - https://docs.freebsd.org/en/books/handbook/jails/
+Works just like docker but the container fs is not created via a Dockerfile (jail is a dir)
+
+Create zfs datasets:
+
+```bash
+zfs create -o mountpoint=/jails zroot/jails
+zfs create zroot/jails/media
+zfs create zroot/jails/templates
+zfs create zroot/jails/containers
+```
+
+Create jail conf in `/etc/jail.conf.d/jail.conf`:
+
+```ini
+jail { 
+  exec.start = "/bin/sh /etc/rc"; 
+  exec.stop = "/bin/sh /etc/rc.shutdown"; 
+  exec.consolelog = "/var/log/jail_console_${name}.log"; 
+
+  allow.raw_sockets; 
+  exec.clean; 
+  mount.devfs; 
+
+  host.hostname = "${name}"; 
+  path = "/jails/containers/${name}"; 
+
+}
+```
+
+Copy jailfs:
+
+```bash
+fetch https://download.freebsd.org/ftp/releases/amd64/amd64/14.0-RELEASE/base.txz -o /jails/media/14.0-RELEASE-base.txz
+mkdir -p /jails/containers/jail
+tar -xf /jails/media/14.0-RELEASE-base.txz -C /usr/local/jails/containers/jail --unlink
+```
+
+Start jail:
+
+```bash
+service jail start jail
+jexec -u root jail # will exec.start (/bin/sh) in the jail
+# to stop the jail
+service jail stop jail
+```

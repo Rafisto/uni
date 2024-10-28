@@ -106,6 +106,24 @@ LIMIT 4;
 +---------------------+
 ```
 
+```sql
+SELECT film.title, film.length
+FROM film
+JOIN (
+  SELECT DISTINCT length
+  FROM film
+  WHERE rating = 'PG-13'
+  ORDER BY length ASC
+  LIMIT 4
+) AS length_table
+WHERE rating = 'PG-13' AND film.length = length_table.length
+ORDER BY film.length ASC;
+```
+
+```s
+ON film.length = length_table.length;
+```
+
 4. Wypisz tytuły filmów oraz ich język, dla wszystkich filmów, w których opisie występuje słowo Drama.
 
 ```sql
@@ -198,6 +216,17 @@ GROUP BY actor.actor_id;
 -- 200
 ```
 
+Z użyciem `FIND_IN_SET`:
+
+```sql
+SELECT actor.first_name, actor.last_name
+FROM film
+INNER JOIN film_actor ON film.film_id=film_actor.film_id
+INNER JOIN actor ON film_actor.actor_id=actor.actor_id
+WHERE FIND_IN_SET('Deleted Scenes',film.special_features)
+GROUP BY actor.actor_id;
+```
+
 10.  Wypisz imiona oraz nazwiska wszystkich klientów, których wypożyczenie i odpowiadająca mu płatność były obsłużone przez 2 różnych pracowników.
 
 ```sql
@@ -262,7 +291,7 @@ INNER JOIN film_actor ON film.film_id=film_actor.film_id
 INNER JOIN actor ON film_actor.actor_id=actor.actor_id
 WHERE title LIKE "C%"
 );
--- 13>
+-- 13
 ```
 
 ```s
@@ -285,19 +314,17 @@ WHERE title LIKE "C%"
 +------------+-------------+
 ```
 
-1.  Wypisz nazwiska aktorów, którzy zagrali w większej liczbie horrorów niż filmów akcji
+14.  Wypisz nazwiska aktorów, którzy zagrali w większej liczbie horrorów niż filmów akcji
 
 Zliczmy horrory i akcje następnie having.
 
 ```sql
-SELECT actor.first_name, actor.last_name, 
-       SUM(CASE WHEN category.name = 'Horror' THEN 1 ELSE 0 END) AS horror_films,
-       SUM(CASE WHEN category.name = 'Action' THEN 1 ELSE 0 END) AS action_films
+SELECT actor.first_name, actor.last_name
 FROM actor
 INNER JOIN film_actor ON actor.actor_id = film_actor.actor_id
-INNER JOIN film ON film.film_id = film_actor.film_id
-INNER JOIN film_category ON film.film_id = film_category.film_id
+INNER JOIN film_category ON film_actor.film_id = film_category.film_id
 INNER JOIN category ON film_category.category_id = category.category_id
+WHERE category.name IN ('Horror', 'Action')
 GROUP BY actor.actor_id
 HAVING SUM(CASE WHEN category.name = 'Horror' THEN 1 ELSE 0 END) > 
        SUM(CASE WHEN category.name = 'Action' THEN 1 ELSE 0 END);
