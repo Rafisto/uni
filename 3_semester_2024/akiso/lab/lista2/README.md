@@ -24,7 +24,7 @@
 
 ## Exercise 1 - /dev /proc /sys dd and hexdump
 
-Task: (5pt) Wytłumacz jakie pliki zawierają katalogi /dev, /proc oraz /sys. Wykorzystując polecenie dd odczytaj pierwszy sektor z dysku głównego (uwaga na prawa dostępu) lub podpiętego pendrive'a i wyświetl przez hexdump -C. Z katalogu proc wyświetl informacje o pamięci, procesorze i partycjach. 
+Task: (5pt) Wytłumacz jakie pliki zawierają katalogi /dev, /proc oraz /sys. Wykorzystując polecenie dd odczytaj pierwszy sektor z dysku głównego (uwaga na prawa dostępu) lub podpiętego pendrive'a i wyświetl przez hexdump -C. Z katalogu proc wyświetl informacje o pamięci, procesorze i partycjach.
 
 ### /dev
 
@@ -35,6 +35,7 @@ ls /dev
 ```
 
 Inside the `/dev` (device) directory there are file descriptors of devices. They can be accessed by the system and are used to communicate with the hardware:
+
 - `stdin, stdout, stderr` - standard input, output, error
 - `sda, nvme` - hard drives
 - `tty` - terminal devices
@@ -47,6 +48,7 @@ Inside the `/dev` (device) directory there are file descriptors of devices. They
 ### /proc
 
 Inside the `/proc` (process) directory there are files containing process (incl. system process) information:
+
 - `<number>` - process information by PID
 - `cpuinfo` - CPU information
 - `meminfo` - memory information
@@ -55,6 +57,7 @@ Inside the `/proc` (process) directory there are files containing process (incl.
 ### /sys
 
 Inside the `/sys` (system) directory there are files containing system information:
+
 - `block` - block devices
 - `bus` - buses
 - `class` - device classes
@@ -112,7 +115,6 @@ dd if=/dev/nvme0n1p4 bs=512 count=1 | hexdump -C
 # 000000e0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 ```
 
-
 ### List memory, cpu and disk partitions with /proc
 
 ```bash
@@ -123,7 +125,7 @@ cat /proc/partitions
 
 ## Exercise 2 - ps
 
-Task: (5pt) Zapoznaj się z programem ps (man ps). Naucz się posługiwać tym programem, aby umieć sprawdzać co najmniej istnienie i parametry wybranych procesów (PID procesu i rodzica, stan procesu, priorytet, nice, ilość pamięci, zużycie czasu procesora). Uruchom też kilka terminali pokaż jakie urządzenie tty wykorzystują. Wykonując komendę ps axjf pokaż wszystkie procesy które podpięte są do tych terminali (kolumna TTY). 
+Task: (5pt) Zapoznaj się z programem ps (man ps). Naucz się posługiwać tym programem, aby umieć sprawdzać co najmniej istnienie i parametry wybranych procesów (PID procesu i rodzica, stan procesu, priorytet, nice, ilość pamięci, zużycie czasu procesora). Uruchom też kilka terminali pokaż jakie urządzenie tty wykorzystują. Wykonując komendę ps axjf pokaż wszystkie procesy które podpięte są do tych terminali (kolumna TTY).
 
 Read `ps` man page:
 
@@ -219,7 +221,7 @@ As we can see, the gnome terminal is attached to the `pts/0` device which is a p
 
 ## Exercise 3 - `gcc`
 
-Task: (5pt) Zapoznaj się z kompilatorem języka C (polecenie gcc) oraz języka C++ (polecenie g++). Uruchom poniższy program w języku C. 
+Task: (5pt) Zapoznaj się z kompilatorem języka C (polecenie gcc) oraz języka C++ (polecenie g++). Uruchom poniższy program w języku C.
 
 ```bash
 $ cat > test.c
@@ -235,20 +237,21 @@ $ gcc -Wall -pedantic test.c
 $ ./a.out
 ```
 
-Wytłumacz każdy z powyższych kroków. Co oznaczają opcje -Wall oraz -pedantic? Zobacz man gcc. 
+Wytłumacz każdy z powyższych kroków. Co oznaczają opcje -Wall oraz -pedantic? Zobacz man gcc.
 
 Steps exmplanation:
+
 - `cat > test.c` - create a file `test.c` and write until SIGINT is sent
 - `gcc -Wall -pedantic test.c` - compile the `test.c`:
-    - `-Wall` - show baseline warnings 
-    - `-pedantic` - Issue all the warnings demanded by strict ISO C and ISO C++
+  - `-Wall` - show baseline warnings
+  - `-pedantic` - Issue all the warnings demanded by strict ISO C and ISO C++
 - `./a.out` - run the compiled program (default output file name) - `./` for the files in the current directory
 
 See `man gcc` for more information.
 
 ## Exercise 4 - `jobs`, `fg`, `bg`, `kill`
 
-Task: (5pt) Pokaż na przykładzie (np. sleep 1000, sleep 1001, ...) zarządzanie zadaniami wykorzystując \<polecenie\> & - uruchamianie w tle (background) oraz jobs, fg, bg, kill oraz ^Z. Uruchom kilka zadań w tle i pokaż jak można nimi zarządzać, czyli zatrzymywać, wznawiać oraz kończyć ich działanie. Pokaż jak uruchomione zadanie (nie w tle), można w czasie działania uruchomić w tle np. wykonując komendę sleep 100 (bez &) w czasie działanie przełącz je do działania w tle. 
+Task: (5pt) Pokaż na przykładzie (np. sleep 1000, sleep 1001, ...) zarządzanie zadaniami wykorzystując \<polecenie\> & - uruchamianie w tle (background) oraz jobs, fg, bg, kill oraz ^Z. Uruchom kilka zadań w tle i pokaż jak można nimi zarządzać, czyli zatrzymywać, wznawiać oraz kończyć ich działanie. Pokaż jak uruchomione zadanie (nie w tle), można w czasie działania uruchomić w tle np. wykonując komendę sleep 100 (bez &) w czasie działanie przełącz je do działania w tle.
 
 Run a few `sleep` commands in the background:
 
@@ -313,7 +316,7 @@ TBD
 
 ## Exercise 6 - ANSI Colors
 
-Task: (8pt) Napisz program w języku C, który wykorzystując sekwencje Esc (ang. escape sequences) standardu ANSI wyświetli na ekranie napis "Hello, World!", po kolei we wszystkich dostępnych przez terminal kolorach. Czy terminal może wyświetlić 256 lub więcej kolorów? 
+Task: (8pt) Napisz program w języku C, który wykorzystując sekwencje Esc (ang. escape sequences) standardu ANSI wyświetli na ekranie napis "Hello, World!", po kolei we wszystkich dostępnych przez terminal kolorach. Czy terminal może wyświetlić 256 lub więcej kolorów?
 
 ANSI Escape Codes at https://en.wikipedia.org/wiki/ANSI_escape_code
 
@@ -324,13 +327,13 @@ ESC[38;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB foreground color
 ESC[48;2;⟨r⟩;⟨g⟩;⟨b⟩ m Select RGB background color
 ```
 
-The program is available in [ansi_colors.c](./ansi_colors.c).
+The program is available in [ansi_colors.c](./ex6/ansi_colors.c).
 
 ## Exercise 7 - Lowercaser
 
-Task: (10pt) Napisz potok poleceń (może być w skrypcie), który zamienia wszystkie nazwy plików w danym katalogu (bez podkatalogów) na małe litery, czyli wszystkie duże litery występujące w nazwach plików zostaną zamienione na małe, a małe litery pozostają oczywiście dalej małe. Skrypt powinien działać poprawnie na takich nazwach plików jak " ABC DEF", "-AbC aBc" i "--ABC DEF". Przy oddawaniu, proszę podane nazwy plików zakładać w konsoli korzystając z polecenia touch. 
+Task: (10pt) Napisz potok poleceń (może być w skrypcie), który zamienia wszystkie nazwy plików w danym katalogu (bez podkatalogów) na małe litery, czyli wszystkie duże litery występujące w nazwach plików zostaną zamienione na małe, a małe litery pozostają oczywiście dalej małe. Skrypt powinien działać poprawnie na takich nazwach plików jak " ABC DEF", "-AbC aBc" i "--ABC DEF". Przy oddawaniu, proszę podane nazwy plików zakładać w konsoli korzystając z polecenia touch.
 
-The script is available in [lowercaser.sh](./lowercaser.sh).
+The script is available in [lowercaser.sh](./ex7/lowercaser.sh).
 
 Manual tests:
 
@@ -355,11 +358,16 @@ cd hello-os
 wget https://cs.pwr.edu.pl/zawada/so/download/C-version.patch --user ... --password ...
 patch -p1 -i C-version.patch
 # magically modify boot.c to print "Hello, World!" in ANSI colors
+```
+
+Did [the magic to make it possible](./ex8/) (scroll is available with `k` and `j`). Run with:
+
+```bash
 make qemu
 ```
 
-The patch is available in [C-version.patch](./hello-os/C-version.patch).
+The patch is available in [C-version.patch](./ex8/C-version.patch).
 
 ## Exercise 9 - Ptrace redirector
 
-TBD
+Research led to this article [ptrace magic: Redirect a running programme](http://omeranson.github.io/blog/2018/04/08/ptrace-magic-redirect-a-running-programme) -> [redirect_x86_64](https://github.com/omeranson/redirect/blob/master/redirect_x86_64.c)

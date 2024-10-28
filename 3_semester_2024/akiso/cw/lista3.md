@@ -146,10 +146,10 @@ a) 324-128
 b) 100-224
 c) 1024-1020
 
-a) 
+a)
 
 $324_{10} -> 00324_{U9} = 00324_{U10}$  
-$-128_{10} -> 99871_{U9} = 99872_{U10}$  
+$-128_{10} -> 99871_{U9} = 99872_{U10}$
 
 ```bash
 # U9
@@ -173,7 +173,7 @@ $-128_{10} -> 99871_{U9} = 99872_{U10}$
 b)
 
 $100=00100_{U9}$  
-$-224=99775_{U9}$  
+$-224=99775_{U9}$
 
 ```bash
 #U9
@@ -186,7 +186,7 @@ $-224=99775_{U9}$
 c)
 
 $01024 - 01020$  
-$-01020 = (98979)_{U9} = (98980)_{U10}$  
+$-01020 = (98979)_{U9} = (98980)_{U10}$
 
 ```bash
 #U9
@@ -199,7 +199,6 @@ $-01020 = (98979)_{U9} = (98980)_{U10}$
      4
 ```
 
-
 ```s
 |---|----|
 0   x_1  x_2
@@ -211,12 +210,11 @@ x_2 - x_1 to odległość odcinka x_1 x_2
          |-----(R-128)-----------|
 |--------|-------|---------------|--g---|
 0        128     324             R
-                 
+
          |--g----|---------(R-128)------|
 
 # Widzimy że mamy na myśli to samo g
 ```
-
 
 ```bash
 \beta -> pełny U"\beta"
@@ -245,14 +243,12 @@ równoważny metodzie negacji bitów i dodania jedynki:
   100
 ```
 
-
-
 # Zadanie 6
 
 Znakowe rozszerzenie liczby w U1 i U2 polega na powieleniu najstarszego bitu na
 wszystkie dodane bity np.
-a) $0101_{U2} = 00000101_{U2} = 000000101_{U1}
-b) $1001_{U2} = 11111001_{U2} = 11111001_{U1}
+a) $0101*{U2} = 00000101*{U2} = 000000101*{U1}
+b) $1001*{U2} = 11111001*{U2} = 11111001*{U1}
 Pokaż, że znakowe rozszerzenie liczby w U2 nie zmienia jej wartości.
 
 Powielmy ostatni bit na dodane bity:
@@ -285,10 +281,10 @@ c) 0101010100 · 1111111110
 Pokaż, jak ustawione są bity C (przeniesienia) i V (nadmiaru) dla podanych liczb
 binarnych po operacji odejmowania. Pokaż jednocześnie interpretacje w NKB
 oraz U2.
-a) 00100001 − 10010100
-b) 10100011 − 00110101
-c) 10001100 − 10000001
-d) 10000010 − 10010110
+a) 00100001 - 10010100
+b) 10100011 - 00110101
+c) 10001100 - 10000001
+d) 10000010 - 10010110
 
 # Zadanie 10
 
@@ -296,7 +292,7 @@ Znajdź przedstawienie (w postaci liczby binarnej) następujących liczb
 zmiennoprzecinkowych w standardzie IEEE-754 pojedynczej precyzji
 a) 120,45
 b) 1000000,123
-c) −0,0045
+c) -0,0045
 d) 1023,43
 
 # Zadanie 11
@@ -306,5 +302,5 @@ IEEE-754 pojedynczej precyzji? Uzasadnij.
 
 # Zadanie 12
 
-Dla formatu „zapisu inżynierskiego”: ∓{0-9}{0-9}.{0-9}⨯10∓{0-9}
+Dla formatu „zapisu inżynierskiego”: ∓{0-9}{0-9}.{0-9} x 10∓{0-9}
 wykonaj dodawania: 5/1000 + 1/100 i 5/1000 + 1/10

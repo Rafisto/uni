@@ -1,6 +1,6 @@
 CC = gcc
 LD = ld
-CFLAGS = -ffreestanding -nostdlib -nodefaultlibs -no-pie -fno-pic -static -fno-stack-protector -O2 -m32
+CFLAGS = -ffreestanding -nostdlib -nodefaultlibs -no-pie -fno-pic -static -fno-stack-protector -O2 -m32 -Iinclude
 LDFLAGS = -m elf_i386
 
 kernel := build/kernel.bin
@@ -23,10 +23,10 @@ clean:
 	- @rm -fr build/isofiles
 
 qemu: $(iso)
-	qemu-system-x86_64 -cdrom $(iso) -display curses -s -serial file:serial.log
+	qemu-system-x86_64 -cdrom $(iso) -vga std -s -serial file:serial.log
 
 qemu-gdb: $(iso)
-	qemu-system-x86_64 -cdrom $(iso) -display curses -s -serial file:serial.log -S
+	qemu-system-x86_64 -cdrom $(iso) -vga std -s -serial file:serial.log -S
 
 iso: $(iso)
 	@echo "Done"
@@ -36,9 +36,6 @@ $(iso): $(kernel) $(grub_cfg)
 	cp $(kernel) build/isofiles/boot/kernel.bin
 	cp $(grub_cfg) build/isofiles/boot/grub
 	grub-mkrescue -o $(iso) build/isofiles #2> /dev/null
-
-#$(kernel): $(assembly_object_files) $(linker_script)
-#	ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
 
 $(kernel): $(c_object_files) $(assembly_object_files) $(linker_script)
 	echo $(c_object_files)
