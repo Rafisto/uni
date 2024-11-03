@@ -616,7 +616,12 @@ sleep 1002 &amp;
 </div></code></pre>
 <h2 id="exercise-5---mkfifo">Exercise 5 - <code>mkfifo</code></h2>
 <p>Task: (5pt) Poleceniem mkfifo (man mkfifo) utwórz potok nazwany (ang. named FIFO). Wywołując polecenie cat w różnych terminalach spowoduj wpisywanie danych do potoku przez jeden(ne) proces(y), i odczytywanie i wyświetlanie ich przez inne. Zaobserwuj, kiedy polecenie cat czytające z potoku czeka na więcej danych, a kiedy kończy pracę. Analogicznie, kiedy czeka na więcej danych (z klawiatury) polecenie cat piszące do potoku?</p>
-<p>TBD</p>
+<pre class="hljs"><code><div>mkfifo newfifo
+cat newfifo
+cat &gt; newfifo
+</div></code></pre>
+<p><code>cat newfifo</code> czeka gdy potok jest pusty i nie ma danych do odczytu.
+<code>cat &gt; newfifo</code> czeka, gdy nie wprowadziłem danych.</p>
 <h2 id="exercise-6---ansi-colors">Exercise 6 - ANSI Colors</h2>
 <p>Task: (8pt) Napisz program w języku C, który wykorzystując sekwencje Esc (ang. escape sequences) standardu ANSI wyświetli na ekranie napis &quot;Hello, World!&quot;, po kolei we wszystkich dostępnych przez terminal kolorach. Czy terminal może wyświetlić 256 lub więcej kolorów?</p>
 <p>ANSI Escape Codes at https://en.wikipedia.org/wiki/ANSI_escape_code</p>
