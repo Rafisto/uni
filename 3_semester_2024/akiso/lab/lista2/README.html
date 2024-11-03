@@ -389,7 +389,11 @@ code {
 <li><a href="#exercise-6---ansi-colors">Exercise 6 - ANSI Colors</a></li>
 <li><a href="#exercise-7---lowercaser">Exercise 7 - Lowercaser</a></li>
 <li><a href="#exercise-8---hello-os-ansi-colors">Exercise 8 - <code>hello-os</code> ANSI Colors</a></li>
-<li><a href="#exercise-9---ptrace-redirector">Exercise 9 - Ptrace redirector</a></li>
+<li><a href="#exercise-9---ptrace-redirector">Exercise 9 - Ptrace redirector</a>
+<ul>
+<li><a href="#exercise-9-synopsis">Exercise 9 Synopsis</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -649,6 +653,44 @@ patch -p1 -i C-version.patch
 <p>The patch is available in <a href="./ex8/C-version.patch">C-version.patch</a>.</p>
 <h2 id="exercise-9---ptrace-redirector">Exercise 9 - Ptrace redirector</h2>
 <p>Research led to this article <a href="http://omeranson.github.io/blog/2018/04/08/ptrace-magic-redirect-a-running-programme">ptrace magic: Redirect a running programme</a> -&gt; <a href="https://github.com/omeranson/redirect/blob/master/redirect_x86_64.c">redirect_x86_64</a></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># enable ptrace for non-debuggers</span>
+<span class="hljs-built_in">echo</span> 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope <span class="hljs-comment"># disable with 1</span>
+</div></code></pre>
+<p>The program is available in <a href="./ex9/rdr.c">rdr.c</a> and <a href="./ex9/utils/">rdr/utils</a></p>
+<p>It consists of four header files:</p>
+<ul>
+<li><code>macros.h</code> - Macros for printing information and failing the program.</li>
+<li><code>operations.h</code> - Routines for inserting syscall breakpoints and performing syscalls in the tracee's context.</li>
+<li><code>ptrace.h</code> - Routines for attaching, detaching, reading and writing data to the tracee's memory.</li>
+<li><code>redirect.h</code> - Redirect the standard output of a process to a file.</li>
+</ul>
+<p>The program is compiled with:</p>
+<pre class="hljs"><code><div>make
+</div></code></pre>
+<p>The program is run with:</p>
+<pre class="hljs"><code><div>./rdr &lt;pid&gt; &lt;current_fd&gt; &lt;desired_fd&gt;
+</div></code></pre>
+<h3 id="exercise-9-synopsis">Exercise 9 Synopsis</h3>
+<pre class="hljs"><code><div>./rdr &lt;pid&gt; &lt;current_fd&gt; &lt;desired_fd&gt;
+</div></code></pre>
+<p>Redirect the standard output of the process with the specified PID to the file specified by outpath.</p>
+<p>Function performs the following steps:</p>
+<ol>
+<li>Attach to the process</li>
+<li>Read the registers of the process</li>
+<li>Backup the memory at the instruction pointer</li>
+<li>Insert a syscall with a breakpoint at the instruction pointer</li>
+<li>Perform the open syscall</li>
+<li>Perform the dup2 syscall</li>
+<li>Perform the close syscall</li>
+<li>Restore the memory at the instruction pointer</li>
+<li>Restore the registers</li>
+<li>Detach from the process</li>
+</ol>
+<p>Each step is performed with error checking, thus any irregularities will cause the whole function to fail.</p>
+<p>@param pid - PID of the process<br>
+@param fd - File descriptor to be redirected<br>
+@param outpath - Path to the file to redirect the file descriptor to</p>
 
 </body>
 </html>
