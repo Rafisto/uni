@@ -313,7 +313,14 @@ bg %1
 
 Task: (5pt) Poleceniem mkfifo (man mkfifo) utwórz potok nazwany (ang. named FIFO). Wywołując polecenie cat w różnych terminalach spowoduj wpisywanie danych do potoku przez jeden(ne) proces(y), i odczytywanie i wyświetlanie ich przez inne. Zaobserwuj, kiedy polecenie cat czytające z potoku czeka na więcej danych, a kiedy kończy pracę. Analogicznie, kiedy czeka na więcej danych (z klawiatury) polecenie cat piszące do potoku?
 
-TBD
+```bash
+mkfifo newfifo
+cat newfifo
+cat > newfifo
+```
+
+`cat newfifo` czeka gdy potok jest pusty i nie ma danych do odczytu.
+`cat > newfifo` czeka, gdy nie wprowadziłem danych.
 
 ## Exercise 6 - ANSI Colors
 
