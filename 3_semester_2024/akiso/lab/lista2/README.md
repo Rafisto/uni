@@ -371,3 +371,28 @@ The patch is available in [C-version.patch](./ex8/C-version.patch).
 ## Exercise 9 - Ptrace redirector
 
 Research led to this article [ptrace magic: Redirect a running programme](http://omeranson.github.io/blog/2018/04/08/ptrace-magic-redirect-a-running-programme) -> [redirect_x86_64](https://github.com/omeranson/redirect/blob/master/redirect_x86_64.c)
+
+```bash
+# enable ptrace for non-debuggers
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope # disable with 1
+```
+
+The program is available in [rdr.c](./ex9/rdr.c) and [rdr/utils](./ex9/utils/)
+
+It consists of four header files:
+- `macros.h` - Macros for printing information and failing the program.
+- `operations.h` - Routines for inserting syscall breakpoints and performing syscalls in the tracee's context.
+- `ptrace.h` - Routines for attaching, detaching, reading and writing data to the tracee's memory.
+- `redirect.h` - Redirect the standard output of a process to a file.
+
+The program is compiled with:
+
+```bash
+make
+```
+
+The program is run with:
+
+```bash
+./rdr <pid> <current_fd> <desired_fd>
+```

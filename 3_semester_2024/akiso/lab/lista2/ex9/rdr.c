@@ -1,45 +1,28 @@
+/*
+    Rafał Włodarczyk
+    rdr.c - redirect file descriptor to a different device for a given process
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/ptrace.h>
 
-// rdr.c - redirect file descriptor to a different device for a given process
-int main(int argc, char* argv[])
+#include "utils/macros.h"
+#include "utils/redirect.h"
+
+int main(int argc, char *argv[])
 {
-    int opt;
-    pid_t pid = -1;
-    int input = -1;
-    char *output = NULL;
+    if (argc != 4)
+        rfail("Usage: %s [pid] [input] [output]", argv[0]);
 
-    while ((opt = getopt(argc, argv, "p:i:o:")) != -1)
-    {
-        switch (opt)
-        {
-            case 'p':
-                pid = atoi(optarg);
-                break;
-            case 'i':
-                input = atoi(optarg);
-                break;
-            case 'o':
-                output = optarg;
-                break;
-            default:
-                fprintf(stderr, "Usage: %s -p [pid] -i [input] -o [output]\n", argv[0]);
-                return 1;
-        }
-    }
+    pid_t pid = atoi(argv[1]);
+    int input = atoi(argv[2]);
+    char *output = argv[3];
 
-    if (pid == -1 || input == -1 || output == NULL)
-    {
-        fprintf(stderr, "Usage: %s -p [pid] -i [input] -o [output]\n", argv[0]);
-        return 1;
-    }
+    if (pid <= 0 || input < 0 || output == NULL)
+        rfail("Invalid arguments. Usage: %s [pid] [input] [output]", argv[0]);
 
-    if (ptrace(PTRACE_ATTACH, pid, NULL, NULL) == -1)
-    {
-        perror("ptrace");
-    }
+    rinfo("Redirecting file descriptor %d to %s for process %d", input, output, pid);
 
-    // TODO: Implement the redirection
+    redirect(pid, input, output);
+    return 0;
 }
