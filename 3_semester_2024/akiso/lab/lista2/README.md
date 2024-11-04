@@ -1,6 +1,15 @@
 # List 2
 
 - [List 2](#list-2)
+- [Terminy WW](#terminy-ww)
+  - [Zasilacz AT / ATX](#zasilacz-at--atx)
+  - [Sprawność zasilacza](#sprawność-zasilacza)
+  - [RS232C / COM, LPT, USB (1.1, 2.0, 3.0),](#rs232c--com-lpt-usb-11-20-30)
+  - [szyny komunikacyjne ISA, PCI, AGP, PCIe,](#szyny-komunikacyjne-isa-pci-agp-pcie)
+  - [Kontrolery IDE](#kontrolery-ide)
+  - [Jak zasilany jest komputer?](#jak-zasilany-jest-komputer)
+  - [Jakie napięcia są wykorzystywane i w jakich miejscach?](#jakie-napięcia-są-wykorzystywane-i-w-jakich-miejscach)
+  - [Jak wygląda transmisja danych przez port szeregowy typu COM, a jak przez port równoległy typu LPT?](#jak-wygląda-transmisja-danych-przez-port-szeregowy-typu-com-a-jak-przez-port-równoległy-typu-lpt)
 - [Exercises](#exercises)
   - [Exercise 1 - /dev /proc /sys dd and hexdump](#exercise-1---dev-proc-sys-dd-and-hexdump)
     - [/dev](#dev)
@@ -20,6 +29,65 @@
   - [Exercise 8 - `hello-os` ANSI Colors](#exercise-8---hello-os-ansi-colors)
   - [Exercise 9 - Ptrace redirector](#exercise-9---ptrace-redirector)
     - [Exercise 9 Synopsis](#exercise-9-synopsis)
+
+# Terminy WW
+
+## Zasilacz AT / ATX
+
+Zasilacz ATX (Advanced Technology Extended) to zasilacz komputerowy, który zastąpił starszy standard AT (Advanced Technology) w 1995 roku. Zasilacze ATX są bardziej zaawansowane niż zasilacze AT, ponieważ mają dodatkowe funkcje, takie jak zasilanie w trybie czuwania.
+
+## Sprawność zasilacza
+
+Sprawność zasilacza to stosunek mocy wyjściowej do mocy wejściowej. Jest to miara, która określa, jak skutecznie zasilacz przekształca energię elektryczną w energię użyteczną. Sprawność zasilacza jest wyrażana w procentach i zwykle wynosi od 70% do 90%. Im wyższa sprawność zasilacza, tym mniej energii jest tracone w postaci ciepła.
+
+## RS232C / COM, LPT, USB (1.1, 2.0, 3.0), 
+
+RS232C - standard komunikacji szeregowej, który określa elektryczne i mechaniczne cechy interfejsu szeregowego. RS232C jest używany do komunikacji między różnymi urządzeniami, takimi jak komputery, drukarki, modemy, itp.
+
+COM - port szeregowy, który jest używany do komunikacji między komputerem a innymi urządzeniami. Port COM jest zazwyczaj używany do podłączania myszy, klawiatury, drukarki, modemu, itp.
+
+LPT - port równoległy, który jest używany do komunikacji między komputerem a innymi urządzeniami. Port LPT jest zazwyczaj używany do podłączania drukarki, skanera, itp.
+
+USB - Universal Serial Bus, standard komunikacji szeregowej, który określa elektryczne i mechaniczne cechy interfejsu szeregowego. USB jest używany do komunikacji między różnymi urządzeniami, takimi jak komputery, drukarki, modemy, itp.
+
+1.1 - standard USB 1.1, który określa prędkość transmisji danych. USB 1.1 ma prędkość transmisji danych do 12 Mb/s.
+2.0 - standard USB 2.0, który określa prędkość transmisji danych. USB 2.0 ma prędkość transmisji danych do 480 Mb/s.
+3.0 - standard USB 3.0, który określa prędkość transmisji danych. USB 3.0 ma prędkość transmisji danych do 5 Gb/s.
+
+## szyny komunikacyjne ISA, PCI, AGP, PCIe, 
+
+ISA - Industry Standard Architecture, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. ISA jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp.
+
+PCI - Peripheral Component Interconnect, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. PCI jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp.
+
+PCIe - Peripheral Component Interconnect Express, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. PCIe jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp.
+
+PCIe jest lepszy od PCI ze względu na wyższą przepustowość i szybkość transmisji danych.
+
+AGP - Accelerated Graphics Port, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. AGP jest używany do komunikacji między różnymi urządzeniami, takimi jak karty graficzne, itp.
+
+## Kontrolery IDE
+
+IDE - Integrated Drive Electronics, standard interfejsu dysku twardego, który określa elektryczne i mechaniczne cechy interfejsu dysku twardego. IDE jest używany do komunikacji między dyskiem twardym a innymi urządzeniami, takimi jak komputer, itp.
+
+## Jak zasilany jest komputer? 
+
+Komputer jest zasilany przez zasilacz, który przekształca energię elektryczną z sieci elektrycznej na energię użyteczną dla komputera. Zasilacz dostarcza napięcie i prąd do różnych podzespołów komputera, takich jak płyta główna, procesor, karta graficzna, itp.
+
+## Jakie napięcia są wykorzystywane i w jakich miejscach?
+
+Napięcia wykorzystywane w komputerze to:
+- 1.1V - używane do zasilania procesora, pamięci RAM, itp.
+- 3.3V - używane do zasilania pamięci RAM, płyty głównej, karty graficznej, itp.
+- 5V - używane do zasilania płyty głównej, dysku twardego, napędu CD/DVD, itp.
+- 12V - używane do zasilania karty graficznej, napędu CD/DVD, itp.
+
+## Jak wygląda transmisja danych przez port szeregowy typu COM, a jak przez port równoległy typu LPT?
+
+Transmisja COM - port szeregowy typu COM jest używany do komunikacji między komputerem a innymi urządzeniami za pomocą jednej linii danych. Transmisja danych odbywa się sekwencyjnie, co oznacza, że dane są przesyłane bit po bicie. Port COM ma dwa piny - TX (transmit) i RX (receive), które są używane do przesyłania i odbierania danych.
+
+Transmisja LPT - port równoległy typu LPT jest używany do komunikacji między komputerem a innymi urządzeniami za pomocą wielu
+linii danych. Transmisja danych odbywa się równolegle, co oznacza, że dane są przesyłane jednocześnie na wielu liniach. Port LPT ma wiele pinów, które są używane do przesyłania i odbierania danych.
 
 # Exercises
 
@@ -75,7 +143,7 @@ Log to stdout the first sector of a disk:
 
 ```bash
 # mntd as /
-dd if=/dev/nvme0n1p4 of=/dev/stdout bs=512 count=1
+dd if=/dev/nvme0n1p4 of=/dev/stdout 2> /dev/null bs=512 count=1 status=progress
 ```
 
 Output (LUKS partition):
