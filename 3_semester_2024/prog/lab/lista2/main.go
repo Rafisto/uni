@@ -1,176 +1,108 @@
 package main
 
 import (
-	"net/http"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "rwlodarczyk.pl/library/docs"
 )
 
+func populate(s LibraryStorage) {
+	// Create readers
+	readers := []Reader{
+		{Name: "Michał", Surname: "Wiśniewski"},
+		{Name: "Till", Surname: "Lindemann"},
+		{Name: "Freddie", Surname: "Mercury"},
+		{Name: "Eric", Surname: "Clapton"},
+		{Name: "David", Surname: "Gilmour"},
+	}
+
+	for _, r := range readers {
+		err := s.CreateReader(&r)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// Create classical literature books
+	classicalBooks := []Book{
+		{Title: "Catch-22", Author: "Joseph Heller"},
+		{Title: "Fight Club", Author: "Chuck Palahniuk"},
+		{Title: "1984", Author: "George Orwell"},
+		{Title: "Brave New World", Author: "Aldous Huxley"},
+		{Title: "Memoirs from the house of the dead", Author: "Fyodor Dostoevsky"},
+	}
+
+	for _, b := range classicalBooks {
+		err := s.CreateBook(&b)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// Create 3 copies of each book
+	for i := 1; i < 6; i++ {
+		_, err := s.CreateCopy(i)
+		if err != nil {
+			panic(err)
+		}
+		_, err = s.CreateCopy(i)
+		if err != nil {
+			panic(err)
+		}
+		_, err = s.CreateCopy(i)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+}
+
+// @title           Library API
+// @version         1.0
+// @description     This is a sample Library API.
+// @termsOfService  https://github.com/Rafisto/uni
+
+// @contact.name   API Support
+// @contact.url    https://github.com/Rafisto
+// @contact.email  rvrelay@gmail.com
+
+// @host      localhost:8080
+// @BasePath  /
+
+// @externalDocs.description  OpenAPI
+// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	storage := NewInMemoryStorage()
+
+	populate(storage)
+
 	service := NewService(storage)
+	server := &HTTPServer{service: service}
 
 	router := gin.Default()
 
-	router.POST("/books", func(c *gin.Context) {
-		var book Book
-		if err := c.ShouldBindJSON(&book); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		if err := service.storage.bookStorage.CreateBook(&book); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusCreated, gin.H{"message": "book created", "book_id": book.ID})
-	})
+	router.GET("/books", server.GetBooksHandler)
+	router.GET("/books/:id", server.GetBookHandler)
+	router.POST("/books", server.CreateBookHandler)
+	router.DELETE("/books/:id", server.DeleteBookHandler)
 
-	router.DELETE("/books/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
-			return
-		}
-		if err = service.storage.bookStorage.DeleteBook(id); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"message": "book deleted"})
-	})
+	router.POST("/books/:id/copies", server.CreateCopyHandler)
+	router.GET("/copies", server.GetAllCopiesHandler)
+	router.DELETE("/copies/:id", server.DeleteCopyHandler)
 
-	router.POST("/books/:id/copies", func(c *gin.Context) {
-		bookID, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
-			return
-		}
-		copyID, err := service.storage.bookStorage.AddCopy(bookID)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusCreated, gin.H{"message": "copy added", "copy_id": copyID})
-	})
+	router.POST("/borrow", server.BorrowBookHandler)
+	router.POST("/return", server.ReturnBookHandler)
 
-	router.DELETE("/copies/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid copy ID"})
-			return
-		}
-		if err = service.storage.bookStorage.DeleteCopy(id); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"message": "copy deleted"})
-	})
+	router.GET("/readers", server.GetReadersHandler)
+	router.GET("/readers/:id", server.GetReaderHandler)
+	router.POST("/readers", server.CreateReaderHandler)
+	router.DELETE("/readers/:id", server.DeleteReaderHandler)
 
-	router.GET("/books", func(c *gin.Context) {
-		books, err := service.storage.bookStorage.GetBooks()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, books)
-	})
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.GET("/books/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
-			return
-		}
-		book, err := service.storage.bookStorage.GetBook(id)
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, book)
-	})
-
-	router.POST("/borrow", func(c *gin.Context) {
-		var req struct {
-			BookID   int `json:"book_id"`
-			ReaderID int `json:"reader_id"`
-		}
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		if err := service.BorrowBook(req.BookID, req.ReaderID); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"status": "book borrowed"})
-	})
-
-	router.POST("/return", func(c *gin.Context) {
-		var req struct {
-			BookID   int `json:"book_id"`
-			ReaderID int `json:"reader_id"`
-		}
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		if err := service.ReturnBook(req.BookID, req.ReaderID); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"status": "book returned"})
-	})
-
-	router.GET("/readers", func(c *gin.Context) {
-		readers, err := service.storage.readerStorage.GetReaders()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, readers)
-	})
-
-	router.GET("/readers/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
-			return
-		}
-		reader, err := service.storage.readerStorage.GetReader(id)
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, reader)
-	})
-
-	router.POST("/readers", func(c *gin.Context) {
-		var reader Reader
-		if err := c.ShouldBindJSON(&reader); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		if err := service.storage.readerStorage.CreateReader(&reader); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusCreated, reader)
-	})
-
-	router.DELETE("/readers/:id", func(c *gin.Context) {
-		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
-			return
-		}
-		if err = service.storage.readerStorage.DeleteReader(id); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"status": "reader deleted"})
-	})
-
-	// Start the server
 	res := router.Run(":8080")
 	if res != nil {
 		panic(res)

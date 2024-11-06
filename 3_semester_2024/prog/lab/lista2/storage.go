@@ -4,20 +4,26 @@ import (
 	"sync"
 )
 
-var _ BookStorage = (*InMemoryBookStorage)(nil)
-var _ ReaderStorage = (*InMemoryReaderStorage)(nil)
+// General Storage
+
+var _ LibraryStorage = (*InMemoryStorage)(nil)
 
 type InMemoryStorage struct {
-	bookStorage   *InMemoryBookStorage
-	readerStorage *InMemoryReaderStorage
+	*InMemoryBookStorage
+	*InMemoryReaderStorage
 }
 
 func NewInMemoryStorage() *InMemoryStorage {
 	return &InMemoryStorage{
-		bookStorage:   NewInMemoryBookStorage(),
-		readerStorage: NewInMemoryReaderStorage(),
+		InMemoryBookStorage:   NewInMemoryBookStorage(),
+		InMemoryReaderStorage: NewInMemoryReaderStorage(),
 	}
 }
+
+var _ BookStorage = (*InMemoryBookStorage)(nil)
+var _ ReaderStorage = (*InMemoryReaderStorage)(nil)
+
+// Book Storage
 
 type InMemoryBookStorage struct {
 	books  map[int]*Book
@@ -35,51 +41,6 @@ func NewInMemoryBookStorage() *InMemoryBookStorage {
 		copyID: 1,
 		mu:     sync.Mutex{},
 	}
-}
-
-func (s *InMemoryBookStorage) CreateBook(book *Book) error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	book.ID = s.nextID
-	s.nextID++
-	s.books[book.ID] = book
-	return nil
-}
-
-func (s *InMemoryBookStorage) DeleteBook(id int) error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	if _, exists := s.books[id]; !exists {
-		return ErrBookNotFound
-	}
-	delete(s.books, id)
-	return nil
-}
-
-func (s *InMemoryBookStorage) AddCopy(bookID int) (int, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	if _, exists := s.books[bookID]; !exists {
-		return 0, ErrBookNotFound
-	}
-	copyID := s.copyID
-	s.copyID++
-	s.copies[copyID] = &BookCopy{ID: copyID, BookID: bookID, ReaderID: 0}
-	return copyID, nil
-}
-
-func (s *InMemoryBookStorage) DeleteCopy(id int) error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	if _, exists := s.copies[id]; !exists {
-		return ErrBookCopyNotFound
-	}
-	delete(s.copies, id)
-	return nil
 }
 
 func (s *InMemoryBookStorage) GetBooks() ([]*Book, error) {
@@ -103,6 +64,88 @@ func (s *InMemoryBookStorage) GetBook(id int) (*Book, error) {
 	}
 	return book, nil
 }
+
+func (s *InMemoryBookStorage) GetCopies() ([]*BookCopy, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	copies := make([]*BookCopy, 0)
+	for _, copy := range s.copies {
+		copies = append(copies, copy)
+	}
+
+	return copies, nil
+}
+
+func (s *InMemoryBookStorage) GetCopy(id int) (*BookCopy, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	bookCopy, exists := s.copies[id]
+	if !exists {
+		return nil, ErrBookCopyNotFound
+	}
+	return bookCopy, nil
+}
+
+func (s *InMemoryBookStorage) CreateBook(book *Book) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	book.ID = s.nextID
+	s.nextID++
+	s.books[book.ID] = book
+	return nil
+}
+
+func (s *InMemoryBookStorage) DeleteBook(id int) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if _, exists := s.books[id]; !exists {
+		return ErrBookNotFound
+	}
+	delete(s.books, id)
+	return nil
+}
+
+func (s *InMemoryBookStorage) CreateCopy(bookID int) (int, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if _, exists := s.books[bookID]; !exists {
+		return 0, ErrBookNotFound
+	}
+	copyID := s.copyID
+	s.copyID++
+	s.copies[copyID] = &BookCopy{CopyID: copyID, BookID: bookID, ReaderID: 0}
+	return copyID, nil
+}
+
+func (s *InMemoryBookStorage) UpdateCopy(id int, readerID int) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	bookCopy, exists := s.copies[id]
+	if !exists {
+		return ErrBookCopyNotFound
+	}
+	bookCopy.ReaderID = readerID
+	return nil
+}
+
+func (s *InMemoryBookStorage) DeleteCopy(id int) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if _, exists := s.copies[id]; !exists {
+		return ErrBookCopyNotFound
+	}
+	delete(s.copies, id)
+	return nil
+}
+
+// Reader Storage
 
 type InMemoryReaderStorage struct {
 	readers map[int]*Reader
@@ -145,9 +188,9 @@ func (s *InMemoryReaderStorage) CreateReader(reader *Reader) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	reader.ID = s.nextID
+	reader.ReaderID = s.nextID
 	s.nextID++
-	s.readers[reader.ID] = reader
+	s.readers[reader.ReaderID] = reader
 	return nil
 }
 

@@ -7,10 +7,7 @@ import (
 func TestCreateInMemoryStorage(t *testing.T) {
 	storage := NewInMemoryStorage()
 
-	if storage.bookStorage == nil {
-		t.Errorf("expected book storage to be initialized, got nil")
-	}
-	if storage.readerStorage == nil {
+	if storage == nil {
 		t.Errorf("expected reader storage to be initialized, got nil")
 	}
 }
@@ -57,7 +54,7 @@ func TestDeleteBook(t *testing.T) {
 func TestAddCopy(t *testing.T) {
 	storage := NewInMemoryBookStorage()
 
-	_, err := storage.AddCopy(1)
+	_, err := storage.CreateCopy(1)
 	if err == nil {
 		t.Errorf("expected error when adding copy to non-existent book, got nil")
 	}
@@ -68,7 +65,7 @@ func TestAddCopy(t *testing.T) {
 		t.Fatalf("failed to create book: %v", err)
 	}
 
-	copyID, err := storage.AddCopy(book.ID)
+	copyID, err := storage.CreateCopy(book.ID)
 	if err != nil {
 		t.Errorf("unexpected error when adding copy to existing book: %v", err)
 	}
@@ -95,7 +92,7 @@ func TestDeleteCopy(t *testing.T) {
 		t.Fatalf("failed to create book: %v", err)
 	}
 
-	copyID, err := storage.AddCopy(book.ID)
+	copyID, err := storage.CreateCopy(book.ID)
 	if err != nil {
 		t.Fatalf("failed to add copy: %v", err)
 	}
@@ -176,10 +173,10 @@ func TestCreateReader(t *testing.T) {
 	if err != nil {
 		t.Errorf("unexpected error when creating reader: %v", err)
 	}
-	if reader.ID != 1 {
-		t.Errorf("expected reader ID to be 1, got %d", reader.ID)
+	if reader.ReaderID != 1 {
+		t.Errorf("expected reader ID to be 1, got %d", reader.ReaderID)
 	}
-	if _, exists := storage.readers[reader.ID]; !exists {
+	if _, exists := storage.readers[reader.ReaderID]; !exists {
 		t.Errorf("expected reader with ID 1 to exist, but it does not")
 	}
 }
@@ -198,11 +195,11 @@ func TestDeleteReader(t *testing.T) {
 		t.Fatalf("failed to create reader: %v", err)
 	}
 
-	err = storage.DeleteReader(reader.ID)
+	err = storage.DeleteReader(reader.ReaderID)
 	if err != nil {
 		t.Errorf("unexpected error when deleting reader: %v", err)
 	}
-	if _, exists := storage.readers[reader.ID]; exists {
-		t.Errorf("expected reader with ID %d to be deleted, but it still exists", reader.ID)
+	if _, exists := storage.readers[reader.ReaderID]; exists {
+		t.Errorf("expected reader with ID %d to be deleted, but it still exists", reader.ReaderID)
 	}
 }

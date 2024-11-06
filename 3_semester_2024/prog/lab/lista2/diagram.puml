@@ -1,109 +1,125 @@
-@startuml
-title LibraryAPI
-namespace main {
-    class Book << (S,Aquamarine) >> {
-        + ID int
-        + Title string
-        + Author string
+@startuml diagram
+
+package "LibrarySystem" {
+
+    package "Domain" {
+        class Book {
+            - ID: int
+            - Title: string
+            - Author: string
+        }
+
+        class BookCopy {
+            - CopyID: int
+            - BookID: int
+            - ReaderID: int 0 if not borrowed
+        }
+
+        class Reader {
+            - ReaderID: int
+            - Name: string
+            - Surname: string
+        }
 
     }
-    class BookCopy << (S,Aquamarine) >> {
-        + ID int
-        + BookID int
-        + ReaderID int
 
+    package "Storage" {
+        interface BookStorage {
+           	+ GetBooks() ([]*Book, error)
+	        + GetBook(id int) (*Book, error)
+            + CreateBook(book *Book) error
+            + DeleteBook(id int) error
+            + GetCopies() ([]*BookCopy, error)
+            + GetCopy(id int) (*BookCopy, error)
+            + CreateCopy(bookID int) (int, error)
+            + UpdateCopy(id int, readerID int) error
+            + DeleteCopy(id int) error
+        }
+
+        interface ReaderStorage {
+            + CreateReader(reader *Reader) error
+            + DeleteReader(id int) error
+            + GetReaders() ([]*Reader, error)
+            + GetReader(id int) (*Reader, error)
+        }
+
+        interface LibraryStorage {
+            + BookStorage
+            + ReaderStorage
+        }
+
+        class InMemoryStorage {
+            - InMemoryBookStorage: InMemoryBookStorage
+            - InMemoryReaderStorage: InMemoryReaderStorage
+            + NewInMemoryStorage(): *InMemoryStorage
+        }
+
+        class InMemoryBookStorage {
+            - books: map[int]*Book
+            - copies: map[int]*BookCopy
+            - nextID: int
+            - copyID: int
+            - mu: sync.Mutex
+        }
+
+        class InMemoryReaderStorage {
+            - readers: map[int]*Reader
+            - nextID: int
+            - mu: sync.Mutex
+        }
     }
-    interface BookStorage  {
-        + CreateBook(book *Book) error
-        + DeleteBook(id int) error
-        + AddCopy(bookID int) (int, error)
-        + DeleteCopy(id int) error
-        + GetBooks() ([]*Book, error)
-        + GetBook(id int) (*Book, error)
 
+    package "API" {
+        class HTTPServer {
+            HTTPServer is an API Server to interact with the Library
+            - service: LibraryService
+            - storage: LibraryStorage
+            + GetBooksHandler()
+            + GetBookHandler()
+            + CreateBookHandler()
+            + DeleteBookHandler()
+            + CreateCopyHandler()
+            + GetAllCopiesHandler()
+            + DeleteCopyHandler()
+            + BorrowBookHandler()
+            + ReturnBookHandler()
+            + GetReadersHandler()
+            + GetReaderHandler()
+            + CreateReaderHandler()
+            + DeleteReaderHandler()
+        }
     }
-    class InMemoryBookStorage << (S,Aquamarine) >> {
-        - books <font color=blue>map</font>[int]*Book
-        - copies <font color=blue>map</font>[int]*BookCopy
-        - nextID int
-        - copyID int
-        - mu sync.Mutex
 
-        + CreateBook(book *Book) error
-        + DeleteBook(id int) error
-        + AddCopy(bookID int) (int, error)
-        + DeleteCopy(id int) error
-        + GetBooks() ([]*Book, error)
-        + GetBook(id int) (*Book, error)
+    package "Services" {
+        interface LibraryService {
+            + GetCopiesByReader(readerID int) ([]*FullCopy, error)
+            + BorrowBook(bookID int, readerID int) error
+            + ReturnBook(bookID int, readerID int) error
+        }
 
+        class Service {
+            - storage: InMemoryStorage
+            + NewService(storage: InMemoryStorage): *Service
+        }
     }
-    class InMemoryReaderStorage << (S,Aquamarine) >> {
-        - readers <font color=blue>map</font>[int]*Reader
-        - nextID int
-        - mu sync.Mutex
 
-        + GetReaders() ([]*Reader, error)
-        + GetReader(id int) (*Reader, error)
-        + CreateReader(reader *Reader) error
-        + DeleteReader(id int) error
+    LibraryStorage <|-- InMemoryStorage : "Implements"
+    LibraryStorage <-- BookStorage : "Contains"
+    LibraryStorage <-- ReaderStorage : "Contains"
+    BookStorage <|-- InMemoryBookStorage : "Implements"
+    ReaderStorage <|-- InMemoryReaderStorage : "Implements"
+    HTTPServer --> LibraryService : "Uses for complex queries"
+    HTTPServer --> LibraryStorage : "Uses for simple queries"
+    Service --> LibraryStorage : "Uses"
+    LibraryService <|-- Service : "Implements"
+    InMemoryStorage --> InMemoryBookStorage : "Contains"
+    InMemoryStorage --> InMemoryReaderStorage : "Contains"
+    InMemoryBookStorage --> Book : "References"
+    InMemoryReaderStorage --> Reader : "References"
+    InMemoryBookStorage --> BookCopy : "References"
+    BookCopy --> Book : "References"
+    BookCopy --> Reader : "References"
 
-    }
-    class InMemoryStorage << (S,Aquamarine) >> {
-        - bookStorage *InMemoryBookStorage
-        - readerStorage *InMemoryReaderStorage
-
-    }
-    interface LibraryService  {
-        + BorrowBook(bookID int, readerID int) error
-        + ReturnBook(bookID int, readerID int) error
-        + CreateBook(book *Book) error
-        + DeleteBook(id int) error
-        + AddCopy(bookID int) (int, error)
-        + DeleteCopy(id int) error
-        + GetBooks() ([]*Book, error)
-        + GetBook(id int) (*Book, error)
-        + GetReaders() ([]*Reader, error)
-        + GetReader(id int) (*Reader, error)
-        + CreateReader(reader *Reader) error
-        + DeleteReader(id int) error
-
-    }
-    class Reader << (S,Aquamarine) >> {
-        + ID int
-        + Name string
-        + Surname string
-
-    }
-    interface ReaderStorage  {
-        + CreateReader(reader *Reader) error
-        + DeleteReader(id int) error
-        + GetReaders() ([]*Reader, error)
-        + GetReader(id int) (*Reader, error)
-
-    }
-    class Service << (S,Aquamarine) >> {
-        - storage *InMemoryStorage
-
-        + BorrowBook(bookID int, readerID int) error
-        + ReturnBook(bookID int, readerID int) error
-        + CreateBook(book *Book) error
-        + DeleteBook(id int) error
-        + AddCopy(bookID int) (int, error)
-        + DeleteCopy(id int) error
-        + GetBooks() ([]*Book, error)
-        + GetBook(id int) (*Book, error)
-        + GetReaders() ([]*Reader, error)
-        + GetReader(id int) (*Reader, error)
-        + CreateReader(reader *Reader) error
-        + DeleteReader(id int) error
-
-    }
 }
-
-"main.BookStorage" <|-- "main.InMemoryBookStorage"
-"main.ReaderStorage" <|-- "main.InMemoryReaderStorage"
-"main.BookStorage" <|-- "main.Service"
-"main.LibraryService" <|-- "main.Service"
-"main.ReaderStorage" <|-- "main.Service"
 
 @enduml

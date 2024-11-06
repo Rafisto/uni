@@ -1,0 +1,446 @@
+basePath: /
+definitions:
+  main.Book:
+    properties:
+      author:
+        example: Kernighan Ritchie
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: The C Programming Language
+        type: string
+    type: object
+  main.BookCopy:
+    properties:
+      book_id:
+        example: 1
+        type: integer
+      copy_id:
+        example: 1
+        type: integer
+      reader_id:
+        example: 1
+        type: integer
+    type: object
+  main.HTTPError:
+    properties:
+      error:
+        type: string
+    type: object
+  main.HTTPMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  main.NewBook:
+    properties:
+      author:
+        example: Kernighan Ritchie
+        type: string
+      title:
+        example: The C Programming Language
+        type: string
+    type: object
+  main.NewReader:
+    properties:
+      name:
+        example: John
+        type: string
+      surname:
+        example: Doe
+        type: string
+    type: object
+  main.Reader:
+    properties:
+      name:
+        example: John
+        type: string
+      reader_id:
+        example: 1
+        type: integer
+      surname:
+        example: Doe
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: rvrelay@gmail.com
+    name: API Support
+    url: https://github.com/Rafisto
+  description: This is a sample Library API.
+  termsOfService: https://github.com/Rafisto/uni
+  title: Library API
+  version: "1.0"
+paths:
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: Get all books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Book'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Get all books
+      tags:
+      - get
+    post:
+      consumes:
+      - application/json
+      description: Create a new book
+      parameters:
+      - description: HTTPError object
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/main.NewBook'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Create a new book
+      tags:
+      - create
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Delete a book
+      tags:
+      - delete
+    get:
+      consumes:
+      - application/json
+      description: Get a book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Book'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Get a book
+      tags:
+      - get
+  /books/{id}/copies:
+    post:
+      consumes:
+      - application/json
+      description: Create a new copy
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Create a new copy
+      tags:
+      - create
+  /borrow:
+    post:
+      consumes:
+      - application/json
+      description: Borrow a book
+      parameters:
+      - description: Book ID
+        in: query
+        name: book_id
+        required: true
+        type: integer
+      - description: Reader ID
+        in: query
+        name: reader_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Borrow a book
+      tags:
+      - post
+  /copies:
+    get:
+      consumes:
+      - application/json
+      description: Get all copies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.BookCopy'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Get all copies
+      tags:
+      - get
+  /copies/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a copy
+      parameters:
+      - description: Copy ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Delete a copy
+      tags:
+      - delete
+  /readers:
+    get:
+      consumes:
+      - application/json
+      description: Get all readers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Reader'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Get all readers
+      tags:
+      - get
+    post:
+      consumes:
+      - application/json
+      description: Create a new reader
+      parameters:
+      - description: Reader object
+        in: body
+        name: reader
+        required: true
+        schema:
+          $ref: '#/definitions/main.NewReader'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.Reader'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Create a new reader
+      tags:
+      - create
+  /readers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a reader
+      parameters:
+      - description: Reader ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Delete a reader
+      tags:
+      - delete
+    get:
+      consumes:
+      - application/json
+      description: Get a reader
+      parameters:
+      - description: Reader ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Reader'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Get a reader
+      tags:
+      - get
+  /return:
+    post:
+      consumes:
+      - application/json
+      description: Return a book
+      parameters:
+      - description: Copy ID
+        in: query
+        name: copy_id
+        required: true
+        type: integer
+      - description: Reader ID
+        in: query
+        name: reader_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HTTPMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.HTTPError'
+      summary: Return a book
+      tags:
+      - post
+swagger: "2.0"

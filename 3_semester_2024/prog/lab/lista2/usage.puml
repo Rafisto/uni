@@ -1,0 +1,31 @@
+@startuml
+
+actor Librarian
+
+usecase "Get all books" as UC1
+usecase "Get a specific book" as UC2
+usecase "Create a new book" as UC3
+usecase "Delete a book" as UC4
+usecase "Get all copies of books" as UC5
+usecase "Create a new copy for a book" as UC6
+usecase "Delete a copy" as UC7
+usecase "Borrow a book" as UC8
+usecase "Return a book" as UC9
+usecase "Get all readers" as UC10
+usecase "Create a new reader" as UC11
+usecase "Delete a reader" as UC12
+
+Librarian -> UC1
+Librarian -> UC2
+Librarian -> UC3
+Librarian -> UC4
+Librarian -> UC5
+Librarian -> UC6
+Librarian -> UC7
+Librarian -> UC8
+Librarian -> UC9
+Librarian -> UC10
+Librarian -> UC11
+Librarian -> UC12
+
+@enduml
