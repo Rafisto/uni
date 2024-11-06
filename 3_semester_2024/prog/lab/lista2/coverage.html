@@ -1,0 +1,559 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>library: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">rwlodarczyk.pl/library/main.go (0.0%)</option>
+				
+				<option value="file1">rwlodarczyk.pl/library/service.go (68.6%)</option>
+				
+				<option value="file2">rwlodarczyk.pl/library/storage.go (81.5%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "net/http"
+        "strconv"
+
+        "github.com/gin-gonic/gin"
+)
+
+func main() <span class="cov0" title="0">{
+        storage := NewInMemoryStorage()
+        service := NewService(storage)
+
+        router := gin.Default()
+
+        router.POST("/books", func(c *gin.Context) </span><span class="cov0" title="0">{
+                var book Book
+                if err := c.ShouldBindJSON(&amp;book); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">if err := service.CreateBook(&amp;book); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusCreated, gin.H{"message": "book created", "book_id": book.ID})</span>
+        })
+
+        <span class="cov0" title="0">router.DELETE("/books/:id", func(c *gin.Context) </span><span class="cov0" title="0">{
+                id, err := strconv.Atoi(c.Param("id"))
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
+                        return
+                }</span>
+                <span class="cov0" title="0">if err = service.DeleteBook(id); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"message": "book deleted"})</span>
+        })
+
+        <span class="cov0" title="0">router.POST("/books/:id/copies", func(c *gin.Context) </span><span class="cov0" title="0">{
+                bookID, err := strconv.Atoi(c.Param("id"))
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
+                        return
+                }</span>
+                <span class="cov0" title="0">copyID, err := service.AddCopy(bookID)
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusCreated, gin.H{"message": "copy added", "copy_id": copyID})</span>
+        })
+
+        <span class="cov0" title="0">router.DELETE("/copies/:id", func(c *gin.Context) </span><span class="cov0" title="0">{
+                id, err := strconv.Atoi(c.Param("id"))
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid copy ID"})
+                        return
+                }</span>
+                <span class="cov0" title="0">if err = service.DeleteCopy(id); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"message": "copy deleted"})</span>
+        })
+
+        <span class="cov0" title="0">router.GET("/books", func(c *gin.Context) </span><span class="cov0" title="0">{
+                books, err := service.GetBooks()
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, books)</span>
+        })
+
+        <span class="cov0" title="0">router.GET("/books/:id", func(c *gin.Context) </span><span class="cov0" title="0">{
+                id, err := strconv.Atoi(c.Param("id"))
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
+                        return
+                }</span>
+                <span class="cov0" title="0">book, err := service.GetBook(id)
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, book)</span>
+        })
+
+        <span class="cov0" title="0">router.POST("/borrow", func(c *gin.Context) </span><span class="cov0" title="0">{
+                var req struct {
+                        BookID   int `json:"book_id"`
+                        ReaderID int `json:"reader_id"`
+                }
+                if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">if err := service.BorrowBook(req.BookID, req.ReaderID); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"status": "book borrowed"})</span>
+        })
+
+        <span class="cov0" title="0">router.POST("/return", func(c *gin.Context) </span><span class="cov0" title="0">{
+                var req struct {
+                        BookID   int `json:"book_id"`
+                        ReaderID int `json:"reader_id"`
+                }
+                if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">if err := service.ReturnBook(req.BookID, req.ReaderID); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"status": "book returned"})</span>
+        })
+
+        <span class="cov0" title="0">router.GET("/readers", func(c *gin.Context) </span><span class="cov0" title="0">{
+                readers, err := service.GetReaders()
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, readers)</span>
+        })
+
+        <span class="cov0" title="0">router.GET("/readers/:id", func(c *gin.Context) </span><span class="cov0" title="0">{
+                id, err := strconv.Atoi(c.Param("id"))
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
+                        return
+                }</span>
+                <span class="cov0" title="0">reader, err := service.GetReader(id)
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, reader)</span>
+        })
+
+        <span class="cov0" title="0">router.POST("/readers", func(c *gin.Context) </span><span class="cov0" title="0">{
+                var reader Reader
+                if err := c.ShouldBindJSON(&amp;reader); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">if err := service.CreateReader(&amp;reader); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusCreated, reader)</span>
+        })
+
+        <span class="cov0" title="0">router.DELETE("/readers/:id", func(c *gin.Context) </span><span class="cov0" title="0">{
+                id, err := strconv.Atoi(c.Param("id"))
+                if err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
+                        return
+                }</span>
+                <span class="cov0" title="0">if err = service.DeleteReader(id); err != nil </span><span class="cov0" title="0">{
+                        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+                        return
+                }</span>
+                <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"status": "reader deleted"})</span>
+        })
+
+        // Start the server
+        <span class="cov0" title="0">res := router.Run(":8080")
+        if res != nil </span><span class="cov0" title="0">{
+                panic(res)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package main
+
+type LibraryService interface {
+        BorrowBook(bookID int, readerID int) error
+        ReturnBook(bookID int, readerID int) error
+        CreateBook(book *Book) error
+        DeleteBook(id int) error
+        AddCopy(bookID int) (int, error)
+        DeleteCopy(id int) error
+        GetBooks() ([]*Book, error)
+        GetBook(id int) (*Book, error)
+        GetReaders() ([]*Reader, error)
+        GetReader(id int) (*Reader, error)
+        CreateReader(reader *Reader) error
+        DeleteReader(id int) error
+}
+
+var _ LibraryService = (*Service)(nil)
+
+type Service struct {
+        storage *InMemoryStorage
+}
+
+func NewService(storage *InMemoryStorage) *Service <span class="cov8" title="1">{
+        return &amp;Service{storage: storage}
+}</span>
+
+func (s *Service) BorrowBook(bookID int, readerID int) error <span class="cov8" title="1">{
+        _, exists := s.storage.bookStorage.books[bookID]
+        if !exists </span><span class="cov8" title="1">{
+                return ErrBookNotFound
+        }</span>
+
+        <span class="cov8" title="1">_, exists = s.storage.readerStorage.readers[readerID]
+        if !exists </span><span class="cov0" title="0">{
+                return ErrReaderNotFound
+        }</span>
+
+        <span class="cov8" title="1">if bookCopy, existsCopy := s.storage.bookStorage.copies[bookID]; existsCopy </span><span class="cov8" title="1">{
+                if bookCopy.ReaderID != 0 </span><span class="cov8" title="1">{
+                        return ErrBookAlreadyBorrowed
+                }</span>
+                <span class="cov8" title="1">bookCopy.ReaderID = readerID
+                return nil</span>
+        }
+
+        <span class="cov0" title="0">return ErrBookCopyNotFound</span>
+}
+
+func (s *Service) ReturnBook(bookID int, readerID int) error <span class="cov8" title="1">{
+        _, exists := s.storage.bookStorage.books[bookID]
+        if !exists </span><span class="cov8" title="1">{
+                return ErrBookNotFound
+        }</span>
+
+        <span class="cov8" title="1">_, exists = s.storage.readerStorage.readers[readerID]
+        if !exists </span><span class="cov0" title="0">{
+                return ErrReaderNotFound
+        }</span>
+
+        <span class="cov8" title="1">if bookCopy, existsCopy := s.storage.bookStorage.copies[bookID]; existsCopy </span><span class="cov8" title="1">{
+                if bookCopy.ReaderID != readerID </span><span class="cov8" title="1">{
+                        return ErrBookNotBorrowed
+                }</span>
+                <span class="cov8" title="1">bookCopy.ReaderID = 0
+                return nil</span>
+        }
+
+        <span class="cov0" title="0">return ErrBookCopyNotFound</span>
+}
+
+func (s *Service) CreateBook(book *Book) error <span class="cov8" title="1">{
+        return s.storage.bookStorage.CreateBook(book)
+}</span>
+
+func (s *Service) DeleteBook(id int) error <span class="cov0" title="0">{
+        return s.storage.bookStorage.DeleteBook(id)
+}</span>
+
+func (s *Service) AddCopy(bookID int) (int, error) <span class="cov8" title="1">{
+        return s.storage.bookStorage.AddCopy(bookID)
+}</span>
+
+func (s *Service) DeleteCopy(id int) error <span class="cov0" title="0">{
+        return s.storage.bookStorage.DeleteCopy(id)
+}</span>
+
+func (s *Service) GetBooks() ([]*Book, error) <span class="cov0" title="0">{
+        return s.storage.bookStorage.GetBooks()
+}</span>
+
+func (s *Service) GetBook(id int) (*Book, error) <span class="cov0" title="0">{
+        return s.storage.bookStorage.GetBook(id)
+}</span>
+
+func (s *Service) GetReaders() ([]*Reader, error) <span class="cov0" title="0">{
+        return s.storage.readerStorage.GetReaders()
+}</span>
+
+func (s *Service) GetReader(id int) (*Reader, error) <span class="cov0" title="0">{
+        return s.storage.readerStorage.GetReader(id)
+}</span>
+
+func (s *Service) CreateReader(reader *Reader) error <span class="cov8" title="1">{
+        return s.storage.readerStorage.CreateReader(reader)
+}</span>
+
+func (s *Service) DeleteReader(id int) error <span class="cov0" title="0">{
+        return s.storage.readerStorage.DeleteReader(id)
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package main
+
+import (
+        "sync"
+)
+
+type InMemoryStorage struct {
+        bookStorage   *InMemoryBookStorage
+        readerStorage *InMemoryReaderStorage
+}
+
+func NewInMemoryStorage() *InMemoryStorage <span class="cov8" title="1">{
+        return &amp;InMemoryStorage{
+                bookStorage:   NewInMemoryBookStorage(),
+                readerStorage: NewInMemoryReaderStorage(),
+        }
+}</span>
+
+type InMemoryBookStorage struct {
+        books  map[int]*Book
+        copies map[int]*BookCopy
+        nextID int
+        copyID int
+        mu     sync.Mutex
+}
+
+func NewInMemoryBookStorage() *InMemoryBookStorage <span class="cov8" title="1">{
+        return &amp;InMemoryBookStorage{
+                books:  make(map[int]*Book),
+                copies: make(map[int]*BookCopy),
+                nextID: 1,
+                copyID: 1,
+                mu:     sync.Mutex{},
+        }
+}</span>
+
+func (s *InMemoryBookStorage) CreateBook(book *Book) error <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        book.ID = s.nextID
+        s.nextID++
+        s.books[book.ID] = book
+        return nil
+}</span>
+
+func (s *InMemoryBookStorage) DeleteBook(id int) error <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        if _, exists := s.books[id]; !exists </span><span class="cov8" title="1">{
+                return ErrBookNotFound
+        }</span>
+        <span class="cov8" title="1">delete(s.books, id)
+        return nil</span>
+}
+
+func (s *InMemoryBookStorage) AddCopy(bookID int) (int, error) <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        if _, exists := s.books[bookID]; !exists </span><span class="cov8" title="1">{
+                return 0, ErrBookNotFound
+        }</span>
+        <span class="cov8" title="1">copyID := s.copyID
+        s.copyID++
+        s.copies[copyID] = &amp;BookCopy{ID: copyID, BookID: bookID, ReaderID: 0}
+        return copyID, nil</span>
+}
+
+func (s *InMemoryBookStorage) DeleteCopy(id int) error <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        if _, exists := s.copies[id]; !exists </span><span class="cov8" title="1">{
+                return ErrBookCopyNotFound
+        }</span>
+        <span class="cov8" title="1">delete(s.copies, id)
+        return nil</span>
+}
+
+func (s *InMemoryBookStorage) GetBooks() ([]*Book, error) <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        books := make([]*Book, 0, len(s.books))
+        for _, book := range s.books </span><span class="cov8" title="1">{
+                books = append(books, book)
+        }</span>
+        <span class="cov8" title="1">return books, nil</span>
+}
+
+func (s *InMemoryBookStorage) GetBook(id int) (*Book, error) <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        book, exists := s.books[id]
+        if !exists </span><span class="cov8" title="1">{
+                return nil, ErrBookNotFound
+        }</span>
+        <span class="cov8" title="1">return book, nil</span>
+}
+
+type InMemoryReaderStorage struct {
+        readers map[int]*Reader
+        nextID  int
+        mu      sync.Mutex
+}
+
+func NewInMemoryReaderStorage() *InMemoryReaderStorage <span class="cov8" title="1">{
+        return &amp;InMemoryReaderStorage{
+                readers: make(map[int]*Reader),
+                nextID:  1,
+                mu:      sync.Mutex{},
+        }
+}</span>
+
+func (s *InMemoryReaderStorage) GetReaders() ([]*Reader, error) <span class="cov0" title="0">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        readers := make([]*Reader, 0, len(s.readers))
+        for _, reader := range s.readers </span><span class="cov0" title="0">{
+                readers = append(readers, reader)
+        }</span>
+        <span class="cov0" title="0">return readers, nil</span>
+}
+
+func (s *InMemoryReaderStorage) GetReader(id int) (*Reader, error) <span class="cov0" title="0">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        reader, exists := s.readers[id]
+        if !exists </span><span class="cov0" title="0">{
+                return nil, ErrReaderNotFound
+        }</span>
+
+        <span class="cov0" title="0">return reader, nil</span>
+}
+
+func (s *InMemoryReaderStorage) CreateReader(reader *Reader) error <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        reader.ID = s.nextID
+        s.nextID++
+        s.readers[reader.ID] = reader
+        return nil
+}</span>
+
+func (s *InMemoryReaderStorage) DeleteReader(id int) error <span class="cov8" title="1">{
+        s.mu.Lock()
+        defer s.mu.Unlock()
+
+        if _, exists := s.readers[id]; !exists </span><span class="cov8" title="1">{
+                return ErrReaderNotFound
+        }</span>
+        <span class="cov8" title="1">delete(s.readers, id)
+        return nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
