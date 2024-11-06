@@ -31,16 +31,6 @@ var (
 type LibraryService interface {
 	BorrowBook(bookID int, readerID int) error
 	ReturnBook(bookID int, readerID int) error
-	CreateBook(book *Book) error
-	DeleteBook(id int) error
-	AddCopy(bookID int) (int, error)
-	DeleteCopy(id int) error
-	GetBooks() ([]*Book, error)
-	GetBook(id int) (*Book, error)
-	GetReaders() ([]*Reader, error)
-	GetReader(id int) (*Reader, error)
-	CreateReader(reader *Reader) error
-	DeleteReader(id int) error
 }
 
 type BookStorage interface {

@@ -19,7 +19,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		if err := service.CreateBook(&book); err != nil {
+		if err := service.storage.bookStorage.CreateBook(&book); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -32,7 +32,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
 			return
 		}
-		if err = service.DeleteBook(id); err != nil {
+		if err = service.storage.bookStorage.DeleteBook(id); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -45,7 +45,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
 			return
 		}
-		copyID, err := service.AddCopy(bookID)
+		copyID, err := service.storage.bookStorage.AddCopy(bookID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -59,7 +59,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid copy ID"})
 			return
 		}
-		if err = service.DeleteCopy(id); err != nil {
+		if err = service.storage.bookStorage.DeleteCopy(id); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -67,7 +67,7 @@ func main() {
 	})
 
 	router.GET("/books", func(c *gin.Context) {
-		books, err := service.GetBooks()
+		books, err := service.storage.bookStorage.GetBooks()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -81,7 +81,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
 			return
 		}
-		book, err := service.GetBook(id)
+		book, err := service.storage.bookStorage.GetBook(id)
 		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
@@ -122,7 +122,7 @@ func main() {
 	})
 
 	router.GET("/readers", func(c *gin.Context) {
-		readers, err := service.GetReaders()
+		readers, err := service.storage.readerStorage.GetReaders()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -136,7 +136,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
 			return
 		}
-		reader, err := service.GetReader(id)
+		reader, err := service.storage.readerStorage.GetReader(id)
 		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
@@ -150,7 +150,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		if err := service.CreateReader(&reader); err != nil {
+		if err := service.storage.readerStorage.CreateReader(&reader); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -163,7 +163,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
 			return
 		}
-		if err = service.DeleteReader(id); err != nil {
+		if err = service.storage.readerStorage.DeleteReader(id); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}

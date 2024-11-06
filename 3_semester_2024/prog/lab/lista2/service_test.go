@@ -9,7 +9,7 @@ func TestBorrowBook(t *testing.T) {
 	storage := NewInMemoryStorage()
 	service := NewService(storage)
 
-	err := service.CreateReader(&Reader{Name: "Test", Surname: "Reader"})
+	err := service.storage.readerStorage.CreateReader(&Reader{Name: "Test", Surname: "Reader"})
 	if err != nil {
 		t.Fatalf("failed to create reader: %v", err)
 	}
@@ -22,11 +22,11 @@ func TestBorrowBook(t *testing.T) {
 
 	// Create a book and add a copy
 	book := &Book{Title: "Test Book"}
-	err = service.CreateBook(book)
+	err = service.storage.bookStorage.CreateBook(book)
 	if err != nil {
 		t.Fatalf("failed to create book: %v", err)
 	}
-	copyID, err := service.AddCopy(book.ID)
+	copyID, err := service.storage.bookStorage.AddCopy(book.ID)
 	if err != nil {
 		t.Fatalf("failed to add copy: %v", err)
 	}
@@ -48,12 +48,12 @@ func TestReturnBook(t *testing.T) {
 	storage := NewInMemoryStorage()
 	service := NewService(storage)
 
-	err := service.CreateReader(&Reader{Name: "Test", Surname: "Reader"})
+	err := service.storage.readerStorage.CreateReader(&Reader{Name: "Test", Surname: "Reader"})
 	if err != nil {
 		t.Fatalf("failed to create reader: %v", err)
 	}
 
-	err = service.CreateReader(&Reader{Name: "Test2", Surname: "Reader2"})
+	err = service.storage.readerStorage.CreateReader(&Reader{Name: "Test2", Surname: "Reader2"})
 	if err != nil {
 		t.Fatalf("failed to create reader: %v", err)
 	}
@@ -66,11 +66,11 @@ func TestReturnBook(t *testing.T) {
 
 	// Create a book and add a copy
 	book := &Book{Title: "Test Book"}
-	err = service.CreateBook(book)
+	err = service.storage.bookStorage.CreateBook(book)
 	if err != nil {
 		t.Fatalf("failed to create book: %v", err)
 	}
-	copyID, err := service.AddCopy(book.ID)
+	copyID, err := service.storage.bookStorage.AddCopy(book.ID)
 	if err != nil {
 		t.Fatalf("failed to add copy: %v", err)
 	}
