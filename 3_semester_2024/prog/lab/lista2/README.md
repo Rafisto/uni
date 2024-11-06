@@ -53,10 +53,6 @@ plantuml usage.puml
 
 - **HTTPServer**: API server to handle HTTP requests, providing endpoints for interacting with books, copies, and readers.
 
-### Services
-
-- **LibraryService**: Service layer providing business logic for borrowing and returning books.
-
 ## Endpoints
 
 See swagger documentation at `http://localhost:8080/docs/index.html`, or view it [here](./docs/swagger.yaml)
@@ -106,10 +102,10 @@ It can easily be replaced with a persistent storage implementation (e.g., using 
 - Librarian creates a new book providing:
   - Title
   - Author
-- System creates the book and returns its ID, Title, and Author
+- System creates the book and returns its ID and successful message
 - (Alternative) System returns an error if the request is invalid (missing data)
 
-4. Delete a book
+1. Delete a book
 
 - Librarian deletes a book by ID
 - System deletes the book with the given ID
@@ -118,7 +114,7 @@ It can easily be replaced with a persistent storage implementation (e.g., using 
 5. Get all copies of books
 
 - Librarian requests all copies of books
-- System returns all copies, including their ID, Book ID, and Borrowed status
+- System returns all copies, including their ID, Book details and availability
 - (Alternative) System returns empty list if no copies exist
 
 6. Create a new copy for a book
@@ -139,7 +135,7 @@ It can easily be replaced with a persistent storage implementation (e.g., using 
 - Librarian borrows for a Reader **the first available copy of a requested book** by providing:
   - Book ID
   - Reader ID
-- System updates the copy to set the Reader ID and returns the updated copy
+- System updates the copy to set the Reader ID and returns the id of the copy
 - (Alternative) System returns an error if the reader does not exist
 - (Alternative) System returns an error if the book does not exist
 - (Alternative) System returns an error if no copies are available

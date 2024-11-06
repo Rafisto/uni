@@ -79,8 +79,7 @@ func main() {
 
 	populate(storage)
 
-	service := NewService(storage)
-	server := &HTTPServer{service: service}
+	server := &HTTPServer{storage: storage}
 
 	router := gin.Default()
 

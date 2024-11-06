@@ -14,21 +14,30 @@ type BookCopy struct {
 	ReaderID int `json:"reader_id" example:"1"`
 }
 
+func (bc *BookCopy) IsAvailable() bool {
+	return bc.ReaderID == 0
+}
+
+func (bc *BookCopy) Borrow(readerID int) error {
+	if !bc.IsAvailable() {
+		return ErrBookCopyNotAvaialble
+	}
+	bc.ReaderID = readerID
+	return nil
+}
+
+func (bc *BookCopy) Return(readerID int) error {
+	if bc.IsAvailable() || bc.ReaderID != readerID {
+		return ErrBookNotBorrowed
+	}
+	bc.ReaderID = 0
+	return nil
+}
+
 type Reader struct {
 	ReaderID int    `json:"reader_id" example:"1"`
 	Name     string `json:"name" example:"John"`
 	Surname  string `json:"surname" example:"Doe"`
-}
-
-type FullCopy struct {
-	Book
-	BookCopy
-}
-
-type LibraryService interface {
-	GetCopiesByReader(readerID int) ([]*FullCopy, error)
-	BorrowBook(bookID int, readerID int) error
-	ReturnBook(bookID int, readerID int) error
 }
 
 type BookStorage interface {
@@ -39,7 +48,7 @@ type BookStorage interface {
 	GetCopies() ([]*BookCopy, error)
 	GetCopy(id int) (*BookCopy, error)
 	CreateCopy(bookID int) (int, error)
-	UpdateCopy(id int, readerID int) error
+	UpdateCopy(*BookCopy) error
 	DeleteCopy(id int) error
 }
 

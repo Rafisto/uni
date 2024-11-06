@@ -1,21 +1,21 @@
-@startuml diagram
+@startuml
 
 package "LibrarySystem" {
 
     package "Domain" {
-        class Book {
+        struct Book {
             - ID: int
             - Title: string
             - Author: string
         }
 
-        class BookCopy {
+        struct BookCopy {
             - CopyID: int
             - BookID: int
-            - ReaderID: int 0 if not borrowed
+            - ReaderID: int  // 0 if not borrowed
         }
 
-        class Reader {
+        struct Reader {
             - ReaderID: int
             - Name: string
             - Surname: string
@@ -23,10 +23,30 @@ package "LibrarySystem" {
 
     }
 
+    package "API" {
+        struct HTTPServer {
+            HTTPServer is an API Server to interact with the Library
+            - storage: LibraryStorage
+            + GetBooksHandler()
+            + GetBookHandler()
+            + CreateBookHandler()
+            + DeleteBookHandler()
+            + CreateCopyHandler()
+            + GetAllCopiesHandler()
+            + DeleteCopyHandler()
+            + BorrowBookHandler()
+            + ReturnBookHandler()
+            + GetReadersHandler()
+            + GetReaderHandler()
+            + CreateReaderHandler()
+            + DeleteReaderHandler()
+        }
+    }
+
     package "Storage" {
         interface BookStorage {
-           	+ GetBooks() ([]*Book, error)
-	        + GetBook(id int) (*Book, error)
+            + GetBooks() ([]*Book, error)
+            + GetBook(id int) (*Book, error)
             + CreateBook(book *Book) error
             + DeleteBook(id int) error
             + GetCopies() ([]*BookCopy, error)
@@ -48,13 +68,13 @@ package "LibrarySystem" {
             + ReaderStorage
         }
 
-        class InMemoryStorage {
+        struct InMemoryStorage {
             - InMemoryBookStorage: InMemoryBookStorage
             - InMemoryReaderStorage: InMemoryReaderStorage
             + NewInMemoryStorage(): *InMemoryStorage
         }
 
-        class InMemoryBookStorage {
+        struct InMemoryBookStorage {
             - books: map[int]*Book
             - copies: map[int]*BookCopy
             - nextID: int
@@ -62,64 +82,32 @@ package "LibrarySystem" {
             - mu: sync.Mutex
         }
 
-        class InMemoryReaderStorage {
+        struct InMemoryReaderStorage {
             - readers: map[int]*Reader
             - nextID: int
             - mu: sync.Mutex
         }
     }
 
-    package "API" {
-        class HTTPServer {
-            HTTPServer is an API Server to interact with the Library
-            - service: LibraryService
-            - storage: LibraryStorage
-            + GetBooksHandler()
-            + GetBookHandler()
-            + CreateBookHandler()
-            + DeleteBookHandler()
-            + CreateCopyHandler()
-            + GetAllCopiesHandler()
-            + DeleteCopyHandler()
-            + BorrowBookHandler()
-            + ReturnBookHandler()
-            + GetReadersHandler()
-            + GetReaderHandler()
-            + CreateReaderHandler()
-            + DeleteReaderHandler()
-        }
-    }
-
-    package "Services" {
-        interface LibraryService {
-            + GetCopiesByReader(readerID int) ([]*FullCopy, error)
-            + BorrowBook(bookID int, readerID int) error
-            + ReturnBook(bookID int, readerID int) error
-        }
-
-        class Service {
-            - storage: InMemoryStorage
-            + NewService(storage: InMemoryStorage): *Service
-        }
-    }
+    ' Type 	Symbol
+    ' Zero or One 	|o--
+    ' Exactly One 	||--
+    ' Zero or Many 	}o--
+    ' One or Many 	}|--
 
     LibraryStorage <|-- InMemoryStorage : "Implements"
-    LibraryStorage <-- BookStorage : "Contains"
-    LibraryStorage <-- ReaderStorage : "Contains"
-    BookStorage <|-- InMemoryBookStorage : "Implements"
-    ReaderStorage <|-- InMemoryReaderStorage : "Implements"
-    HTTPServer --> LibraryService : "Uses for complex queries"
-    HTTPServer --> LibraryStorage : "Uses for simple queries"
-    Service --> LibraryStorage : "Uses"
-    LibraryService <|-- Service : "Implements"
-    InMemoryStorage --> InMemoryBookStorage : "Contains"
-    InMemoryStorage --> InMemoryReaderStorage : "Contains"
-    InMemoryBookStorage --> Book : "References"
-    InMemoryReaderStorage --> Reader : "References"
-    InMemoryBookStorage --> BookCopy : "References"
-    BookCopy --> Book : "References"
-    BookCopy --> Reader : "References"
-
+    LibraryStorage <.. BookStorage : "Contains"
+    LibraryStorage <.. ReaderStorage : "Contains"
+    HTTPServer --> LibraryStorage : "Uses"
+    HTTPServer --> Domain : "Uses"
+    InMemoryStorage <-- InMemoryBookStorage : "Contains"
+    InMemoryStorage <-- InMemoryReaderStorage : "Contains"
+    InMemoryBookStorage --> Book : "Stores"
+    InMemoryReaderStorage --> Reader : "Stores"
+    InMemoryBookStorage --> BookCopy : "Stores"
+    InMemoryStorage --> Domain : "Stores"
+    BookCopy }o-- Book : "References"
+    BookCopy |o--o| Reader : "Borrows"
 }
 
 @enduml

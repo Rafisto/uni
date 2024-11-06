@@ -16,7 +16,7 @@ type HTTPError struct {
 }
 
 type HTTPServer struct {
-	service *Service
+	storage LibraryStorage
 }
 
 type NewBook struct {
@@ -34,7 +34,7 @@ type NewBook struct {
 // @Failure 500 {object} HTTPError
 // @Router /books [get]
 func (h *HTTPServer) GetBooksHandler(c *gin.Context) {
-	books, err := h.service.storage.GetBooks()
+	books, err := h.storage.GetBooks()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -59,7 +59,7 @@ func (h *HTTPServer) GetBookHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
 		return
 	}
-	book, err := h.service.storage.GetBook(id)
+	book, err := h.storage.GetBook(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -84,7 +84,13 @@ func (h *HTTPServer) CreateBookHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := h.service.storage.CreateBook(&book); err != nil {
+
+	if book.Title == "" || book.Author == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Both 'title' and 'author' body fields are required"})
+		return
+	}
+
+	if err := h.storage.CreateBook(&book); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -108,7 +114,7 @@ func (h *HTTPServer) DeleteBookHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
 		return
 	}
-	if err = h.service.storage.DeleteBook(id); err != nil {
+	if err = h.storage.DeleteBook(id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -125,12 +131,29 @@ func (h *HTTPServer) DeleteBookHandler(c *gin.Context) {
 // @Failure 500 {object} HTTPError
 // @Router /copies [get]
 func (h *HTTPServer) GetAllCopiesHandler(c *gin.Context) {
-	copies, err := h.service.storage.GetCopies()
+	copies, err := h.storage.GetCopies()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, copies)
+
+	type FullCopy struct {
+		CopyID    int  `json:"copy_id"`
+		Available bool `json:"available"`
+		Book
+	}
+
+	fullCopies := make([]*FullCopy, len(copies))
+	for i, copy := range copies {
+		book, err := h.storage.GetBook(copy.BookID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		fullCopies[i] = &FullCopy{copy.CopyID, copy.IsAvailable(), *book}
+	}
+
+	c.JSON(http.StatusOK, fullCopies)
 }
 
 // CreateCopyHandler godoc
@@ -150,7 +173,7 @@ func (h *HTTPServer) CreateCopyHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
 		return
 	}
-	copyID, err := h.service.storage.CreateCopy(bookID)
+	copyID, err := h.storage.CreateCopy(bookID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -175,7 +198,7 @@ func (h *HTTPServer) DeleteCopyHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid copy ID"})
 		return
 	}
-	if err = h.service.storage.DeleteCopy(id); err != nil {
+	if err = h.storage.DeleteCopy(id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -195,23 +218,71 @@ func (h *HTTPServer) DeleteCopyHandler(c *gin.Context) {
 // @Failure 500 {object} HTTPError
 // @Router /borrow [post]
 func (h *HTTPServer) BorrowBookHandler(c *gin.Context) {
-	book_id, err := strconv.Atoi(c.Query("book_id"))
+	bookID, err := strconv.Atoi(c.Query("book_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid book ID"})
+		return
+	}
+
+	readerID, err := strconv.Atoi(c.Query("reader_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
+		return
+	}
+
+	_, err = h.storage.GetBook(bookID)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Book not found"})
+	}
+
+	_, err = h.storage.GetReader(readerID)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Reader not found"})
+	}
+
+	copies, err := h.storage.GetCopies()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get copies"})
+		return
+	}
+
+	availableCopyID := 0
+	for _, copy := range copies {
+		if copy.BookID == bookID {
+			if copy.ReaderID == readerID {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Book already borrowed by this reader"})
+				return
+			}
+			if copy.IsAvailable() {
+				availableCopyID = copy.CopyID
+			}
+		}
+	}
+
+	if availableCopyID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No available copy"})
+		return
+	}
+
+	availableCopy, err := h.storage.GetCopy(availableCopyID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get copy"})
+		return
+	}
+
+	err = availableCopy.Borrow(readerID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	reader_id, err := strconv.Atoi(c.Query("reader_id"))
+	err = h.storage.UpdateCopy(availableCopy)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update copy"})
 		return
 	}
 
-	if err := h.service.BorrowBook(book_id, reader_id); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"status": "book borrowed"})
+	c.JSON(http.StatusOK, gin.H{"status": "book borrowed", "copy_id": availableCopyID})
 }
 
 // ReturnBookHandler godoc
@@ -223,26 +294,39 @@ func (h *HTTPServer) BorrowBookHandler(c *gin.Context) {
 // @Param copy_id query int true "Copy ID"
 // @Param reader_id query int true "Reader ID"
 // @Success 200 {object} HTTPMessage
-// @Failure 400 {object} HTTPErrord
+// @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
 // @Router /return [post]
 func (h *HTTPServer) ReturnBookHandler(c *gin.Context) {
-	copy_id, err := strconv.Atoi(c.Query("copy_id"))
+	copyID, err := strconv.Atoi(c.Query("copy_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid copy ID"})
+		return
+	}
+
+	readerID, err := strconv.Atoi(c.Query("reader_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
+		return
+	}
+
+	copy, err := h.storage.GetCopy(copyID)
+	if err != nil || copy.ReaderID != readerID {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Copy not found or not borrowed by this reader"})
+		return
+	}
+
+	err = copy.Return(readerID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	reader_id, err := strconv.Atoi(c.Query("reader_id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := h.storage.UpdateCopy(copy); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to return book"})
 		return
 	}
 
-	if err := h.service.ReturnBook(copy_id, reader_id); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
 	c.JSON(http.StatusOK, gin.H{"status": "book returned"})
 }
 
@@ -256,7 +340,7 @@ func (h *HTTPServer) ReturnBookHandler(c *gin.Context) {
 // @Failure 500 {object} HTTPError
 // @Router /readers [get]
 func (h *HTTPServer) GetReadersHandler(c *gin.Context) {
-	readers, err := h.service.storage.GetReaders()
+	readers, err := h.storage.GetReaders()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -282,29 +366,34 @@ func (h *HTTPServer) GetReaderHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
 		return
 	}
-	reader, err := h.service.storage.GetReader(id)
+
+	reader, err := h.storage.GetReader(id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		return
+		c.JSON(http.StatusNotFound, gin.H{"error": "Reader not found"})
 	}
-	bookList, err := h.service.GetCopiesByReader(id)
+
+	copies, err := h.storage.GetCopies()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	type ReturnBook struct {
-		CopyID int    `json:"copy_id" example:"1"`
-		Author string `json:"author" example:"Kernighan Ritchie"`
-		Title  string `json:"title" example:"The C Programming Language"`
+	type FullCopy struct {
+		Book
+		BookCopy
 	}
 
-	list := make([]*ReturnBook, 0)
-	for _, book := range bookList {
-		list = append(list, &ReturnBook{CopyID: book.CopyID, Author: book.Author, Title: book.Title})
+	var borrowedBooks []*FullCopy
+	for _, copy := range copies {
+		if copy.ReaderID == id {
+			book, err := h.storage.GetBook(copy.BookID)
+			if err == nil {
+				borrowedBooks = append(borrowedBooks, &FullCopy{*book, *copy})
+			}
+		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{"reader": reader, "books": list})
+	c.JSON(http.StatusOK, gin.H{"reader": reader, "books": borrowedBooks})
 }
 
 type NewReader struct {
@@ -329,7 +418,13 @@ func (h *HTTPServer) CreateReaderHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := h.service.storage.CreateReader(&reader); err != nil {
+
+	if reader.Name == "" || reader.Surname == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Both 'name' and 'surname' body fields are required"})
+		return
+	}
+
+	if err := h.storage.CreateReader(&reader); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -353,7 +448,7 @@ func (h *HTTPServer) DeleteReaderHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reader ID"})
 		return
 	}
-	if err = h.service.storage.DeleteReader(id); err != nil {
+	if err = h.storage.DeleteReader(id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
