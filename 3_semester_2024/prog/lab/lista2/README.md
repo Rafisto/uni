@@ -105,7 +105,7 @@ It can easily be replaced with a persistent storage implementation (e.g., using 
 - System creates the book and returns its ID and successful message
 - (Alternative) System returns an error if the request is invalid (missing data)
 
-1. Delete a book
+4. Delete a book
 
 - Librarian deletes a book by ID
 - System deletes the book with the given ID
@@ -172,3 +172,14 @@ It can easily be replaced with a persistent storage implementation (e.g., using 
 - Librarian deletes a reader by ID
 - System deletes the reader with the given ID
 - (Alternative) System returns an error if the reader does not exist.
+
+## Java Equivalents
+
+- Class - Struct
+- Class Diagram - Struct Diagram (above) at [code-uml](./diagram.png)
+- Sequence Diagram - Usage Diagram (above) at [usage-uml](./usage.png)
+- Domain - Model
+- PMD, Checkstyle - go vet, golangci-lint (.golangci.yml)
+- Unit tests - go test -v (-cover) testify
+- Maven - go mod
+- DB - LibraryStorage (interface) + InMemoryStorage (implementation)

@@ -57,7 +57,6 @@ func populate(s LibraryStorage) {
 			panic(err)
 		}
 	}
-
 }
 
 // @title           Library API

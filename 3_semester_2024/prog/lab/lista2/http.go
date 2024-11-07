@@ -32,7 +32,7 @@ type NewBook struct {
 // @Produce json
 // @Success 200 {array} Book
 // @Failure 500 {object} HTTPError
-// @Router /books [get]
+// @Router /books [get].
 func (h *HTTPServer) GetBooksHandler(c *gin.Context) {
 	books, err := h.storage.GetBooks()
 	if err != nil {
@@ -52,7 +52,7 @@ func (h *HTTPServer) GetBooksHandler(c *gin.Context) {
 // @Success 200 {object} Book
 // @Failure 400 {object} HTTPError
 // @Failure 404 {object} HTTPError
-// @Router /books/{id} [get]
+// @Router /books/{id} [get].
 func (h *HTTPServer) GetBookHandler(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -77,7 +77,7 @@ func (h *HTTPServer) GetBookHandler(c *gin.Context) {
 // @Success 201 {object} HTTPMessage
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /books [post]
+// @Router /books [post].
 func (h *HTTPServer) CreateBookHandler(c *gin.Context) {
 	var book Book
 	if err := c.ShouldBindJSON(&book); err != nil {
@@ -107,7 +107,7 @@ func (h *HTTPServer) CreateBookHandler(c *gin.Context) {
 // @Success 200 {object} HTTPMessage
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /books/{id} [delete]
+// @Router /books/{id} [delete].
 func (h *HTTPServer) DeleteBookHandler(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -129,7 +129,7 @@ func (h *HTTPServer) DeleteBookHandler(c *gin.Context) {
 // @Produce json
 // @Success 200 {array} BookCopy
 // @Failure 500 {object} HTTPError
-// @Router /copies [get]
+// @Router /copies [get].
 func (h *HTTPServer) GetAllCopiesHandler(c *gin.Context) {
 	copies, err := h.storage.GetCopies()
 	if err != nil {
@@ -166,7 +166,7 @@ func (h *HTTPServer) GetAllCopiesHandler(c *gin.Context) {
 // @Success 201 {object} HTTPMessage
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /books/{id}/copies [post]
+// @Router /books/{id}/copies [post].
 func (h *HTTPServer) CreateCopyHandler(c *gin.Context) {
 	bookID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -191,7 +191,7 @@ func (h *HTTPServer) CreateCopyHandler(c *gin.Context) {
 // @Success 200 {object} HTTPMessage
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /copies/{id} [delete]
+// @Router /copies/{id} [delete].
 func (h *HTTPServer) DeleteCopyHandler(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -216,7 +216,7 @@ func (h *HTTPServer) DeleteCopyHandler(c *gin.Context) {
 // @Success 200 {object} HTTPMessage
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /borrow [post]
+// @Router /borrow [post].
 func (h *HTTPServer) BorrowBookHandler(c *gin.Context) {
 	bookID, err := strconv.Atoi(c.Query("book_id"))
 	if err != nil {
@@ -296,7 +296,7 @@ func (h *HTTPServer) BorrowBookHandler(c *gin.Context) {
 // @Success 200 {object} HTTPMessage
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /return [post]
+// @Router /return [post].
 func (h *HTTPServer) ReturnBookHandler(c *gin.Context) {
 	copyID, err := strconv.Atoi(c.Query("copy_id"))
 	if err != nil {
@@ -310,19 +310,19 @@ func (h *HTTPServer) ReturnBookHandler(c *gin.Context) {
 		return
 	}
 
-	copy, err := h.storage.GetCopy(copyID)
-	if err != nil || copy.ReaderID != readerID {
+	bookCopy, err := h.storage.GetCopy(copyID)
+	if err != nil || bookCopy.ReaderID != readerID {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Copy not found or not borrowed by this reader"})
 		return
 	}
 
-	err = copy.Return(readerID)
+	err = bookCopy.Return(readerID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := h.storage.UpdateCopy(copy); err != nil {
+	if err := h.storage.UpdateCopy(bookCopy); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to return book"})
 		return
 	}
@@ -338,7 +338,7 @@ func (h *HTTPServer) ReturnBookHandler(c *gin.Context) {
 // @Produce json
 // @Success 200 {array} Reader
 // @Failure 500 {object} HTTPError
-// @Router /readers [get]
+// @Router /readers [get].
 func (h *HTTPServer) GetReadersHandler(c *gin.Context) {
 	readers, err := h.storage.GetReaders()
 	if err != nil {
@@ -359,7 +359,7 @@ func (h *HTTPServer) GetReadersHandler(c *gin.Context) {
 // @Failure 400 {object} HTTPError
 // @Failure 404 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /readers/{id} [get]
+// @Router /readers/{id} [get].
 func (h *HTTPServer) GetReaderHandler(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -411,7 +411,7 @@ type NewReader struct {
 // @Success 201 {object} Reader
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /readers [post]
+// @Router /readers [post].
 func (h *HTTPServer) CreateReaderHandler(c *gin.Context) {
 	var reader Reader
 	if err := c.ShouldBindJSON(&reader); err != nil {
@@ -441,7 +441,7 @@ func (h *HTTPServer) CreateReaderHandler(c *gin.Context) {
 // @Success 200 {object} HTTPMessage
 // @Failure 400 {object} HTTPError
 // @Failure 500 {object} HTTPError
-// @Router /readers/{id} [delete]
+// @Router /readers/{id} [delete].
 func (h *HTTPServer) DeleteReaderHandler(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

@@ -122,14 +122,14 @@ func (s *InMemoryBookStorage) CreateCopy(bookID int) (int, error) {
 	return copyID, nil
 }
 
-func (s *InMemoryBookStorage) UpdateCopy(copy *BookCopy) error {
+func (s *InMemoryBookStorage) UpdateCopy(bookCopy *BookCopy) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if _, exists := s.copies[copy.CopyID]; !exists {
+	if _, exists := s.copies[bookCopy.CopyID]; !exists {
 		return ErrBookCopyNotFound
 	}
-	s.copies[copy.CopyID] = copy
+	s.copies[bookCopy.CopyID] = bookCopy
 	return nil
 }
 
