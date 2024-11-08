@@ -95,9 +95,9 @@ package "LibrarySystem" {
     ' Zero or Many 	}o--
     ' One or Many 	}|--
 
-    LibraryStorage <|-- InMemoryStorage : "Implements"
-    LibraryStorage <.. BookStorage : "Contains"
-    LibraryStorage <.. ReaderStorage : "Contains"
+    LibraryStorage <|.. InMemoryStorage : "Implements"
+    LibraryStorage <-- BookStorage : "Contains"
+    LibraryStorage <-- ReaderStorage : "Contains"
     HTTPServer --> LibraryStorage : "Uses"
     HTTPServer --> Domain : "Uses"
     InMemoryStorage <-- InMemoryBookStorage : "Contains"
@@ -106,8 +106,8 @@ package "LibrarySystem" {
     InMemoryReaderStorage --> Reader : "Stores"
     InMemoryBookStorage --> BookCopy : "Stores"
     InMemoryStorage --> Domain : "Stores"
-    BookCopy }o-- Book : "References"
-    BookCopy |o--o| Reader : "Borrows"
+    BookCopy <-- Book : "References"
+    BookCopy <-- Reader : "Borrows"
 }
 
 @enduml
