@@ -1,7 +1,8 @@
 #!/bin/bash
 # List processes by fetching /proc/PID/stat files
 # Rafał Włodarczyk
-#
+
+# ====================
 # Based on proc_pid_stat(5) https://man7.org/linux/man-pages/man5/proc_pid_stat.5.html
 # (1) pid - process ID
 # (2) comm - command name
@@ -12,6 +13,7 @@
 # (7) tty_nr - controlling terminal
 # (24) rss - resident set size
 # lsof - number of open file descriptors - via /proc/PID/fd
+# ====================
 
 for pid in $(ls /proc | grep -E '^[0-9]+$'); do
     if [ -f /proc/$pid/stat ]; then
