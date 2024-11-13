@@ -1,0 +1,133 @@
+diff --git a/Makefile b/Makefile
+index 09d790cf..006a2beb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -76,7 +76,7 @@ AS = $(TOOLPREFIX)gas
+ LD = $(TOOLPREFIX)ld
+ OBJCOPY = $(TOOLPREFIX)objcopy
+ OBJDUMP = $(TOOLPREFIX)objdump
+-CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer
++CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -mno-sse -ggdb -m32 -fno-omit-frame-pointer
+ CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
+ ASFLAGS = -m32 -gdwarf-2 -Wa,-divide
+ # FreeBSD ld wants ``elf_i386_fbsd''
+@@ -116,6 +116,7 @@ entryother: entryother.S
+ 
+ initcode: initcode.S
+ 	$(CC) $(CFLAGS) -nostdinc -I. -c initcode.S
++	$(OBJCOPY) --remove-section .note.gnu.property initcode.o
+ 	$(LD) $(LDFLAGS) -N -e start -Ttext 0 -o initcode.out initcode.o
+ 	$(OBJCOPY) -S -O binary initcode.out initcode
+ 	$(OBJDUMP) -S initcode.o > initcode.asm
+@@ -146,6 +147,7 @@ vectors.S: vectors.pl
+ ULIB = ulib.o usys.o printf.o umalloc.o
+ 
+ _%: %.o $(ULIB)
++	$(OBJCOPY) --remove-section .note.gnu.property ulib.o
+ 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $@ $^
+ 	$(OBJDUMP) -S $@ > $*.asm
+ 	$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
+@@ -165,6 +167,8 @@ mkfs: mkfs.c fs.h
+ # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
+ .PRECIOUS: %.o
+ 
++# exercise 4 - add _expr and _hello to UPROGS
++
+ UPROGS=\
+ 	_cat\
+ 	_echo\
+@@ -181,6 +185,8 @@ UPROGS=\
+ 	_usertests\
+ 	_wc\
+ 	_zombie\
++	_expr\
++	_hello
+ 
+ fs.img: mkfs README $(UPROGS)
+ 	./mkfs fs.img README $(UPROGS)
+@@ -247,10 +253,12 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
+ # rename it to rev0 or rev1 or so on and then
+ # check in that version.
+ 
++# exercise 4 - add expr.c and hello.c to EXTRA
++
+ EXTRA=\
+ 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
+ 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
+-	printf.c umalloc.c\
++	printf.c umalloc.c expr.c hello.c\
+ 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
+ 	.gdbinit.tmpl gdbutil\
+ 
+diff --git a/console.c b/console.c
+index a280d2ba..910f1476 100644
+--- a/console.c
++++ b/console.c
+@@ -129,7 +129,7 @@ panic(char *s)
+ static ushort *crt = (ushort*)P2V(0xb8000);  // CGA memory
+ 
+ static void
+-cgaputc(int c)
++cgaputc(int c, int color)
+ {
+   int pos;
+ 
+@@ -144,7 +144,8 @@ cgaputc(int c)
+   else if(c == BACKSPACE){
+     if(pos > 0) --pos;
+   } else
+-    crt[pos++] = (c&0xff) | 0x0700;  // black on white
++    // crt[pos++] = (c&0xff) | 0x0700;  // black on white
++    crt[pos++] = color;
+ 
+   if(pos < 0 || pos > 25*80)
+     panic("pos under/overflow");
+@@ -162,6 +163,18 @@ cgaputc(int c)
+   crt[pos] = ' ' | 0x0700;
+ }
+ 
++// Exercise 5 - Create csetcolor function
++
++int color = 7;
++
++void csetcolor(int newcolor) {
++  if (newcolor < 1 || newcolor > 255) {
++    color = 7;
++  }
++  color = newcolor;
++}
++
++
+ void
+ consputc(int c)
+ {
+@@ -175,7 +188,9 @@ consputc(int c)
+     uartputc('\b'); uartputc(' '); uartputc('\b');
+   } else
+     uartputc(c);
+-  cgaputc(c);
++
++  // Exercise 5 - Use color variable to set the color of the text
++  cgaputc(c, (c&0xff) | (color << 8));
+ }
+ 
+ #define INPUT_BUF 128
+@@ -277,8 +292,17 @@ consolewrite(struct inode *ip, char *buf, int n)
+ 
+   iunlock(ip);
+   acquire(&cons.lock);
+-  for(i = 0; i < n; i++)
++  for(i = 0; i < n; i++) {
++    // Exercise 5 - Create an escape sequence to change the color of the text
++    if (buf[i] == '\x1B' && i + 1 < n) {
++      int color_code = buf[i + 1];
++      csetcolor(color_code);
++      i+=2;
++      continue;
++    }
++    // Regular character output
+     consputc(buf[i] & 0xff);
++  }
+   release(&cons.lock);
+   ilock(ip);
+ 

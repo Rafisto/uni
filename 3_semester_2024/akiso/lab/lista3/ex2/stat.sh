@@ -19,7 +19,7 @@
 # ====================
 
 # Platform-specific variables
-NETWORK_INTERFACE="enp0s31f6"
+NETWORK_INTERFACE="wlan0"
 
 # Universal paths
 NETWORK_STATS_PATH="/proc/net/dev"
