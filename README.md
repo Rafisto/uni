@@ -8,7 +8,7 @@ Table of Contents
 - [Notes Repository 🚀](#notes-repository-)
   - [📊 **Calculus I and Calculus II** 📊](#-calculus-i-and-calculus-ii-)
   - [🥶 **Discrete Mathematics** 🥶](#-discrete-mathematics-)
-  - [🧠 **Computer architecture and operating systems** 🧠](#-computer-architecture-and-operating-systems-)
+  - [🧠 **Operating Systems** 🧠](#-operating-systems-)
   - [🤔 **Algebra** 🤔](#-algebra-)
   - [🌌 **Physics I** 🌌:](#-physics-i-)
   - [**Procedural Programming (lab 5.0 - max)** in `C`](#procedural-programming-lab-50---max-in-c)
@@ -27,12 +27,12 @@ Table of Contents
 - See [notes.pdf (english)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/discrete_mathematics/notes.pdf)
 - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/discrete_mathematics/wzor-stirlinga.pdf)
 
-## 🧠 **Computer architecture and operating systems** 🧠
+## 🧠 **Operating Systems** 🧠
 
 - [Computer Architecture and Operating Systems (polish)](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso) - Main notes directory
 - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/cw)
-- [Lab List 1](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/lab/lista1)
-- [Lab List 2](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/lab/lista2)
+- [Lab List 1](./3_semester_2024/akiso/lab/lista1/REAMDME.md), [A simple bootloader](./3_semester_2024/akiso/lab/lista1#Bootloader), [Archlinux installation](./3_semester_2024/akiso/lab/lista1#zadanie-1-2-3), [Install XFCE on FreeBSD](./3_semester_2024/akiso/lab/lista1#zadanie-5), [About using jails](./3_semester_2024/akiso/lab/lista1#jails-1), [Debug xv6 kernel with gdb](./3_semester_2024/akiso/lab/lista1#zadanie-4)
+- [Lab List 2](./3_semester_2024/akiso/lab/lista2)
 
 ## 🤔 **Algebra** 🤔
 

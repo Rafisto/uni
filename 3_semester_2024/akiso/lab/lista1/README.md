@@ -114,8 +114,6 @@ A bootloader is a small program that loads the operating system into the compute
 
 An example bootloader:
 
-<details>
-
 ```s
 # r-os
 # rafal wlodarczyk 2024
@@ -150,8 +148,6 @@ msg: .ascii "[nos] version 0.01\r\Not an operating system\r\n"
 .word 0xaa55 # little endian
 ```
 
-</details>
-
 ### NCQ
 
 **Native Command Queuing** is an extension of the Serial ATA protocol that allows hard disk drives to internally optimize the order in which read and write commands are executed
@@ -185,9 +181,7 @@ msg: .ascii "[nos] version 0.01\r\Not an operating system\r\n"
 
 ## Zadanie 1, 2, 3
 
-Installation backlog (UEFI)
-
-<details>
+Archlinux Installation Guide
 
 1. Ensure `efivars` are loaded `ls /sys/firmware/efi/efivars`
 2. `fdisk` setup should return the following partition table:
@@ -272,11 +266,9 @@ pacman -S grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 ```
 
-</details>
-
 ## Zadanie 4
 
-Setup backlog
+XV6 setup on Archlinux
 
 ```bash
 git clone https://github.com/mit-pdos/xv6-public.git xv6
@@ -293,7 +285,7 @@ gdb ./kernel
 (gdb) break *0x7c00 # This breakpoint represents the boot section.
 (gdb) c
 ```
-
+`
 ## Zadanie 5
 
 Install FreeBSD.
