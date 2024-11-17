@@ -1,0 +1,145 @@
+diff --git a/abstractfactory/pom.xml b/abstractfactory/pom.xml
+index 562ca64..f4052f8 100644
+--- a/abstractfactory/pom.xml
++++ b/abstractfactory/pom.xml
+@@ -31,8 +31,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/JSONReportFactory.java b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/JSONReportFactory.java
+new file mode 100644
+index 0000000..8717cb3
+--- /dev/null
++++ b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/JSONReportFactory.java
+@@ -0,0 +1,22 @@
++package eu.jpereira.trainings.designpatterns.creational.abstractfactory;
++
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.json.JSONReportBody;
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.json.JSONReportFooter;
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.json.JSONReportHeader;
++
++// rwlodarczyk: Added class to use abstract factory pattern
++
++public class JSONReportFactory implements ReportFactory {
++    public ReportBody createBody() {
++        return new JSONReportBody();
++    }
++    
++    public ReportHeader createHeader() {
++        return new JSONReportHeader();
++    }
++    
++    public ReportFooter createFooter() {
++        return new JSONReportFooter();
++    }
++}
++
+diff --git a/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/Report.java b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/Report.java
+index daeb724..fd4fea5 100644
+--- a/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/Report.java
++++ b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/Report.java
+@@ -15,12 +15,12 @@
+  */
+ package eu.jpereira.trainings.designpatterns.creational.abstractfactory;
+ 
+-import eu.jpereira.trainings.designpatterns.creational.abstractfactory.json.JSONReportBody;
+-import eu.jpereira.trainings.designpatterns.creational.abstractfactory.json.JSONReportFooter;
+-import eu.jpereira.trainings.designpatterns.creational.abstractfactory.json.JSONReportHeader;
+-import eu.jpereira.trainings.designpatterns.creational.abstractfactory.xml.XMLReportBody;
+-import eu.jpereira.trainings.designpatterns.creational.abstractfactory.xml.XMLReportFooter;
+-import eu.jpereira.trainings.designpatterns.creational.abstractfactory.xml.XMLReportHeader;
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.ReportFactory;
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.JSONReportFactory;
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.XMLReportFactory;
++
++
++// rwlodarczyk: Modified class to use abstract factory pattern
+ 
+ public class Report {
+ 
+@@ -36,19 +36,24 @@ public class Report {
+ 	/**
+ 	 * @param string
+ 	 */
+-	public Report(String string) {
+-		this.reportType = string;
+-		if ( reportType.equals("JSON")) {
+-			//to compose Report with JSON objects
+-			this.setBody(new JSONReportBody());
+-			this.setFooter(new JSONReportFooter());
+-			this.setHeader(new JSONReportHeader());
+-		} else {
+-			this.setFooter(new XMLReportFooter());
+-			this.setHeader(new XMLReportHeader());
+-			this.setBody(new XMLReportBody());
++	public Report(String reportType) {
++        ReportFactory factory;
++
++		switch (reportType) {
++			case "JSON":
++			factory = new JSONReportFactory();
++			break;
++			case "XML":
++			factory = new XMLReportFactory();
++			break;
++			default:
++			throw new IllegalArgumentException("Invalid report type");
+ 		}
+-	}
++
++        this.body = factory.createBody();
++        this.header = factory.createHeader();
++        this.footer = factory.createFooter();
++    }
+ 
+ 
+ 	public void setBody(ReportBody body) {
+diff --git a/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/ReportFactory.java b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/ReportFactory.java
+new file mode 100644
+index 0000000..d888145
+--- /dev/null
++++ b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/ReportFactory.java
+@@ -0,0 +1,9 @@
++package eu.jpereira.trainings.designpatterns.creational.abstractfactory;
++
++// rwlodarczyk: Added interface for the abstract factory pattern
++
++public interface ReportFactory {
++    ReportBody createBody();
++    ReportHeader createHeader();
++    ReportFooter createFooter();
++}
+diff --git a/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/XMLReportFactory.java b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/XMLReportFactory.java
+new file mode 100644
+index 0000000..d4aa5d2
+--- /dev/null
++++ b/abstractfactory/src/main/java/eu/jpereira/trainings/designpatterns/creational/abstractfactory/XMLReportFactory.java
+@@ -0,0 +1,21 @@
++package eu.jpereira.trainings.designpatterns.creational.abstractfactory;
++
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.xml.XMLReportBody;
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.xml.XMLReportFooter;
++import eu.jpereira.trainings.designpatterns.creational.abstractfactory.xml.XMLReportHeader;
++
++// rwlodarczyk: Added class to use abstract factory pattern
++
++public class XMLReportFactory implements ReportFactory {
++    public ReportBody createBody() {
++        return new XMLReportBody();
++    }
++    
++    public ReportHeader createHeader() {
++        return new XMLReportHeader();
++    }
++    
++    public ReportFooter createFooter() {
++        return new XMLReportFooter();
++    }
++}

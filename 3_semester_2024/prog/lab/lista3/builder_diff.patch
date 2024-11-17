@@ -1,0 +1,400 @@
+diff --git a/builder/pom.xml b/builder/pom.xml
+index 29ce132..cd2d703 100644
+--- a/builder/pom.xml
++++ b/builder/pom.xml
+@@ -31,8 +31,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/ReportAssembler.java b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/ReportAssembler.java
+index 66a1c4c..7360672 100644
+--- a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/ReportAssembler.java
++++ b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/ReportAssembler.java
+@@ -1,134 +1,47 @@
+-/**
+- * Copyright 2011 Joao Miguel Pereira
+- *
+- *  Licensed under the Apache License, Version 2.0 (the "License");
+- *  you may not use this file except in compliance with the License.
+- *  You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- *  Unless required by applicable law or agreed to in writing, software
+- *  distributed under the License is distributed on an "AS IS" BASIS,
+- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- *  See the License for the specific language governing permissions and
+- *  limitations under the License.
+- */
+ package eu.jpereira.trainings.designpatterns.creational.builder;
+ 
+-import java.util.Iterator;
+-
+-import eu.jpereira.trainings.designpatterns.creational.builder.json.JSONReportBody;
+ import eu.jpereira.trainings.designpatterns.creational.builder.model.Report;
+ import eu.jpereira.trainings.designpatterns.creational.builder.model.SaleEntry;
+-import eu.jpereira.trainings.designpatterns.creational.builder.model.SoldItem;
+-import eu.jpereira.trainings.designpatterns.creational.builder.xml.XMLReportBody;
+-
+-/**
+- * @author jpereira
+- * 
+- */
+-public class ReportAssembler {
+-
+-	private SaleEntry saleEntry;
+-
+-	/**
+-	 * @param reportDate
+-	 */
+-	public void setSaleEntry(SaleEntry saleEntry) {
+-		this.saleEntry = saleEntry;
+ 
+-	}
++import eu.jpereira.trainings.designpatterns.creational.builder.json.JSONReportBodyBuilder;
++import eu.jpereira.trainings.designpatterns.creational.builder.xml.XMLReportBodyBuilder;
++import eu.jpereira.trainings.designpatterns.creational.builder.html.HTMLReportBodyBuilder;
+ 
+-	/**
+-	 * @param type
+-	 * @return
+-	 */
+-	public Report getReport(String type) {
+-		Report report = new Report();
++// rwlodarczyk: modified the terrible code to feature builder pattern
+ 
+-		// Algorithms to build the body objects are different
+-		if (type.equals("JSON")) {
+-
+-			JSONReportBody reportBody = new JSONReportBody();
+-			//Add customer info
+-			reportBody.addContent("sale:{customer:{");
+-			reportBody.addContent("name:\"");
+-			reportBody.addContent(saleEntry.getCustomer().getName());
+-			reportBody.addContent("\",phone:\"");
+-			reportBody.addContent(saleEntry.getCustomer().getPhone());
+-			reportBody.addContent("\"}");
+-			//add array of items
+-			reportBody.addContent(",items:[");
+-			Iterator<SoldItem> it = saleEntry.getSoldItems().iterator();
+-			while ( it.hasNext() ) {
+-				SoldItem item = it.next();
+-				reportBody.addContent("{name:\"");
+-				reportBody.addContent(item.getName());
+-				reportBody.addContent("\",quantity:");
+-				reportBody.addContent(String.valueOf(item.getQuantity()));
+-				reportBody.addContent(",price:");
+-				reportBody.addContent(String.valueOf(item.getUnitPrice()));
+-				reportBody.addContent("}");
+-				if ( it.hasNext() ) {
+-					reportBody.addContent(",");
+-				}
+-				
+-			}
+-			reportBody.addContent("]}");
+-			
+-			
+-			report.setReportBody(reportBody);
+-
+-		} else if (type.equals("XML")) {
+-			XMLReportBody reportBody = new XMLReportBody();
+-			reportBody.putContent("<sale><customer><name>");
+-			reportBody.putContent(this.saleEntry.getCustomer().getName());
+-			reportBody.putContent("</name><phone>");
+-			reportBody.putContent(this.saleEntry.getCustomer().getPhone());
+-			reportBody.putContent("</phone></customer>");
+-			
+-			reportBody.putContent("<items>");
+-			
+-			Iterator<SoldItem> it = saleEntry.getSoldItems().iterator();
+-			while ( it.hasNext() ) {
+-				SoldItem soldEntry= it.next();
+-				reportBody.putContent("<item><name>");
+-				reportBody.putContent(soldEntry.getName());
+-				reportBody.putContent("</name><quantity>");
+-				reportBody.putContent(soldEntry.getQuantity());
+-				reportBody.putContent("</quantity><price>");
+-				reportBody.putContent(soldEntry.getUnitPrice());
+-				reportBody.putContent("</price></item>");
+-			}
+-			reportBody.putContent("</items></sale>");
+-			report.setReportBody(reportBody);
+-		} else if (type.equals("HTML")) {
+-			
+-			HTMLReportBody reportBody = new HTMLReportBody();
+-			reportBody.putContent("<span class=\"customerName\">");
+-			reportBody.putContent(this.saleEntry.getCustomer().getName());
+-			reportBody.putContent("</span><span class=\"customerPhone\">");
+-			reportBody.putContent(this.saleEntry.getCustomer().getPhone());
+-			reportBody.putContent("</span>");
+-			
+-			reportBody.putContent("<items>");
+-			
+-			Iterator<SoldItem> it = saleEntry.getSoldItems().iterator();
+-			while ( it.hasNext() ) {
+-				SoldItem soldEntry= it.next();
+-				reportBody.putContent("<item><name>");
+-				reportBody.putContent(soldEntry.getName());
+-				reportBody.putContent("</name><quantity>");
+-				reportBody.putContent(soldEntry.getQuantity());
+-				reportBody.putContent("</quantity><price>");
+-				reportBody.putContent(soldEntry.getUnitPrice());
+-				reportBody.putContent("</price></item>");
+-			}
+-			reportBody.putContent("</items>");
+-			report.setReportBody(reportBody);
+-		}
+-
+-		return report;
+-	}
++public class ReportAssembler {
+ 
++    private SaleEntry saleEntry;
++
++    /**
++     * @param saleEntry
++     */
++    public void setSaleEntry(SaleEntry saleEntry) {
++        this.saleEntry = saleEntry;
++    }
++
++    /**
++     * @param type
++     * @return
++     */
++    public Report getReport(String type) {
++        ReportBodyBuilder builder;
++
++        switch (type.toUpperCase()) {
++            case "JSON":
++                builder = new JSONReportBodyBuilder();
++                break;
++            case "XML":
++                builder = new XMLReportBodyBuilder();
++                break;
++            case "HTML":
++                builder = new HTMLReportBodyBuilder();
++                break;
++            default:
++                throw new IllegalArgumentException("Unsupported report type: " + type);
++        }
++
++        builder.setSaleEntry(this.saleEntry);
++        return builder.buildReport();
++    }
+ }
+diff --git a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/ReportBodyBuilder.java b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/ReportBodyBuilder.java
+new file mode 100644
+index 0000000..d921657
+--- /dev/null
++++ b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/ReportBodyBuilder.java
+@@ -0,0 +1,11 @@
++package eu.jpereira.trainings.designpatterns.creational.builder;
++
++import eu.jpereira.trainings.designpatterns.creational.builder.model.Report;
++import eu.jpereira.trainings.designpatterns.creational.builder.model.SaleEntry;
++
++// rwlodarczyk: create reportbodybuilder interface
++
++public interface ReportBodyBuilder {
++    void setSaleEntry(SaleEntry saleEntry);
++    Report buildReport();
++}
+diff --git a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/json/JSONReportBody.java b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/json/JSONReportBody.java
+index 331c3a6..7c1f32b 100644
+--- a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/json/JSONReportBody.java
++++ b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/json/JSONReportBody.java
+@@ -38,7 +38,6 @@ public class JSONReportBody implements ReportBody{
+ 	 */
+ 	public void addContent(String content) {
+ 		stringBuilder.append(content);
+-		
+ 	}
+ 	
+ 
+diff --git a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/json/JSONReportBodyBuilder.java b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/json/JSONReportBodyBuilder.java
+new file mode 100644
+index 0000000..c94ebaf
+--- /dev/null
++++ b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/json/JSONReportBodyBuilder.java
+@@ -0,0 +1,52 @@
++package eu.jpereira.trainings.designpatterns.creational.builder.json;
++
++import eu.jpereira.trainings.designpatterns.creational.builder.model.Report;
++import eu.jpereira.trainings.designpatterns.creational.builder.model.SaleEntry;
++import eu.jpereira.trainings.designpatterns.creational.builder.model.SoldItem;
++
++import eu.jpereira.trainings.designpatterns.creational.builder.ReportBodyBuilder;
++
++import java.util.Iterator;
++
++// rwlodarczyk: create JSONReportBodyBuilder class
++
++public class JSONReportBodyBuilder implements ReportBodyBuilder {
++    private SaleEntry saleEntry;
++
++    @Override
++    public void setSaleEntry(SaleEntry saleEntry) {
++        this.saleEntry = saleEntry;
++    }
++
++    @Override
++    public Report buildReport() {
++        JSONReportBody reportBody = new JSONReportBody();
++
++        reportBody.addContent("sale:{customer:{");
++        reportBody.addContent("name:\"");
++        reportBody.addContent(saleEntry.getCustomer().getName());
++        reportBody.addContent("\",phone:\"");
++        reportBody.addContent(saleEntry.getCustomer().getPhone());
++        reportBody.addContent("\"},items:[");
++
++        Iterator<SoldItem> it = saleEntry.getSoldItems().iterator();
++        while (it.hasNext()) {
++            SoldItem item = it.next();
++            reportBody.addContent("{name:\"");
++            reportBody.addContent(item.getName());
++            reportBody.addContent("\",quantity:");
++            reportBody.addContent(String.valueOf(item.getQuantity()));
++            reportBody.addContent(",price:");
++            reportBody.addContent(String.valueOf(item.getUnitPrice()));
++            reportBody.addContent("}");
++            if (it.hasNext()) {
++                reportBody.addContent(",");
++            }
++        }
++        reportBody.addContent("]}");
++
++        Report report = new Report();
++        report.setReportBody(reportBody);
++        return report;
++    }
++}
+diff --git a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/xml/XMLReportBodyBuilder.java b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/xml/XMLReportBodyBuilder.java
+new file mode 100644
+index 0000000..e3acc1a
+--- /dev/null
++++ b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/xml/XMLReportBodyBuilder.java
+@@ -0,0 +1,48 @@
++package eu.jpereira.trainings.designpatterns.creational.builder.xml;
++
++import eu.jpereira.trainings.designpatterns.creational.builder.model.Report;
++import eu.jpereira.trainings.designpatterns.creational.builder.model.SaleEntry;
++import eu.jpereira.trainings.designpatterns.creational.builder.model.SoldItem;
++
++import eu.jpereira.trainings.designpatterns.creational.builder.ReportBodyBuilder;
++
++import java.util.Iterator;
++
++// rwlodarczyk: create XMLReportBodyBuilder class
++
++public class XMLReportBodyBuilder implements ReportBodyBuilder {
++    private SaleEntry saleEntry;
++
++    @Override
++    public void setSaleEntry(SaleEntry saleEntry) {
++        this.saleEntry = saleEntry;
++    }
++
++    @Override
++    public Report buildReport() {
++        XMLReportBody reportBody = new XMLReportBody();
++        reportBody.putContent("<sale><customer><name>");
++        reportBody.putContent(saleEntry.getCustomer().getName());
++        reportBody.putContent("</name><phone>");
++        reportBody.putContent(saleEntry.getCustomer().getPhone());
++        reportBody.putContent("</phone></customer>");
++        reportBody.putContent("<items>");
++
++        Iterator<SoldItem> it = saleEntry.getSoldItems().iterator();
++        while (it.hasNext()) {
++            SoldItem item = it.next();
++            reportBody.putContent("<item><name>");
++            reportBody.putContent(item.getName());
++            reportBody.putContent("</name><quantity>");
++            reportBody.putContent(String.valueOf(item.getQuantity()));
++            reportBody.putContent("</quantity><price>");
++            reportBody.putContent(String.valueOf(item.getUnitPrice()));
++            reportBody.putContent("</price></item>");
++        }
++        reportBody.putContent("</items></sale>");
++
++        Report report = new Report();
++        report.setReportBody(reportBody);
++        return report;
++    }
++}
+diff --git a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/HTMLReportBody.java b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/html/HTMLReportBody.java
+similarity index 80%
+rename from builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/HTMLReportBody.java
+rename to builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/html/HTMLReportBody.java
+index 3924429..6fdd681 100644
+--- a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/builder/HTMLReportBody.java
++++ b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/html/HTMLReportBody.java
+@@ -1,4 +1,4 @@
+-package eu.jpereira.trainings.designpatterns.creational.builder;
++package eu.jpereira.trainings.designpatterns.creational.builder.html;
+ 
+ import eu.jpereira.trainings.designpatterns.creational.builder.model.ReportBody;
+ 
+diff --git a/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/html/HTMLReportBodyBuilder.java b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/html/HTMLReportBodyBuilder.java
+new file mode 100644
+index 0000000..cdcf8d9
+--- /dev/null
++++ b/builder/src/main/java/eu/jpereira/trainings/designpatterns/creational/html/HTMLReportBodyBuilder.java
+@@ -0,0 +1,48 @@
++package eu.jpereira.trainings.designpatterns.creational.builder.html;
++
++import eu.jpereira.trainings.designpatterns.creational.builder.model.Report;
++import eu.jpereira.trainings.designpatterns.creational.builder.model.SaleEntry;
++import eu.jpereira.trainings.designpatterns.creational.builder.model.SoldItem;
++
++import eu.jpereira.trainings.designpatterns.creational.builder.ReportBodyBuilder;
++
++import java.util.Iterator;
++
++// rwlodarczyk: create HTMLReportBodyBuilder class
++
++public class HTMLReportBodyBuilder implements ReportBodyBuilder {
++    private SaleEntry saleEntry;
++
++    @Override
++    public void setSaleEntry(SaleEntry saleEntry) {
++        this.saleEntry = saleEntry;
++    }
++
++    @Override
++    public Report buildReport() {
++        HTMLReportBody reportBody = new HTMLReportBody();
++        reportBody.putContent("<span class=\"customerName\">");
++        reportBody.putContent(saleEntry.getCustomer().getName());
++        reportBody.putContent("</span><span class=\"customerPhone\">");
++        reportBody.putContent(saleEntry.getCustomer().getPhone());
++        reportBody.putContent("</span>");
++
++        reportBody.putContent("<items>");
++        Iterator<SoldItem> it = saleEntry.getSoldItems().iterator();
++        while (it.hasNext()) {
++            SoldItem item = it.next();
++            reportBody.putContent("<item><name>");
++            reportBody.putContent(item.getName());
++            reportBody.putContent("</name><quantity>");
++            reportBody.putContent(String.valueOf(item.getQuantity()));
++            reportBody.putContent("</quantity><price>");
++            reportBody.putContent(String.valueOf(item.getUnitPrice()));
++            reportBody.putContent("</price></item>");
++        }
++        reportBody.putContent("</items>");
++
++        Report report = new Report();
++        report.setReportBody(reportBody);
++        return report;
++    }
++}

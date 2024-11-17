@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="list-3">List 3</h1>
+<ul>
+<li><a href="#list-3">List 3</a></li>
+<li><a href="#exercises">Exercises</a>
+<ul>
+<li><a href="#exercise-1">Exercise 1</a></li>
+<li><a href="#exercise-2">Exercise 2</a></li>
+<li><a href="#exercise-3">Exercise 3</a></li>
+<li><a href="#exercise-4-and-exercise-5">Exercise 4 and Exercise 5</a></li>
+<li><a href="#exercise-6">Exercise 6</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="exercises">Exercises</h1>
+<h2 id="exercise-1">Exercise 1</h2>
+<p>Task: (10pt) Napisz skrypt w Bashu, który pokazuje informacje o wszystkich procesach (podobne jak program ps aux). W zadaniu wykorzystaj system plików proc (standardowo w systemie Linux montowanym w katalogu /proc, man 5 proc) do pobrania informacji o procesach np. cat /proc/PID/status (i/lub /proc/PID/stat) wyświetla informacje o procesie PID. Wyświetl ppid, pid, comm, state, tty, rss, pgid, sid i poznaj dokładnie wszystkie wymienione oznaczenia! Dodatkowo wyświetl informację ile proces ma otwartych plików. Wszystkie te informacje o jednym procesie mają być &quot;ładnie&quot; (patrz np. man column) wyświetlone w jednym wierszu podobnie jak w programie ps.</p>
+<p>The script is available at <a href="./ex1/ps.sh">./ex1/ps.sh</a>.</p>
+<p>I based my solution on proc_pid_stat(5) https://man7.org/linux/man-pages/man5/proc_pid_stat.5.html:</p>
+<ul>
+<li>(1) pid - process ID</li>
+<li>(2) comm - command name</li>
+<li>(3) state - state (R: running, S: sleeping, D: uninterruptible sleep, Z: zombie, T: traced or stopped)</li>
+<li>(4) ppid - parent process ID</li>
+<li>(5) pgrp - process group ID</li>
+<li>(6) session - session ID</li>
+<li>(7) tty_nr - controlling terminal</li>
+<li>(24) rss - resident set size</li>
+</ul>
+<p>To list open files per process I used <code>lsof</code> like this:</p>
+<pre class="hljs"><code><div>lsof=$(ls /proc/<span class="hljs-variable">$pid</span>/fd 2&gt; /dev/null | wc -l)
+</div></code></pre>
+<p>Redirecting stderr when there is no such directory or the user does not have necessary permission to access it.
+In such case the result will be 0 as there are no output lines passed to the <code>wc</code> command.</p>
+<h2 id="exercise-2">Exercise 2</h2>
+<p>Task: (15pt) Napisz skrypt w Bashu, który co sekundę prezentuje informacje o systemie operacyjnym. Dane pobierz wykorzystując pseudo system plików proc w Linuksie domyślnie zamontowanym w katalogu /proc (patrz man 5 proc) oraz sysfs (patrz man 5 sysfs). Skrypt powinien prezentować następujące informacje:</p>
+<pre><code>Aktualną oraz średnią prędkość wysyłania i odbierania danych z sieci (odczytaj i zinterpretuj /proc/net/dev oraz wyświetl w B, KB lub MB w zależność od aktualnej prędkości) i
+Aktualne wykorzystanie rdzeni procesora dla każdego rdzenia osobno w procentach (patrz /proc/stat - man 5 proc) wraz z aktualną częstotliwością (patrz np. /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq dla cpu0) pracy rdzenia procesora (podobnie jak htop) i
+Jak długo system jest uruchomiony w dniach, godzinach, minutach i sekundach (/proc/uptime) i/lub
+Aktualny stan baterii w procentach (/sys/class/power_supply/BAT0/uevent) i
+Obciążenie systemu /proc/loadavg oraz
+Aktualne wykorzystanie pamięci /proc/meminfo (przeanalizuj co oznaczają 3 początkowe wiersze). 
+</code></pre>
+<p>W przypadku prędkości przesyłania danych skrypt powinien prezentować &quot;graficznie&quot; historię poprzednich pomiarów np. prosty wykres słupkowy. Przykładowe programy z wykresami na których można się wzorować to: s-tui lub bmon lub bpytop. Można wykorzystać inne znaki w UTF-8. Zobacz też informacje o komendzie tput np. link i/lub link. Układ oraz kolejność wyświetlanych informacji jest dowolna.</p>
+<p>The script is available at <a href="./ex2/stat.sh">./ex2/stat.sh</a></p>
+<p>After careful lecture of both sysfs(5) and proc(5) I am able to show the following information:</p>
+<ol>
+<li>Current and average network throughput (via /proc/net/dev)
+<ul>
+<li>Graph of the last 10 seconds of network throughput</li>
+</ul>
+</li>
+<li>CPU usage for each core (via /proc/stat)
+<ul>
+<li>Current CPU core frequency (via /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq)</li>
+</ul>
+</li>
+<li>Uptime (via /proc/uptime)</li>
+<li>Battery status (via /sys/class/power_supply/BAT0/uevent) - if exists</li>
+<li>System load (via /proc/loadavg)</li>
+<li>Memory usage (via /proc/meminfo - first 3 rows)</li>
+</ol>
+<p>Everything has been nicely described in the script itself, though the fact that I decided to print last 10 seconds of network throughput in a graphical way is worth mentioning here.
+I simply printed a horizontal bar chart for both rx and tx throughput, keeping the same scale for both values. The scale has been normalized to the maximum value present in the 10s buffer.</p>
+<h2 id="exercise-3">Exercise 3</h2>
+<p>Task: (10pt) Napisz skrypt w Bashu wykorzystujący REST API do pobierania danych z dwóch przykładowych źródeł np. Chuck Norris API i The Cat API lub dowolne inne które pobiera tekst i obrazki. Do zapytań RESTowych wykorzystaj curl lub wget do parsowania JSONa wystarczy program jq (pacman -S jq), dla osób korzystających z formatu XML dostępny jest program xmllint (pacman -S libxml2). Po uruchomieniu skryptu na ekranie pokaż obraz z bazy 'The Cat API' wykorzystując np. program img2txt (pacman -S libcaca) lub catimg oraz poniżej wyświetl losowy cytat z bazy Chucka Norrisa.</p>
+<p>The script is available at <a href="./ex3/code.sh">./ex3/code.sh</a></p>
+<p>The script is self-explanatory.</p>
+<h2 id="exercise-4-and-exercise-5">Exercise 4 and Exercise 5</h2>
+<p>Task 4: (10pt) Napisz program w języku C dla systemu Xv6, który pozwoli na wykonywanie prostych operacji arytmetycznych na liczbach całkowitych w konsoli nazwijmy go expr. Program dostając na wejście jako argumenty liczbę, operator i liczbę powinien wracać wynik tej operacji np.</p>
+<pre class="hljs"><code><div>cpu0: starting 0
+sb: size 1000 nblocks 941 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
+init: starting sh
+$ expr 2 + 2
+4
+$ expr 10 / 3
+3
+$ expr 10 - 2
+8
+</div></code></pre>
+<p>Task 5: (10pt)* Zmodyfikuj system operacyjny Xv6 (patrz m.in. na console.c) tak aby wyświetlać tekst w dowolnych kolorach. Możesz to zrobić podobnie wprowadzając prostą (wystarczy tylko do koloru) ANSI escape sequences lub wykorzystując np. '%' (który już jest), wtedy %1 - kolor niebieski, %2 - kolor czerwony itp. Napisz krótki program testowy hello wyświetlający 'Hello, World' we wszystkich kolorach dla Xv6.</p>
+<p>Due to the fact that I can run both exercises on the same <code>xv6</code> instance, I decided to merge them into one solution providing a <a href="./ex4-5/lab3.ex4.ex5.patch">patchfile</a> to run the whole solution on the <code>xv6</code> system. I assume the initial system was cloned the lab path provided earlier (see list 1) was applied.</p>
+<p>Solution to the 4-th task is available at <a href="./ex4-5/expr.c">./ex4-5/expr.c</a> and to the 5-th task at <a href="./ex4-5/console.c">./ex4-5/console.c</a> and <a href="./ex4-5/hello.c">./ex4-5/hello.c</a> respectively.</p>
+<p>I also edited the Makefile to compile and link these files properly, the changes are included in the patch file, but I also provide the Makefile for clarity at <a href="./ex4-5/Makefile">./ex4-5/Makefile</a>.</p>
+<h2 id="exercise-6">Exercise 6</h2>
+<p>This was a tough exercise, but I've managed to craete a working maze generator and player controls. The winning condition is to reach the end (max x, max y) of the maze. The player is starting
+from the beginning (1, 1) of the maze. The maze is generated using the DFS algorithm.</p>
+<p>The game is available at <a href="./ex6/game.sh">./ex6/game.sh</a>.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># ==The=Worst=Snake=Game=Ever=64==================================</span>
+<span class="hljs-comment"># AUTHOR: Rafał Włodarczyk 2024-11-16</span>
+<span class="hljs-comment"># DESCRIPTION: A simple maze game created in Bash. </span>
+<span class="hljs-comment">#              Find the exit.</span>
+<span class="hljs-comment"># ===================================The=Worst=Snake=Game=Ever=64=</span>
+
+<span class="hljs-comment"># ==Configuration=================================================</span>
+<span class="hljs-comment"># -w, Optional: width of the maze (default: terminal width - 1)</span>
+<span class="hljs-comment"># -h, Optional: height of the maze (default: terminal height - 1)</span>
+<span class="hljs-comment"># ================================================================</span>
+</div></code></pre>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+diff --git a/composite/pom.xml b/composite/pom.xml
+index 8fc345a..97371d9 100644
+--- a/composite/pom.xml
++++ b/composite/pom.xml
+@@ -25,7 +25,7 @@
+ 			<!-- needs extra dependencies: objenesis & hamcrest -->
+ 			<groupId>org.mockito</groupId>
+ 			<artifactId>mockito-core</artifactId>
+-			<version>1.9.0-rc1</version>
++			<version>3.2.4</version>
+ 			<scope>test</scope>
+ 		</dependency>
+ 
+@@ -39,8 +39,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/CompositeShape.java b/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/CompositeShape.java
+index 7338bd8..c3ecee9 100644
+--- a/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/CompositeShape.java
++++ b/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/CompositeShape.java
+@@ -15,90 +15,97 @@
+  */
+ package eu.jpereira.trainings.designpatterns.structural.composite.model;
+ 
++import eu.jpereira.trainings.designpatterns.structural.composite.model.Shape;
++import eu.jpereira.trainings.designpatterns.structural.composite.model.ShapeType;
++import eu.jpereira.trainings.designpatterns.structural.composite.model.ShapeDoesNotSupportChildren;
++
++import java.util.ArrayList;
+ import java.util.List;
++import java.util.stream.Collectors;
+ 
++// rwlodarczyk: create abstract class CompositeShape that extends Shape to use as a base for composite shapes
+ 
+-/**
+- * @author Joao Pereira
+- * 
+- */
+ public abstract class CompositeShape extends Shape {
+ 
+-	List<Shape> shapes;
+-
+-	public CompositeShape() {
+-		this.shapes = createShapesList();
+-	}
+-
+-	/**
+-	 * Remove a shape from this shape childrens
+-	 * 
+-	 * @param shape
+-	 *            the shape to remove
+-	 * @return true if the shape was present and was removed, false if the shape
+-	 *         was not present
+-	 */
+-	public boolean removeShape(Shape shape) {
+-		// TODO: implement
+-		return false;
++    List<Shape> shapes;
+ 
+-	}
++    public CompositeShape() {
++        this.shapes = createShapesList();
++    }
+ 
+-	/**
+-	 * Return the total shapes count in case this is a composite
+-	 * 
+-	 * @return the total count of shapes if the shape is composite. -1 otherwise
+-	 */
+-	public int getShapeCount() {
+-		// TODO: implement
+-		return 0;
++    /**
++     * Remove a shape from this shape's children.
++     * 
++     * @param shape the shape to remove
++     * @return true if the shape was present and was removed, false if the shape was not present
++     */
++    public boolean removeShape(Shape shape) {
++        return shapes.remove(shape);
++    }
+ 
+-	}
++    /**
++     * Return the total shapes count in case this is a composite
++     * 
++     * @return the total count of shapes if the shape is composite. -1 otherwise
++     */
++    public int getShapeCount() {
++        return shapes.size();
++    }
+ 
+-	/**
+-	 * Add a shape to this shape.
+-	 * 
+-	 * @param shape
+-	 *            The shape to add
+-	 * @throws ShapeDoesNotSupportChildren
+-	 *             if this shape is not a composite
+-	 */
+-	public void addShape(Shape shape) {
+-		// TODO: Implement
+-	}
++    /**
++     * Add a shape to this composite shape.
++     * 
++     * @param shape the shape to add
++     */
++    public void addShape(Shape shape) {
++        if (this instanceof CompositeShape) {
++            shapes.add(shape);
++        }
++    }
+ 
+-	public List<Shape> getShapes() {
+-		// TODO: Implement
+-		return null;
++    public List<Shape> getShapes() {
++        return shapes;
++    }
+ 
+-	}
++    /**
++     * Returns a list of shapes filtered by their type.
++     * 
++     * @param type the type of shape to filter
++     * @return a list of shapes that match the given type
++     */
++    public List<Shape> getShapesByType(ShapeType type) {
++        return shapes.stream()
++                .filter(shape -> shape.getType() == type)
++                .collect(Collectors.toList());
++    }
+ 
+-	/**
+-	 * @param circle
+-	 * @return
+-	 */
+-	public List<Shape> getShapesByType(ShapeType circle) {
+-		return null;
+-		// TODO: Implement
+-	}
++    /**
++     * Return all shapes that are leaves in the tree.
++     * 
++     * @return a list of leaf shapes
++     */
++    public List<Shape> getLeafShapes() {
++        return shapes.stream()
++                .filter(shape -> !(shape instanceof CompositeShape))
++                .collect(Collectors.toList());
++    }
+ 
+-	/**
+-	 * Return all shapes that are leafs in the tree
+-	 * 
+-	 * @return
+-	 */
+-	public List<Shape> getLeafShapes() {
+-		// TODO: Implement
+-		return null;
+-	}
++    /**
++     * Factory method for creating a list of child shapes. Can be overridden.
++     * 
++     * @return a new empty list of shapes
++     */
++    protected List<Shape> createShapesList() {
++        return new ArrayList<>();
++    }
+ 
+-	/**
+-	 * Factory method for the list of children of this shape
+-	 * 
+-	 * @return
+-	 */
+-	protected List<Shape> createShapesList() {
+-		return null;
+-		// TODO: Implement
+-	}
++    /**
++     * If this object is a CompositeShape, return it. Null otherwise.
++     * 
++     * @return the composite shape instance if this is a composite, null otherwise
++     */
++    @Override
++    public CompositeShape asComposite() {
++        return this;
++    }
+ }
+diff --git a/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/Shape.java b/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/Shape.java
+index caf05c2..8dd05d6 100644
+--- a/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/Shape.java
++++ b/composite/src/main/java/eu/jpereira/trainings/designpatterns/structural/composite/model/Shape.java
+@@ -32,8 +32,8 @@ public abstract class Shape {
+ 	 *         otherwise
+ 	 */
+ 	public CompositeShape asComposite() {
+-		//TODO: Implement
+-		return null;
++		// Check if the current object is a CompositeShape
++		return this instanceof CompositeShape ? (CompositeShape) this : null;
+ 	}
+ 
+ 	/**
+@@ -48,7 +48,12 @@ public abstract class Shape {
+ 		this.x += xIncrement;
+ 		this.y += yIncrement;
+ 		// if is composite, delegate to children
+-		//TODO: COmplete
++		if (this instanceof CompositeShape) {
++			CompositeShape composite = (CompositeShape) this;
++			for (Shape child : composite.getShapes()) {
++				child.move(xIncrement, yIncrement);
++			}
++		}
+ 	}
+ 
+ 	/**

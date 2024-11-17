@@ -1,0 +1,186 @@
+diff --git a/decorator/pom.xml b/decorator/pom.xml
+index 493d74a..5458d97 100644
+--- a/decorator/pom.xml
++++ b/decorator/pom.xml
+@@ -26,7 +26,7 @@
+ 			<!-- needs extra dependencies: objenesis & hamcrest -->
+ 			<groupId>org.mockito</groupId>
+ 			<artifactId>mockito-core</artifactId>
+-			<version>1.9.0-rc1</version>
++			<version>3.4.2</version>
+ 			<scope>test</scope>
+ 		</dependency>
+ 
+@@ -40,8 +40,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/decorator/src/main/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/WordCensor.java b/decorator/src/main/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/WordCensor.java
+new file mode 100644
+index 0000000..6491c05
+--- /dev/null
++++ b/decorator/src/main/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/WordCensor.java
+@@ -0,0 +1,25 @@
++package eu.jpereira.trainings.designpatterns.structural.decorator.channel.decorator;
++
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannel;
++
++public class WordCensor extends SocialChannelDecorator {
++
++    @Override
++    public void deliverMessage(String message) {
++        if (delegate != null) {
++            String censoredMessage = censorWords(message);
++            delegate.deliverMessage(censoredMessage);
++        }
++    }
++
++    /**
++     * Censor specific words in the message.
++     * 
++     * @param message The original message.
++     * @return The censored message.
++     */
++    private String censorWords(String message) {
++        // Replace "Microsoft" with "###"
++        return message.replaceAll("(?i)Microsoft", "###"); // "(?i)" makes it case-insensitive
++    }
++}
+diff --git a/decorator/src/test/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/ChainCensorDecoratorTest.java b/decorator/src/test/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/ChainCensorDecoratorTest.java
+new file mode 100644
+index 0000000..1d71660
+--- /dev/null
++++ b/decorator/src/test/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/ChainCensorDecoratorTest.java
+@@ -0,0 +1,74 @@
++package eu.jpereira.trainings.designpatterns.structural.decorator.channel.decorator;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertTrue;
++
++import org.junit.Test;
++
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannel;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannelBuilder;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannelProperties;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannelPropertyKey;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.spy.TestSpySocialChannel;
++
++/**
++ * Tests chaining multiple decorators, including WordCensor, MessageTruncator, and URLAppender.
++ */
++public class ChainCensorDecoratorTest extends AbstractSocialChanneldDecoratorTest {
++
++    @Test
++    public void testChainWordCensorAndURLAppender() {
++        SocialChannelBuilder builder = createTestSpySocialChannelBuilder();
++
++        SocialChannelProperties props = new SocialChannelProperties()
++                .putProperty(SocialChannelPropertyKey.NAME, TestSpySocialChannel.NAME);
++
++        SocialChannel channel = builder
++                .with(new WordCensor())
++                .with(new URLAppender("http://example.com"))
++                .getDecoratedChannel(props);
++
++        channel.deliverMessage("Microsoft is a major tech company.");
++        TestSpySocialChannel spyChannel = (TestSpySocialChannel) builder.buildChannel(props);
++
++        assertEquals("### is a major tech company. http://example.com", spyChannel.lastMessagePublished());
++    }
++
++    @Test
++    public void testChainWordCensorAndMessageTruncator() {
++        SocialChannelBuilder builder = createTestSpySocialChannelBuilder();
++
++        SocialChannelProperties props = new SocialChannelProperties()
++                .putProperty(SocialChannelPropertyKey.NAME, TestSpySocialChannel.NAME);
++
++        SocialChannel channel = builder
++                .with(new WordCensor())
++                .with(new MessageTruncator(20))
++                .getDecoratedChannel(props);
++
++        channel.deliverMessage("Microsoft builds amazing products.");
++        TestSpySocialChannel spyChannel = (TestSpySocialChannel) builder.buildChannel(props);
++
++        assertTrue(spyChannel.lastMessagePublished().startsWith("### builds amaz"));
++    }
++
++    @Test
++    public void testChainAllDecorators() {
++        SocialChannelBuilder builder = createTestSpySocialChannelBuilder();
++
++        SocialChannelProperties props = new SocialChannelProperties()
++                .putProperty(SocialChannelPropertyKey.NAME, TestSpySocialChannel.NAME);
++
++        SocialChannel channel = builder
++                .with(new WordCensor())
++                .with(new MessageTruncator(30))
++                .with(new URLAppender("http://example.com"))
++                .getDecoratedChannel(props);
++
++        // Deliver the message
++        channel.deliverMessage("Microsoft is building the future of technology.");
++        TestSpySocialChannel spyChannel = (TestSpySocialChannel) builder.buildChannel(props);
++
++        assertTrue(spyChannel.lastMessagePublished().startsWith("### is building the "));
++    }
++}
+diff --git a/decorator/src/test/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/WordCensorTest.java b/decorator/src/test/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/WordCensorTest.java
+new file mode 100644
+index 0000000..8d2449f
+--- /dev/null
++++ b/decorator/src/test/java/eu/jpereira/trainings/designpatterns/structural/decorator/channel/decorator/WordCensorTest.java
+@@ -0,0 +1,45 @@
++package eu.jpereira.trainings.designpatterns.structural.decorator.channel.decorator;
++
++import static org.junit.Assert.assertEquals;
++
++import org.junit.Test;
++
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannel;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannelBuilder;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannelProperties;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.SocialChannelPropertyKey;
++import eu.jpereira.trainings.designpatterns.structural.decorator.channel.spy.TestSpySocialChannel;
++
++/**
++ * @author jpereira
++ */
++public class WordCensorTest extends AbstractSocialChanneldDecoratorTest {
++
++    @Test
++    public void testCensorWordMicrosoft() {
++        SocialChannelBuilder builder = createTestSpySocialChannelBuilder();
++
++        SocialChannelProperties props = new SocialChannelProperties()
++                .putProperty(SocialChannelPropertyKey.NAME, TestSpySocialChannel.NAME);
++        SocialChannel channel = builder.with(new WordCensor()).getDecoratedChannel(props);
++
++        channel.deliverMessage("Microsoft is a tech giant.");
++        
++        TestSpySocialChannel spyChannel = (TestSpySocialChannel) builder.buildChannel(props);
++        assertEquals("### is a tech giant.", spyChannel.lastMessagePublished());
++    }
++
++    @Test
++    public void testCensorWordCaseInsensitive() {
++        SocialChannelBuilder builder = createTestSpySocialChannelBuilder();
++
++        SocialChannelProperties props = new SocialChannelProperties()
++                .putProperty(SocialChannelPropertyKey.NAME, TestSpySocialChannel.NAME);
++        SocialChannel channel = builder.with(new WordCensor()).getDecoratedChannel(props);
++
++        channel.deliverMessage("MICROSOFT creates Windows OS.");
++        
++        TestSpySocialChannel spyChannel = (TestSpySocialChannel) builder.buildChannel(props);
++        assertEquals("### creates Windows OS.", spyChannel.lastMessagePublished());
++    }
++}

@@ -1,0 +1,276 @@
+diff --git a/facade/pom.xml b/facade/pom.xml
+index e9987c0..fdf75d4 100644
+--- a/facade/pom.xml
++++ b/facade/pom.xml
+@@ -24,7 +24,7 @@
+ 			<!-- needs extra dependencies: objenesis & hamcrest -->
+ 			<groupId>org.mockito</groupId>
+ 			<artifactId>mockito-core</artifactId>
+-			<version>1.9.0-rc1</version>
++			<version>3.4.2</version>
+ 			<scope>test</scope>
+ 		</dependency>
+ 
+@@ -38,8 +38,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Customer.java b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Customer.java
+index f72e265..fec449d 100644
+--- a/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Customer.java
++++ b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Customer.java
+@@ -15,6 +15,8 @@
+  */
+ package eu.jpereira.trainings.designpatterns.structural.facade.model;
+ 
++import eu.jpereira.trainings.designpatterns.structural.facade.service.CustomerDBService;
++
+ /**
+  * @author jpereira
+  *
+@@ -29,3 +31,4 @@ public class Customer {
+ 	}
+ 
+ }
++
+diff --git a/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/DefaultBookstoreFacade.java b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/DefaultBookstoreFacade.java
+new file mode 100644
+index 0000000..dcbf8c6
+--- /dev/null
++++ b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/DefaultBookstoreFacade.java
+@@ -0,0 +1,49 @@
++package eu.jpereira.trainings.designpatterns.structural.facade.model;
++
++import eu.jpereira.trainings.designpatterns.structural.facade.BookstoreFacade;
++import eu.jpereira.trainings.designpatterns.structural.facade.service.*;
++
++public class DefaultBookstoreFacade implements BookstoreFacade {
++
++    private CustomerDBService customerService;
++    private BookDBService bookService;
++    private OrderingService orderingService;
++    private WharehouseService warehouseService;
++    private CustomerNotificationService notificationService;
++
++    public void setCustomerService(CustomerDBService customerService) {
++        this.customerService = customerService;
++    }
++
++    public void setBookService(BookDBService bookService) {
++        this.bookService = bookService;
++    }
++
++    public void setOrderingService(OrderingService orderingService) {
++        this.orderingService = orderingService;
++    }
++
++    public void setWarehouseService(WharehouseService warehouseService) {
++        this.warehouseService = warehouseService;
++    }
++
++    public void setNotificationService(CustomerNotificationService notificationService) {
++        this.notificationService = notificationService;
++    }
++
++    @Override
++    public void placeOrder(String customerId, String isbn) {
++        // Find customer and book
++        Customer customer = customerService.findCustomerById(customerId);
++        Book book = bookService.findBookByISBN(isbn);
++
++        // Create order
++        Order order = orderingService.createOrder(customer, book);
++
++        // Dispatch order
++        DispatchReceipt receipt = warehouseService.dispatch(order);
++
++        // Notify customer
++        notificationService.notifyClient(receipt);
++    }
++}
+diff --git a/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/DispatchReceipt.java b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/DispatchReceipt.java
+index 26f2022..22a3615 100644
+--- a/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/DispatchReceipt.java
++++ b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/DispatchReceipt.java
+@@ -15,6 +15,9 @@
+  */
+ package eu.jpereira.trainings.designpatterns.structural.facade.model;
+ 
++import eu.jpereira.trainings.designpatterns.structural.facade.service.OrderingService;
++import eu.jpereira.trainings.designpatterns.structural.facade.service.WharehouseService;
++
+ /**
+  * @author jpereira
+  *
+diff --git a/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Order.java b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Order.java
+index 3330133..0097035 100644
+--- a/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Order.java
++++ b/facade/src/main/java/eu/jpereira/trainings/designpatterns/structural/facade/model/Order.java
+@@ -15,6 +15,8 @@
+  */
+ package eu.jpereira.trainings.designpatterns.structural.facade.model;
+ 
++import eu.jpereira.trainings.designpatterns.structural.facade.service.OrderingService;
++
+ /**
+  * @author jpereira
+  *
+diff --git a/facade/src/test/java/eu/jpereira/trainings/designpatterns/structural/facade/facade/BookStoreFacadeTest.java b/facade/src/test/java/eu/jpereira/trainings/designpatterns/structural/facade/facade/BookStoreFacadeTest.java
+index f45eca6..ae86050 100644
+--- a/facade/src/test/java/eu/jpereira/trainings/designpatterns/structural/facade/facade/BookStoreFacadeTest.java
++++ b/facade/src/test/java/eu/jpereira/trainings/designpatterns/structural/facade/facade/BookStoreFacadeTest.java
+@@ -1,76 +1,71 @@
+-/**
+- * Copyright 2011 Joao Miguel Pereira
+- *
+- *  Licensed under the Apache License, Version 2.0 (the "License");
+- *  you may not use this file except in compliance with the License.
+- *  You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- *  Unless required by applicable law or agreed to in writing, software
+- *  distributed under the License is distributed on an "AS IS" BASIS,
+- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- *  See the License for the specific language governing permissions and
+- *  limitations under the License.
+- */
+-package eu.jpereira.trainings.designpatterns.structural.facade.facade;
+-
+-import static org.mockito.Mockito.*;
+-
+-import org.junit.Test;
+-
+-import eu.jpereira.trainings.designpatterns.structural.facade.BookstoreFacade;
+-import eu.jpereira.trainings.designpatterns.structural.facade.model.Book;
+-import eu.jpereira.trainings.designpatterns.structural.facade.model.Customer;
+-import eu.jpereira.trainings.designpatterns.structural.facade.model.DispatchReceipt;
+-import eu.jpereira.trainings.designpatterns.structural.facade.model.Order;
+-
+-/**
+- * @author windows
+- * 
+- */
+-public class BookStoreFacadeTest extends AbstractClientTest {
+-
+-	@Test
+-	public void testPlaceOrder() {
+-		// Dummy literals
+-		String isbn = "123";
+-		String customerId = "wall-e";
+-		Book dummyBook = new Book(isbn);
+-		Customer dummyCustomer = new Customer(customerId);
+-		Order dummyOrder = new Order();
+-		DispatchReceipt dummyDispatchReceipt = new DispatchReceipt();
+-
+-		// prepate SUT
+-		BookstoreFacade facade = createFacade();
+-
+-		// Prepare stubs
+-		when(bookService.findBookByISBN(isbn)).thenReturn(dummyBook);
+-		when(customerService.findCustomerById(customerId)).thenReturn(dummyCustomer);
+-		when(orderingService.createOrder(dummyCustomer, dummyBook)).thenReturn(dummyOrder);
+-		when(warehouseService.dispatch(dummyOrder)).thenReturn(dummyDispatchReceipt);
+-
+-		// Exercise SUT
+-		facade.placeOrder(customerId, isbn);
+-
+-		// Verify behavior
+-		verify(warehouseService).dispatch(dummyOrder);
+-		verify(customerNotificationService).notifyClient(dummyDispatchReceipt);
+-
+-	}
+-
+-	/**
+-	 * @return
+-	 */
+-	protected BookstoreFacade createFacade() {
+-		// TODO: Implement the interface bookstoreFacade and set the
+-		// dependencies. We're using mocks, so you'll have to set the mocks as
+-		// dependencies of the facade
+-		// Example:
+-		// impl.setCustomerService(customerService)
+-		// impl.setWarehouseService(wharehouseService)
+-		// ...
+-		// Return an instance of your facade implementation
+-		return null;
+-	}
+-}
++/**
++ * Copyright 2011 Joao Miguel Pereira
++ *
++ *  Licensed under the Apache License, Version 2.0 (the "License");
++ *  you may not use this file except in compliance with the License.
++ *  You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ *  Unless required by applicable law or agreed to in writing, software
++ *  distributed under the License is distributed on an "AS IS" BASIS,
++ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ *  See the License for the specific language governing permissions and
++ *  limitations under the License.
++ */
++package eu.jpereira.trainings.designpatterns.structural.facade.facade;
++
++import static org.mockito.Mockito.*;
++
++import eu.jpereira.trainings.designpatterns.structural.facade.model.*;
++import org.junit.Test;
++
++import eu.jpereira.trainings.designpatterns.structural.facade.BookstoreFacade;
++
++/**
++ * @author windows
++ * 
++ */
++public class BookStoreFacadeTest extends AbstractClientTest {
++
++	@Test
++	public void testPlaceOrder() {
++		// Dummy literals
++		String isbn = "123";
++		String customerId = "wall-e";
++		Book dummyBook = new Book(isbn);
++		Customer dummyCustomer = new Customer(customerId);
++		Order dummyOrder = new Order();
++		DispatchReceipt dummyDispatchReceipt = new DispatchReceipt();
++
++		// prepate SUT
++		BookstoreFacade facade = createFacade();
++
++		// Prepare stubs
++		when(bookService.findBookByISBN(isbn)).thenReturn(dummyBook);
++		when(customerService.findCustomerById(customerId)).thenReturn(dummyCustomer);
++		when(orderingService.createOrder(dummyCustomer, dummyBook)).thenReturn(dummyOrder);
++		when(warehouseService.dispatch(dummyOrder)).thenReturn(dummyDispatchReceipt);
++
++		// Exercise SUT
++		facade.placeOrder(customerId, isbn);
++
++		// Verify behavior
++		verify(warehouseService).dispatch(dummyOrder);
++		verify(customerNotificationService).notifyClient(dummyDispatchReceipt);
++
++	}
++
++	protected BookstoreFacade createFacade() {
++		DefaultBookstoreFacade facade = new DefaultBookstoreFacade();
++
++		// Set mocked dependencies
++		facade.setCustomerService(customerService);
++		facade.setBookService(bookService);
++		facade.setOrderingService(orderingService);
++		facade.setWarehouseService(warehouseService);
++		facade.setNotificationService(customerNotificationService);
++
++		return facade;
++	}
++}

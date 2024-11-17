@@ -1,0 +1,213 @@
+diff --git a/state/pom.xml b/state/pom.xml
+index ec89b44..cd42b8c 100644
+--- a/state/pom.xml
++++ b/state/pom.xml
+@@ -25,7 +25,7 @@
+ 			<!-- needs extra dependencies: objenesis & hamcrest -->
+ 			<groupId>org.mockito</groupId>
+ 			<artifactId>mockito-core</artifactId>
+-			<version>1.9.0-rc1</version>
++			<version>3.4.2</version>
+ 			<scope>test</scope>
+ 		</dependency>
+ 
+@@ -40,8 +40,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/Toaster.java b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/Toaster.java
+index 08a09af..d45e9b4 100644
+--- a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/Toaster.java
++++ b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/Toaster.java
+@@ -21,7 +21,6 @@ import eu.jpereira.trainings.designpatterns.behavioral.state.appliance.state.App
+ /**
+  * @author jpereira 
+  * 
+- * TODO Exercise: Find the TODOs in this file and complete it
+  * 
+  */
+ public class Toaster extends AbstractAppliance {
+@@ -67,10 +66,8 @@ public class Toaster extends AbstractAppliance {
+ 	 */
+ 	@Override
+ 	public void turnOn() throws ApplianceCommunicationException {
+-		// TODO: Delegate to the the current ApplianceStateBehavior and set
+ 		// this.applianceStateBehavior to the return type of the call
+-		// Example: this.applianceStateBehavior =
+-		// this.applianceStateBehavior.turnOn();
++		this.applianceStateBehavior = this.applianceStateBehavior.turnOn();
+ 
+ 	}
+ 
+@@ -83,10 +80,9 @@ public class Toaster extends AbstractAppliance {
+ 	 */
+ 	@Override
+ 	public void turnOff() throws ApplianceCommunicationException {
+-		// TODO: Delegate to the the current ApplianceStateBehavior and set
+ 		// this.applianceStateBehavior to the return type of the call
+-		// Example: this.applianceStateBehavior =
+-		// this.applianceStateBehavior.turnOff();
++		// Example: 
++		this.applianceStateBehavior = this.applianceStateBehavior.turnOff();
+ 
+ 	}
+ 
+@@ -99,10 +95,9 @@ public class Toaster extends AbstractAppliance {
+ 	 */
+ 	@Override
+ 	public void start() throws ApplianceCommunicationException {
+-		// TODO: Delegate to the the current ApplianceStateBehavior and set
+ 		// this.applianceStateBehavior to the return type of the call
+-		// Example: this.applianceStateBehavior =
+-		// this.applianceStateBehavior.start();
++		// Example: 
++		this.applianceStateBehavior = this.applianceStateBehavior.start();
+ 
+ 	}
+ 
+@@ -115,9 +110,8 @@ public class Toaster extends AbstractAppliance {
+ 	 */
+ 	@Override
+ 	public void stop() throws ApplianceCommunicationException {
+-		// TODO: Delegate to the the current ApplianceStateBehavior and set
+ 		// this.applianceStateBehavior to the return type of the call
+-		// Example: this.applianceStateBehavior =
+-		// this.applianceStateBehavior.stop();
++		// Example: 
++		this.applianceStateBehavior = this.applianceStateBehavior.stop();
+ 	}
+ }
+diff --git a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/ApplianceState.java b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/ApplianceState.java
+index 52d820c..b30f942 100644
+--- a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/ApplianceState.java
++++ b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/ApplianceState.java
+@@ -24,12 +24,9 @@ public enum ApplianceState {
+ 	
+ 	
+ 	//TODO: Comment the following definitions 
+-	OFF, ON, STOPPED, STARTED, UNKNOW;
++	// OFF, ON, STOPPED, STARTED, UNKNOW;
+ 	
+ 	//TODO: Uncomment the following block of code
+-	/*
+-	
+-	
+ 	OFF {
+ 		public ApplianceStateBehavior getStateBehavior() {
+ 			return new OffState();
+@@ -55,7 +52,7 @@ public enum ApplianceState {
+ 			return new UnknowState();
+ 		}
+ 	};
+-   */
++
+ 	/**
+ 	 * Default
+ 	 * @return
+diff --git a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OffState.java b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OffState.java
+index 3499a3f..124edf6 100644
+--- a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OffState.java
++++ b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OffState.java
+@@ -39,8 +39,7 @@ public class OffState implements ApplianceStateBehavior {
+ 	public ApplianceStateBehavior start() {
+ 		
+ 		//Do nothing, can't go to started when off. Must return the same state
+-		//TODO: Return a reference to this object
+-		return null;
++		return this;
+ 		
+ 		
+ 	}
+@@ -51,8 +50,7 @@ public class OffState implements ApplianceStateBehavior {
+ 	@Override
+ 	public ApplianceStateBehavior stop() {
+ 		//Do nothing. Can't go from OFF to STOPPED
+-		//TODO: Return a reference to this object
+-		return null;
++		return this;
+ 	}
+ 
+ 	/* (non-Javadoc)
+@@ -61,9 +59,9 @@ public class OffState implements ApplianceStateBehavior {
+ 	@Override
+ 	public ApplianceStateBehavior turnOn() {
+ 		//Can go from OFF state (this) to ON state
+-		//TODO: Return the behavior for ON .Example: return ApplianceState.ON.getStateBehavior();
++		return ApplianceState.ON.getStateBehavior();
+ 		
+-		return null;
++		// return null;
+ 	}
+ 
+ 	/* (non-Javadoc)
+diff --git a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OnState.java b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OnState.java
+index a8b8dbe..3b69f01 100644
+--- a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OnState.java
++++ b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/OnState.java
+@@ -27,8 +27,7 @@ public class OnState implements ApplianceStateBehavior {
+ 	 */
+ 	@Override
+ 	public ApplianceState getState() {
+-		return null;
+-		//TODO: return the correnponding state enum. This represents the ON State, so return ApplianceState.ON;
++		return ApplianceState.ON;
+ 	}
+ 
+ 	/* (non-Javadoc)
+@@ -36,8 +35,7 @@ public class OnState implements ApplianceStateBehavior {
+ 	 */
+ 	@Override
+ 	public ApplianceStateBehavior start() {
+-		//TODO: return the STARTED Behavior ApplianceState.STARTED.getStateBehavior()
+-		return null;
++		return ApplianceState.STARTED.getStateBehavior();
+ 		
+ 	}
+ 
+@@ -47,7 +45,7 @@ public class OnState implements ApplianceStateBehavior {
+ 	@Override
+ 	public ApplianceStateBehavior stop() {
+ 		//Can't stop from ON state
+-		return this;
++		return null;
+ 	}
+ 
+ 	/* (non-Javadoc)
+@@ -56,7 +54,7 @@ public class OnState implements ApplianceStateBehavior {
+ 	@Override
+ 	public ApplianceStateBehavior turnOn() {
+ 		//Already on
+-		return this;
++		return null;
+ 	}
+ 
+ 	/* (non-Javadoc)
+diff --git a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/StartedState.java b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/StartedState.java
+index 2e0b9c8..690201b 100644
+--- a/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/StartedState.java
++++ b/state/src/main/java/eu/jpereira/trainings/designpatterns/behavioral/state/appliance/state/StartedState.java
+@@ -17,7 +17,6 @@ package eu.jpereira.trainings.designpatterns.behavioral.state.appliance.state;
+ 
+ /**
+  * @author jpereira
+- * TODO: Find TODOs in this class and follow them
+  *
+  */
+ public class StartedState implements ApplianceStateBehavior {
+@@ -27,8 +26,7 @@ public class StartedState implements ApplianceStateBehavior {
+ 	 */
+ 	@Override
+ 	public ApplianceState getState() {
+-		//TODO: Return the correct ApplianceState
+-		return null;
++		return ApplianceState.STARTED;
+ 	}
+ 
+ 	/* (non-Javadoc)

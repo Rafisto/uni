@@ -1,0 +1,164 @@
+diff --git a/singleton/pom.xml b/singleton/pom.xml
+index 555f828..4bbab07 100644
+--- a/singleton/pom.xml
++++ b/singleton/pom.xml
+@@ -33,8 +33,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/singleton/src/main/java/eu/jpereira/trainings/designpatterns/creational/singleton/ReportBuilder.java b/singleton/src/main/java/eu/jpereira/trainings/designpatterns/creational/singleton/ReportBuilder.java
+index 63a09a4..d0e4ec6 100644
+--- a/singleton/src/main/java/eu/jpereira/trainings/designpatterns/creational/singleton/ReportBuilder.java
++++ b/singleton/src/main/java/eu/jpereira/trainings/designpatterns/creational/singleton/ReportBuilder.java
+@@ -18,48 +18,39 @@ package eu.jpereira.trainings.designpatterns.creational.singleton;
+ import java.util.ArrayList;
+ import java.util.List;
+ import java.util.Map;
++import java.util.concurrent.locks.ReentrantLock;
+ 
+ import eu.jpereira.trainings.designpatterns.creational.singleton.crwaling.CannotCrawlException;
+ import eu.jpereira.trainings.designpatterns.creational.singleton.crwaling.DummySiteCrawler;
+ import eu.jpereira.trainings.designpatterns.creational.singleton.crwaling.SiteCrawler;
+ 
+ /**
+- * @author Joao Pereira
+- * 
++ * Singleton ReportBuilder using double-checked locking for thread safety.
+  */
+ public class ReportBuilder {
+ 
+-	// Instance variables
+ 	private Map<String, StringBuffer> sitesContens;
+-
+ 	private SiteCrawler siteCrawler;
+ 
+-	// Class variables
+-	// Single instance
+-	private static ReportBuilder instance;
+-	private static List<String> configuredSites;
++	private static volatile ReportBuilder instance;
++	private static final List<String> configuredSites = new ArrayList<>();
+ 
+-	// Class initializer block
+ 	static {
+-
+-		configuredSites = new ArrayList<String>();
+ 		configuredSites.add("http://www.wikipedia.com");
+-		configuredSites.add("http://jpereira.eu");
+ 		configuredSites.add("http://stackoverflow.com");
+ 	}
+ 
+-	public ReportBuilder() {
+-		initiatlize();
++	// rwlodarczyk: private constructor to prevent instantiation
++	private ReportBuilder() {
++		initialize();
+ 	}
+ 
+ 	/**
+-	 * Very time consuming initialize method...
++	 * Very time-consuming initialize method...
+ 	 */
+-	private void initiatlize() {
+-
+-		//defer it to an factory method
++	private void initialize() {
+ 		this.siteCrawler = createSiteCrawler();
+-		
++
+ 		// Now crawl some pre-defined sites
+ 		for (String url : configuredSites) {
+ 			this.siteCrawler.withURL(url);
+@@ -67,63 +58,55 @@ public class ReportBuilder {
+ 		try {
+ 			this.setSitesContens(this.siteCrawler.crawl().packSiteContens());
+ 		} catch (CannotCrawlException e) {
+-			// this singleton instance is in very bad shape... what wiil you do?
+-			// I cannot recover from this and this instance will be useless to
+-			// clients...
+-			throw new RuntimeException("Could not load sites:" + e.getMessage());
++			throw new RuntimeException("Could not load sites: " + e.getMessage());
+ 		}
+-
+ 	}
+ 
+ 	/**
+-	 * Factory method with default implementation
+-	 * 
+-	 * @return
++	 * Factory method with default implementation.
++	 *
++	 * @return a SiteCrawler instance
+ 	 */
+ 	protected SiteCrawler createSiteCrawler() {
+-
+ 		return new DummySiteCrawler();
+ 	}
+ 
+ 	/**
+-	 * Get a single instance of type ReportBuilder
+-	 * 
+-	 * @return A single instance
++	 * Get a single instance of ReportBuilder using double-checked locking.
++	 *
++	 * @return the singleton instance
+ 	 */
+ 	public static ReportBuilder getInstance() {
+-		System.out.println("Getting instance for Thread " + Thread.currentThread().getId());
+ 		if (instance == null) {
+-			System.out.println("Instance is null for Thread " + Thread.currentThread().getId());
+-			instance = new ReportBuilder();
+-			System.out.println("Returing " + instance.hashCode() + " instance to Thread " + Thread.currentThread().getId());
++			synchronized (ReportBuilder.class) {
++				if (instance == null) {
++					instance = new ReportBuilder();
++				}
++			}
+ 		}
+ 		return instance;
+ 	}
+ 
+ 	/**
+-	 * 
++	 * Reset the singleton instance (for testing purposes).
++	 */
++	public static void resetInstance() {
++		synchronized (ReportBuilder.class) {
++			instance = null;
++		}
++	}
++
++	/**
+ 	 * @return the sitesContens
+-	 * 
+ 	 */
+ 	public Map<String, StringBuffer> getSitesContens() {
+-
+ 		return sitesContens;
+ 	}
+ 
+ 	/**
+-	 * @param sitesContens
+-	 *            the sitesContens to set
++	 * @param sitesContens the sitesContens to set
+ 	 */
+ 	private void setSitesContens(Map<String, StringBuffer> sitesContens) {
+ 		this.sitesContens = sitesContens;
+ 	}
+-
+-	/**
+-	 * 
+-	 */
+-	public static void resetInstance() {
+-		instance = null;
+-
+-	}
+-
+ }

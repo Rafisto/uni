@@ -1,0 +1,119 @@
+diff --git a/prototype/pom.xml b/prototype/pom.xml
+index 9ca12dc..db7b89c 100644
+--- a/prototype/pom.xml
++++ b/prototype/pom.xml
+@@ -32,8 +32,8 @@
+ 				<artifactId>maven-compiler-plugin</artifactId>
+ 				<version>2.3.2</version>
+ 				<configuration>
+-					<source>1.6</source>
+-					<target>1.6</target>
++					<source>1.8</source>
++					<target>1.8</target>
+ 				</configuration>
+ 			</plugin>
+ 
+diff --git a/prototype/src/main/java/eu/jpereira/trainings/designpatterns/creational/prototype/model/Vehicle.java b/prototype/src/main/java/eu/jpereira/trainings/designpatterns/creational/prototype/model/Vehicle.java
+index dea87de..c2eb8cb 100644
+--- a/prototype/src/main/java/eu/jpereira/trainings/designpatterns/creational/prototype/model/Vehicle.java
++++ b/prototype/src/main/java/eu/jpereira/trainings/designpatterns/creational/prototype/model/Vehicle.java
+@@ -21,47 +21,53 @@ import java.util.List;
+ import eu.jpereira.trainings.designpatterns.creational.prototype.VehiclePart;
+ import eu.jpereira.trainings.designpatterns.creational.prototype.exception.VehicleDoesNotHavePartsException;
+ 
+-/**
+- * @author jpereira
+- * 
+- */
+-public class Vehicle implements Cloneable {
++
++public class Vehicle implements Cloneable 
++{
+ 
+ 	private List<VehiclePart> parts;
+ 
+-	/**
+-	 * @param vehicleParts
+-	 */
+-	public void setParts(List<VehiclePart> vehicleParts) {
++	public Vehicle(List<VehiclePart> vehicleParts)
++	{
++		this.parts = vehicleParts;
++	}
++
++	public Vehicle()
++	{
++		this.parts = new ArrayList<VehiclePart>();
++	}
++
++	public void setParts(List<VehiclePart> vehicleParts) 
++	{
+ 		// copy the reference for a builded list of created parts
+ 		this.parts = vehicleParts;
+ 
+ 	}
+ 
+-	/**
+-	 * @return
+-	 */
+-	public Object countParts() throws VehicleDoesNotHavePartsException {
+-		if (this.parts != null) {
++	public Object countParts() throws VehicleDoesNotHavePartsException 
++	{
++		if (this.parts != null) 
++		{
+ 			return this.parts.size();
+-		} else {
+-			 throw new VehicleDoesNotHavePartsException();
++		} 
++		else 
++		{
++			throw new VehicleDoesNotHavePartsException();
+ 		}
+ 
+ 	}
+ 
+-	/**
+-	 * @param class1
+-	 * @return
+-	 * @throws VehicleDoesNotHavePartsException 
+-	 */
+-	public List<VehiclePart> getParts(VehiclePartEnumeration type) throws VehicleDoesNotHavePartsException {
+-		if (this.parts == null) {
++	public List<VehiclePart> getParts(VehiclePartEnumeration type) throws VehicleDoesNotHavePartsException 
++	{
++		if (this.parts == null) 
++		{
+ 			 throw new VehicleDoesNotHavePartsException();
+ 		}
+ 		List<VehiclePart> match = new ArrayList<VehiclePart>();
+-		for (VehiclePart vehiclePart : this.parts ) {
+-			if ( vehiclePart.is(type)) {
++		for (VehiclePart vehiclePart : this.parts ) 
++		{
++			if ( vehiclePart.is(type)) 
++			{
+ 				match.add(vehiclePart);
+ 			}
+ 		}
+@@ -70,8 +76,18 @@ public class Vehicle implements Cloneable {
+ 
+ 	@Override
+ 	public Object clone() throws CloneNotSupportedException {
+-		//TODO: Implement clone
+-		return super.clone();
++		try
++		{
++			return new Vehicle(this.getParts(null));
++		}
++		catch (VehicleDoesNotHavePartsException e)
++		{
++			return new Vehicle();
++		}
++		finally
++		{
++			return new Vehicle();
++		}
+ 	}
+ 	
+ 	
