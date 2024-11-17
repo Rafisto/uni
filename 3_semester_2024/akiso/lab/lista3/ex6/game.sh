@@ -152,6 +152,11 @@ draw_maze() {
   done
 }
 
+draw_player() {
+  tput cup $player_x $player_y
+  echo -e "\033[32m@\033[0m"
+}
+
 # =Player=Movement================================================
 # - Move the player in the maze, only if the position is walkable
 # - w: up
@@ -172,12 +177,21 @@ move_player() {
   
   new_x=$((player_x + dx))
   new_y=$((player_y + dy))
+
+  if ((new_x < 1 || new_x >= height - 1 || new_y < 1 || new_y >= width - 1)); then
+    return
+  fi
   
   if [[ ${maze[$new_x,$new_y]} -eq 0 ]]; then
+    tput cup $player_x $player_y
+    echo -e " "
+    
     maze[$player_x,$player_y]=0
     player_x=$new_x
     player_y=$new_y
     maze[$player_x,$player_y]="@"
+    
+    draw_player
   fi
 }
 
@@ -194,7 +208,7 @@ draw_maze
 while true; do
   read -n 1 -s key
   move_player "$key"
-  draw_maze
+  tput cup $height 0
   if ((player_x == height - 2 && player_y == width - 2)); then
     echo -e "\n\033[32mYou reached the exit! You've won! 🎉\033[0m"
     break
