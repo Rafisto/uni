@@ -71,7 +71,10 @@ human_readable() {
     if [ -z "$1" ]; then
         echo "0"
     else
-        numfmt --to=iec --suffix=B --padding=10 $1
+        # --to=iec for IEC binary prefixes (KiB, MiB, GiB, etc.)
+        # --suffix=B for bytes, alternatively --suffix=b for bits
+        # --padding=10 for padding to 10 characters (right-aligned whitespaces), not used here
+        numfmt --to=iec --suffix=B $1
     fi
 }
 
@@ -210,8 +213,10 @@ get_uptime() {
 get_battery() {
     if [ -f "${BATTERY_STATS_PATH}" ]; then
         local battery_status=$(cat "${BATTERY_STATS_PATH}" | grep -e "POWER_SUPPLY_STATUS" | cut -d'=' -f2)
-        local battery_capacity=$(cat "${BATTERY_STATS_PATH}" | grep -e "POWER_SUPPLY_CAPACITY" | cut -d'=' -f2)
-        echo "4. Battery: ${battery_status} ${battery_capacity}%"
+        local energy_full=$(cat "${BATTERY_STATS_PATH}" | grep -e "POWER_SUPPLY_ENERGY_FULL=" | cut -d'=' -f2)
+        local energy_now=$(cat "${BATTERY_STATS_PATH}" | grep -e "POWER_SUPPLY_ENERGY_NOW=" | cut -d'=' -f2)
+        local energy_percent=$((100 * ${energy_now} / ${energy_full}))
+        echo "4. Battery: ${battery_status} ${energy_percent}%"
     else
         echo "4. Battery: No battery found"
     fi
@@ -228,9 +233,9 @@ get_system_load() {
     local load5=$(echo $loadavg | awk '{print $2}')
     local load15=$(echo $loadavg | awk '{print $3}')
 
-    local load1_percent=$(awk "BEGIN {print ($load1 / $num_cpus) * 100}")
-    local load5_percent=$(awk "BEGIN {print ($load5 / $num_cpus) * 100}")
-    local load15_percent=$(awk "BEGIN {print ($load15 / $num_cpus) * 100}")
+    local load1_percent=$(awk "BEGIN {print ($load1 / $num_cpus) * 100}") # percentage of load per all cores over 1 minute
+    local load5_percent=$(awk "BEGIN {print ($load5 / $num_cpus) * 100}") # percentage of load per all cores over 5 minutes
+    local load15_percent=$(awk "BEGIN {print ($load15 / $num_cpus) * 100}") # percentage of load per all cores over 15 minutes
 
     echo "5. System Load 1min: ${load1} (${load1_percent}%) 5min: ${load5} (${load5_percent}%) 15min: ${load15} (${load15_percent}%)"
 }
@@ -251,10 +256,7 @@ get_memory_usage() {
 
     local memavailable_percent=$((100 * memavailable / memtotal))
 
-    echo "6. Memory"
-    echo "Total $(human_readable ${memtotal})"
-    echo "Free $(human_readable ${memfree})"
-    echo "Available $(human_readable ${memavailable}) (${memavailable_percent}%)"
+    echo "6. Memory $(human_readable $((memtotal - memavailable)))/$(human_readable ${memtotal}), $(human_readable ${memavailable}) (${memavailable_percent}%) is free"
 }
 
 main() {

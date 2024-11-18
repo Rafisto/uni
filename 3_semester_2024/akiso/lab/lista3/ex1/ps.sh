@@ -15,16 +15,21 @@
 # lsof - number of open file descriptors - via /proc/PID/fd
 # ====================
 
+clear
+output=""
+
 for pid in $(ls /proc | grep -E '^[0-9]+$'); do
+    tput cup 0 && echo "PS Processing PID: $pid" # display currently processed PID
+
     if [ -f /proc/$pid/stat ]; then
         stat_file="/proc/$pid/stat"
 
         stat_content=$(< "$stat_file")
 
-        pid=$(echo "$stat_content" | awk '{print $1}')
-        comm=$(echo "$stat_content" | sed -n 's/^[0-9]* (\(.*\)) .*/\1/p')
+        pid=$(echo "$stat_content" | awk '{print $1}') # {} for each line or record of input get the 1st field (split by whitespace by default)
+        comm=$(echo "$stat_content" | sed -n 's/^[0-9]* (\(.*\)) .*/\1/p') # match command name in parentheses
 
-        rest_of_fields=$(echo "$stat_content" | sed -E 's/^[0-9]+ \([^)]*\) //')
+        rest_of_fields=$(echo "$stat_content" | sed -E 's/^[0-9]+ \([^)]*\) //') # match everything after command name in parentheses
 
         state=$(echo "$rest_of_fields" | awk '{print $1}') # 3-2 State
         ppid=$(echo "$rest_of_fields" | awk '{print $2}') # 4-2 Parent PID
@@ -33,8 +38,10 @@ for pid in $(ls /proc | grep -E '^[0-9]+$'); do
         tty=$(echo "$rest_of_fields" | awk '{print $5}') # 7-2 Controlling Terminal ID
         rss=$(echo "$rest_of_fields" | awk '{print $22}') # 24-2 Resident Set Size
 
-        lsof=$(ls /proc/$pid/fd 2> /dev/null | wc -l)
-
-        echo -e "${pid}\t${ppid}\t${comm}\t${state}\t${tty}\t${rss}\t${pgid}\t${sid}\t${lsof}"
+        lsof=$(ls /proc/$pid/fd 2> /dev/null | wc -l) # count number of open file descriptors, if unable to read directory then 0
+        
+        output+="${pid}\t${ppid}\t${comm}\t${state}\t${tty}\t${rss}\t${pgid}\t${sid}\t${lsof}\n"
     fi
-done | column -t -N pid,ppid,comm,state,tty,rss,pgid,sid,lsof -s $'\t'
+done 
+
+echo -e $output | column -t -N pid,ppid,comm,state,tty,rss,pgid,sid,lsof -s $'\t'
