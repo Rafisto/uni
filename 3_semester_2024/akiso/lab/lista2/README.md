@@ -5,9 +5,8 @@
   - [Zasilacz AT / ATX](#zasilacz-at--atx)
   - [Sprawność zasilacza](#sprawność-zasilacza)
   - [RS232C / COM, LPT, USB (1.1, 2.0, 3.0),](#rs232c--com-lpt-usb-11-20-30)
-  - [szyny komunikacyjne ISA, PCI, AGP, PCIe,](#szyny-komunikacyjne-isa-pci-agp-pcie)
-  - [Kontrolery IDE](#kontrolery-ide)
-  - [Jak zasilany jest komputer?](#jak-zasilany-jest-komputer)
+  - [Szyny komunikacyjne ISA, PCI, AGP, PCIe,](#szyny-komunikacyjne-isa-pci-agp-pcie)
+  - [Kontrolery Parallel ATA - IDE](#kontrolery-parallel-ata---ide)
   - [Jakie napięcia są wykorzystywane i w jakich miejscach?](#jakie-napięcia-są-wykorzystywane-i-w-jakich-miejscach)
   - [Jak wygląda transmisja danych przez port szeregowy typu COM, a jak przez port równoległy typu LPT?](#jak-wygląda-transmisja-danych-przez-port-szeregowy-typu-com-a-jak-przez-port-równoległy-typu-lpt)
 - [Exercises](#exercises)
@@ -34,7 +33,9 @@
 
 ## Zasilacz AT / ATX
 
-Zasilacz ATX (Advanced Technology Extended) to zasilacz komputerowy, który zastąpił starszy standard AT (Advanced Technology) w 1995 roku. Zasilacze ATX są bardziej zaawansowane niż zasilacze AT, ponieważ mają dodatkowe funkcje, takie jak zasilanie w trybie czuwania.
+Zasilacz ATX (Advanced Technology Extended) to zasilacz komputerowy, który zastąpił starszy standard AT (Advanced Technology) w 1995 roku. Zasilacze ATX są bardziej zaawansowane niż zasilacze AT, ponieważ mają dodatkowe funkcje, takie jak zasilanie w trybie czuwania. W zasilaczu ATX złącze CPU jest zawarte w złączu zasilania głównego, co ułatwia podłączenie zasilania do płyty głównej.
+
+Z zasilacza wychodzą różne przewody, m.in przewód łączony bezpośrednio do płyty głównej (20-24 piny) o różnych napięciach (3.3V, 5V, 12V), przewód zasilający procesor (4-8 pinów), kabel zasilający kartę graficzną (6-8 pinów), złącze Molex oraz SATA do zasilania np.: dysków twardych, napędów CD/DVD.
 
 ## Sprawność zasilacza
 
@@ -42,7 +43,7 @@ Sprawność zasilacza to stosunek mocy wyjściowej do mocy wejściowej. Jest to 
 
 ## RS232C / COM, LPT, USB (1.1, 2.0, 3.0), 
 
-RS232C - standard komunikacji szeregowej, który określa elektryczne i mechaniczne cechy interfejsu szeregowego. RS232C jest używany do komunikacji między różnymi urządzeniami, takimi jak komputery, drukarki, modemy, itp.
+RS232C (Recommended Standard - No. 232, Rev. C) - standard komunikacji szeregowej, który określa elektryczne i mechaniczne cechy interfejsu szeregowego. RS232C jest używany do komunikacji między różnymi urządzeniami, takimi jak komputery, drukarki, modemy.
 
 COM - port szeregowy, który jest używany do komunikacji między komputerem a innymi urządzeniami. Port COM jest zazwyczaj używany do podłączania myszy, klawiatury, drukarki, modemu, itp.
 
@@ -54,40 +55,44 @@ USB - Universal Serial Bus, standard komunikacji szeregowej, który określa ele
 2.0 - standard USB 2.0, który określa prędkość transmisji danych. USB 2.0 ma prędkość transmisji danych do 480 Mb/s.
 3.0 - standard USB 3.0, który określa prędkość transmisji danych. USB 3.0 ma prędkość transmisji danych do 5 Gb/s.
 
-## szyny komunikacyjne ISA, PCI, AGP, PCIe, 
+## Szyny komunikacyjne ISA, PCI, AGP, PCIe, 
 
-ISA - Industry Standard Architecture, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. ISA jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp.
+ISA (Industry Standard Architecture, 1981), standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. ISA jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp. 
+  - 16-bitowa magistrala z zegarem 8MHz oraz przepustowością 16MB/s 
+  - wymaga manualnej konfiguracji do IRQ, DMA, I/O
 
-PCI - Peripheral Component Interconnect, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. PCI jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp.
+PCI (Peripheral Component Interconnect 1990), standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. PCI jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp.
+  - 64-bitowa magistrala z zegarem 33MHz oraz przepustowością 1GB/s
+  - konfigurowalny automatycznie przez system operacyjny
 
-PCIe - Peripheral Component Interconnect Express, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. PCIe jest używany do komunikacji między różnymi urządzeniami, takimi jak karty rozszerzeń, itp.
+PCIe - Peripheral Component Interconnect Express, standard szyny komunikacyjnej będący rozszerzeniem PCI, charakeryzuje go wyższa przepustowość i szybkość transmisji danych.
+  - bazowy zegar ma 100MHz, każda linia ma po 1 bicie w obie strony, typowe konfiguracje to x1, x4, x8, x16,
+  - PCIe x16 to 82 piny na każdą ze stron, znacznie większa przepustowość niż PCI
 
-PCIe jest lepszy od PCI ze względu na wyższą przepustowość i szybkość transmisji danych.
+AGP - Accelerated Graphics Port, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. AGP jest głównie używany do komunikacji z kartami graficznymi.
+  - większość chipsetów z kontrolerem PCI Express nie zawiera kontrolera AGP, tak więc najczęściej obecność PCIe eliminuje możliwość użycia kart graficznych ze złączem AGP. 
 
-AGP - Accelerated Graphics Port, standard szyny komunikacyjnej, który określa elektryczne i mechaniczne cechy interfejsu szyny komunikacyjnej. AGP jest używany do komunikacji między różnymi urządzeniami, takimi jak karty graficzne, itp.
+## Kontrolery Parallel ATA - IDE
 
-## Kontrolery IDE
+Kontrolery Parallel ATA (Advanced Technology Attachment) - IDE (Integrated Drive Electronics 1986) to kontrolery używane do komunikacji między komputerem a dyskiem twardym. Kontrolery IDE są zazwyczaj zintegrowane z płytą główną i obsługują dyski twarde, napędy CD/DVD, itp. Kontrolery IDE mają dwa kanały - Primary IDE i Secondary IDE, które mogą obsługiwać do 4 urządzeń IDE (2 na kanał).
 
-IDE - Integrated Drive Electronics, standard interfejsu dysku twardego, który określa elektryczne i mechaniczne cechy interfejsu dysku twardego. IDE jest używany do komunikacji między dyskiem twardym a innymi urządzeniami, takimi jak komputer, itp.
-
-## Jak zasilany jest komputer? 
-
-Komputer jest zasilany przez zasilacz, który przekształca energię elektryczną z sieci elektrycznej na energię użyteczną dla komputera. Zasilacz dostarcza napięcie i prąd do różnych podzespołów komputera, takich jak płyta główna, procesor, karta graficzna, itp.
+Rożnica między SATA a IDE:
+- IDE - starszy standard, wolniejszy, złącza szerokie, kable płaskie, zasilanie i dane w jednym kablu, 2 urządzenia na kabel
+- SATA - nowszy standard, szybszy, złącza wąskie, kable okrągłe, zasilanie i dane w osobnych kablach, 1 urządzenie na kabel
 
 ## Jakie napięcia są wykorzystywane i w jakich miejscach?
 
 Napięcia wykorzystywane w komputerze to:
-- 1.1V - używane do zasilania procesora, pamięci RAM, itp.
-- 3.3V - używane do zasilania pamięci RAM, płyty głównej, karty graficznej, itp.
-- 5V - używane do zasilania płyty głównej, dysku twardego, napędu CD/DVD, itp.
-- 12V - używane do zasilania karty graficznej, napędu CD/DVD, itp.
+- 1.1V - używane do zasilania procesora - zbliżone do najmniejszego napięcia fizycznie, przy którym wciąż zachodzi rozróżenienie na 0 i 1 w tranzystorach polowch procesora.
+- 3.3V - używane do zasilania pamięci RAM, niektórych szyn płyty głównej, szczególnie dla wbudowanych mikrokontrolerów, np. w chipsetach.
+- 5V - używane do zasilania płyty głównej, dysku twardego, napędu CD/DVD, zewnętrzych urządzeń, np. USB.
+- 12V - używane do zasilania karty graficznej, oraz zewnętrznych urządzeń np. listw LED.
 
 ## Jak wygląda transmisja danych przez port szeregowy typu COM, a jak przez port równoległy typu LPT?
 
-Transmisja COM - port szeregowy typu COM jest używany do komunikacji między komputerem a innymi urządzeniami za pomocą jednej linii danych. Transmisja danych odbywa się sekwencyjnie, co oznacza, że dane są przesyłane bit po bicie. Port COM ma dwa piny - TX (transmit) i RX (receive), które są używane do przesyłania i odbierania danych.
+Transmisja szeregowa - port szeregowy typu COM jest używany do komunikacji między komputerem a innymi urządzeniami za pomocą jednej linii danych. Transmisja danych odbywa się sekwencyjnie, co oznacza, że dane są przesyłane bit po bicie. Port COM ma dwa piny - TX (transmit) i RX (receive), które są używane do przesyłania i odbierania danych.
 
-Transmisja LPT - port równoległy typu LPT jest używany do komunikacji między komputerem a innymi urządzeniami za pomocą wielu
-linii danych. Transmisja danych odbywa się równolegle, co oznacza, że dane są przesyłane jednocześnie na wielu liniach. Port LPT ma wiele pinów, które są używane do przesyłania i odbierania danych.
+Transmisja równoległa - port równoległy typu LPT jest używany do komunikacji między komputerem a innymi urządzeniami za pomocą wielu linii danych. Transmisja danych odbywa się równolegle, co oznacza, że dane są przesyłane jednocześnie na wielu liniach. Port LPT ma wiele pinów, które są używane do przesyłania i odbierania danych.
 
 # Exercises
 
