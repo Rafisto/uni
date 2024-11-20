@@ -204,6 +204,13 @@ INSERT INTO Aparat(model, producent, matryca, obiektyw, waga, typ) VALUES ('Koda
 INSERT INTO Aparat(model, producent, matryca, obiektyw, waga, typ) VALUES ('Leica M10-R', 14, 113, 14, 660, 'lustrzanka');
 INSERT INTO Aparat(model, producent, matryca, obiektyw, waga, typ) VALUES ('Hasselblad X1D II 50C', 15, 114, 15, 725, 'profesjonalny');
 ```
+Incorrect data
+```sql
+INSERT INTO Producent(nazwa,kraj) VALUES (NULL, 'Chiny');
+INSERT INTO Matryca(przekatna, rozdzielczosc, typ) VALUES (-1.1, 3.6, 'CMOS');
+INSERT INTO Obiektyw(model, minPrzeslona, maxPrzeslona) VALUES ('Voigtlander 35mm', 10, 9);
+INSERT INTO Aparat(model, producent, matryca, obiektyw, waga, typ) VALUES ('Hasselblad', 15, 1000, 13, 700, 'profesjonalny');
+```
 
 ### Exercise 4
 
@@ -232,7 +239,7 @@ BEGIN
         SET model_name = CONCAT('Model ', i + 1);
         
         SET random_producer = FLOOR(1 + (RAND() * 15)); 
-        SET random_sensor = FLOOR(1 + (RAND() * 15));
+        SET random_sensor = FLOOR(100 + (RAND() * 15));
         SET random_lens = FLOOR(1 + (RAND() * 15));
         
         SET random_weight = FLOOR(300 + (RAND() * 1200)); 
@@ -366,7 +373,7 @@ WHERE Aparat.typ = 'lustrzanka' AND Producent.kraj != 'Chiny';
 
 ### Exercise 10
 
-The view will change accordingly to the changes in the tables, as it is a dynamic view.
+The view will change according to the changes in the tables, as it is a dynamic view.
 
 ```sql
 CREATE VIEW CameraProducer AS
@@ -386,8 +393,19 @@ Trigger works no matter which user has performed the action.
 ALTER TABLE Producent ADD COLUMN liczbaModeli INT NOT NULL DEFAULT 0;
 UPDATE Producent SET liczbaModeli = (SELECT COUNT(*) FROM Aparat WHERE Aparat.producent = Producent.ID);
 
-CREATE TRIGGER UpdateLiczbaModeli
-AFTER INSERT OR DELETE OR UPDATE ON Aparat
+DELIMITER $$
+
+CREATE TRIGGER InsertAparat
+AFTER INSERT ON Aparat
+FOR EACH ROW
+BEGIN
+    if NEW.producent IS NOT NULL THEN
+        UPDATE Producent SET liczbaModeli = liczbaModeli + 1 WHERE ID = NEW.producent;
+    END IF;
+END$$
+
+CREATE TRIGGER UpdateAparat
+AFTER UPDATE ON Aparat
 FOR EACH ROW
 BEGIN
    IF OLD.producent IS NOT NULL THEN 
@@ -396,5 +414,16 @@ BEGIN
    IF NEW.producent IS NOT NULL THEN
       UPDATE Producent SET liczbaModeli = liczbaModeli + 1 WHERE ID = NEW.producent;
    END IF;
-END;
+END$$
+
+CREATE TRIGGER DeleteAparat
+AFTER DELETE ON Aparat
+FOR EACH ROW
+BEGIN
+   IF OLD.producent IS NOT NULL THEN 
+      UPDATE Producent SET liczbaModeli = liczbaModeli - 1 WHERE ID = OLD.producent;
+   END IF;
+END$$
+
+DELIMITER ;
 ```
