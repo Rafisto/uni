@@ -6,12 +6,12 @@
 # Based on proc_pid_stat(5) https://man7.org/linux/man-pages/man5/proc_pid_stat.5.html
 # (1) pid - process ID
 # (2) comm - command name
-# (3) state - state (R: running, S: sleeping, D: uninterruptible sleep, Z: zombie, T: traced or stopped)
+# (3) state - state (R: running, S: sleeping, D: uninterruptible sleep, Z: zombie, T: traced or stopped, I: idle)
 # (4) ppid - parent process ID
-# (5) pgrp - process group ID
-# (6) session - session ID
+# (5) pgrp - process group ID - same as PID for single-threaded processes, PID of the thread group leader for multithreaded processes
+# (6) session - session ID - shell session ID
 # (7) tty_nr - controlling terminal
-# (24) rss - resident set size
+# (24) rss - resident set size - number of pages the process has in real memory
 # lsof - number of open file descriptors - via /proc/PID/fd
 # ====================
 
@@ -27,9 +27,11 @@ for pid in $(ls /proc | grep -E '^[0-9]+$'); do
         stat_content=$(< "$stat_file")
 
         pid=$(echo "$stat_content" | awk '{print $1}') # {} for each line or record of input get the 1st field (split by whitespace by default)
-        comm=$(echo "$stat_content" | sed -n 's/^[0-9]* (\(.*\)) .*/\1/p') # match command name in parentheses
+        # match first ( and then everything until the last ) and then get the content in between
+        comm=$(echo "$stat_content" | sed -e 's/.*(\(.*\)).*/\1/')
 
-        rest_of_fields=$(echo "$stat_content" | sed -E 's/^[0-9]+ \([^)]*\) //') # match everything after command name in parentheses
+        # match everything after the last )
+        rest_of_fields=$(echo "$stat_content" | sed -E 's/.*\)//')
 
         state=$(echo "$rest_of_fields" | awk '{print $1}') # 3-2 State
         ppid=$(echo "$rest_of_fields" | awk '{print $2}') # 4-2 Parent PID
