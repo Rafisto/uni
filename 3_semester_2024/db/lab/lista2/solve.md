@@ -77,6 +77,7 @@ Create user named `123456` with password `kowalski56`;
 
 ```sql
 CREATE USER '123456'@'%' IDENTIFIED BY 'kowalski56';
+-- SHOW GRANTS FOR '123456';
 ```
 
 Grant select, insert and update privileges on `aparaty` to `123456`;
@@ -121,7 +122,7 @@ CREATE TABLE Aparat (
     matryca INT,
     obiektyw INT,
     waga FLOAT,
-    typ ENUM('kompaktowy', 'lustrzanka', 'profesjonalny', 'inny')
+    typ ENUM('kompaktowy', 'lustrzanka', 'profesjonalny', 'inny'),
     FOREIGN KEY (producent) REFERENCES Producent(ID),
     FOREIGN KEY (matryca) REFERENCES Matryca(ID),
     FOREIGN KEY (obiektyw) REFERENCES Obiektyw(ID)
@@ -223,11 +224,14 @@ docker exec -it mariadb-container mariadb -D aparaty -u root -prootpassword
 Then create a procedure creating random 100 cameras provided the initial inserts.
 
 ```sql
+DROP PROCEDURE GenerateRandomAparatys;
+
 DELIMITER $$
 
 CREATE PROCEDURE GenerateRandomAparatys()
 BEGIN
     DECLARE i INT DEFAULT 0;
+    DECLARE j INT DEFAULT 0;
     DECLARE model_name VARCHAR(255);
     DECLARE random_producer INT;
     DECLARE random_sensor INT;
@@ -235,8 +239,11 @@ BEGIN
     DECLARE random_weight INT;
     DECLARE random_type ENUM('kompaktowy', 'lustrzanka', 'profesjonalny', 'inny');
 
-    WHILE i < 100 DO
-        SET model_name = CONCAT('Model ', i + 1);
+    -- select max in the form of "Model [index]"
+    SELECT MAX(CAST(SUBSTRING_INDEX(model, ' ', -1) AS UNSIGNED)) INTO j FROM Aparat WHERE model LIKE 'Model %';
+
+    WHILE i < 99 DO
+        SET model_name = CONCAT('Model ', j + i + 1);
         
         SET random_producer = FLOOR(1 + (RAND() * 15)); 
         SET random_sensor = FLOOR(100 + (RAND() * 15));
@@ -269,7 +276,7 @@ The user will not be able to perform the procedure, because it lacks the necessa
 The user will see
 
 ```sql
-ERROR 1370 (42000): execute command denied to user '123456'@'%' for routine 'aparaty.GenerateRandomAparatys'
+ERROR 1370 (42000) execute command denied to user '123456'@'%' for routine 'aparaty.GenerateRandomAparatys'
 ```
 
 ### Exercise 5
@@ -314,7 +321,11 @@ BEFORE INSERT ON Aparat
 FOR EACH ROW
 BEGIN
    IF NOT EXISTS (SELECT 1 FROM Producent WHERE ID = NEW.producent) THEN
-      INSERT INTO Producent (ID, nazwa) VALUES (NEW.producent, 'Nowy Producent');
+      INSERT INTO Producent (ID, nazwa) 
+      VALUES (
+         NEW.producent, 
+         CONCAT('Producent ', LEFT(UUID(), 8))
+      );
    END IF;
 END$$
 
@@ -355,6 +366,7 @@ BEGIN
 END$$
 
 DELIMITER ;
+-- see on delete cascade
 ```
 
 ### Exercise 9
@@ -427,3 +439,9 @@ END$$
 
 DELIMITER ;
 ```
+
+```sql
+-- update all procudent its from 2 to 1
+UPDATE Aparat SET producent = 1 WHERE producent = 2 OR producent = 3;
+```
+ 
