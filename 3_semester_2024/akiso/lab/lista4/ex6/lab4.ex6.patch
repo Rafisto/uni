@@ -1,0 +1,144 @@
+diff --git a/Makefile b/Makefile
+index 006a2beb..841af482 100644
+--- a/Makefile
++++ b/Makefile
+@@ -167,7 +167,8 @@ mkfs: mkfs.c fs.h
+ # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
+ .PRECIOUS: %.o
+ 
+-# exercise 4 - add _expr and _hello to UPROGS
++# 3.4 - add _expr and _hello to UPROGS
++# 4.4 - add _testsyscall to UPROGS
+ 
+ UPROGS=\
+ 	_cat\
+@@ -186,7 +187,8 @@ UPROGS=\
+ 	_wc\
+ 	_zombie\
+ 	_expr\
+-	_hello
++	_hello\
++	_testsyscall\
+ 
+ fs.img: mkfs README $(UPROGS)
+ 	./mkfs fs.img README $(UPROGS)
+@@ -253,12 +255,13 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
+ # rename it to rev0 or rev1 or so on and then
+ # check in that version.
+ 
+-# exercise 4 - add expr.c and hello.c to EXTRA
++# 3.4 - add expr.c and hello.c to EXTRA
++# 4.6 - add testsyscall.c to EXTRA
+ 
+ EXTRA=\
+ 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
+ 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
+-	printf.c umalloc.c expr.c hello.c\
++	printf.c umalloc.c expr.c hello.c testsyscall.c\
+ 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
+ 	.gdbinit.tmpl gdbutil\
+ 
+diff --git a/syscall.c b/syscall.c
+index ee852616..f2027701 100644
+--- a/syscall.c
++++ b/syscall.c
+@@ -103,6 +103,9 @@ extern int sys_unlink(void);
+ extern int sys_wait(void);
+ extern int sys_write(void);
+ extern int sys_uptime(void);
++// 4.6 add an extern syscall function
++extern int sys_hello(void);
++extern int sys_getppid(void);
+ 
+ static int (*syscalls[])(void) = {
+ [SYS_fork]    sys_fork,
+@@ -126,6 +129,9 @@ static int (*syscalls[])(void) = {
+ [SYS_link]    sys_link,
+ [SYS_mkdir]   sys_mkdir,
+ [SYS_close]   sys_close,
++// 4.6 add a syscall into the syscall table
++[SYS_hello]   sys_hello,
++[SYS_getppid] sys_getppid,
+ };
+ 
+ void
+diff --git a/syscall.h b/syscall.h
+index bc5f3565..f0751155 100644
+--- a/syscall.h
++++ b/syscall.h
+@@ -20,3 +20,7 @@
+ #define SYS_link   19
+ #define SYS_mkdir  20
+ #define SYS_close  21
++
++// 4.6 add a syscall
++#define SYS_hello  22
++#define SYS_getppid 23
+\ No newline at end of file
+diff --git a/sysfile.c b/sysfile.c
+index bfe61b7d..624d0783 100644
+--- a/sysfile.c
++++ b/sysfile.c
+@@ -442,3 +442,15 @@ sys_pipe(void)
+   fd[1] = fd1;
+   return 0;
+ }
++
++// 4.6 add a syscall
++int sys_hello(void)
++{
++  cprintf("Hello, world!\n");
++  return 0;
++}
++
++int sys_getppid(void)
++{
++  return myproc()->parent->pid;
++}
+\ No newline at end of file
+diff --git a/testsyscall.c b/testsyscall.c
+new file mode 100644
+index 00000000..b8c368c0
+--- /dev/null
++++ b/testsyscall.c
+@@ -0,0 +1,14 @@
++#include "types.h"
++#include "stat.h"
++#include "user.h"
++
++int main(int argc, char *argv[])
++{
++    // invoke the hello() syscall
++    hello();
++
++    // invoke the getppid() syscall
++    printf(1, "Parent PID via getppid() syscall: %d\n", getppid());
++
++    exit();
++}
+diff --git a/user.h b/user.h
+index 4f99c52b..97c94fc1 100644
+--- a/user.h
++++ b/user.h
+@@ -23,6 +23,9 @@ int getpid(void);
+ char* sbrk(int);
+ int sleep(int);
+ int uptime(void);
++// 4.6 add a syscall declaration in the user space
++int hello(void);
++int getppid(void);
+ 
+ // ulib.c
+ int stat(const char*, struct stat*);
+diff --git a/usys.S b/usys.S
+index 8bfd8a1b..ae621f8f 100644
+--- a/usys.S
++++ b/usys.S
+@@ -29,3 +29,6 @@ SYSCALL(getpid)
+ SYSCALL(sbrk)
+ SYSCALL(sleep)
+ SYSCALL(uptime)
++// 4.6 add syscall extern declaration
++SYSCALL(hello)
++SYSCALL(getppid)
+\ No newline at end of file
