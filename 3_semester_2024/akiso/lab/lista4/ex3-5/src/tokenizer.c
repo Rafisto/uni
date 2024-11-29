@@ -104,4 +104,5 @@ void tokenize_exec_args(char *line, char **argv, int *argc)
         token = strtok(NULL, " \n");
     }
     argv[i] = NULL;
+    *argc = i;
 }
