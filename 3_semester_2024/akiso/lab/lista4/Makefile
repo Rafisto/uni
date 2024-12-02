@@ -1,7 +1,7 @@
 CC = gcc
 
 # ignore ex3 folder
-SRC = $(shell find . -name '*.c' -not -path "./ex3/*") 
+SRC = $(shell find . -name '*.c' -not -path "./ex3-5/*") 
 OUT = $(SRC:.c=.out)
 
 all: $(OUT)

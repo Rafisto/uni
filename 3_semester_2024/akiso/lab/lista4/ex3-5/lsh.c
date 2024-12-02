@@ -19,7 +19,7 @@ int child_pid = -1;
 // SIGINT handler for job control (CTRL+C)
 void handle_sigint(int sig)
 {
-    if (child_pid != 0)
+    if (child_pid != -1)
     {
         // Send SIGTERM to the child process (the foreground process)
         kill(child_pid, SIGTERM);
@@ -30,8 +30,8 @@ void handle_sigint(int sig)
 // SIGTSTP handler to prevent parent from quitting (CTRL+Z)
 void handle_sigtstp(int sig)
 {
-    printf("Suspending child process\n");
-    // nothing must happen
+    // Do nothing
+    (void)sig;
 }
 
 // SIGCHLD handler to handle child process termination
@@ -39,12 +39,12 @@ void handle_sigchld(int sig)
 {
     // get child process status
     int status;
-    pid_t pid = waitpid(-1, &status, WNOHANG | WUNTRACED);
-    if (pid > 0)
+    pid_t pid;
+    while ((pid = waitpid(-1, &status, WNOHANG | WUNTRACED)) > 0)
     {
         if (WIFEXITED(status))
         {
-            printf("Job [%d] has finised\n", pid);
+            printf("Job [%d] has finished\n", pid);
             job_remove(pid);
         }
         else if (WIFSIGNALED(status))
@@ -54,18 +54,43 @@ void handle_sigchld(int sig)
         }
         else if (WIFSTOPPED(status))
         {
-            printf("Job [%d] was suspended\n", pid);
+            printf("Job [%d] was stopped\n", pid);
             job_suspend(pid);
         }
         else if (WIFCONTINUED(status))
         {
-            printf("Job [%d] was continued\n", pid);
+            printf("Job [%d] was resumed\n", pid);
             job_resume(pid);
         }
     }
 }
 
-int external_command(shell_request_t *current_cmd, int pipefd[2], int* input_fd)
+void handle_sigcont(int sig)
+{
+    // Do nothing
+    (void)sig;
+
+    // get child process status
+    int status;
+    pid_t pid;
+
+    while ((pid = waitpid(-1, &status, WNOHANG | WUNTRACED)) > 0)
+    {
+        if (WIFEXITED(status))
+        {
+            printf("Job [%d] has finished\n", pid);
+            job_remove(pid);
+        }
+        else if (WIFSIGNALED(status))
+        {
+            printf("Job [%d] was terminated\n", pid);
+            job_remove(pid);
+        }
+    }
+}
+
+
+int external_command(shell_request_t *current_cmd, int pipefd[2], int *input_fd)
 {
     int rc;
     if (current_cmd->next != NULL) // If there's a pipe, create a pipe

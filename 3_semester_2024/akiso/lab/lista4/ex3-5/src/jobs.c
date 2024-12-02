@@ -54,7 +54,21 @@ int job_fg(pid_t pid) {
         kill(pid, SIGCONT); // Resume the job
     }
 
-    waitpid(pid, NULL, WUNTRACED); // Wait for the job to terminate or stop
+    int status;
+    while (waitpid(job->pid, &status, WNOHANG | WUNTRACED) == 0)
+    {
+        // Wait for child to terminate
+    }
+
+    if (WIFSTOPPED(status))
+    {
+        job_suspend(job->pid); // Suspend job if it's stopped
+    }
+    else
+    {
+        job_remove(job->pid); // Remove job from job list
+    }
+    
     return 0;
 }
 
