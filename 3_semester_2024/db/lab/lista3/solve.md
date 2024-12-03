@@ -71,7 +71,7 @@ USE db2024;
 
 -- ValidatePesel function
 DELIMITER $$
-CREATE FUNCTION ValidatePESEL(pesel CHAR(11)) 
+CREATE FUNCTION ValidatePESEL(pesel CHAR(11))
 RETURNS BOOLEAN
 DETERMINISTIC
 BEGIN
@@ -87,8 +87,8 @@ BEGIN
     -- Calculate checksum
     SET @i = 1;
     WHILE @i <= 10 DO
-        SET @checksum = @checksum + 
-            (CAST(SUBSTRING(pesel, @i, 1) AS UNSIGNED) * 
+        SET @checksum = @checksum +
+            (CAST(SUBSTRING(pesel, @i, 1) AS UNSIGNED) *
              CAST(SUBSTRING(@weights, @i, 1) AS UNSIGNED));
         SET @i = @i + 1;
     END WHILE;
@@ -263,7 +263,7 @@ INSERT INTO Ludzie (PESEL, imie, nazwisko, data_urodzenia, plec) VALUES
 ```
 
 Tabelę zawody uzupełnij zawodami - polityk, nauczyciel,
-lekarz, informatyk wraz z odpowiednimi widełkami pensji. 
+lekarz, informatyk wraz z odpowiednimi widełkami pensji.
 
 ```sql
 -- bad zawod (pensja_min > pensja_max)
@@ -281,3 +281,51 @@ INSERT INTO Zawody (zawod_id, nazwa, pensja_min, pensja_max) VALUES
 ```
 
 Następnie, z wykorzystaniem kursora na tabeli Ludzie, przypisz każdej pełnoletniej osobie zawód (wraz z odpowiednią pensją) i uzupełnij tabelę Pracownicy. (Uwaga: zadbaj o to, aby żaden lekarz płci męskiej nie był starszy niż 65 lat, a żaden lekarz płci żeńskiej nie był starszy niż 60 lat).
+
+```sql
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE AddEmployees()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE pesel CHAR(11);
+    DECLARE zawod_id INT;
+    DECLARE pensja FLOAT;
+    DECLARE pensja_min FLOAT;
+    DECLARE pensja_max FLOAT;
+    DECLARE cur CURSOR FOR 
+        SELECT PESEL FROM Ludzie WHERE TIMESTAMPDIFF(YEAR, data_urodzenia, CURDATE()) >= 18 AND PESEL IS NOT NULL;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO pesel;
+        
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Losowanie zawodu z tabeli Zawody
+        SELECT zawod_id, pensja_min, pensja_max INTO zawod_id, pensja_min, pensja_max
+        FROM Zawody
+        ORDER BY RAND()
+        LIMIT 1;
+
+        -- Losowanie pensji w przedziale dla wylosowanego zawodu
+        SET pensja = pensja_min + (RAND() * (pensja_max - pensja_min));
+
+        -- Debugging: Check if the INSERT statement is being reached
+        SELECT pesel, zawod_id, pensja; -- Check values before insert
+
+        -- Dodanie do tabeli Pracownicy
+        IF pesel IS NOT NULL THEN
+            INSERT INTO Pracownicy (PESEL, zawod_id, pensja) VALUES (pesel, zawod_id, pensja);
+        END IF;
+    END LOOP;
+
+    CLOSE cur;
+END $$
+DELIMITER ;
+
+CALL AddEmployees();
+```
