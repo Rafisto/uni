@@ -12,6 +12,8 @@ sudo chmod u+s runasroot.out
 
 # Exercise 2
 
+LINUX
+
 ```bash
 # handle signals
 gcc signals.c -o signals.out
@@ -22,6 +24,37 @@ gcc killpid.c -o killpid.out
 gcc queue.c -o queue.out
 gcc receive.c -o receive.out
 ```
+
+XV6
+
+Taking into consideration the following code we can see that the `kill` syscall is implemented in `proc.c`:
+- Running `kill` on pid 1 will kill the system (failure), on pid 2 will kill the shell.
+
+```c
+// Kill the process with the given pid.
+// Process won't exit until it returns
+// to user space (see trap in trap.c).
+int
+kill(int pid)
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      p->killed = 1;
+      // Wake process from sleep if necessary.
+      if(p->state == SLEEPING)
+        p->state = RUNNABLE;
+      release(&ptable.lock);
+      return 0;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+```
+
 
 # Exercise 3-5
 

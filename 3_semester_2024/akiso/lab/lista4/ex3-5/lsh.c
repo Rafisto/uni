@@ -166,9 +166,8 @@ int external_command(shell_request_t *current_cmd, int pipefd[2], int *input_fd)
             {
                 job_suspend(child_pid); // Suspend job if it's stopped
             }
-            else
-            {
-                job_remove(child_pid); // Remove job from job list
+            else {
+                job_remove(child_pid); // Remove job if it's completed
             }
         }
         else
