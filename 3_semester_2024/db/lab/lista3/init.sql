@@ -2,38 +2,38 @@ USE db2024;
 
 -- ValidatePesel function
 DELIMITER $$
-CREATE FUNCTION ValidatePESEL(PESEL CHAR(11))
-RETURNS INT
+CREATE FUNCTION ValidatePESEL(pesel CHAR(11)) 
+RETURNS BOOLEAN
 DETERMINISTIC
 BEGIN
-DECLARE weight INT DEFAULT 2;
-DECLARE sum INT DEFAULT 0;
-DECLARE check_digit INT;
-DECLARE isValid INT DEFAULT 1;
+    -- Check if the input is exactly 11 digits
+    IF LENGTH(pesel) != 11 OR pesel NOT REGEXP '^[0-9]{11}$' THEN
+        RETURN FALSE;
+    END IF;
 
--- Check if PESEL has 11 digits
-IF LENGTH(PESEL) != 11 OR PESEL NOT REGEXP '^[0-9]{11}$' THEN
-    SET isValid = 0;
-ELSE
-    -- Calculate the sum of weighted digits
-    WHILE weight <= 11 DO
-        SET sum = sum + POWER(10, 11 - weight) * SUBSTRING(PESEL, weight, 1);
-        SET weight = weight + 1;
+    -- Define weights and initialize checksum
+    SET @weights = '1379137913';
+    SET @checksum = 0;
+
+    -- Calculate checksum
+    SET @i = 1;
+    WHILE @i <= 10 DO
+        SET @checksum = @checksum + 
+            (CAST(SUBSTRING(pesel, @i, 1) AS UNSIGNED) * 
+             CAST(SUBSTRING(@weights, @i, 1) AS UNSIGNED));
+        SET @i = @i + 1;
     END WHILE;
 
-    -- Calculate the check digit
-    SET check_digit = MOD(sum, 10);
+    SET @checksum = (10 - (@checksum MOD 10)) MOD 10;
 
-    -- Check if the calculated check digit matches the last digit of PESEL
-    IF check_digit != SUBSTRING(PESEL, 11, 1) THEN
-        SET isValid = 0;
+    -- Compare calculated checksum with the last digit of PESEL
+    IF @checksum = CAST(SUBSTRING(pesel, 11, 1) AS UNSIGNED) THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
     END IF;
-END IF;
-RETURN isValid;
-
 END$$
 DELIMITER ;
-
 
 -- Ludzie (PESEL: char(11), imie: varchar(30), nazwisko: varchar(30),
 -- data_urodzenia: date, plec: enum('K', 'M'))
