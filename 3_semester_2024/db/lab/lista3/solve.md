@@ -411,12 +411,15 @@ Visit and do exercises on: https://github.com/WebGoat/WebGoat/
 Run via:
 
 ```bash
+# run basic
 docker run -it -p 127.0.0.1:8080:8080 -p 127.0.0.1:9090:9090 webgoat/webgoat
+# run with complete KasmVNC
+docker run -p 127.0.0.1:3000:3000 webgoat/webgoat-desktop
 ```
 
 #### Intro (2)
 
-Navigate to http://localhost:8080/WebGoat/login, register as `admin1::admin1`
+Navigate to http://localhost:8080/WebGoat/login and register as `admin1::admin1`.
 
 ex2. 
 
@@ -513,26 +516,27 @@ prepareStatement
 ?
 ?
 statement.setString(1,"1");
-statement.setStirng(2,"2");
+statement.setString(2,"2");
 ```
 
 ex6.
 
 ```java
-try {  
-     Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPW);  
-     PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE name = ?");  
-     ps.setString(1, "Admin");  
-     ps.executeUpdate(); 
-} catch (Exception e) {  
-     System.out.println("Oops. Something went wrong!");  
+try {
+    Connection conn = DriverManager.getConnection(DBURL, DBUSER, DBPW);
+    PreparedStatement statement = conn.prepareStatement("SELECT status FROM users WHERE name=? AND mail=?");
+    statement.setString(1, "name");
+    statement.setString(2, "mail");
+    statement.executeUpdate();
+} catch (Exception e) {
+    System.out.println("Oops. Something went wrong!");
 }
 ```
 
 ex9
 
 ```sql
-a';/**/select/**/*/**/from/**/*/**/user_system_data;--
+a';/**/select/**/*/**/from/**//**/user_system_data;--
 ```
 
 ex10
