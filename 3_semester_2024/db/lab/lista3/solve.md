@@ -9,6 +9,7 @@
     - [2024-12-03](#2024-12-03)
   - [Solves (must sum to 20)](#solves-must-sum-to-20)
     - [Exercise 1 (5)](#exercise-1-5)
+    - [Exercise 3 (3) - procedure](#exercise-3-3---procedure)
     - [Exercise 4 (2) - prepare execute](#exercise-4-2---prepare-execute)
     - [Exercise 5 (4) - backup](#exercise-5-4---backup)
       - [mariadb-dump](#mariadb-dump)
@@ -104,11 +105,30 @@ BEGIN
     SET @checksum = (10 - (@checksum MOD 10)) MOD 10;
 
     -- Compare calculated checksum with the last digit of PESEL
-    IF @checksum = CAST(SUBSTRING(pesel, 11, 1) AS UNSIGNED) THEN
-        RETURN TRUE;
-    ELSE
+    IF NOT @checksum = CAST(SUBSTRING(pesel, 11, 1) AS UNSIGNED) THEN
         RETURN FALSE;
     END IF;
+
+    -- Should also check date of birth 
+
+    -- 0 <= year <= 99 (year is the first 2 digits)
+    SET @year = CAST(SUBSTRING(pesel, 1, 2) AS UNSIGNED);
+    IF @year < 0 OR @year > 99 THEN
+        RETURN FALSE;
+    END IF;
+
+    -- 1 <= month <= 12
+
+    -- 1 <= day <= 31
+    SET @day = CAST(SUBSTRING(pesel, 5, 2) AS UNSIGNED);
+    IF @day < 1 OR @day > 31 THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Should also check gender
+    --     Though we live in modern society 
+
+    RETURN TRUE;
 END$$
 DELIMITER ;
 
@@ -190,6 +210,7 @@ Czy dobrym pomysłem jest stosowanie nr PESEL jako klucza? Jeżeli uważasz, że
 
 ```
 PESEL jako klucz jest dobrym pomysłem, ponieważ jest to unikalny numer identyfikacyjny dla każdej osoby w Polsce.
+Niestety przepisy prawa mogą wymusić usunięcie danych osobowych, wtedy PESEL jako klucz może być problematyczny.
 ```
 
 Do tabeli Ludzie wprowadź informacje na temat:
@@ -292,7 +313,6 @@ Następnie, z wykorzystaniem kursora na tabeli Ludzie, przypisz każdej pełnole
 DELIMITER $$
 CREATE OR REPLACE PROCEDURE AddEmployees()
 BEGIN
-    -- Deklaracje zmiennych dla kursora
     DECLARE done INT DEFAULT FALSE;
     DECLARE t_pesel CHAR(11);
     DECLARE t_birthdate DATE;
@@ -317,7 +337,6 @@ BEGIN
             LEAVE ludzie_loop;
         END IF;
 
-        -- Pobierz dane osoby z kursora
         FETCH ludzie_cursor INTO t_pesel, t_birthdate, t_gender;
 
         -- Oblicz wiek osoby
@@ -359,6 +378,52 @@ END $$
 DELIMITER ;
 
 CALL AddEmployees();
+```
+
+### Exercise 3 (3) - procedure
+
+```sql
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE IncreaseSalary(job VARCHAR(50))
+BEGIN
+  DECLARE isDone BOOLEAN DEFAULT FALSE;
+  DECLARE isSalaryIncreaseAllowed BOOLEAN DEFAULT TRUE;
+  DECLARE currentSalary FLOAT;
+  DECLARE jobMaxSalary FLOAT DEFAULT (SELECT pensja_max FROM Zawody WHERE nazwa = job);
+  DECLARE jobZawodId INT DEFAULT (SELECT zawod_id FROM Zawody WHERE nazwa = job);
+
+  DECLARE salaryCursor CURSOR FOR
+    SELECT pensja FROM Pracownicy 
+    WHERE zawod_id = jobZawodId;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET isDone = TRUE;
+
+  OPEN salaryCursor;
+
+  salaryLoop: LOOP
+    IF isDone THEN
+      LEAVE salaryLoop;
+    END IF;
+
+    FETCH salaryCursor INTO currentSalary;
+
+    IF (1.05 * currentSalary) > jobMaxSalary THEN
+      SET isSalaryIncreaseAllowed = FALSE;
+      LEAVE salaryLoop;
+    END IF;
+  END LOOP;
+
+  CLOSE salaryCursor;
+
+  IF isSalaryIncreaseAllowed THEN
+    UPDATE Pracownicy
+    SET pensja = 1.05 * pensja
+    WHERE zawod_id = jobZawodId;
+  END IF;
+END$$
+DELIMITER ;
+
+CALL IncreaseSalary("Lekarz");
 ```
 
 ### Exercise 4 (2) - prepare execute
