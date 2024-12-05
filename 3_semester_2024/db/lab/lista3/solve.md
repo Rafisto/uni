@@ -389,8 +389,12 @@ BEGIN
   DECLARE isDone BOOLEAN DEFAULT FALSE;
   DECLARE isSalaryIncreaseAllowed BOOLEAN DEFAULT TRUE;
   DECLARE currentSalary FLOAT;
-  DECLARE jobMaxSalary FLOAT DEFAULT (SELECT pensja_max FROM Zawody WHERE nazwa = job);
-  DECLARE jobZawodId INT DEFAULT (SELECT zawod_id FROM Zawody WHERE nazwa = job);
+  DECLARE jobMaxSalary FLOAT;
+  DECLARE jobZawodId INT;
+
+  SELECT pensja_max, zawod_id INTO jobMaxSalary, jobZawodId
+  FROM Zawody
+  WHERE nazwa = job;
 
   DECLARE salaryCursor CURSOR FOR
     SELECT pensja FROM Pracownicy 
@@ -398,14 +402,16 @@ BEGIN
 
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET isDone = TRUE;
 
+  START TRANSACTION;
+
   OPEN salaryCursor;
 
   salaryLoop: LOOP
+    FETCH salaryCursor INTO currentSalary;
+
     IF isDone THEN
       LEAVE salaryLoop;
     END IF;
-
-    FETCH salaryCursor INTO currentSalary;
 
     IF (1.05 * currentSalary) > jobMaxSalary THEN
       SET isSalaryIncreaseAllowed = FALSE;
@@ -419,6 +425,9 @@ BEGIN
     UPDATE Pracownicy
     SET pensja = 1.05 * pensja
     WHERE zawod_id = jobZawodId;
+    COMMIT;
+  ELSE
+    ROLLBACK;
   END IF;
 END$$
 DELIMITER ;
