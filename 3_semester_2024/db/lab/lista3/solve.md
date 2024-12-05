@@ -11,7 +11,7 @@
     - [Exercise 1 (5)](#exercise-1-5)
     - [Exercise 4 (2) - prepare execute](#exercise-4-2---prepare-execute)
     - [Exercise 5 (4) - backup](#exercise-5-4---backup)
-      - [Mariadb-dump](#mariadb-dump)
+      - [mariadb-dump](#mariadb-dump)
       - [mariabackup](#mariabackup)
     - [Exercise 6](#exercise-6)
       - [Intro (2)](#intro-2)
@@ -379,7 +379,7 @@ DEALLOCATE PREPARE WomenNumberByProfession;
 
 ### Exercise 5 (4) - backup
 
-#### Mariadb-dump
+#### mariadb-dump
 
 1. Wykonaj backup bazy danych db2024 do pliku `db2024.sql`.
 

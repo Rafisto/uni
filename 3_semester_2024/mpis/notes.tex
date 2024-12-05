@@ -1,0 +1,878 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Metody Probabilistyczne i Statystyka}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Ciała Podzbiorów}
+
+\begin{definition}{Ciało podzbiorów}
+Ustalmy przestrzeń $\Omega$. Rodzinę zbiorów $\mathcal{S} \subseteq \mathcal{P}(\Omega)$ nazywamy ciałem podzbiorów zbioru $\Omega$, jeśli:
+\begin{enumerate}
+    \item \( \mathcal{S} \neq \emptyset \)
+    \item \( A\in \mathcal{S} \implies A^{C} \in \mathcal{S} \)
+    \item \( A, B \in \mathcal{S} \implies A \cup B \in \mathcal{S} \)
+\end{enumerate}
+\end{definition}
+
+\begin{fact}{Przekrój w ciele podzbiorów}
+Jeśli \( \mathcal{S} \) jest ciałem podzbiorów, to:
+\[
+A,B \in \mathcal{S} \implies A \cup B \in \mathcal{S}
+\]  
+\end{fact}
+
+\begin{fact}{Skończony zbiór indeksów}
+Jeśli \( \mathcal{S} \) jest ciałem podzbiorów \(\Omega\) i dla pewnego nieskończonego zbioru indeksów
+zachodzi \(\forall i\in I (A_i \in \mathcal{S})\), wówczas:
+\[
+\bigcup_{i\in I} A_{i} \in \mathcal{S} \text {   oraz   } \bigcap_{i\in I} A_{i} \in \mathcal{S}
+\]
+\end{fact}
+
+\begin{fact}{Omega i zbiór pusty}
+Niech \(\mathcal{S}\) będzie ciałem podzbiorów \(\Omega\), wówczas:
+\[
+\Omega \in \mathcal{S} \text{   oraz   } \emptyset \in \mathcal{S}
+\]
+\end{fact}
+
+\subsection{Sigma ciało podzbiorów}
+
+\begin{definition}{$\sigma$-ciało podzbiorów}
+Ustalmy przestrzeń $\Omega$. Rodzinę zbiorów $\mathcal{S} \subseteq \mathcal{P}(\Omega)$ nazywamy $\sigma$-ciałem podzbiorów zbioru $\Omega$, jeśli:
+\begin{enumerate}
+    \item \( \mathcal{S} \neq \emptyset \)
+    \item \( A\in \mathcal{S} \implies A^{C} \in \mathcal{S} \)
+    \item \( A_1, A_2, \dots \in \mathcal{S} \implies \bigcup_{i\geq 1} A_{i} \in \mathcal{S} \)
+\end{enumerate} 
+
+\noindent
+Ciało podzbiorów jest zamknięte na \textbf{skończone sumy} jego elementów, natomiast
+$\sigma$-ciało podzbiorów jest zamknięte na \textbf{sumy przeliczalne}
+\end{definition}
+
+\begin{fact}{Ciało z sigma ciała}
+    Jeśli $\mathcal{S}$ jest $\sigma$-ciałem podzbiorów $\Omega$ to jest też ciałem podzbiorów $\Omega$.
+    Każde $\sigma$-ciało zawiera $\emptyset$ oraz $\Omega$.
+\end{fact}
+
+\begin{fact}{Skończone ciało podzbiorów $\Omega$}
+    Jeśli $\mathcal{S}$ jest skończonym ciałem podzbiorów $\Omega$, to $\mathcal{S}$ jest $\sigma$-ciałem podzbiorów $\Omega$ (przeliczalne sumy redukują się do sum skończonych)
+\end{fact}
+
+\begin{information}{Przykład Sigma Ciał}
+    Zobaczmy przykłady $\sigma$-ciał:
+    \begin{enumerate}
+        \item $\mathcal{P}(\Omega)$ jest sigma ciałem.
+        \item $\{\emptyset, \Omega\}$ jest sigma ciałem (nazywany zdegenerowanym).
+        \item Najmniejsze sigma ciało zawierające $A$ to $\{\emptyset, A, A^C, \Omega\}$.
+    \end{enumerate}
+\end{information}
+
+\begin{definition}{Sigma ciało generowane}
+    Niech $\mathcal{A} \subseteq \mathcal{P}(\Omega)$ będzie rodziną podzbiorów $\Omega$. Sigma ciałem generowanym przez rodzinę $\mathcal{A}$ nazywamy rodzinę podzbiorów:
+
+    \[
+    \sigma(\mathcal{A}) = \bigcup \mathcal{H}
+    \]
+
+    \noindent
+    gdzie $\mathcal{H} = \{ \mathcal{S} \subseteq \mathcal{P}(\Omega) : \mathcal{S} \text{ jest sigma ciałem } \land \mathcal{A} \subseteq \mathcal{S} \}$\\
+
+    \noindent
+    Niech $\mathcal{A} \subseteq \mathcal{P}(\Omega)$ będzie rodziną podzbiorów $\Omega$. 
+    Wówczas istnieje najmniejsze $\sigma$-ciało podzbiorów $\Omega$ zawierające $\mathcal{A}$. 
+\end{definition}
+
+\begin{definition}{Sigma ciało zbiorów borelowskich}
+    Sigma ciało generowane przez rodzinę wszystkich otwartych podzbiorów $\mathbb{R}$ nazywamy $\sigma$-ciałem zbiorów borelowskich prostej rzeczywistej i oznaczamy je przez $\mathcal{B}(\mathbb{R}) = \mathcal{B}$.
+\end{definition}
+
+\begin{information}{Elementy $\mathcal{B}(\mathbb{R})$}
+    Zobaczmy elementy zbiorów borelowskich:
+    \begin{enumerate}
+        \item wszystkie odcinki otwarte \( (a,b), a < b \in \mathbb{R}\)
+        \item półprosta \( (0, \infty) = \bigcup_{n\geq 1} (0, n) \)
+        \item półprosta \( (-\infty, 0] = (0,\infty)^{C} =  \bigcap_{n\geq 1} (-\infty, \frac{1}{n}) \)
+        \item półproste \( (-\infty, a) \) oraz \( [a, \infty), a \in \mathbb{R} \)
+        \item \( \mathcal{B}(\mathbb{R}) = \sigma(\{ (a,b) : a,b \in \mathbb{R} \land a < b \})\)
+        \item \( \mathcal{B}(\mathbb{R}^n) = \sigma(\{ A \subseteq \mathbb{R}^n : \text{A jest zbiorem otwartym}\})\)
+    \end{enumerate}
+\end{information}
+
+\section{Przestrzenie Mierzalne}
+
+\begin{definition}{Przestrzeń mierzalna}
+    Parę $(S, \mathcal{S})$, gdzie $S$ jest niepustym zbiorem, a $\mathcal{S}$ jest $\sigma$-ciałem podzbiorów $S$ nazywamy \textbf{przestrzenią mierzalną}. Zbiory $A \in \mathcal{S}$ nazywamy wówczas zbiorami mierzalnymi.
+\end{definition}
+
+\begin{definition}{Miara}
+    Niech $(S,\mathcal{S})$ będzie przestrzenią mierzalną. \textbf{Miarą} na przestrzeni nazywamy funkcję zbioru $\mu: \mathcal{S} \rightarrow [0,\infty]$, taką że:
+    \begin{enumerate}
+        \item $\mu(\emptyset) = 0$
+        \item dla dowolnej rodziny $\{E_n\}_{n\geq 1}$ parami rozłącznych zbiorów z $\mathcal{S}$, zachodzi:
+        \[
+        \mu \left(\bigcup_{n\geq 1} E_n \right) = \sum_{n\geq 1} \mu (E_n)
+        \]
+    \end{enumerate}
+    Trójkę $(S,\mathcal{S}, \mu)$ nazywamy \textbf{przestrzenią z miarą}. \\
+    (własność 2 to przeliczalna addytywność)
+\end{definition}
+
+\begin{information}{Miara Lebesgue'a}
+    Miara Lebesgue'a na przestrzeni \( (\mathbb{R}, \mathcal{B}) \)staniowi naturalną formalizację pojecia długości.
+    \[
+    \lambda([a,b]) = b - a
+    \]
+    Uwaga, istnieją zbiory niemierzalne w sensie Lebesgue'a.
+\end{information}
+
+\subsection{Przestrzeń probabilistyczna}
+
+\begin{definition}{Przestrzeń Probabilistyczna}
+    Nazywamy trójkę $(\Omega, \mathcal{S}, P)$ taką, że \( \Omega \neq \emptyset, \mathcal{S} \subseteq \mathcal{P}(\Omega) \) jest $\sigma$-ciałem podzbiorów $\Omega$, a $P: \mathcal{S} \rightarrow [0,1]$ jest funkcją zbioru (nazywaną \textbf{prawdopodobieństwem}) spełniającą:\
+    \begin{enumerate}
+        \item \( P(\Omega) = 1\)
+        \item Jeśli $(A_n)_{n\geq 1}$ jest rodziną parami rozłącznych zbiorów z $\mathcal{S}$ to:
+        \[
+        P\left(\bigcup_{n\geq 1} A_n \right) = \sum_{n\geq 1} P(A_n)
+        \]
+    \end{enumerate}
+    $P$ jest miarą na przestrzeni $(\Omega, \mathcal{S})$\\
+    Miarę spełniającą warunek 1. nazywamy miarą probabilistyczną.
+\end{definition}
+
+\begin{fact}{Fakty z Przestrzeni probabilistycznych}
+    Z definicji widzimy, że:
+    \begin{enumerate}
+        \item $P(\emptyset) = 0$
+    \end{enumerate}    
+\end{fact}
+
+\begin{information}{Notacja w Przestrzeni probabilistycznej}
+    Wprowadzamy nazewnictwo:
+    $\Omega$ - przestrzeń zdarzeń elementarnych ($\omega \in \Omega$ - zdarzenie elementarne)\\
+    $\mathcal{S}$ - $\sigma$-ciało zdarzeń. ($A\in \mathcal{S}$) - zdarzenie\\
+    $P$ - prawdopodobieństwo, $P(A)$ - prawdopodobieństwo zdarzenia $A\in \mathcal{S}$
+\end{information}
+
+\subsection{Przestrzeń kombinatoryczna}
+
+Przestrzeń \( (\Omega, \mathcal{S}, P) \), gdzie:
+\begin{enumerate}
+    \item $|\Omega| < \infty$
+    \item $\mathcal{S} = \mathcal{P}(\Omega)$
+    \item $P(A) = |A|/|\Omega|, A\in\mathcal{S}$
+\end{enumerate}
+
+\subsection{Przestrzeń dyskretna skończona}
+Przestrzeń \( (\Omega, \mathcal{S}, P) \), gdzie:
+\begin{enumerate}
+    \item $\Omega = \{\omega_1, \dots, \omega_n\}$
+    \item $\mathcal{S} = \mathcal{P}(\Omega)$
+    \item $P$ zadane przez wektor $(p_1, \dots, p_n)$, $p_i \geq 0, \sum_{i=1}^{n} p_i = 1$
+    \item $P(\{\omega_i \}) = p_i$
+    \item Dla $A\subseteq \Omega$ określamy $P(A)=\sum_{\omega\in A} P(\{\Omega\}) = \sum_{\omega_i\in A} p_i$ 
+\end{enumerate}
+
+\subsection{Przestrzeń dyskretna nieskończona (przeliczalna)}
+Przestrzeń \( (\Omega, \mathcal{S}, P) \), jak wyżej tylko $P$ jest zadane przez ciąg $(p_1, p_2, \dots)$\\\\
+Jeśli $\Omega$ jest przeliczalna to za $\sigma$-ciało możemy bezpiecznie przyjąć $\mathcal{P}(\Omega)$
+
+\subsection{Geometryczny model Prawdopodobieństwa}
+
+Weźmy $\Omega\in\mathcal{B}(\mathbb{R}^n)$, taki że $\lambda^n(\Omega) < \infty$. (Miarę Lebesgue'a w $\mathbb{R}^n$). Ustalmy $\mathcal{S}=\mathcal{B}(\Omega)$. Wtedy:
+
+\[
+P(A) = \frac{\lambda^n(A)}{\lambda^n (\Omega)}, A \in \mathcal{S}
+\]
+
+$n = 1$ - długość, $n = 2$ - pole powierzchni, $n = 3$ objętość.
+
+\section{Prawdopodobieństwo Warunkowe}
+
+\begin{definition}{Prawdopodobieństwo Warunkowe}
+    Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$. Niech $A,B \in \mathcal{S}$ i załóżmy, że $P(B)>0$. Prawdopodobieństwo warunkowe zdarzenia $A$ pod warunkiem zdarzenia $B$ określamy jako:
+    \[
+    P(A|B) = \frac{P(A\cap B)}{P(B)}
+    \]
+\end{definition}
+
+\begin{fact}{Prawdopodobieństwo Warunkowe jest dobrze określone}
+     Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$, niech $B\in\mathcal{S}$ będzie zdarzeniem takim, że $P(B)>0$. Niech:
+     \[
+     P_B(A) = P(A|B) \text{, dla } A\in\mathcal{S}
+     \]
+     Wówczas $(\Omega, \mathcal{S}, P_B)$ jest przestrzenią probabilistyczną.
+\end{fact}
+
+\subsection{Prawdopodobieństwo Całkowite}
+
+\begin{definition}{Prawdopodobieństwo Całkowite}
+    Ustalmy przstrzeń probablistyczną $(\Omega, \mathcal{S}, P)$. Niech $\{A_1,\dots,A_n\}$ będzie
+    rozbiciem $\Omega$ na zdarzenia $\forall 1\leq i \leq n (A_i \in \mathcal{S}) A_i \cap A_j = \emptyset$ dla $i\neq j$ oraz $\bigcup_{i=1}^{n} A_i = \Omega$. Niech $B\in\mathcal{S}$ Wtedy:
+    \[
+    P(B) = \sum_{i=1}^{n} P(B\cup A_i)
+    \]
+    Jeśli ponadto $P(A_i) > 0$ dla $1\leq i \leq n$ to:
+    \[
+    P(B) = \sum_{i=1}^{n} P(B|A_i) \cdot P(A_i)
+    \]
+\end{definition}
+
+\begin{fact}{Rozbicie}
+    Jeśli $\{A_1, \dots, A_n\}$ jest rozbiciem $\Omega$ na zdarzenia, a $B\in\mathcal{S}$, takie że $P(B) > 0$, to:
+    \[
+    \sum_{i=1}^{n} P(A_i | B) = 1
+    \]
+\end{fact}
+
+\subsection{Wzór Bayesa}
+
+\begin{definition}{Wzór Bayesa}
+    Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$. oraz rozbicie $\Omega$ na zdarzenia $A_1, \dots, A_n$, takie że $P(A_i) > 0$ dla $1 \leq i \leq n$. Niech $B\in\mathcal{S}$ będzie takie, że $P(B)>0$. Wtedy dla $1\leq i\leq n$ mamy:
+    \[
+        P(A_i|B) = \frac{P(B|A_i)\cdot P(A_i)}{\sum_{j=1}^{n} P(B|A_j) \cdot P(A_j)}
+    \]
+
+    Dla $n=2$:
+
+    \[
+        P(A|B)=\frac{P(B|A)\cdot P(A)}{P(B|A)\cdot P(A) + P(B|A^C) \cdot P(A^C)}
+    \]
+\end{definition}
+
+\section{Zdarzenia niezależne}
+
+\begin{definition}{Zdarzenie niezależne}
+    Zdarzenia $A$ i $B$ są niezależne, gdy:
+    \[
+    P(A\cap B) = P(A)\cdot P(B)
+    \]
+
+    Powiemy, że zdarzenia $A_t$, $t\in T$ ($T$ - zbiór indeksów) są niezależne, jeśli dla dowolnych róznych indeksów $i_1,\dots, i_n \in T$ zachodzi:
+    \[
+    P(\bigcap_{j=1}^{n} A_{i_j}) = \prod_{j=1}^{n} P(A_{i_j})
+    \]
+\end{definition}
+
+\begin{information}{Niezależność, a prawdopodobieństwo warunkowe}
+    Jeśli zdarzenia $A$ i $B$ są niezależne oraz $P(B)>0$, to:
+    \[
+        P(A|B) = P(A)
+    \]
+\end{information}
+
+\section{Zmienne Losowe}
+
+\begin{definition}{Zmienne Losowe}
+    Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$. Zmienną losową nazywamy funkcję $X: \Omega \rightarrow \mathbb{R}$ taką, że:
+    \[
+    (\forall B\in\mathcal{B}) (X^{-1}(B) = \{ \omega \in \Omega: X(\omega \in B\} \in \mathcal{S})
+    \]
+    (Intuicja) Każdemu zdarzeniu $B\in\mathcal{B}$ mogę przyporządkować ppb. odpowiadające ppb. zdarzenia z $\Omega$ reprezentowanego przez $B$, czyli $P(X^{-1}(B))$ 
+\end{definition}
+
+\begin{definition}{Funkcje mierzalne}
+    Niech $(S, \mathcal{S})$ oraz $(T,\mathcal{T})$ będą przestrzeniami mierzalnymi. Funkcję $f: S \rightarrow T$ nazywamy funkcją $\mathcal{S}/\mathcal{T}$-mierzalną, jeśli
+    \[
+    (\forall B\in \mathcal{T})(f^{-1}(B) = \{ s\in S: f(s) \in B\} \in \mathcal{S})
+    \]
+
+    Zmienne losowe to funkcje mierzalne z $(\Omega, \mathcal{S})$ w $(\mathbb{R}, \mathcal{B})$.\\
+    (Zachowuje strukturę $\sigma$-ciał)
+\end{definition}
+
+\begin{fact}{Funkcje ciągłe}
+    Funkcje ciągłe są mierzalne.
+\end{fact}
+
+\begin{definition}{Równość prawie wszędzie}
+    Niech $(S,\mathcal{S},\mu)$ będzie przestrzenią z miarą, a $f, g: S\rightarrow \mathbb{R}$ będą
+    funkcjami mierzalnymi ($\mathcal{S}$/$\mathcal{B}$ mierzalnymi). Mówimy, że $f$ i $g$ są równe $\mu$-prawie wszędzie, jeśli:
+    \[
+        \mu\{ s\in S: f(s) \neq g(s)\} = 0
+    \]
+\end{definition}
+
+\begin{information}{Oznaczenie}
+    Dla dowolnego $B\in\mathcal{B}$ niech:
+    \[
+    P_X(B)=(P \circ X^{-1})(B) = P(X^{-1}(B)) = P(\{\omega \in \Omega: X(\omega) \in B\}) = P(X\in B)
+    \]
+    Prawdopodobieństwo $P_X$ na przestrzeni $(\mathbb{R},\mathcal{B})$ oznaczamy rozkładem zmiennej losowej $X$.
+\end{information}
+
+\subsection{Dystrybuanta}
+
+\begin{definition}{Dystrybuanta}
+    (Cumulative Distribution Function -CDF ) zmiennej losowej $X: \Omega \rightarrow \mathbb{R}$ nazywamy funkcję $F_X : \mathbb{R} \rightarrow [0,1]$ taką, że:
+    \[
+    F_X(t) = P(X\leq t) = P(\{ \omega\in\Omega: X(\omega)\leq t\}) = P(X^{-1}((-\infty,t]))
+    \]
+\end{definition}
+
+\begin{information}{Własności dystrybuanty}
+    Niech $X: \Omega \rightarrow \mathbb{R}$ będzie zmienną losową
+    \begin{enumerate}
+        \item dystrybuanta $F_X(t)$ jest funkcją niemalejącą tzn.
+        \[
+        (\forall s,t \in \mathbb{R}) (s\leq t \implies F_Xs) \leq F_X(t))
+        \]
+        \item granica dystrybuanty w $\infty, -\infty$ wyraża się poprzez:
+        \[
+        \lim_{t\rightarrow\infty} F_X(t)=1 \text{ oraz } \lim_{t\rightarrow\infty} F_X(t) = 0
+        \]
+        \item dystrybuanta $F_X(t)$ jest prawostronnie ciągła tzn.
+        \[
+        (\forall a\in\mathbb{R})\left(\lim_{t\rightarrow a^{+}} F_X(t) = F_X(a)\right)
+        \]
+    \end{enumerate}
+\end{information}
+
+\begin{theorem}{Twierdzenie}
+    Funkcja $F: \mathbb{R} \rightarrow [0,1]$ jest dystrybuantą pewnej zmiennej losowej wtedy i tylko wtedy,g dy spełnia powyższe 3 warunki.
+\end{theorem}
+
+\subsection{Dyskretna zmienna losowa}
+
+\begin{theorem}{Dyskretna zmienna losowa}
+    Rozkład dyskretnej zmiennej losowej $X$ jest wyznaczony jednoznacznie przez określenie ppb. przyjmowania dla poszczególnych wartości przez $X$ ($P(X=x)$) dla każdego $x\in \text{rng}(X)$. Dla dowolnego $A\in\mathbb{B}$ mamy:
+    \begin{align}
+        P(X\in A) &= P(\{\omega \in \Omega : X(\omega) \in A\}) \\
+        &= P(\{\omega \in \Omega: X(\omega) \in A \cap \text{rng}(X)\})\\
+        &= P\left(\bigcup_{x\in \text{rng}(X) \cap A} \{x\}\right) \\
+        &= \sum_{x\in \text{rng}(X) \cap A} P(X=x)
+    \end{align}
+\end{theorem}
+
+\begin{definition}{Funkcja masy prawdopodobieństwa}
+    (Probablity Mass Function - PMF) dyskretnej zmiennej losowej $X$ nazywamy funkcję:
+    $p_X : \text{rng}(X) \rightarrow [0,1]$ zadaną wzorem:
+    \[
+    p_X(x) = P(X=x)
+    \]
+\end{definition}
+
+\begin{fact}{Wzór na Dystrybuantę}
+    Dystrybuanta dyskretnej zmiennej losowej $X$ z PMF $p_x$ zadana jest wzorem:
+    \[
+    F_X(t) = P(X\leq t) = \sum_{y\in \text{rng}(X) y\leq t} p_X(y)
+    \]
+\end{fact}
+
+\begin{theorem}{Istnienie zmiennej losowej o zadanym rozkładzie dyskretnym}
+    Niech $B=\{b_i: i\in I\}$ będzie przeliczalnym podzbiorem zbioru liczb rzeczywistych, takich że $b_i \neq b_j$ dla $i\neq j$. Niech $p_i, i\in I$ będą nieujemnymi liczbami rzeczywistymi, takimi że $\sum_{i\in I} p_i = 1$.\\
+
+    \noindent
+    Istnieje wówczas ppb. $(\Omega, \mathcal{S}, P)$ i dyskretna zmienna losowa $X:\Omega \rightarrow \mathbb{R}$, której PMF zadana jest przez:
+
+    \[
+    p_X(b_i)=p_i, i\in I \text{ oraz } p_X(b) = 0, b \notin B.
+    \]
+\end{theorem}
+
+\end{document}
+
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Metody Probabilistyczne i Statystyka}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Ciała Podzbiorów}
+
+\begin{definition}{Ciało podzbiorów}
+Ustalmy przestrzeń $\Omega$. Rodzinę zbiorów $\mathcal{S} \subseteq \mathcal{P}(\Omega)$ nazywamy ciałem podzbiorów zbioru $\Omega$, jeśli:
+\begin{enumerate}
+    \item \( \mathcal{S} \neq \emptyset \)
+    \item \( A\in \mathcal{S} \implies A^{C} \in \mathcal{S} \)
+    \item \( A, B \in \mathcal{S} \implies A \cup B \in \mathcal{S} \)
+\end{enumerate}
+\end{definition}
+
+\begin{fact}{Przekrój w ciele podzbiorów}
+Jeśli \( \mathcal{S} \) jest ciałem podzbiorów, to:
+\[
+A,B \in \mathcal{S} \implies A \cup B \in \mathcal{S}
+\]  
+\end{fact}
+
+\begin{fact}{Skończony zbiór indeksów}
+Jeśli \( \mathcal{S} \) jest ciałem podzbiorów \(\Omega\) i dla pewnego nieskończonego zbioru indeksów
+zachodzi \(\forall i\in I (A_i \in \mathcal{S})\), wówczas:
+\[
+\bigcup_{i\in I} A_{i} \in \mathcal{S} \text {   oraz   } \bigcap_{i\in I} A_{i} \in \mathcal{S}
+\]
+\end{fact}
+
+\begin{fact}{Omega i zbiór pusty}
+Niech \(\mathcal{S}\) będzie ciałem podzbiorów \(\Omega\), wówczas:
+\[
+\Omega \in \mathcal{S} \text{   oraz   } \emptyset \in \mathcal{S}
+\]
+\end{fact}
+
+\subsection{Sigma ciało podzbiorów}
+
+\begin{definition}{$\sigma$-ciało podzbiorów}
+Ustalmy przestrzeń $\Omega$. Rodzinę zbiorów $\mathcal{S} \subseteq \mathcal{P}(\Omega)$ nazywamy $\sigma$-ciałem podzbiorów zbioru $\Omega$, jeśli:
+\begin{enumerate}
+    \item \( \mathcal{S} \neq \emptyset \)
+    \item \( A\in \mathcal{S} \implies A^{C} \in \mathcal{S} \)
+    \item \( A_1, A_2, \dots \in \mathcal{S} \implies \bigcup_{i\geq 1} A_{i} \in \mathcal{S} \)
+\end{enumerate} 
+
+\noindent
+Ciało podzbiorów jest zamknięte na \textbf{skończone sumy} jego elementów, natomiast
+$\sigma$-ciało podzbiorów jest zamknięte na \textbf{sumy przeliczalne}
+\end{definition}
+
+\begin{fact}{Ciało z sigma ciała}
+    Jeśli $\mathcal{S}$ jest $\sigma$-ciałem podzbiorów $\Omega$ to jest też ciałem podzbiorów $\Omega$.
+    Każde $\sigma$-ciało zawiera $\emptyset$ oraz $\Omega$.
+\end{fact}
+
+\begin{fact}{Skończone ciało podzbiorów $\Omega$}
+    Jeśli $\mathcal{S}$ jest skończonym ciałem podzbiorów $\Omega$, to $\mathcal{S}$ jest $\sigma$-ciałem podzbiorów $\Omega$ (przeliczalne sumy redukują się do sum skończonych)
+\end{fact}
+
+\begin{information}{Przykład Sigma Ciał}
+    Zobaczmy przykłady $\sigma$-ciał:
+    \begin{enumerate}
+        \item $\mathcal{P}(\Omega)$ jest sigma ciałem.
+        \item $\{\emptyset, \Omega\}$ jest sigma ciałem (nazywany zdegenerowanym).
+        \item Najmniejsze sigma ciało zawierające $A$ to $\{\emptyset, A, A^C, \Omega\}$.
+    \end{enumerate}
+\end{information}
+
+\begin{definition}{Sigma ciało generowane}
+    Niech $\mathcal{A} \subseteq \mathcal{P}(\Omega)$ będzie rodziną podzbiorów $\Omega$. Sigma ciałem generowanym przez rodzinę $\mathcal{A}$ nazywamy rodzinę podzbiorów:
+
+    \[
+    \sigma(\mathcal{A}) = \bigcup \mathcal{H}
+    \]
+
+    \noindent
+    gdzie $\mathcal{H} = \{ \mathcal{S} \subseteq \mathcal{P}(\Omega) : \mathcal{S} \text{ jest sigma ciałem } \land \mathcal{A} \subseteq \mathcal{S} \}$\\
+
+    \noindent
+    Niech $\mathcal{A} \subseteq \mathcal{P}(\Omega)$ będzie rodziną podzbiorów $\Omega$. 
+    Wówczas istnieje najmniejsze $\sigma$-ciało podzbiorów $\Omega$ zawierające $\mathcal{A}$. 
+\end{definition}
+
+\begin{definition}{Sigma ciało zbiorów borelowskich}
+    Sigma ciało generowane przez rodzinę wszystkich otwartych podzbiorów $\mathbb{R}$ nazywamy $\sigma$-ciałem zbiorów borelowskich prostej rzeczywistej i oznaczamy je przez $\mathcal{B}(\mathbb{R}) = \mathcal{B}$.
+\end{definition}
+
+\begin{information}{Elementy $\mathcal{B}(\mathbb{R})$}
+    Zobaczmy elementy zbiorów borelowskich:
+    \begin{enumerate}
+        \item wszystkie odcinki otwarte \( (a,b), a < b \in \mathbb{R}\)
+        \item półprosta \( (0, \infty) = \bigcup_{n\geq 1} (0, n) \)
+        \item półprosta \( (-\infty, 0] = (0,\infty)^{C} =  \bigcap_{n\geq 1} (-\infty, \frac{1}{n}) \)
+        \item półproste \( (-\infty, a) \) oraz \( [a, \infty), a \in \mathbb{R} \)
+        \item \( \mathcal{B}(\mathbb{R}) = \sigma(\{ (a,b) : a,b \in \mathbb{R} \land a < b \})\)
+        \item \( \mathcal{B}(\mathbb{R}^n) = \sigma(\{ A \subseteq \mathbb{R}^n : \text{A jest zbiorem otwartym}\})\)
+    \end{enumerate}
+\end{information}
+
+\section{Przestrzenie Mierzalne}
+
+\begin{definition}{Przestrzeń mierzalna}
+    Parę $(S, \mathcal{S})$, gdzie $S$ jest niepustym zbiorem, a $\mathcal{S}$ jest $\sigma$-ciałem podzbiorów $S$ nazywamy \textbf{przestrzenią mierzalną}. Zbiory $A \in \mathcal{S}$ nazywamy wówczas zbiorami mierzalnymi.
+\end{definition}
+
+\begin{definition}{Miara}
+    Niech $(S,\mathcal{S})$ będzie przestrzenią mierzalną. \textbf{Miarą} na przestrzeni nazywamy funkcję zbioru $\mu: \mathcal{S} \rightarrow [0,\infty]$, taką że:
+    \begin{enumerate}
+        \item $\mu(\emptyset) = 0$
+        \item dla dowolnej rodziny $\{E_n\}_{n\geq 1}$ parami rozłącznych zbiorów z $\mathcal{S}$, zachodzi:
+        \[
+        \mu \left(\bigcup_{n\geq 1} E_n \right) = \sum_{n\geq 1} \mu (E_n)
+        \]
+    \end{enumerate}
+    Trójkę $(S,\mathcal{S}, \mu)$ nazywamy \textbf{przestrzenią z miarą}. \\
+    (własność 2 to przeliczalna addytywność)
+\end{definition}
+
+\begin{information}{Miara Lebesgue'a}
+    Miara Lebesgue'a na przestrzeni \( (\mathbb{R}, \mathcal{B}) \)staniowi naturalną formalizację pojecia długości.
+    \[
+    \lambda([a,b]) = b - a
+    \]
+    Uwaga, istnieją zbiory niemierzalne w sensie Lebesgue'a.
+\end{information}
+
+\subsection{Przestrzeń probabilistyczna}
+
+\begin{definition}{Przestrzeń Probabilistyczna}
+    Nazywamy trójkę $(\Omega, \mathcal{S}, P)$ taką, że \( \Omega \neq \emptyset, \mathcal{S} \subseteq \mathcal{P}(\Omega) \) jest $\sigma$-ciałem podzbiorów $\Omega$, a $P: \mathcal{S} \rightarrow [0,1]$ jest funkcją zbioru (nazywaną \textbf{prawdopodobieństwem}) spełniającą:\
+    \begin{enumerate}
+        \item \( P(\Omega) = 1\)
+        \item Jeśli $(A_n)_{n\geq 1}$ jest rodziną parami rozłącznych zbiorów z $\mathcal{S}$ to:
+        \[
+        P\left(\bigcup_{n\geq 1} A_n \right) = \sum_{n\geq 1} P(A_n)
+        \]
+    \end{enumerate}
+    $P$ jest miarą na przestrzeni $(\Omega, \mathcal{S})$\\
+    Miarę spełniającą warunek 1. nazywamy miarą probabilistyczną.
+\end{definition}
+
+\begin{fact}{Fakty z Przestrzeni probabilistycznych}
+    Z definicji widzimy, że:
+    \begin{enumerate}
+        \item $P(\emptyset) = 0$
+    \end{enumerate}    
+\end{fact}
+
+\begin{information}{Notacja w Przestrzeni probabilistycznej}
+    Wprowadzamy nazewnictwo:
+    $\Omega$ - przestrzeń zdarzeń elementarnych ($\omega \in \Omega$ - zdarzenie elementarne)\\
+    $\mathcal{S}$ - $\sigma$-ciało zdarzeń. ($A\in \mathcal{S}$) - zdarzenie\\
+    $P$ - prawdopodobieństwo, $P(A)$ - prawdopodobieństwo zdarzenia $A\in \mathcal{S}$
+\end{information}
+
+\subsection{Przestrzeń kombinatoryczna}
+
+Przestrzeń \( (\Omega, \mathcal{S}, P) \), gdzie:
+\begin{enumerate}
+    \item $|\Omega| < \infty$
+    \item $\mathcal{S} = \mathcal{P}(\Omega)$
+    \item $P(A) = |A|/|\Omega|, A\in\mathcal{S}$
+\end{enumerate}
+
+\subsection{Przestrzeń dyskretna skończona}
+Przestrzeń \( (\Omega, \mathcal{S}, P) \), gdzie:
+\begin{enumerate}
+    \item $\Omega = \{\omega_1, \dots, \omega_n\}$
+    \item $\mathcal{S} = \mathcal{P}(\Omega)$
+    \item $P$ zadane przez wektor $(p_1, \dots, p_n)$, $p_i \geq 0, \sum_{i=1}^{n} p_i = 1$
+    \item $P(\{\omega_i \}) = p_i$
+    \item Dla $A\subseteq \Omega$ określamy $P(A)=\sum_{\omega\in A} P(\{\Omega\}) = \sum_{\omega_i\in A} p_i$ 
+\end{enumerate}
+
+\subsection{Przestrzeń dyskretna nieskończona (przeliczalna)}
+Przestrzeń \( (\Omega, \mathcal{S}, P) \), jak wyżej tylko $P$ jest zadane przez ciąg $(p_1, p_2, \dots)$\\\\
+Jeśli $\Omega$ jest przeliczalna to za $\sigma$-ciało możemy bezpiecznie przyjąć $\mathcal{P}(\Omega)$
+
+\subsection{Geometryczny model Prawdopodobieństwa}
+
+Weźmy $\Omega\in\mathcal{B}(\mathbb{R}^n)$, taki że $\lambda^n(\Omega) < \infty$. (Miarę Lebesgue'a w $\mathbb{R}^n$). Ustalmy $\mathcal{S}=\mathcal{B}(\Omega)$. Wtedy:
+
+\[
+P(A) = \frac{\lambda^n(A)}{\lambda^n (\Omega)}, A \in \mathcal{S}
+\]
+
+$n = 1$ - długość, $n = 2$ - pole powierzchni, $n = 3$ objętość.
+
+\section{Prawdopodobieństwo Warunkowe}
+
+\begin{definition}{Prawdopodobieństwo Warunkowe}
+    Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$. Niech $A,B \in \mathcal{S}$ i załóżmy, że $P(B)>0$. Prawdopodobieństwo warunkowe zdarzenia $A$ pod warunkiem zdarzenia $B$ określamy jako:
+    \[
+    P(A|B) = \frac{P(A\cap B)}{P(B)}
+    \]
+\end{definition}
+
+\begin{fact}{Prawdopodobieństwo Warunkowe jest dobrze określone}
+     Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$, niech $B\in\mathcal{S}$ będzie zdarzeniem takim, że $P(B)>0$. Niech:
+     \[
+     P_B(A) = P(A|B) \text{, dla } A\in\mathcal{S}
+     \]
+     Wówczas $(\Omega, \mathcal{S}, P_B)$ jest przestrzenią probabilistyczną.
+\end{fact}
+
+\subsection{Prawdopodobieństwo Całkowite}
+
+\begin{definition}{Prawdopodobieństwo Całkowite}
+    Ustalmy przstrzeń probablistyczną $(\Omega, \mathcal{S}, P)$. Niech $\{A_1,\dots,A_n\}$ będzie
+    rozbiciem $\Omega$ na zdarzenia $\forall 1\leg i \leq n (A_i \in \mathcal{S}) A_i \cap A_j = \emptyset$ dla $i\neq j$ oraz $\bigcup_{i=1}^{n} A_i = \Omega$. Niech $B\in\mathcal{S}$ Wtedy:
+    \[
+    P(B) = \sum_{i=1}^{n} P(B\cup A_i)
+    \]
+    Jeśli ponadto $P(A_i) > 0$ dla $1\leq i \leq n$ to:
+    \[
+    P(B) = \sum_{i=1}^{n} P(B|A_i) \cdot P(A_i)
+    \]
+\end{definition}
+
+\begin{fact}{Rozbicie}
+    Jeśli $\{A_1, \dots, A_n\}$ jest rozbiciem $\Omega$ na zdarzenia, a $B\in\mathcal{S}$, takie że $P(B) > 0$, to:
+    \[
+    \sum_{i=1}^{n} P(A_i | B) = 1
+    \]
+\end{fact}
+
+\subsection{Wzór Bayesa}
+
+\begin{definition}{Wzór Bayesa}
+    Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$. oraz rozbicie $\Omega$ na zdarzenia $A_1, \dots, A_n$, takie że $P(A_i) > 0$ dla $1 \leq i \leq n$. Niech $B\in\mathcal{S}$ będzie takie, że $P(B)>0$. Wtedy dla $1\leq i\leq n$ mamy:
+    \[
+        P(A_i|B) = \frac{P(B|A_i)\cdot P(A_i)}{\sum_{j=1}^{n} P(B|A_j) \cdot P(A_j)}
+    \]
+
+    Dla $n=2$:
+
+    \[
+        P(A|B)=\frac{P(B|A)\cdot P(A)}{P(B|A)\cdot P(A) + P(B|A^C) \cdot P(A^C)}
+    \]
+\end{definition}
+
+\section{Zdarzenia niezależne}
+
+\begin{definition}{Zdarzenie niezależne}
+    Zdarzenia $A$ i $B$ są niezależne, gdy:
+    \[
+    P(A\cap B) = P(A)\cdot P(B)
+    \]
+
+    Powiemy, że zdarzenia $A_t$, $t\in T$ ($T$ - zbiór indeksów) są niezależne, jeśli dla dowolnych róznych indeksów $i_1,\dots, i_n \in T$ zachodzi:
+    \[
+    P(\bigcap_{j=1}^{n} A_{i_j}) = \prod_{j=1}^{n} P(A_{i_j})
+    \]
+\end{definition}
+
+\begin{information}{Niezależność, a prawdopodobieństwo warunkowe}
+    Jeśli zdarzenia $A$ i $B$ są niezależne oraz $P(B)>0$, to:
+    \[
+        P(A|B) = P(A)
+    \]
+\end{information}
+
+\section{Zmienne Losowe}
+
+\begin{definition}{Zmienne Losowe}
+    Ustalmy przestrzeń probabilistyczną $(\Omega, \mathcal{S}, P)$. Zmienną losową nazywamy funkcję $X: \Omega \rightarrow \mathbb{R}$ taką, że:
+    \[
+    (\forall B\in\mathcal{B}) (X^{-1}(B) = \{ \omega \in \Omega: X(\omega \in B\} \in \mathcal{S})
+    \]
+    (Intuicja) Każdemu zdarzeniu $B\in\mathcal{B}$ mogę przyporządkować ppb. odpowiadające ppb. zdarzenia z $\Omega$ reprezentowanego przez $B$, czyli $P(X^{-1}(B))$ 
+\end{definition}
+
+\begin{definition}{Funkcje mierzalne}
+    Niech $(S, \mathcal{S})$ oraz $(T,\mathcal{T})$ będą przestrzeniami mierzalnymi. Funkcję $f: S \rightarrow T$ nazywamy funkcją $\mathcal{S}/\mathcal{T}$-mierzalną, jeśli
+    \[
+    (\forall B\in \mathcal{T})(f^{-1}(B) = \{ s\in S: f(s) \in B\} \in \mathcal{S})
+    \]
+
+    Zmienne losowe to funkcje mierzalne z $(\Omega, \mathcal{S})$ w $(\mathbb{R}, \mathcal{B})$.\\
+    (Zachowuje strukturę $\sigma$-ciał)
+\end{definition}
+
+\begin{fact}{Funkcje ciągłe}
+    Funkcje ciągłe są mierzalne.
+\end{fact}
+
+\begin{definition}{Równość prawie wszędzie}
+    Niech $(S,\mathcal{S},\mu)$ będzie przestrzenią z miarą, a $f, g: S\rightarrow \mathbb{R}$ będą
+    funkcjami mierzalnymi ($\mathcal{S}$/$\mathcal{B}$ mierzalnymi). Mówimy, że $f$ i $g$ są równe $\mu$-prawie wszędzie, jeśli:
+    \[
+        \mu\{ s\in S: f(s) \neq g(s)\} = 0
+    \]
+\end{definition}
+
+\begin{information}{Oznaczenie}
+    Dla dowolnego $B\in\mathcal{B}$ niech:
+    \[
+    P_X(B)=(P \circ X^{-1})(B) = P(X^{-1}(B)) = P(\{\omega \in \Omega: X(\omega) \in B\}) = P(X\in B)
+    \]
+    Prawdopodobieństwo $P_X$ na przestrzeni $(\mathbb{R},\mathcal{B})$ oznaczamy rozkładem zmiennej losowej $X$.
+\end{information}
+
+\subsection{Dystrybuanta}
+
+\begin{definition}{Dystrybuanta}
+    (Cumulative Distribution Function -CDF ) zmiennej losowej $X: \Omega \rightarrow \mathbb{R}$ nazywamy funkcję $F_X : \mathbb{R} \rightarrow [0,1]$ taką, że:
+    \[
+    F_X(t) = P(X\leq t) = P(\{ \omega\in\Omega: X(\omega)\leq t\}) = P(X^{-1}((-\infty,t]))
+    \]
+\end{definition}
+
+\begin{information}{Własności dystrybuanty}
+    Niech $X: \Omega \rightarrow \mathbb{R}$ będzie zmienną losową
+    \begin{enumerate}
+        \item dystrybuanta $F_X(t)$ jest funkcją niemalejącą tzn.
+        \[
+        (\forall s,t \in \mathbb{R}) (s\leq t \implies F_Xs) \leq F_X(t))
+        \]
+        \item granica dystrybuanty w $\infty, -\infty$ wyraża się poprzez:
+        \[
+        \lim_{t\rightarrow\infty} F_X(t)=1 \text{ oraz } \lim_{t\rightarrow\infty} F_X(t) = 0
+        \]
+        \item dystrybuanta $F_X(t)$ jest prawostronnie ciągła tzn.
+        \[
+        (\forall a\in\mathbb{R})\left(\lim_{t\rightarrow a^{+}} F_X(t) = F_X(a)\right)
+        \]
+    \end{enumerate}
+\end{information}
+
+\begin{theorem}{Twierdzenie}
+    Funkcja $F: \mathbb{R} \rightarrow [0,1]$ jest dystrybuantą pewnej zmiennej losowej wtedy i tylko wtedy,g dy spełnia powyższe 3 warunki.
+\end{theorem}
+
+\subsection{Dyskretna zmienna losowa}
+
+\begin{theorem}{Dyskretna zmienna losowa}
+    Rozkład dyskretnej zmiennej losowej $X$ jest wyznaczony jednoznacznie przez określenie ppb. przyjmowania dla poszczególnych wartości przez $X$ ($P(X=x)$) dla każdego $x\in \text{rng}(X)$. Dla dowolnego $A\in\mathbb{B}$ mamy:
+    \begin{align}
+        P(X\in A) &= P(\{\omega \in \Omega : X(\omega) \in A\}) \\
+        &= P(\{\omega \in \Omega: X(\omega) \in A \cap \text{rng}(X)\})\\
+        &= P\left(\bigcup_{x\in \text{rng}(X) \cap A} \{x\}\right) \\
+        &= \sum_{x\in \text{rng}(X) \cap A} P(X=x)
+    \end{align}
+\end{theorem}
+
+\begin{definition}{Funkcja masy prawdopodobieństwa}
+    (Probablity Mass Function - PMF) dyskretnej zmiennej losowej $X$ nazywamy funkcję:
+    $p_X : \text{rng}(X) \rightarrow [0,1]$ zadaną wzorem:
+    \[
+    p_X(x) = P(X=x)
+    \]
+\end{definition}
+
+\begin{fact}{Wzór na Dystrybuantę}
+    Dystrybuanta dyskretnej zmiennej losowej $X$ z PMF $p_x$ zadana jest wzorem:
+    \[
+    F_X(t) = P(X\leq t) = \sum_{y\in \text{rng}(X) y\leq t} p_X(y)
+    \]
+\end{fact}
+
+\begin{theorem}{Istnienie zmiennej losowej o zadanym rozkładzie dyskretnym}
+    Niech $B=\{b_i: i\in I\}$ będzie przeliczalnym podzbiorem zbioru liczb rzeczywistych, takich że $b_i \neq b_j$ dla $i\neq j$. Niech $p_i, i\in I$ będą nieujemnymi liczbami rzeczywistymi, takimi że $\sum_{i\in I} p_i = 1$.\\
+
+    \noindent
+    Istnieje wówczas ppb. $(\Omega, \mathcal{S}, P)$ i dyskretna zmienna losowa $X:\Omega \rightarrow \mathbb{R}$, której PMF zadana jest przez:
+
+    \[
+    p_X(b_i)=p_i, i\in I \text{ oraz } p_X(b) = 0, b \notin B.
+    \]
+\end{theorem}
+
+\end{document}
+

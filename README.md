@@ -7,14 +7,15 @@ Table of Contents
 
 - [Notes Repository 🚀](#notes-repository-)
   - [📊 **Calculus I and Calculus II** 📊](#-calculus-i-and-calculus-ii-)
-  - [🥶 **Discrete Mathematics** 🥶](#-discrete-mathematics-)
+  - [🤭 **Discrete Mathematics** 🤭](#-discrete-mathematics-)
   - [🧠 **Operating Systems** 🧠](#-operating-systems-)
+  - [😖 **Probability and Statistics** 😖](#-probability-and-statistics-)
+  - [✉️ **Databases** ✉️](#️-databases-️)
   - [🤔 **Algebra** 🤔](#-algebra-)
   - [🌌 **Physics I** 🌌:](#-physics-i-)
   - [**Procedural Programming (lab 5.0 - max)** in `C`](#procedural-programming-lab-50---max-in-c)
   - [💻 **Object-Oriented Programming (lab 5.5 - max)** 💻](#-object-oriented-programming-lab-55---max-)
-  - [✉️ **Databases** ✉️](#️-databases-️)
-  - [📚 **Logic and Formal Structures** 📚](#-logic-and-formal-structures-)
+  - [📚 **Logic and Formaltructures** 📚](#-logic-and-formaltructures-)
 
 ## 📊 **Calculus I and Calculus II** 📊
 
@@ -22,17 +23,31 @@ Table of Contents
 - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/1_semester_2023/calculus_1/calculus.pdf)
 - See [calculus2.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/calculus_2/calculus2.pdf)
 
-## 🥶 **Discrete Mathematics** 🥶
+## 🤭 **Discrete Mathematics** 🤭
 
+✨***Long Cheatsheet***✨
 - See [notes.pdf (english)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/discrete_mathematics/notes.pdf)
 - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/discrete_mathematics/wzor-stirlinga.pdf)
 
 ## 🧠 **Operating Systems** 🧠
 
-- [Computer Architecture and Operating Systems (polish)](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso) - Main notes directory
-- [Exercise List 2](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/cw)
-- [Lab List 1](./3_semester_2024/akiso/lab/lista1/REAMDME.md), [A simple bootloader](./3_semester_2024/akiso/lab/lista1#Bootloader), [Archlinux installation](./3_semester_2024/akiso/lab/lista1#zadanie-1-2-3), [Install XFCE on FreeBSD](./3_semester_2024/akiso/lab/lista1#zadanie-5), [About using jails](./3_semester_2024/akiso/lab/lista1#jails-1), [Debug xv6 kernel with gdb](./3_semester_2024/akiso/lab/lista1#zadanie-4)
-- [Lab List 2](./3_semester_2024/akiso/lab/lista2)
+- [Exercise Lists](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/cw) - Numerical operations for the architecture of computers.
+- [Lab List 1](./3_semester_2024/akiso/lab/lista1/REAMDME.md): [💡 A simple bootloader](./3_semester_2024/akiso/lab/lista1#Bootloader), [💡 Archlinux installation](./3_semester_2024/akiso/lab/lista1#zadanie-1-2-3), [Install XFCE on FreeBSD](./3_semester_2024/akiso/lab/lista1#zadanie-5), [About using jails](./3_semester_2024/akiso/lab/lista1#jails-1), [Debug xv6 kernel with gdb](./3_semester_2024/akiso/lab/lista1#zadanie-4)
+- [Lab List 2](./3_semester_2024/akiso/lab/lista2): [How to use jobs in Bash](./3_semester_2024/akiso/lab/lista2/README.md#exercise-4---jobs-fg-bg-kill), [💡 Redirect file descriptors of a running process with ptrace](./3_semester_2024/akiso/lab/lista2/README.md#exercise-9---ptrace-redirector)
+- [Lab List 3](./3_semester_2024/akiso/lab/lista3): [ps clone (written in bash) using /proc/pid/stat](./3_semester_2024/akiso/lab/lista3/README.md#exercise-1), [expr and ANSI interpreter for xv6](./3_semester_2024/akiso/lab/lista3/README.md#exercise-4-and-exercise-5), 
+[💡 Bash Labirynth Game (Generated with DFS)](./3_semester_2024/akiso/lab/lista3/README.md#exercise-6)
+- [Lab List 4](./3_semester_2024/akiso/lab/lista4): [💡 create own SHELL](./3_semester_2024/akiso/lab/lista4/ex3-5), [write a syscall for xv6](./3_semester_2024/akiso/lab/lista4/README.md#exercise-6)
+
+## 😖 **Probability and Statistics** 😖
+
+✨***Long Cheatsheet***✨
+- See [notes.pdf (polish)](./3_semester_2024/mpis/notes.pdf)
+
+## ✉️ **Databases** ✉️
+
+- [MariaDB on Docker Compose with init.sql](./3_semester_2024/db/lab/lista1/compose.yaml)
+- [MariaDB Backups with mariadb-dump](./3_semester_2024/db/lab/lista3/solve.md#mariadb-dump)
+- [MariaDB Backups with mariabackup](./3_semester_2024/db/lab/lista3/solve.md#mariabackup)
 
 ## 🤔 **Algebra** 🤔
 
@@ -71,13 +86,8 @@ Mastering the art of object-oriented programming in `C++` and `Java` (~~help me~
 - [Exercise List 5](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab5/) - Java Figure "Paint"
 - [Exercise List 6](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab6/) - Java Threaded Tiles (Concurrent programming)
 - [Exercise List 7](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab7/) - CLI for Binary Tree Search in Java and C++ 
-
-## ✉️ **Databases** ✉️
-
-- [Exercise List 1](https://github.com/Rafisto/uni/blob/master/3_semester_2024/db/cw/lista-01-solve.md)
-- [Lab List 1](https://github.com/Rafisto/uni/blob/master/3_semester_2024/db/lab/lista1/solve.md)
   
-## 📚 **Logic and Formal Structures** 📚
+## 📚 **Logic and Formaltructures** 📚
 
 - [XOR Cipher](https://github.com/Rafisto/uni/blob/master/1_semester_2023/logic_and_formal_structures/programy/xorcipher.py) - One time pad encryption, decryption, key generation and key swap.
 
