@@ -9,7 +9,9 @@ services:
       MYSQL_PASSWORD: rafistopassword
     volumes:
       - db_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/init/init.sql
+      - ./backup/:/backup
     ports:
       - "3306:3306"
     networks:

@@ -11,6 +11,8 @@
     - [Exercise 1 (5)](#exercise-1-5)
     - [Exercise 4 (2) - prepare execute](#exercise-4-2---prepare-execute)
     - [Exercise 5 (4) - backup](#exercise-5-4---backup)
+      - [Mariadb-dump](#mariadb-dump)
+      - [mariabackup](#mariabackup)
     - [Exercise 6](#exercise-6)
       - [Intro (2)](#intro-2)
       - [Advanced (4)](#advanced-4)
@@ -343,7 +345,7 @@ BEGIN
         -- Wstaw dane do tabeli `Pracownicy`
         IF NOT EXISTS (
             SELECT 1 FROM Pracownicy 
-            WHERE PESEL = t_pesel AND zawod_id = random_profession_id
+            WHERE PESEL = t_pesel
         ) THEN
             INSERT INTO Pracownicy (PESEL, zawod_id, pensja)
             VALUES (t_pesel, random_profession_id, rnd_salary);
@@ -377,6 +379,8 @@ DEALLOCATE PREPARE WomenNumberByProfession;
 
 ### Exercise 5 (4) - backup
 
+#### Mariadb-dump
+
 1. Wykonaj backup bazy danych db2024 do pliku `db2024.sql`.
 
 ```bash
@@ -389,10 +393,39 @@ docker exec -it mariadb-container mariadb-dump --routines --triggers -u root -pr
 docker compose down && docker volume rm lista3_db_data
 ``` 
 
-3. Przywróć bazę
+1. Przywróć bazę
 
 ```bash
 docker compose up -d
+```
+
+#### mariabackup
+
+1. Wykonaj backup bazy danych db2024 do katalogu `/backup`.
+
+```bash
+docker exec -it mariadb-container mariabackup --backup --user=root --password=rootpassword --target-dir=/backup
+```
+
+2. Ubij kontener z bazą danych.
+
+```bash
+docker compose down && docker volume rm lista3_db_data
+```
+
+3. Przywróć bazę z backupu.
+
+```bash
+docker compose up -d
+docker exec -it mariadb-container bash
+service mariadb stop
+# mariadb-admin --user=root shutdown # https://mariadb.com/docs/server/service-management/operations/start-stop-status/
+rm -r /var/lib/mysql
+mariabackup --prepare --target-dir=/backup
+mariabackup --user=root --password=rootpassword --copy-back --target-dir=/backup
+chown -R mysql:mysql /var/lib/mysql/
+service mariadb start
+docker compose restart mariadb
 ```
 
 Jaka jest różnica między backupem pełnym a różnicowym? 
