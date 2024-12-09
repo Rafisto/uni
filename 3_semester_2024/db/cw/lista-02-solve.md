@@ -89,3 +89,25 @@ $b=\gamma_{AVG(LiczbaFilmow)}(\pi_{LiczbaFilmow}(a))$
 Ostatecznie wybierzmy reżyserów, którzy wyreżyserowali więcej filmów niż średnia:
 
 $c=\tau_{Wiek ASC}(\pi_{Imie, Nazwisko, Wiek, COUNT(Tytul)}(\sigma_{COUNT(Tytul)} (Film \bowtie_{Rezyser = Id} Rezyser) > b))$
+
+Zadanie 10.
+
+```sql
+SELECT Obsada.Film, COUNT(Obsada.Aktor) AS LiczbaAktorow
+FROM Obsada
+GROUP BY Obsada.Film
+ORDER BY LiczbaAktorow DESC
+```
+
+$\tau_{COUNT(Aktor) DESC} (\gamma_{COUNT(Aktor)}(\pi_{Film, Aktor}(Obsada)))$
+
+Zadanie 13.
+
+```sql
+SELECT Tytul, RokPremiery, Budzet, Przychod, (Budzet - Przychod) AS Strata
+FROM Film
+WHERE Przychod < Budzet
+ORDER BY Budzet DESC;
+```
+
+$\tau_{\text{Budzet DESC}} (\rho_{\text{Budzet - Przychod AS Strata}} (\pi_{\text{Tytul, RokPremiery, Budzet, Przychod, Budzet - Przychod}} (\sigma_{Przychod < Budzet} (Film))))$

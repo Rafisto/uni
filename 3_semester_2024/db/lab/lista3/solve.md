@@ -150,6 +150,7 @@ CREATE TABLE Ludzie (
 DELIMITER $$
 CREATE TRIGGER ValidatePESELTrigger
 BEFORE INSERT ON Ludzie
+BEFORE UPDATE ON Ludzie
 FOR EACH ROW
 BEGIN
     DECLARE isValid INT;
@@ -389,12 +390,8 @@ BEGIN
   DECLARE isDone BOOLEAN DEFAULT FALSE;
   DECLARE isSalaryIncreaseAllowed BOOLEAN DEFAULT TRUE;
   DECLARE currentSalary FLOAT;
-  DECLARE jobMaxSalary FLOAT;
-  DECLARE jobZawodId INT;
-
-  SELECT pensja_max, zawod_id INTO jobMaxSalary, jobZawodId
-  FROM Zawody
-  WHERE nazwa = job;
+  DECLARE jobMaxSalary FLOAT DEFAULT (SELECT pensja_max FROM Zawody WHERE nazwa = job);
+  DECLARE jobZawodId INT DEFAULT (SELECT zawod_id FROM Zawody WHERE nazwa = job);
 
   DECLARE salaryCursor CURSOR FOR
     SELECT pensja FROM Pracownicy 
@@ -407,14 +404,15 @@ BEGIN
   OPEN salaryCursor;
 
   salaryLoop: LOOP
-    FETCH salaryCursor INTO currentSalary;
-
     IF isDone THEN
       LEAVE salaryLoop;
     END IF;
 
+    FETCH salaryCursor INTO currentSalary;
+
     IF (1.05 * currentSalary) > jobMaxSalary THEN
       SET isSalaryIncreaseAllowed = FALSE;
+      ROLLBACK;
       LEAVE salaryLoop;
     END IF;
   END LOOP;
@@ -425,10 +423,9 @@ BEGIN
     UPDATE Pracownicy
     SET pensja = 1.05 * pensja
     WHERE zawod_id = jobZawodId;
-    COMMIT;
-  ELSE
-    ROLLBACK;
   END IF;
+
+  COMMIT;
 END$$
 DELIMITER ;
 
@@ -439,14 +436,14 @@ CALL IncreaseSalary("Lekarz");
 
 ```sql
 PREPARE WomenNumberByProfession FROM 
-    "SELECT COUNT(*) AS liczba_kobiet
+    "SELECT COUNT(*) AS number_of_women
      FROM Pracownicy p
-     JOIN Ludzie l ON p.PESEL = l.PESEL
      JOIN Zawody z ON p.zawod_id = z.zawod_id
-     WHERE l.plec = 'K' AND z.nazwa = ?";
+     JOIN Ludzie l ON p.PESEL = l.PESEL
+     WHERE z.nazwa = ? AND l.plec = 'K'";
 
-SET @nazwa_zawodu = 'Lekarz';
-EXECUTE WomenNumberByProfession USING @nazwa_zawodu;
+SET @job = 'Lekarz';
+EXECUTE WomenNumberByProfession USING @job;
 
 DEALLOCATE PREPARE WomenNumberByProfession;
 ```
@@ -467,7 +464,7 @@ docker exec -it mariadb-container mariadb-dump --routines --triggers -u root -pr
 docker compose down && docker volume rm lista3_db_data
 ``` 
 
-1. Przywróć bazę
+3. Przywróć bazę
 
 ```bash
 docker compose up -d
