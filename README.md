@@ -37,6 +37,7 @@ Table of Contents
 - [Lab List 3](./3_semester_2024/akiso/lab/lista3): [ps clone (written in bash) using /proc/pid/stat](./3_semester_2024/akiso/lab/lista3/README.md#exercise-1), [expr and ANSI interpreter for xv6](./3_semester_2024/akiso/lab/lista3/README.md#exercise-4-and-exercise-5), 
 [💡 Bash Labirynth Game (Generated with DFS)](./3_semester_2024/akiso/lab/lista3/README.md#exercise-6)
 - [Lab List 4](./3_semester_2024/akiso/lab/lista4): [💡 create own SHELL](./3_semester_2024/akiso/lab/lista4/ex3-5), [write a syscall for xv6](./3_semester_2024/akiso/lab/lista4/README.md#exercise-6)
+- [Lab List 5](./3_semester_2024/akiso/lab/lista5): [Hex Converter (x86 NASM)](./3_semester_2024/akiso/lab/lista5/ex3), [Prime Number Sieve (x86 NASM)](./3_semester_2024/akiso/lab/lista5/ex4), [💡 Mode 13 Bare Metal mandelbrot Set Display (x86 NASM)](./3_semester_2024/akiso/lab/lista5/ex5) ([Showcase Screenshot](./3_semester_2024/akiso/lab/lista5/mandelbrot-qemu.png))
 
 ## 😖 **Probability and Statistics** 😖
 
