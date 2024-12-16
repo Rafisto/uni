@@ -63,3 +63,10 @@ Postaci kanoniczne to POS / SOP
 
 $Y'\equiv\overline(Y)$
 
+## Kolokwium
+
+Listy 4, 5
+- Tabelki prawdy
+- Minimalizacje
+- Mapy Karnaugh, Metoda Quine - McCluskey'a
+- (na pewno) Wymyśl i zrealizuj układ cyfrowy wykonujący ... (funkcję logiczną).

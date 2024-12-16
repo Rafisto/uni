@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="list-5">List 5</h1>
+<ul>
+<li><a href="#list-5">List 5</a></li>
+<li><a href="#learn">Learn</a></li>
+<li><a href="#exercises">Exercises</a>
+<ul>
+<li><a href="#exercise-1">Exercise 1</a></li>
+<li><a href="#exercise-2">Exercise 2</a></li>
+<li><a href="#exercise-3">Exercise 3</a></li>
+<li><a href="#exercise-4">Exercise 4</a></li>
+<li><a href="#exercise-5">Exercise 5</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="learn">Learn</h1>
+<p>Załączam folder <a href="./learn">learn</a> z plikami, które pomogły mi zrozumieć jak działa asembler x86 i w konsekwnecji rozwiązać listę zadań.</p>
+<h1 id="exercises">Exercises</h1>
+<h2 id="exercise-1">Exercise 1</h2>
+<p>(5pt) Napisz program w asemblerze NASM (lub innym) dla procesora x86, który:</p>
+<ul>
+<li>Pobiera liczbę całkowitą w postaci tekstowej z wejścia standardowego (np. &quot;12345&quot;)</li>
+<li>Oblicza sumę cyfr tej liczby (w przykładzie: 1 + 2 + 3 + 4 + 5 = 15)</li>
+<li>Wyświetla wynik na standardowym wyjściu</li>
+</ul>
+<p>Do wczytywania i wyświetlania użyj wywołań systemowych read i write.</p>
+<p>Rozwiązanie jest dostępne pod <a href="./ex1/ex1.asm">ex1.asm</a>. Jest ono połączeniem kodu dostępnego pod adresem https://asmtutor.com/ z napisaną przeze mnie funkcją liczącą sumę cyfr. Program rozwiązuje przykładową liczbę <code>12345</code>:</p>
+<pre class="hljs"><code><div>[ex1] ./ex1
+Enter a number: 12345
+15
+</div></code></pre>
+<p>Owa funkcja:</p>
+<pre class="hljs"><code><div>; ---
+; int sum_of_digits, eax = integer
+; Sum of digits function
+sum_of_digits:
+    push ebx
+    push ecx
+    push edx
+    push esi
+    mov  esi, eax
+    mov  edi, 0
+
+.sumLoop:
+    mov eax, esi
+    mov edx, 0
+    mov ecx, 10
+    div ecx
+    add edi, edx
+    mov esi, eax
+    cmp esi, 0
+    jnz .sumLoop
+
+.restore:
+    mov eax, edi
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    ret  
+</div></code></pre>
+<p>Wykorzystanie <code>read</code> oraz <code>write</code> widać w poniższych funkcjach (nie używam printf):</p>
+<pre class="hljs"><code><div>; print the message
+mov edx, msglen
+mov ecx, msg
+mov ebx, 1
+mov eax, 4
+int 80h
+
+; read the input
+mov edx, bufferlen
+mov ecx, buffer
+mov ebx, 0
+mov eax, 3
+int 80h
+</div></code></pre>
+<p>Dodatkowo sporządziłem niezwykle przydatny i uniwersalnie wykorzystywany w kolejnych zadaniach <code>Makefile</code> dla zbioru plików asm.</p>
+<pre class="hljs"><code><div>CC = nasm
+CFLAGS = -f elf32
+LD = ld
+LDFLAGS = -m elf_i386
+SRC = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *.asm)</span>
+OBJ = $(SRC:.asm=.o)
+BIN = $(SRC:.asm=)
+
+<span class="hljs-meta"><span class="hljs-meta-keyword">.PHONY</span>: all clean</span>
+
+<span class="hljs-section">all: <span class="hljs-variable">$(BIN)</span></span>
+
+<span class="hljs-section">%.o: %.asm</span>
+	<span class="hljs-variable">$(CC)</span> <span class="hljs-variable">$(CFLAGS)</span> -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$&lt;</span>
+
+<span class="hljs-section">%: %.o</span>
+	<span class="hljs-variable">$(LD)</span> <span class="hljs-variable">$(LDFLAGS)</span> -o <span class="hljs-variable">$@</span> <span class="hljs-variable">$&lt;</span>
+	rm -f <span class="hljs-variable">$&lt;</span>
+
+<span class="hljs-section">clean:</span>
+	rm -f <span class="hljs-variable">$(OBJ)</span> <span class="hljs-variable">$(BIN)</span>
+</div></code></pre>
+<h2 id="exercise-2">Exercise 2</h2>
+<p>(5pt) Napisz program w asemblerze NASM (lub innym) dla procesora x86, który:</p>
+<p>Przyjmuje jako dane wejściowe macierz 3x3 (9 liczb całkowitych, zapisanych w pamięci programu).
+Wylicza sumę wszystkich elementów macierzy oraz sumę elementów na przekątnej głównej.
+Wyświetla oba wyniki na standardowym wyjściu</p>
+<pre><code>Suma elementów: X
+Suma przekątnej: Y
+</code></pre>
+<p>Użyj wywołań systemowych do wyświetlania wyników. Wyjaśnij w gdb, jak program przechowuje macierz w pamięci i jak przetwarza jej elementy.</p>
+<p>Rozwiązanie dostępne pod <a href="./ex2/ex2.asm">ex2</a>. Wykorzystałem wiele plików aby poćwiczyć ich łączenie w jedną binarkę. Dzięki temu dobrze również widać podział na kod, który liczy oraz kod, który dokonuję interakcji z użytkownikiem.</p>
+<p>Macierz zdefiniowałem następująco:</p>
+<pre class="hljs"><code><div>matrix db 0,0,0\
+        ,0,0,0\
+        ,0,0,0 ; 3x3 matrix
+</div></code></pre>
+<p>Czyli potraktowałem ją jako tablicę jednowymiarową, sztucznie ustalając gdzie znajduje się podział na kolumny i rzędy.
+Istotnie pomocny dla prezentacji przetwarzania danych przez program jest plik <code>.gdbinit</code>, w którym zawarłem automatycznie uruchamianie layoutu dla rejestrów oraz widoku bieżących instrukcji assemblera.</p>
+<pre class="hljs"><code><div>layout asm
+layout regs
+focus cmd
+set debuginfod enabled on
+</div></code></pre>
+<p>Wykonajmy:</p>
+<pre class="hljs"><code><div>gdb ./ex2
+(gdb) b sumAll <span class="hljs-comment"># pokazanie sumy wszystkich</span>
+(gdb) b sumDiagonal <span class="hljs-comment"># pokazanie sumy na przekątnej</span>
+(gdb) r
+(gdb) si
+</div></code></pre>
+<h2 id="exercise-3">Exercise 3</h2>
+<p>(10pt) Napisz program w asemblerze NASM (lub innym) dla procesora x86, który wyświetla na standardowym wyjściu liczbę 32-bitową w kodzie szesnastkowym, czyli np. takie printf(&quot;%x\n&quot;,123456). Do wyświetlania wykorzystaj wywołanie systemowe write. Pokaż jak program wykonuje się w gdb (debugger).</p>
+<p>Rozwiązanie dostępne pod <a href="./ex3/ex3.asm">ex3</a>. Program wykorzystuje wywołanie systemowe <code>write</code> do wyświetlenia liczby w formacie szesnastkowym. Odpowiada pełną długością liczby, czyli w przypadku liczby <code>1024</code> wyświetli <code>0x00000400</code>.</p>
+<pre class="hljs"><code><div>[ex3] ./ex3
+Enter an <span class="hljs-built_in">integer</span>: 1024
+0x00000400
+</div></code></pre>
+<p>Sam kod w sekcji konwertującej opatrzyłem komentarzami, które wyjaśniają co się stało.</p>
+<h2 id="exercise-4">Exercise 4</h2>
+<p>(10pt) Napisz program w asemblerze x86 (32-bit), który wysyła na standardowe wyjście liczby pierwsze z zakresu od 1 do 100 000.</p>
+<p>Roziązanie dostępne pod <a href="./ex4/ex4.asm">ex4</a>. Program wykorzystuje algorytm sito Eratostenesa do wyznaczenia liczb pierwszych w zakresie od 1 do 100 000.</p>
+<h2 id="exercise-5">Exercise 5</h2>
+<p>(10pt) Napisz w asemblerze x86 program rysujący zbiór Mandelbrota (patrz wykład 2024.12.02). Inicjalizację trybu graficznego można przeprowadzić wykorzystując kod boot (przy oddawaniu należy umieć wytłumaczyć kod boot.asm).</p>
+<p>Rozwiązanie dostępne pod <a href="./ex5/boot.asm">ex5</a>. Program rysuje zbiór Mandelbrota w trybie graficznym dla x86 (320x200 mode 13h).</p>
+<p><img src="mandelbrot-qemu.png" alt="Mandelbrot on QEMU"></p>
+<p><strong>Nie wykorzystałem kodu boot.asm</strong>, ponieważ nie był potrzebny. Skorzystałem jedynie z części która uruchamia tryb graficzny.</p>
+<pre class="hljs"><code><div>mov ax, 0x2401
+int 0x15
+mov ax, 0x13
+int 0x10
+</div></code></pre>
+<p>Wykorzystałem pierwszy algorytm z https://en.wikipedia.org/wiki/Plotting_algorithms_for_the_Mandelbrot_set.
+Próbowałem wykonać wersję zoptymalizowaną, ale nie udało mi się zaimplementować jej w całości, dlatego prezentuję ten podstawowy algorytm.</p>
+<p>Kod jest wyjaśniony w komentarzach.</p>
+
+</body>
+</html>
