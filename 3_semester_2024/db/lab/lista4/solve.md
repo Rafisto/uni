@@ -1,10 +1,10 @@
-# Lab 3
+# Lab 4
 
 ## Rafał Włodarczyk
 
 ### 2024-12-18
 
-- [Lab 3](#lab-3)
+- [Lab 4](#lab-4)
   - [Rafał Włodarczyk](#rafał-włodarczyk)
     - [2024-12-18](#2024-12-18)
   - [Exercise 1 - Run with docker](#exercise-1---run-with-docker)
