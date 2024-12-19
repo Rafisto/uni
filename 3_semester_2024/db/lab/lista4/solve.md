@@ -13,7 +13,7 @@
 
 ## Exercise 1 - Run with docker
 
-```bash>
+```bash
 docker pull mongodb/mongodb-community-server:latest
 docker run --name mongodb -p 27017:27017 -d mongodb/mongodb-community-server:latest
 mongosh --port 27017
@@ -23,63 +23,33 @@ mongosh --port 27017
 
 1. Create a database with mongosh
 
-```bash
+```js
 use library # only creates db when data is stored
 ```
 
 2. Create `authors` and `books` collection:
 
-```bash
+```js
 db.createCollection('authors')
 db.createCollection('books')
-# list collections
 show collections
 ```
 
-3. Now insert
+3. Now insert into the `authors` collection.
 
-```json
-{
-"_id": ObjectId("65711ccdcb2d05e2c973fe85"),
-"name": { "first": "J.R.R", "last": "Tolkien" },
-"country": "UK",
-"birth": new Date(’Jan 3, 1892’),
-"death": new Date(’Sep 2, 1973’)
-}
-```
-
-into the `authors` collection.
-
-```bash
+```js
 db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe85"),
-"name": { "first": "J.R.R", "last": "Tolkien" },
-"country": "UK",
-"birth": new Date('Jan 3, 1892'),
-"death": new Date('Sep 2, 1973')
+  "_id": ObjectId("65711ccdcb2d05e2c973fe85"),
+  "name": { "first": "J.R.R", "last": "Tolkien" },
+  "country": "UK",
+  "birth": new Date('Jan 3, 1892'),
+  "death": new Date('Sep 2, 1973')
 })
 ```
 
-4. Now insert
+4. Now insert into the `books` collection.
 
-```json
-{
-"_id": ObjectId("65712008cb2d05e2c973fe86"),
-"title": "The Hobbit",
-"isbn": "978-0-261-10295-6",
-"publication_year": 1937,
-"language": "English",
-"author": ObjectId("65711ccdcb2d05e2c973fe85"),
-"publisher": {
-"name": "George Allen & Unwin",
-"country": "UK"
-}
-}
-```
-
-into the `books` collection.
-
-```bash
+```js
 db.books.insertOne({
 "_id": ObjectId("65712008cb2d05e2c973fe86"),
 "title": "The Hobbit",
@@ -103,98 +73,92 @@ Now solve:
 
 5. Lets insert 4 authors:
 
-```bash
-db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe87"),
-"name": { "first": "Henryk", "last": "Sienkiewicz" },
-"country": "Poland",
-"birth": new Date('May 5, 1846'),
-"death": new Date('Nov 15, 1916')
-})
-
-db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe88"),
-"name": { "first": "Adam", "last": "Mickiewicz" },
-"country": "Poland",
-"birth": new Date('Dec 24, 1798'),
-"death": new Date('Nov 26, 1855')
-})
-
-db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe89"),
-"name": { "first": "Juliusz", "last": "Słowacki" },
-"country": "Poland",
-"birth": new Date('Sep 4, 1809'),
-"death": new Date('Apr 3, 1849')
-})
-
-db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe90"),
-"name": { "first": "William", "last": "Shakespeare" },
-"country": "UK",
-"birth": new Date('Apr 26, 1564'),
-"death": new Date('Apr 23, 1616')
-})
+```js
+db.authors.insertMany([
+  {
+    "_id": ObjectId("65711ccdcb2d05e2c973fe87"),
+    "name": { "first": "Henryk", "last": "Sienkiewicz" },
+    "country": "Poland",
+    "birth": new Date('May 5, 1846'),
+    "death": new Date('Nov 15, 1916')
+  },
+  {
+    "_id": ObjectId("65711ccdcb2d05e2c973fe88"),
+    "name": { "first": "Adam", "last": "Mickiewicz" },
+    "country": "Poland",
+    "birth": new Date('Dec 24, 1798'),
+    "death": new Date('Nov 26, 1855')
+  },
+  {
+    "_id": ObjectId("65711ccdcb2d05e2c973fe89"),
+    "name": { "first": "Juliusz", "last": "Słowacki" },
+    "country": "Poland",
+    "birth": new Date('Sep 4, 1809'),
+    "death": new Date('Apr 3, 1849')
+  },
+  {
+    "_id": ObjectId("65711ccdcb2d05e2c973fe90"),
+    "name": { "first": "William", "last": "Shakespeare" },
+    "country": "UK",
+    "birth": new Date('Apr 26, 1564'),
+    "death": new Date('Apr 23, 1616')
+  }
+])
 ```
 
 6. Let's insert 5 books
 
-```bash
-db.books.insertOne({
-"_id": ObjectId("65712008cb2d05e2c973fe87"),
-"title": "Quo Vadis",
-"isbn": "978-0-261-10295-6",
-"publication_year": 1896,
-"language": "Polish",
-"author": ObjectId("65711ccdcb2d05e2c973fe87"),
-"publisher": 
-    {
-    "name": "Zakład Narodowy im. Ossolińskich",
-    "country": "Poland"
+```js
+db.books.insertMany([
+  {
+    "_id": ObjectId("65712008cb2d05e2c973fe87"),
+    "title": "Quo Vadis",
+    "isbn": "978-0-261-10295-6",
+    "publication_year": 1896,
+    "language": "Polish",
+    "author": ObjectId("65711ccdcb2d05e2c973fe87"),
+    "publisher": {
+      "name": "Zakład Narodowy im. Ossolińskich",
+      "country": "Poland"
     }
-})
-
-db.books.insertOne({
-"_id": ObjectId("65712008cb2d05e2c973fe88"),
-"title": "Krzyżacy",
-"isbn": "978-0-261-10295-6",
-"publication_year": 1900,
-"language": "Polish",
-"author": ObjectId("65711ccdcb2d05e2c973fe87"),
-"publisher": 
-    {
-    "name": "Zakład Narodowy im. Ossolińskich",
-    "country": "Poland"
+  },
+  {
+    "_id": ObjectId("65712008cb2d05e2c973fe88"),
+    "title": "Krzyżacy",
+    "isbn": "978-0-261-10295-6",
+    "publication_year": 1900,
+    "language": "Polish",
+    "author": ObjectId("65711ccdcb2d05e2c973fe87"),
+    "publisher": {
+      "name": "Zakład Narodowy im. Ossolińskich",
+      "country": "Poland"
     }
-})
-
-db.books.insertOne({
-"_id": ObjectId("65712008cb2d05e2c973fe89"),
-"title": "Potop",
-"isbn": "978-0-261-10295-6",
-"publication_year": 1886,
-"language": "Polish",
-"author": ObjectId("65711ccdcb2d05e2c973fe87"),
-"publisher": 
-    {
-    "name": "Zakład Narodowy im. Ossolińskich",
-    "country": "Poland"
+  },
+  {
+    "_id": ObjectId("65712008cb2d05e2c973fe89"),
+    "title": "Potop",
+    "isbn": "978-0-261-10295-6",
+    "publication_year": 1886,
+    "language": "Polish",
+    "author": ObjectId("65711ccdcb2d05e2c973fe87"),
+    "publisher": {
+      "name": "Zakład Narodowy im. Ossolińskich",
+      "country": "Poland"
     }
-})
-
-db.books.insertOne({
-"_id": ObjectId("65712008cb2d05e2c973fe90"),
-"title": "Pan Tadeusz",
-"isbn": "978-0-261-10295-6",
-"publication_year": 1834,
-"language": "Polish",
-"author": ObjectId("65711ccdcb2d05e2c973fe88"),
-"publisher": 
-    {
-    "name": "Zakład Narodowy im. Ossolińskich",
-    "country": "Poland"
+  },
+  {
+    "_id": ObjectId("65712008cb2d05e2c973fe90"),
+    "title": "Pan Tadeusz",
+    "isbn": "978-0-261-10295-6",
+    "publication_year": 1834,
+    "language": "Polish",
+    "author": ObjectId("65711ccdcb2d05e2c973fe88"),
+    "publisher": {
+      "name": "Zakład Narodowy im. Ossolińskich",
+      "country": "Poland"
     }
-})
+  }
+])
 ```
 
 7. Now solve
@@ -212,13 +176,13 @@ db.books.insertOne({
 
 8. Let's insert a document with `death` set to `null`:
 
-```bash
+```js
 db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe91"),
-"name": { "first": "Umberto", "last": "Eco" },
-"country": "Italy",
-"birth": new Date('Jan 5, 1932'),
-"death": null
+  "_id": ObjectId("65711ccdcb2d05e2c973fe91"),
+  "name": { "first": "Umberto", "last": "Eco" },
+  "country": "Italy",
+  "birth": new Date('Jan 5, 1932'),
+  "death": null
 })
 ```
 
@@ -260,14 +224,14 @@ Additional information: {
 
 9. Let's insert a document with a typo in the field name:
 
-```bash
+```js
 db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe92"),
-"name": { "first": "Umberto", "last": "Eco" },
-"country": "Italy",
-"birth": new Date('Jan 5, 1932'),
-"death": new Date('Feb 19, 2016'),
-"deat": new Date('Feb 19, 2016')
+  "_id": ObjectId("65711ccdcb2d05e2c973fe92"),
+  "name": { "first": "Umberto", "last": "Eco" },
+  "country": "Italy",
+  "birth": new Date('Jan 5, 1932'),
+  "death": new Date('Feb 19, 2016'),
+  "deat": new Date('Feb 19, 2016')
 })
 ```
 
@@ -275,14 +239,14 @@ It works.
 
 10. Let's insert a document with a wrong type of data:
 
-```bash
+```js
 db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe93"),
-"name": { "first": "Umberto", "last": "Eco" },
-"country": "Italy",
-"birth": new Date('Jan 5, 1932'),
-"death": new Date('Feb 19, 2016'),
-"deat": "Feb 19, 2016"
+  "_id": ObjectId("65711ccdcb2d05e2c973fe93"),
+  "name": { "first": "Umberto", "last": "Eco" },
+  "country": "Italy",
+  "birth": new Date('Jan 5, 1932'),
+  "death": new Date('Feb 19, 2016'),
+  "deat": "Feb 19, 2016"
 })
 ```
 
@@ -290,12 +254,12 @@ It works
 
 11. Let's insert a document with a missing field:
 
-```bash
+```js
 db.authors.insertOne({
-"_id": ObjectId("65711ccdcb2d05e2c973fe94"),
-"name": { "first": "Umberto", "last": "Eco" },
-"birth": new Date('Jan 5, 1932'),
-"death": new Date('Feb 19, 2016')
+  "_id": ObjectId("65711ccdcb2d05e2c973fe94"),
+  "name": { "first": "Umberto", "last": "Eco" },
+  "birth": new Date('Jan 5, 1932'),
+  "death": new Date('Feb 19, 2016')
 })
 ```
 
@@ -304,46 +268,56 @@ It works
 12. In order to impose a schema on the data, we can use JSON schema validation. 
     We can create a schema for the `authors` collection:
 
-```bash
+```js
 # remove collection
 db.authors.drop()
 
-db.createCollection('authors', {
-validator: {
-$jsonSchema: {
-bsonType: "object",
-required: [ "name", "country", "birth", "death" ],
-properties: {
-name: {
-bsonType: "object",
-required: [ "first", "last" ],
-properties: {
-first: {
-bsonType: "string",
-description: "must be a string and is required"
-},
-last: {
-bsonType: "string",
-description: "must be a string and is required"
+db.createCollection('authors', 
+{
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+        required: [
+          "name",
+          "country",
+          "birth",
+          "death"
+        ],
+          properties: {
+        name: {
+          bsonType: "object",
+            required: [
+              "first",
+              "last"
+            ],
+              properties: {
+            first: {
+              bsonType: "string",
+                description: "must be a string and is required"
+            },
+            last: {
+              bsonType: "string",
+                description: "must be a string and is required"
+            }
+          }
+        },
+        country: {
+          bsonType: "string",
+            description: "must be a string and is required"
+        },
+        birth: {
+          bsonType: "date",
+            description: "must be a date and is required"
+        },
+        death: {
+          bsonType: "date",
+            description: "must be a date and is required"
+        }
+      }
+    }
+  }
 }
-}
-},
-country: {
-bsonType: "string",
-description: "must be a string and is required"
-},
-birth: {
-bsonType: "date",
-description: "must be a date and is required"
-},
-death: {
-bsonType: "date",
-description: "must be a date and is required"
-}
-}
-}
-}
-})
+)
 ```
 
 Now let's try again.
@@ -364,42 +338,73 @@ Now let's try again.
 
 14. Add `reviews`
 
-```bash
-db.createCollection('reviews')
+```js
+db.createCollection('reviews', {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: [ "book", "reviewer", "rating", "description" ],
+            properties: {
+                book: {
+                    bsonType: "objectId",
+                    description: "must be a objectId and is required"
+                },
+                reviewer: {
+                    bsonType: "string",
+                    description: "must be a string and is required"
+                },
+                rating: {
+                    bsonType: "int",
+                    minimum: 1,
+                    maximum: 5,
+                    description: "must be an integer in [ 1, 2, 3, 4, 5 ] and is required"
+                },
+                description: {
+                    bsonType: "string",
+                    description: "must be a string and is required"
+                }
+            }
+        }
+    }
+})
 ```
 
 15. Insert 3 reviews for one book
 
-```bash
-db.reviews.insertOne({
-"book": ObjectId("65712008cb2d05e2c973fe86"),
-"reviewer": {
-"name": "John Doe",
-"country": "UK"
-},
-"rating": 5,
-"text": "Best book ever!"
-})
+```js
+db.reviews.insertMany([
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe87"),
+        "reviewer": "John Doe",
+        "rating": 5,
+        "description": "Best book ever!"
+    },
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe87"),
+        "reviewer": "John Doe",
+        "rating": 3,
+        "description": "Best Mediocrecy!"
+    },
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe87"),
+        "reviewer": "Jane Doe",
+        "rating": 5,
+        "description": "Sehr gut!"
+    },
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe88"), 
+        "reviewer": "Jink Doe",
+        "rating": 4,
+        "description": "Great book!"
+    },
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe89"), 
+        "reviewer": "Jack Doe",
+        "rating": 3,
+        "description": "Decent book."
+    }
+]);
 
-db.reviews.insertOne({
-"book": ObjectId("65712008cb2d05e2c973fe86"),
-"reviewer": {
-"name": "Jane Doe",
-"country": "UK"
-},
-"rating": 4,
-"text": "Great book!"
-})
-
-db.reviews.insertOne({
-"book": ObjectId("65712008cb2d05e2c973fe86"),
-"reviewer": {
-"name": "Jack Doe",
-"country": "UK"
-},
-"rating": 1,
-"text": "Worst book ever!"
-})
 ```
 
 The impact on selecting and inserting data is that we can now use the `book` field to reference the book. 
@@ -416,14 +421,31 @@ This way we can easily find all reviews for a given book.
 
 Add `awards` to `authors`:
 
-```bash
+```js
 db.authors.updateMany({}, { $set: { awards: [] } })
 ```
 
 Add `genres` to `books`:
 
-```bash
+```js
 db.books.updateMany({}, { $set: { genres: [] } })
+
+db.books.updateOne(
+    { "_id": ObjectId("65712008cb2d05e2c973fe87") },
+    { $addToSet: { genres: "Ancient" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("65712008cb2d05e2c973fe88") },
+    { $addToSet: { genres: "Classical" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("65712008cb2d05e2c973fe89") },
+    { $addToSet: { genres: "Classical" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("65712008cb2d05e2c973fe90") },
+    { $addToSet: { genres: "Fantasy" } }
+)
 ```
 
 ## Exercise 3 - Search Queries
@@ -432,7 +454,7 @@ Solve:
 
 > Wyszukaj wszystkie książki napisane przez autora o konkretnym imieniu i nazwisku. (1 pkt)
 
-```bash
+```js
 # find by id
 db.books.find({ "author": ObjectId("65711ccdcb2d05e2c973fe87") })
 
@@ -445,64 +467,101 @@ db.books.find({ "author": db.authors.findOne({ "name.first": "Henryk", "name.las
 
 > Wyszukaj wszystkie książki napisane po polsku w gatunku "Fantasy". (1 pkt)
 
-```bash
+```js
 db.books.find({ "language": "Polish", "genres": "Fantasy" })
 ```
 
 > Wyszukaj wszystkie książki, których średnia ocena w recenzjach to co najmniej 4. (1 pkt)
 
-```bash
-db.reviews.aggregate([
-{
-$group: {
-_id: "$book",
-avgRating: { $avg: "$rating" }
-}
-},
-{
-$match: {
-avgRating: { $gte: 4 }
-}
-}
-])
+```js
+db.books.aggregate([
+    {
+        $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "book",
+            as: "book_reviews"
+        }
+    },
+    {
+        $addFields: {
+            average_rating: {
+                $avg: "$book_reviews.rating"
+            }
+        }
+    },
+    {
+        $match: {
+            average_rating: { $gte: 4 }
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            title: 1,
+            isbn: 1,
+            publication_year: 1,
+            language: 1,
+            author: 1,
+            average_rating: 1
+        }
+    }
+]);
 ```
 
 > Za pomocą aggregate wyszukaj dane o książkach napisanych przez polskich autorów,
 > wraz z nazwiskami tych autorów i średnią oceną książek. (2 pkt)
 
-```bash
+```js
 db.books.aggregate([
-{
-$lookup: {
-from: "authors",
-localField: "author",
-foreignField: "_id",
-as: "author"
-}
-},
-{
-$unwind: "$author"
-},
-{
-$match: {
-"author.country": "Poland"
-}
-},
-{
-$lookup: {
-from: "reviews",
-localField: "_id",
-foreignField: "book",
-as: "reviews"
-}
-},
-{
-$group: {
-_id: "$_id",
-title: { $first: "$title" },
-author: { $first: "$author" },
-avgRating: { $avg: "$reviews.rating" }
-}
-}
+    {
+        $lookup: {
+            from: "authors",
+            localField: "author",
+            foreignField: "_id",
+            as: "author_info"
+        }
+    },
+    {
+        $unwind: "$author_info"
+    },
+    {
+        $match: {
+            "author_info.country": "Poland"
+        }
+    },
+    {
+        $lookup: {
+            from: "reviews",
+            localField: "_id",
+            foreignField: "book",
+            as: "reviews"
+        }
+    },
+    {
+        $addFields: {
+            average_rating: {
+                $cond: {
+                    if: { $gt: [{ $size: "$reviews" }, 0] },
+                    then: { $avg: "$reviews.rating" },
+                    else: null
+                }
+            }
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            title: 1,
+            isbn: 1,
+            publication_year: 1,
+            language: 1,
+            author: {
+                first: "$author_info.name.first",
+                last: "$author_info.name.last"
+            },
+            average_rating: 1
+        }
+    }
 ])
 ```

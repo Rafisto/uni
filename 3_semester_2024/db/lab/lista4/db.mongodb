@@ -1,0 +1,175 @@
+db.createCollection('books')
+db.createCollection('authors',
+    {
+        validator: {
+            $jsonSchema: {
+                bsonType: "object",
+                required: [
+                    "name",
+                    "country",
+                    "birth",
+                    "death"
+                ],
+                properties: {
+                    name: {
+                        bsonType: "object",
+                        required: [
+                            "first",
+                            "last"
+                        ],
+                        properties: {
+                            first: {
+                                bsonType: "string",
+                                description: "must be a string and is required"
+                            },
+                            last: {
+                                bsonType: "string",
+                                description: "must be a string and is required"
+                            }
+                        }
+                    },
+                    country: {
+                        bsonType: "string",
+                        description: "must be a string and is required"
+                    },
+                    birth: {
+                        bsonType: "date",
+                        description: "must be a date and is required"
+                    },
+                    death: {
+                        bsonType: "date",
+                        description: "must be a date and is required"
+                    }
+                }
+            }
+        }
+    }
+)
+db.createCollection('reviews', {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["book", "reviewer", "rating", "description"],
+            properties: {
+                book: {
+                    bsonType: "objectId",
+                    description: "must be a objectId and is required"
+                },
+                reviewer: {
+                    bsonType: "string",
+                    description: "must be a string and is required"
+                },
+                rating: {
+                    bsonType: "int",
+                    minimum: 1,
+                    maximum: 5,
+                    description: "must be an integer in [ 1, 2, 3, 4, 5 ] and is required"
+                },
+                description: {
+                    bsonType: "string",
+                    description: "must be a string and is required"
+                }
+            }
+        }
+    }
+})
+db.authors.insertMany([
+    {
+        "_id": ObjectId("65711ccdcb2d05e2c973fe87"),
+        "name": { "first": "Henryk", "last": "Sienkiewicz" },
+        "country": "Poland",
+        "birth": new Date('May 5, 1846'),
+        "death": new Date('Nov 15, 1916')
+    },
+    {
+        "_id": ObjectId("65711ccdcb2d05e2c973fe88"),
+        "name": { "first": "Adam", "last": "Mickiewicz" },
+        "country": "Poland",
+        "birth": new Date('Dec 24, 1798'),
+        "death": new Date('Nov 26, 1855')
+    },
+    {
+        "_id": ObjectId("65711ccdcb2d05e2c973fe89"),
+        "name": { "first": "Juliusz", "last": "Słowacki" },
+        "country": "Poland",
+        "birth": new Date('Sep 4, 1809'),
+        "death": new Date('Apr 3, 1849')
+    },
+    {
+        "_id": ObjectId("65711ccdcb2d05e2c973fe90"),
+        "name": { "first": "William", "last": "Shakespeare" },
+        "country": "UK",
+        "birth": new Date('Apr 26, 1564'),
+        "death": new Date('Apr 23, 1616')
+    }
+])
+db.books.insertMany([
+    {
+        "_id": ObjectId("65712008cb2d05e2c973fe87"),
+        "title": "Quo Vadis",
+        "isbn": "978-0-261-10295-6",
+        "publication_year": 1896,
+        "language": "Polish",
+        "author": ObjectId("65711ccdcb2d05e2c973fe87"),
+        "publisher": {
+            "name": "Zakład Narodowy im. Ossolińskich",
+            "country": "Poland"
+        }
+    },
+    {
+        "_id": ObjectId("65712008cb2d05e2c973fe88"),
+        "title": "Krzyżacy",
+        "isbn": "978-0-261-10295-6",
+        "publication_year": 1900,
+        "language": "Polish",
+        "author": ObjectId("65711ccdcb2d05e2c973fe87"),
+        "publisher": {
+            "name": "Zakład Narodowy im. Ossolińskich",
+            "country": "Poland"
+        }
+    },
+    {
+        "_id": ObjectId("65712008cb2d05e2c973fe89"),
+        "title": "Potop",
+        "isbn": "978-0-261-10295-6",
+        "publication_year": 1886,
+        "language": "Polish",
+        "author": ObjectId("65711ccdcb2d05e2c973fe87"),
+        "publisher": {
+            "name": "Zakład Narodowy im. Ossolińskich",
+            "country": "Poland"
+        }
+    },
+    {
+        "_id": ObjectId("65712008cb2d05e2c973fe90"),
+        "title": "Pan Tadeusz",
+        "isbn": "978-0-261-10295-6",
+        "publication_year": 1834,
+        "language": "Polish",
+        "author": ObjectId("65711ccdcb2d05e2c973fe88"),
+        "publisher": {
+            "name": "Zakład Narodowy im. Ossolińskich",
+            "country": "Poland"
+        }
+    }
+])
+db.reviews.insertMany([
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe87"), // Istniejąca książka
+        "reviewer": "John Doe",
+        "rating": 5,
+        "description": "Best book ever!"
+    },
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe88"), // Istniejąca książka
+        "reviewer": "Jane Doe",
+        "rating": 4,
+        "description": "Great book!"
+    },
+    {
+        "book": ObjectId("65712008cb2d05e2c973fe89"), // Istniejąca książka
+        "reviewer": "Jack Doe",
+        "rating": 3,
+        "description": "Decent book."
+    }
+]);
