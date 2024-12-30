@@ -492,7 +492,7 @@ db.books.aggregate([
     },
     {
         $match: {
-            average_rating: { $gte: 4 }
+            average_rating: { $gte: 1 }
         }
     },
     {
