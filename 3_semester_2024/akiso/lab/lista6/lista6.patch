@@ -1,0 +1,439 @@
+diff --git a/Makefile b/Makefile
+index 841af482..f35a4053 100644
+--- a/Makefile
++++ b/Makefile
+@@ -169,6 +169,8 @@ mkfs: mkfs.c fs.h
+ 
+ # 3.4 - add _expr and _hello to UPROGS
+ # 4.4 - add _testsyscall to UPROGS
++# 6.1 - add _testvm to UPROGS
++# 6.2 - add _testvinfo to UPROGS
+ 
+ UPROGS=\
+ 	_cat\
+@@ -189,6 +191,9 @@ UPROGS=\
+ 	_expr\
+ 	_hello\
+ 	_testsyscall\
++	_testvm\
++	_testvinfo\
++	_testmmap\
+ 
+ fs.img: mkfs README $(UPROGS)
+ 	./mkfs fs.img README $(UPROGS)
+@@ -257,11 +262,14 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
+ 
+ # 3.4 - add expr.c and hello.c to EXTRA
+ # 4.6 - add testsyscall.c to EXTRA
++# 6.1 - add testvm.c to EXTRA
++# 6.2 - add testvinfo.c to EXTRA
+ 
+ EXTRA=\
+ 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
+ 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
+-	printf.c umalloc.c expr.c hello.c testsyscall.c\
++	printf.c umalloc.c expr.c hello.c testsyscall.c testvm.c testvinfo.c\
++	testmmap.c\
+ 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
+ 	.gdbinit.tmpl gdbutil\
+ 
+diff --git a/defs.h b/defs.h
+index 82fb9828..b3025edc 100644
+--- a/defs.h
++++ b/defs.h
+@@ -185,6 +185,10 @@ void            switchuvm(struct proc*);
+ void            switchkvm(void);
+ int             copyout(pde_t*, uint, void*, uint);
+ void            clearpteu(pde_t *pgdir, char *uva);
++void            vmprint(pde_t *pgdir);  // 6.1 add vmprint def
++
++typedef uint pte_t; // 6.2 incl. pte_t def
++pte_t           *walkpgdir(pde_t *pgdir, const void *va, int alloc); // 6.2 add walkpgdir def
+ 
+ // number of elements in fixed-size array
+ #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
+diff --git a/exec.c b/exec.c
+index b40134f3..1a109aa8 100644
+--- a/exec.c
++++ b/exec.c
+@@ -93,6 +93,9 @@ exec(char *path, char **argv)
+       last = s+1;
+   safestrcpy(curproc->name, last, sizeof(curproc->name));
+ 
++  cprintf("exec - ");
++  vmprint(pgdir);  // 6.1 add vmprint call to exec
++
+   // Commit to the user image.
+   oldpgdir = curproc->pgdir;
+   curproc->pgdir = pgdir;
+diff --git a/proc.c b/proc.c
+index 806b1b18..f3805969 100644
+--- a/proc.c
++++ b/proc.c
+@@ -231,6 +231,10 @@ exit(void)
+   struct proc *p;
+   int fd;
+ 
++  // 6.1 add vmprint call to exit
++  cprintf("exit - ");
++  vmprint(curproc->pgdir);  
++
+   if(curproc == initproc)
+     panic("init exiting");
+ 
+diff --git a/syscall.c b/syscall.c
+index f2027701..0166b6ff 100644
+--- a/syscall.c
++++ b/syscall.c
+@@ -106,6 +106,11 @@ extern int sys_uptime(void);
+ // 4.6 add an extern syscall function
+ extern int sys_hello(void);
+ extern int sys_getppid(void);
++// 6.2 add an extern syscall function
++extern int sys_usedvp(void);
++extern int sys_usedpp(void);
++// 6.3 add an extern syscall function
++extern int sys_mmap(void);
+ 
+ static int (*syscalls[])(void) = {
+ [SYS_fork]    sys_fork,
+@@ -132,6 +137,11 @@ static int (*syscalls[])(void) = {
+ // 4.6 add a syscall into the syscall table
+ [SYS_hello]   sys_hello,
+ [SYS_getppid] sys_getppid,
++// 6.2 add a syscall into the syscall table
++[SYS_usedvp]  sys_usedvp,
++[SYS_usedpp]  sys_usedpp,
++// 6.3 add a mmap syscall into the syscall table
++[SYS_mmap]    sys_mmap,
+ };
+ 
+ void
+diff --git a/syscall.h b/syscall.h
+index f0751155..d670a06c 100644
+--- a/syscall.h
++++ b/syscall.h
+@@ -23,4 +23,11 @@
+ 
+ // 4.6 add a syscall
+ #define SYS_hello  22
+-#define SYS_getppid 23
+\ No newline at end of file
++#define SYS_getppid 23
++
++// 6.2 add a syscall
++#define SYS_usedvp 24
++#define SYS_usedpp 25
++
++// 6.3 add a syscall
++#define SYS_mmap 26
+\ No newline at end of file
+diff --git a/sysfile.c b/sysfile.c
+index 624d0783..bc7e2015 100644
+--- a/sysfile.c
++++ b/sysfile.c
+@@ -15,6 +15,7 @@
+ #include "sleeplock.h"
+ #include "file.h"
+ #include "fcntl.h"
++#include "memlayout.h" // 6.2 add memlayout.h for P2V
+ 
+ // Fetch the nth word-sized system call argument as a file descriptor
+ // and return both the descriptor and the corresponding struct file.
+@@ -453,4 +454,58 @@ int sys_hello(void)
+ int sys_getppid(void)
+ {
+   return myproc()->parent->pid;
++}
++
++// 6.2 add a syscall usedvp
++int sys_usedvp(void)
++{
++  struct proc *curproc = myproc();
++  uint sz = curproc->sz;
++  uint num_pages = sz / PGSIZE;
++
++  return num_pages;
++}
++
++// 6.2 add a syscall usedpp
++int sys_usedpp(void)
++{
++  struct proc *curproc = myproc();
++  pde_t *pgdir = curproc->pgdir;
++  pte_t *pgtab;
++  uint num_pages = 0;
++  uint va = 0;
++
++  for (va = 0; va < curproc->sz; va+= PGSIZE) {
++    pgtab = walkpgdir(pgdir, (void *)va, 0);
++    // exists and mapped
++    if (pgtab && (*pgtab & PTE_P)) {
++      num_pages++;
++    }
++  }
++
++  return num_pages;
++}
++
++// 6.3 add a syscall mmap
++int sys_mmap(void) 
++{
++  int size;
++
++  // must be an integer
++  if(argint(0, (int*)&size) < 0){
++    return -1;
++  }
++
++  // must be a multiple of a page
++  if (size > 0 && size % PGSIZE != 0) {
++    return -1;
++  }
++
++  // grow virtual memory size
++  struct proc *curproc = myproc();
++  curproc->sz += size;
++  
++  switchuvm(curproc);
++
++  return curproc->sz - size;
+ }
+\ No newline at end of file
+diff --git a/testmmap.c b/testmmap.c
+new file mode 100644
+index 00000000..37beb22c
+--- /dev/null
++++ b/testmmap.c
+@@ -0,0 +1,61 @@
++#include "types.h"
++#include "user.h"
++
++void print_usage(const char *message) {
++  int used_virtual = usedvp();
++  int used_physical = usedpp();
++  
++  printf(1, "%s\n", message);
++  printf(1, "(usedvp) Number of used virtual pages: %d\n", used_virtual);
++  printf(1, "(usedpp) Number of used physical pages: %d\n", used_physical);
++}
++
++int main() {
++  int rc;
++  print_usage("Initial usage:");
++
++  // Allocate a page
++  rc = mmap(4096);
++  if (rc == -1) {
++    printf(1, "mmap failed\n");
++    exit();
++  }
++  else {
++    printf(1, "mmap succeeded with address %p\n", rc);
++  }
++  print_usage("After allocating a page:");
++
++  // Allocate two pages
++  rc = mmap(4096 * 2);
++  if (rc == -1) {
++    printf(1, "mmap failed\n");
++    exit();
++  }
++  else {
++    printf(1, "mmap succeeded with address %p\n", rc);
++  }
++  print_usage("After allocating two pages:");
++
++  // 6.3 try access non-existent physical memory
++
++  // Try to access an-existent physical memory
++  char *valid_address = (char*)(rc - 4096 * 2);
++  printf(1, "Trying to access valid physical memory at address %p\n", valid_address);
++  char value = *valid_address;
++  printf(1, "Value at valid address: %c\n", value);
++
++  // Try to access non-existent physical memory
++  char *invalid_address = (char*)(rc + 4096);
++  printf(1, "Trying to access non-existent physical memory at address %p\n", invalid_address);
++  value = *invalid_address; // This should cause a segmentation fault
++  printf(1, "Value at on-demand created address: %c\n", value);
++
++  // Try write to freshly allocated memory
++  printf(1, "Trying to write 'a' to freshly allocated memory\n");
++  *invalid_address = 'a';
++  printf(1, "Value at freshly allocated address: %c\n", *invalid_address);
++
++  print_usage("After accessing non-existent physical memory:");
++
++  exit();
++}
+diff --git a/testvinfo.c b/testvinfo.c
+new file mode 100644
+index 00000000..cb12b40e
+--- /dev/null
++++ b/testvinfo.c
+@@ -0,0 +1,29 @@
++#include "types.h"
++#include "user.h"
++
++void print_usage(const char *message) {
++  int used_virtual = usedvp();
++  int used_physical = usedpp();
++  
++  printf(1, "%s\n", message);
++  printf(1, "(usedvp) Number of used virtual pages: %d\n", used_virtual);
++  printf(1, "(usedpp) Number of used physical pages: %d\n", used_physical);
++}
++
++int main() {
++  print_usage("Initial usage:");
++
++  // Allocate a page
++  sbrk(4096);
++  print_usage("After allocating a page:");
++
++  // Allocate two pages
++  sbrk(4096 * 2);
++  print_usage("After allocating two pages:");
++
++  // Deallocate three pages
++  sbrk(-4096 * 3);
++  print_usage("After deallocating three pages:");
++
++  exit();
++}
+diff --git a/testvm.c b/testvm.c
+new file mode 100644
+index 00000000..51c701b3
+--- /dev/null
++++ b/testvm.c
+@@ -0,0 +1,19 @@
++// 6.1 add testvm.c
++#include "types.h"
++#include "stat.h"
++#include "user.h"
++
++int main(int argc, char *argv[])
++{
++    // allocate 5 pages of memory using sbrk
++    void *mem = sbrk(5 * 4096);
++
++    // write to the first byte of each page
++    for (int i = 0; i < 5; i++)
++    {
++        *(char *)(mem + i * 4096) = 'a' + i;
++    }
++
++    // exit
++    exit();
++}
+diff --git a/trap.c b/trap.c
+index 41c66ebf..960a0edd 100644
+--- a/trap.c
++++ b/trap.c
+@@ -47,6 +47,33 @@ trap(struct trapframe *tf)
+   }
+ 
+   switch(tf->trapno){
++  case T_PGFLT:
++    // Assume dynamic mmap failed.
++    uint va = rcr2();
++
++    if (va <= myproc()->sz) {
++      cprintf("pid %d %s: dynamic mmap available at %x.\n", myproc()->pid, myproc()->name, va);
++
++      // impl alloc
++      uint vapg = PGROUNDDOWN(va);
++
++      if (allocuvm(myproc()->pgdir, vapg, vapg + PGSIZE) == 0) {
++        cprintf("pid %d %s: page fault at %x.\n", myproc()->pid, myproc()->name, va);
++        myproc()->killed = 1;
++      }
++      else {
++        cprintf("pid %d %s: resized page at %x.\n", myproc()->pid, myproc()->name, va);
++        switchuvm(myproc());
++        cprintf("pid %d %s: switched to new page at %x.\n", myproc()->pid, myproc()->name, va);
++        break;
++      }
++    }
++    else {
++      cprintf("pid %d %s: page fault at %x.\n",
++              myproc()->pid, myproc()->name, va);
++      myproc()->killed = 1;
++    }
++    break;
+   case T_IRQ0 + IRQ_TIMER:
+     if(cpuid() == 0){
+       acquire(&tickslock);
+diff --git a/user.h b/user.h
+index f70aa4fe..f189a9ad 100644
+--- a/user.h
++++ b/user.h
+@@ -26,6 +26,11 @@ int uptime(void);
+ // 4.6 add a syscall declaration in the user space
+ int hello(void);
+ int getppid(void);
++// 6.2 add usedvp() and usedpp() syscall declarations
++int usedvp(void);
++int usedpp(void);
++// 6.3 add mmap(int) syscall declaration
++int mmap(int size);
+ 
+ // ulib.c
+ int stat(const char*, struct stat*);
+diff --git a/usys.S b/usys.S
+index ae621f8f..65c3fe7b 100644
+--- a/usys.S
++++ b/usys.S
+@@ -31,4 +31,9 @@ SYSCALL(sleep)
+ SYSCALL(uptime)
+ // 4.6 add syscall extern declaration
+ SYSCALL(hello)
+-SYSCALL(getppid)
+\ No newline at end of file
++SYSCALL(getppid)
++// 6.2 add syscall extern declaration
++SYSCALL(usedvp)
++SYSCALL(usedpp)
++// 6.3 add syscall extern declaration
++SYSCALL(mmap)
+\ No newline at end of file
+diff --git a/vm.c b/vm.c
+index 7134cfff..9304a516 100644
+--- a/vm.c
++++ b/vm.c
+@@ -32,7 +32,9 @@ seginit(void)
+ // Return the address of the PTE in page table pgdir
+ // that corresponds to virtual address va.  If alloc!=0,
+ // create any required page table pages.
+-static pte_t *
++
++// 6.2 remove static keyword in order to use in sysfile.c
++pte_t *
+ walkpgdir(pde_t *pgdir, const void *va, int alloc)
+ {
+   pde_t *pde;
+@@ -392,3 +394,22 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
+ //PAGEBREAK!
+ // Blank page.
+ 
++
++// 6.1 add vmprint defintion
++void vmprint(pde_t *pgdir) {
++  cprintf("pgdir %p\n", pgdir);
++
++  for (int i = 0; i < 512; i++) 
++    if (pgdir[i] & PTE_P) { 
++      uint pa = PTE_ADDR(pgdir[i]);
++      cprintf(".. %d: pde %p pa %p\n", i, pgdir[i], pa);
++
++      pte_t* pt = (pte_t*)P2V(pa); 
++      for (int j = 0; j < 1024; j++) {
++          if (pt[j] & PTE_P) {
++              uint pte_pa = PTE_ADDR(pt[j]);
++              cprintf(".. .. %d: pte %p pa %p\n", j, pt[j], pte_pa);
++          }
++      }
++  }
++}
+\ No newline at end of file

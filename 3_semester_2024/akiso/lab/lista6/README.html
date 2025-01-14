@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="list-5">List 5</h1>
+<ul>
+<li><a href="#list-5">List 5</a></li>
+<li><a href="#patch">Patch</a></li>
+<li><a href="#exercises">Exercises</a>
+<ul>
+<li><a href="#exercise-1">Exercise 1</a></li>
+<li><a href="#exercise-2">Exercise 2</a></li>
+<li><a href="#exercise-3">Exercise 3</a></li>
+<li><a href="#exercise-4">Exercise 4</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="patch">Patch</h1>
+<p>Załączam <a href="./all.patch">pełny patch</a> do upstream xv6 (https://github.com/mit-pdos/xv6-public) z rozwiązaniem zadania z listy 6, oraz <a href="./lista6.patch">diff ze zmianami tylko do tej listy</a>, w którym wyraźnie widać jakie całościowe zmiany są potrzebne do wprowadzenia rozwiązań czterech poniższych zadań.</p>
+<h1 id="exercises">Exercises</h1>
+<h2 id="exercise-1">Exercise 1</h2>
+<p>(10pt) Zaimplementuj w XV6 funkcje vmprint, która drukuje zawartość tabeli stronnicowania procesu (pgdir). Zdefiniuj funkcję w kernel/vm.c. Wstaw funkcje vmprint do wywołania exec.c, aby wydrukować tabelę stron dla aktualne uruchomionego procesu użytkownika oraz wstaw vmprint w exit (proc.c). Następnie napisz program testvm.c który wykorzystując wywołanie sbrk zaalokuje 5 stron pamięci.</p>
+<p>Przedstawiam <code>vmprint</code> dołączony do kodu <code>vm.c</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// vm.c</span>
+<span class="hljs-comment">// [...]</span>
+
+<span class="hljs-comment">// 6.1 add vmprint defintion</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">vmprint</span><span class="hljs-params">(<span class="hljs-keyword">pde_t</span> *pgdir)</span> </span>{
+  cprintf(<span class="hljs-string">"pgdir %p\n"</span>, pgdir);
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">512</span>; i++) 
+    <span class="hljs-keyword">if</span> (pgdir[i] &amp; PTE_P) { 
+      uint pa = PTE_ADDR(pgdir[i]);
+      cprintf(<span class="hljs-string">".. %d: pde %p pa %p\n"</span>, i, pgdir[i], pa);
+
+      <span class="hljs-keyword">pte_t</span>* pt = (<span class="hljs-keyword">pte_t</span>*)P2V(pa); 
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">1024</span>; j++) {
+          <span class="hljs-keyword">if</span> (pt[j] &amp; PTE_P) {
+              uint pte_pa = PTE_ADDR(pt[j]);
+              cprintf(<span class="hljs-string">".. .. %d: pte %p pa %p\n"</span>, j, pt[j], pte_pa);
+          }
+      }
+  }
+}
+</div></code></pre>
+<p>Oraz program testowy sprawdzający działanie <code>vmprint</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// 6.1 add testvm.c</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"types.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"stat.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"user.h"</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> *argv[])</span>
+</span>{
+    <span class="hljs-comment">// allocate 5 pages of memory using sbrk</span>
+    <span class="hljs-keyword">void</span> *mem = sbrk(<span class="hljs-number">5</span> * <span class="hljs-number">4096</span>);
+
+    <span class="hljs-comment">// write to the first byte of each page</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++)
+    {
+        *(<span class="hljs-keyword">char</span> *)(mem + i * <span class="hljs-number">4096</span>) = <span class="hljs-string">'a'</span> + i;
+    }
+
+    <span class="hljs-comment">// exit</span>
+    <span class="hljs-built_in">exit</span>();
+}
+</div></code></pre>
+<p>Przedstawiam wynik działania programu <code>testvm</code> w skompilowanym systemie. Jak widać doszło do sukcesywnego alokowania 5 stron pamięci:</p>
+<pre class="hljs"><code><div>$ testvm
+<span class="hljs-built_in">exec</span> - pgdir 8df23000
+.. 0: pde dee1007 pa dee1000
+.. .. 0: pte dee2007 pa dee2000
+.. .. 1: pte dee0003 pa dee0000
+.. .. 2: pte dedf007 pa dedf000
+<span class="hljs-built_in">exit</span> - pgdir 8df23000
+.. 0: pde dee1027 pa dee1000
+.. .. 0: pte dee2027 pa dee2000
+.. .. 1: pte dee0003 pa dee0000
+.. .. 2: pte dedf067 pa dedf000
+.. .. 3: pte dfbc067 pa dfbc000
+.. .. 4: pte df76067 pa df76000
+.. .. 5: pte dfbf067 pa dfbf000
+.. .. 6: pte dfc0067 pa dfc0000
+.. .. 7: pte dfc1067 pa dfc1000
+</div></code></pre>
+<h2 id="exercise-2">Exercise 2</h2>
+<p>(20pt) Napisz w XV6 wywołanie systemowe, które wyświetlania informacje o pamięci. Zaimplementuj:</p>
+<ul>
+<li>usedvp() powinno zwrócić liczbę stron wirtualnych/logicznych w części użytkownika przestrzeni adresowej procesu, do rozmiaru programu zapisanego w struct proc. Musisz również uwzględnić stronę ochrony stosu w swoich obliczeniach.</li>
+<li>usedpp() powinno zwrócić liczbę stron fizycznych w części użytkownika przestrzeni adresowej procesu. Musisz policzyć tę liczbę, przechodząc przez tabelę stron procesu i licząc liczbę wpisów w tabeli stron, które mają przypisany prawidłowy adres fizyczny.</li>
+</ul>
+<p>Przedstawiam implementację wywołania systemowego <code>sys_usedvp</code> oraz <code>sys_usedpp</code>. Pierwszy z nich zwraca liczbę stron wirtualnych bezpośrednio z parametrów struct proc dla bieżącego procesu, natomiast drugi w ramach iteracji po stronach wirtualnych zwraca liczbę stron fizycznych, które są zmapowane w przestrzeni adresowej procesu:</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// sysfile.c</span>
+<span class="hljs-comment">// [...]</span>
+
+<span class="hljs-comment">// 6.2 add a syscall usedvp</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sys_usedvp</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">curproc</span> = <span class="hljs-title">myproc</span>();</span>
+  uint sz = curproc-&gt;sz;
+  uint num_pages = sz / PGSIZE;
+
+  <span class="hljs-keyword">return</span> num_pages;
+}
+
+<span class="hljs-comment">// 6.2 add a syscall usedpp</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sys_usedpp</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">curproc</span> = <span class="hljs-title">myproc</span>();</span>
+  <span class="hljs-keyword">pde_t</span> *pgdir = curproc-&gt;pgdir;
+  <span class="hljs-keyword">pte_t</span> *pgtab;
+  uint num_pages = <span class="hljs-number">0</span>;
+  uint va = <span class="hljs-number">0</span>;
+
+  <span class="hljs-keyword">for</span> (va = <span class="hljs-number">0</span>; va &lt; curproc-&gt;sz; va+= PGSIZE) {
+    pgtab = walkpgdir(pgdir, (<span class="hljs-keyword">void</span> *)va, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">// exists and mapped</span>
+    <span class="hljs-keyword">if</span> (pgtab &amp;&amp; (*pgtab &amp; PTE_P)) {
+      num_pages++;
+    }
+  }
+
+  <span class="hljs-keyword">return</span> num_pages;
+}
+</div></code></pre>
+<p>Program testowy obejmuje wywołanie <code>sbrk</code>, które początkowo alokuje 1, następnie 2, a końcowo dealokuje 3 strony pamięci.</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// 6.2 add testvinfo.c</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"types.h"</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"user.h"</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">print_usage</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *message)</span> </span>{
+  <span class="hljs-keyword">int</span> used_virtual = usedvp();
+  <span class="hljs-keyword">int</span> used_physical = usedpp();
+  
+  <span class="hljs-built_in">printf</span>(<span class="hljs-number">1</span>, <span class="hljs-string">"%s\n"</span>, message);
+  <span class="hljs-built_in">printf</span>(<span class="hljs-number">1</span>, <span class="hljs-string">"(usedvp) Number of used virtual pages: %d\n"</span>, used_virtual);
+  <span class="hljs-built_in">printf</span>(<span class="hljs-number">1</span>, <span class="hljs-string">"(usedpp) Number of used physical pages: %d\n"</span>, used_physical);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+  print_usage(<span class="hljs-string">"Initial usage:"</span>);
+
+  <span class="hljs-comment">// Allocate a page</span>
+  sbrk(<span class="hljs-number">4096</span>);
+  print_usage(<span class="hljs-string">"After allocating a page:"</span>);
+
+  <span class="hljs-comment">// Allocate two pages</span>
+  sbrk(<span class="hljs-number">4096</span> * <span class="hljs-number">2</span>);
+  print_usage(<span class="hljs-string">"After allocating two pages:"</span>);
+
+  <span class="hljs-comment">// Deallocate three pages</span>
+  sbrk(<span class="hljs-number">-4096</span> * <span class="hljs-number">3</span>);
+  print_usage(<span class="hljs-string">"After deallocating three pages:"</span>);
+
+  <span class="hljs-built_in">exit</span>();
+}
+</div></code></pre>
+<p>Wynikiem programu jest poprawne zliczenie stron wirtualnych oraz fizycznych w zależności od alokacji i dealokacji pamięci:</p>
+<pre class="hljs"><code><div>$ testvinfo
+<span class="hljs-built_in">exec</span> - pgdir 8df23000
+.. 0: pde dee1007 pa dee1000
+.. .. 0: pte dee2007 pa dee2000
+.. .. 1: pte dee0003 pa dee0000
+.. .. 2: pte dedf007 pa dedf000
+Initial usage:
+(usedvp) Number of used virtual pages: 3
+(usedpp) Number of used physical pages: 3
+After allocating a page:
+(usedvp) Number of used virtual pages: 4
+(usedpp) Number of used physical pages: 4
+After allocating two pages:
+(usedvp) Number of used virtual pages: 6
+(usedpp) Number of used physical pages: 6
+After deallocating three pages:
+(usedvp) Number of used virtual pages: 3
+(usedpp) Number of used physical pages: 3
+<span class="hljs-built_in">exit</span> - pgdir 8df23000
+.. 0: pde dee1027 pa dee1000
+.. .. 0: pte dee2027 pa dee2000
+.. .. 1: pte dee0003 pa dee0000
+.. .. 2: pte dedf067 pa dedf000
+</div></code></pre>
+<h2 id="exercise-3">Exercise 3</h2>
+<p>(10pt)* Napisz w XV6 prostą wersja mapowania pamięci za pomocą wywołania systemowego mmap. To wywołanie systemowe mmap powinno przyjmować jeden argument: liczbę bajtów do dodania do przestrzeni adresowej procesu. Można założyć, że liczba bajtów jest liczbą dodatnią i wielokrotnością rozmiaru strony. Wywołanie systemowe powinno zwrócić wartość 0, jeśli podano jakiekolwiek nieprawidłowe dane wejściowe. Jeśli podano prawidłową liczbę bajtów jako dane wejściowe, wywołanie systemowe powinno rozszerzyć wirtualną przestrzeń adresową procesu o określoną liczbę bajtów i zwrócić początkowy adres wirtualny nowo dodanego obszaru pamięci. Nowe wirtualne strony powinny zostać dodane na końcu bieżącego końca programu i powinno odpowiednio zwiększyć rozmiar programu. Jednak wywołanie systemowe NIE powinno przydzielać żadnej pamięci fizycznej odpowiadającej nowym stronom wirtualnym, ponieważ będziemy przydzielać pamięć na żądanie (on demand) w zadaniu następnym.</p>
+<p>Przedstawiam implementację wywołania systemowego <code>sys_mmap</code>, które zwraca adres początkowy nowo zaalokowanego obszaru pamięci. W przypadku błędnych danych wejściowych zwraca wartość -1. Jedyne co ten program robi to zwiększa rozmiar pamięci wirtualnej procesu o poprawnie zadaną wielokrotność rozmiaru strony, następnie przeładowuje pamięć.</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// 6.3 add a syscall mmap</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sys_mmap</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> 
+</span>{
+  <span class="hljs-keyword">int</span> <span class="hljs-built_in">size</span>;
+
+  <span class="hljs-comment">// must be an integer</span>
+  <span class="hljs-keyword">if</span>(argint(<span class="hljs-number">0</span>, (<span class="hljs-keyword">int</span>*)&amp;<span class="hljs-built_in">size</span>) &lt; <span class="hljs-number">0</span>){
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+  }
+
+  <span class="hljs-comment">// must be a multiple of a page</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">size</span> &gt; <span class="hljs-number">0</span> &amp;&amp; <span class="hljs-built_in">size</span> % PGSIZE != <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+  }
+
+  <span class="hljs-comment">// grow virtual memory size</span>
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">curproc</span> = <span class="hljs-title">myproc</span>();</span>
+  curproc-&gt;sz += <span class="hljs-built_in">size</span>;
+  
+  switchuvm(curproc);
+
+  <span class="hljs-keyword">return</span> curproc-&gt;sz - <span class="hljs-built_in">size</span>;
+}
+</div></code></pre>
+<p>Program testowy zostanie ukazany w zadaniu 4, ponieważ tam <code>mmap</code> posiada pełną implementacje.</p>
+<h2 id="exercise-4">Exercise 4</h2>
+<p>(20pt)* W tym zadaniu dalej rozszerzamy zadanie poprzednie na pełne działanie mmap. Na początku musimy przydzielać pamięć fizyczną w ramach obsługi błędu strony. Ponadto, jeśli mapujesz w pamięci więcej niż jedną stronę, pamięć fizyczna powinna być przydzielana tylko dla tych stron, do których uzyskuje się dostęp, a nie dla wszystkich stron w regionie mapowanym w pamięci. Ponownie użyj liczby stron wirtualnych/fizycznych, aby sprawdzić, czy strony fizyczne są przydzielane tylko na żądanie. Udostępniliśmy prosty program testowy do przetestowania implementacji.</p>
+<p>Dodałem case do <code>trap.c</code> wykrywający czy adres, który wywołał <strong>T_PGFLT</strong> znajduje się w wirtualnej przestrzeni adresowej programu czy nie. Jeśli nie, to następuje tradycyjny page fault. Jeżeli tak, to znaczy że musimy dynamicznie zaprovisionować pamięć dla tego adresu. W tym celu zbieramy adres z rejestru <strong>CR2</strong>, normalizujemy do wielokrotności strony, a następnie zestawiamy pamięć fizyczną dla strony wirtualnej. W przypadku sukcesu, zmieniamy rozmiar programu, zmieniamy przestrzeń adresową procesu i wypisujemy informacje o sukcesie. W przypadku niepowodzenia, zabijamy proces.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">case</span> T_PGFLT:
+<span class="hljs-comment">// Assume dynamic mmap failed.</span>
+uint va = rcr2();
+
+<span class="hljs-keyword">if</span> (va &lt;= myproc()-&gt;sz) {
+    cprintf(<span class="hljs-string">"pid %d %s: dynamic mmap available at %x.\n"</span>, myproc()-&gt;pid, myproc()-&gt;name, va);
+
+    <span class="hljs-comment">// impl alloc</span>
+    uint vapg = PGROUNDDOWN(va);
+
+    <span class="hljs-keyword">if</span> (allocuvm(myproc()-&gt;pgdir, vapg, vapg + PGSIZE) == <span class="hljs-number">0</span>) {
+        cprintf(<span class="hljs-string">"pid %d %s: page fault at %x.\n"</span>, myproc()-&gt;pid, myproc()-&gt;name, va);
+        myproc()-&gt;killed = <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">else</span> {
+        cprintf(<span class="hljs-string">"pid %d %s: resized page at %x.\n"</span>, myproc()-&gt;pid, myproc()-&gt;name, va);
+        switchuvm(myproc());
+        cprintf(<span class="hljs-string">"pid %d %s: switched to new page at %x.\n"</span>, myproc()-&gt;pid, myproc()-&gt;name, va);
+        <span class="hljs-keyword">break</span>;
+    }
+}
+<span class="hljs-keyword">else</span> {
+    cprintf(<span class="hljs-string">"pid %d %s: page fault at %x.\n"</span>,
+            myproc()-&gt;pid, myproc()-&gt;name, va);
+    myproc()-&gt;killed = <span class="hljs-number">1</span>;
+}
+<span class="hljs-keyword">break</span>;
+</div></code></pre>
+<p>Program testowy obejmuje wykonanie czynności sprawdzających dynamiczne provisionowanie stron pamięci. W tym celu dokonuje kilku <code>mmap</code>-ów oraz próbuję dostać się do pamięci, która istnieje (żeby pokazać że standardowy przypadek użycia nie uległ zmianie) oraz do pamięci, która istnieje tylko wirtualnie (żeby pokazać że dynamiczne provisionowanie działa).</p>
+<p>Cudowną zaletą napisanego handlera w <code>trap.c</code> jest to, że alokuje jedynie wykorzystywane strony, dzięki czemu w rozkładzie <code>vmprint</code> widać, że strony fizyczne są faktycznie przydzielane tylko na żądanie, a strony pomiędzy nie są alokowane.</p>
+<p>Pełne wykonanie programu testmmap:</p>
+<pre class="hljs"><code><div>$ testmmap
+<span class="hljs-built_in">exec</span> - pgdir 8df23000
+.. 0: pde dee1007 pa dee1000
+.. .. 0: pte dee2007 pa dee2000
+.. .. 1: pte dee0003 pa dee0000
+.. .. 2: pte dedf007 pa dedf000
+Initial usage:
+(usedvp) Number of used virtual pages: 3
+(usedpp) Number of used physical pages: 3
+mmap succeeded with address 3000
+After allocating a page:
+(usedvp) Number of used virtual pages: 4
+(usedpp) Number of used physical pages: 3
+mmap succeeded with address 4000
+After allocating two pages:
+(usedvp) Number of used virtual pages: 6
+(usedpp) Number of used physical pages: 3
+Trying to access valid physical memory at address 2000
+Value at valid address: 
+Trying to access non-existent physical memory at address 5000
+pid 3 testmmap: dynamic mmap available at 5000.
+pid 3 testmmap: resized page at 5000.
+pid 3 testmmap: switched to new page at 5000.
+Value at on-demand created address: 
+Trying to write <span class="hljs-string">'a'</span> to freshly allocated memory
+Value at freshly allocated address: a
+After accessing non-existent physical memory:
+(usedvp) Number of used virtual pages: 6
+(usedpp) Number of used physical pages: 4
+<span class="hljs-built_in">exit</span> - pgdir 8df23000
+.. 0: pde dee1027 pa dee1000
+.. .. 0: pte dee2027 pa dee2000
+.. .. 1: pte dee0003 pa dee0000
+.. .. 2: pte dedf067 pa dedf000
+.. .. 5: pte dfbc067 pa dfbc000
+</div></code></pre>
+<p>Kluczowy element poniższych logów to koniec:</p>
+<pre class="hljs"><code><div>(usedvp) Number of used virtual pages: 6
+(usedpp) Number of used physical pages: 3
+
+<span class="hljs-comment"># ... try access 6th virtual page</span>
+
+(usedvp) Number of used virtual pages: 6
+(usedpp) Number of used physical pages: 4
+<span class="hljs-built_in">exit</span> - pgdir 8df23000
+.. 0: pde dee1027 pa dee1000
+.. .. 0: pte dee2027 pa dee2000
+.. .. 1: pte dee0003 pa dee0000
+.. .. 2: pte dedf067 pa dedf000
+.. .. 5: pte dfbc067 pa dfbc000
+</div></code></pre>
+<p>W pełnych logach widać również, że zarówno czytanie, jak i pisanie do tego zakresu pamięci jest możliwe.</p>
+
+</body>
+</html>
