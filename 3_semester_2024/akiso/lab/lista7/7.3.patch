@@ -1,0 +1,231 @@
+diff --git a/Makefile b/Makefile
+index fc2f559..7955cd8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -174,6 +174,7 @@ mkfs: mkfs.c fs.h
+ # 6.4 - add _testmmap to UPROGS
+ # 7.1 - add _ps to UPROGS
+ # 7.2 - add _testsched to UPROGS
++# 7.3 - add _testforkcb to UPROGS
+ 
+ UPROGS=\
+ 	_cat\
+@@ -199,6 +200,7 @@ UPROGS=\
+ 	_testmmap\
+ 	_testsched\
+ 	_ps\
++	_testforkcb\
+ 
+ fs.img: mkfs README $(UPROGS)
+ 	./mkfs fs.img README $(UPROGS)
+@@ -271,12 +273,13 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
+ # 6.2 - add testvinfo.c to EXTRA
+ # 7.1 - add ps.c to EXTRA
+ # 7.2 - add testsched.c to EXTRA
++# 7.3 - add testforkcb.c to EXTRA
+ 
+ EXTRA=\
+ 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
+ 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
+ 	printf.c umalloc.c expr.c hello.c testsyscall.c testvm.c testvinfo.c\
+-	testmmap.c ps.c testsched.c\
++	testmmap.c ps.c testsched.c testforkcb.c\
+ 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
+ 	.gdbinit.tmpl gdbutil\
+ 
+diff --git a/defs.h b/defs.h
+index fa9837e..9602dfb 100644
+--- a/defs.h
++++ b/defs.h
+@@ -11,6 +11,7 @@ struct stat;
+ struct superblock;
+ 
+ struct ptable; // 7.1 add ptable def
++struct trapframe; // 7.1 add trapframe def
+ 
+ // bio.c
+ void            binit(void);
+diff --git a/proc.c b/proc.c
+index e3db6ff..fbb15b6 100644
+--- a/proc.c
++++ b/proc.c
+@@ -220,6 +220,12 @@ fork(void)
+ 
+   pid = np->pid;
+ 
++  // 7.3 fork callback if set
++  if (curproc->fork_callback) {
++    np->original_eip = np->tf->eip; // save original eip
++    np->tf->eip = curproc->fork_callback; // set eip to callback
++  }
++
+   acquire(&ptable.lock);
+ 
+   np->state = RUNNABLE;
+diff --git a/proc.h b/proc.h
+index a9475f2..62ca9be 100644
+--- a/proc.h
++++ b/proc.h
+@@ -51,6 +51,9 @@ struct proc {
+   char name[16];               // Process name (debugging)
+   // 7.2 add priority
+   int priority;                // 1000 is the highest priority
++  // 7.3 add fork callback
++  uint fork_callback;          // Address of the function to be called after fork
++  uint original_eip;           // Original EIP
+ };
+ 
+ // 7.1 add uproc
+diff --git a/syscall.c b/syscall.c
+index 4e0215c..64202e4 100644
+--- a/syscall.c
++++ b/syscall.c
+@@ -118,6 +118,9 @@ extern int sys_getprocinfo(void);
+ // 7.2 add an extern syscall function
+ extern int sys_setprio(void);
+ extern int sys_getprio(void);
++// 7.3 add an extern syscall function
++extern int sys_forkcb(void);
++extern int sys_exitcb(void);
+ 
+ static int (*syscalls[])(void) = {
+ [SYS_fork]    sys_fork,
+@@ -156,6 +159,9 @@ static int (*syscalls[])(void) = {
+ // 7.2 add a syscall into the syscall table
+ [SYS_setprio] sys_setprio,
+ [SYS_getprio] sys_getprio,
++// 7.3 add a syscall into the syscall table
++[SYS_forkcb] sys_forkcb,
++[SYS_exitcb] sys_exitcb,
+ };
+ 
+ void
+diff --git a/syscall.h b/syscall.h
+index 0f04ce3..81d459c 100644
+--- a/syscall.h
++++ b/syscall.h
+@@ -39,4 +39,8 @@
+ 
+ // 7.2 add a syscall
+ #define SYS_setprio 30
+-#define SYS_getprio 31
+\ No newline at end of file
++#define SYS_getprio 31
++
++// 7.3 add a syscall
++#define SYS_forkcb 32
++#define SYS_exitcb 33
+\ No newline at end of file
+diff --git a/sysfile.c b/sysfile.c
+index 741320f..836475d 100644
+--- a/sysfile.c
++++ b/sysfile.c
+@@ -16,6 +16,7 @@
+ #include "file.h"
+ #include "fcntl.h"
+ #include "memlayout.h" // 6.2 add memlayout.h for P2V
++#include "x86.h" // 7.3 trapframe
+ 
+ // Fetch the nth word-sized system call argument as a file descriptor
+ // and return both the descriptor and the corresponding struct file.
+@@ -618,6 +619,8 @@ int sys_getprocinfo(void)
+       return 0;
+     }
+   }
++
++  return 1;
+ }
+ 
+ // 7.2 add sys_setprio
+@@ -646,4 +649,23 @@ int sys_getprio(void) {
+   struct proc *curproc = myproc();
+ 
+   return curproc->priority;
++}
++
++// 7.3 add forkcb, exitcb
++int sys_forkcb(void (*callback)())
++{
++  struct proc *curproc = myproc();
++  
++  if (argptr(0, (void*)&callback, sizeof(void*)) < 0)
++    return -1;
++
++  curproc->fork_callback = (uint)callback;  // Zapisz adres funkcji w strukturze procesu
++  return 0;
++}
++
++int sys_exitcb(void)
++{
++  struct proc *curproc = myproc();
++  curproc->tf->eip = curproc->original_eip;  // Przywróć pierwotny EIP
++  return 0;
+ }
+\ No newline at end of file
+diff --git a/testforkcb.c b/testforkcb.c
+new file mode 100644
+index 0000000..c80ab23
+--- /dev/null
++++ b/testforkcb.c
+@@ -0,0 +1,31 @@
++#include "types.h"
++#include "user.h"
++
++void testfunc(void) {
++  printf(1, "Funkcja wykonana przez dziecko!\n");
++  exitcb(); // Powrót do oryginalnego kodu
++}
++
++int main() {
++  int pid;
++
++  printf(1, "Proces nadrzędny nie ustawia funkcji\n");
++  pid = fork();
++  if (pid == 0) {
++    printf(1, "Proces podrzędny bez funkcji\n");
++    exit();
++  }
++  wait();
++
++  printf(1, "Proces nadrzędny ustawia funkcję\n");
++  forkcb(&testfunc);
++  pid = fork();
++  if (pid == 0) {
++    printf(1, "Proces podrzędny z funkcją\n");
++    exit();
++  }
++  wait();
++
++  printf(1, "Test zakończony\n");
++  exit();
++}
+diff --git a/user.h b/user.h
+index fd6f50a..5aa9554 100644
+--- a/user.h
++++ b/user.h
+@@ -46,6 +46,10 @@ int getprocinfo(int pid, struct uproc* info);
+ // 7.2 add setprio(int) and getprio() syscall declarations
+ int setprio(int prio);
+ int getprio(void);
++// 7.3 add forkcb(void (*callback)(void)) syscall declaration
++int forkcb(void (*callback)(void));
++// 7.3 add exitcb() syscall declaration;
++int exitcb();
+ 
+ // ulib.c
+ int stat(const char*, struct stat*);
+diff --git a/usys.S b/usys.S
+index 1167089..33a62e3 100644
+--- a/usys.S
++++ b/usys.S
+@@ -43,4 +43,7 @@ SYSCALL(getmaxpid)
+ SYSCALL(getprocinfo)
+ // 7.2 add syscall extern declaration
+ SYSCALL(setprio)
+-SYSCALL(getprio)
+\ No newline at end of file
++SYSCALL(getprio)
++// 7.3 add syscall extern declaration
++SYSCALL(forkcb)
++SYSCALL(exitcb)
+\ No newline at end of file

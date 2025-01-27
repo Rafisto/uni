@@ -16,7 +16,7 @@ Załączam [pełny patch](./all.patch) do upstream xv6 (https://github.com/mit-p
 
 ## Exercise 1
 
-(10pt) Zaimplementuj w XV6 funkcje vmprint, która drukuje zawartość tabeli stronnicowania procesu (pgdir). Zdefiniuj funkcję w kernel/vm.c. Wstaw funkcje vmprint do wywołania exec.c, aby wydrukować tabelę stron dla aktualne uruchomionego procesu użytkownika oraz wstaw vmprint w exit (proc.c). Następnie napisz program testvm.c który wykorzystując wywołanie sbrk zaalokuje 5 stron pamięci.
+(10pt) Zaimplementuj w XV6 funkcje vmprint, która drukuje zawartość tabeli stronnicowania procesu (pgdir).
 
 Przedstawiam `vmprint` dołączony do kodu `vm.c`:
 
@@ -198,9 +198,7 @@ exit - pgdir 8df23000
 
 ## Exercise 3
 
-(10pt)* Napisz w XV6 prostą wersja mapowania pamięci za pomocą wywołania systemowego mmap. To wywołanie systemowe mmap powinno przyjmować jeden argument: liczbę bajtów do dodania do przestrzeni adresowej procesu. Można założyć, że liczba bajtów jest liczbą dodatnią i wielokrotnością rozmiaru strony. Wywołanie systemowe powinno zwrócić wartość 0, jeśli podano jakiekolwiek nieprawidłowe dane wejściowe. Jeśli podano prawidłową liczbę bajtów jako dane wejściowe, wywołanie systemowe powinno rozszerzyć wirtualną przestrzeń adresową procesu o określoną liczbę bajtów i zwrócić początkowy adres wirtualny nowo dodanego obszaru pamięci. Nowe wirtualne strony powinny zostać dodane na końcu bieżącego końca programu i powinno odpowiednio zwiększyć rozmiar programu. Jednak wywołanie systemowe NIE powinno przydzielać żadnej pamięci fizycznej odpowiadającej nowym stronom wirtualnym, ponieważ będziemy przydzielać pamięć na żądanie (on demand) w zadaniu następnym. 
-
-Przedstawiam implementację wywołania systemowego `sys_mmap`, które zwraca adres początkowy nowo zaalokowanego obszaru pamięci. W przypadku błędnych danych wejściowych zwraca wartość -1. Jedyne co ten program robi to zwiększa rozmiar pamięci wirtualnej procesu o poprawnie zadaną wielokrotność rozmiaru strony, następnie przeładowuje pamięć.
+(10pt)* Napisz w XV6 prostą wersja mapowania pamięci za pomocą wywołania systemowego `mmap`, które alokuje fizyczną pamięć on-demand.
 
 ```c
 // 6.3 add a syscall mmap
