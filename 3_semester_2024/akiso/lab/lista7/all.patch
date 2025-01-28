@@ -1872,59 +1872,162 @@ index 00000000..5ed205fd
 ++SYSCALL(exitcb)
 +\ No newline at end of file
 diff --git a/Makefile b/Makefile
-index f35a4053..2ad738b2 100644
+index 09d790cf..2ad738b2 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -76,7 +76,8 @@ AS = $(TOOLPREFIX)gas
  LD = $(TOOLPREFIX)ld
  OBJCOPY = $(TOOLPREFIX)objcopy
  OBJDUMP = $(TOOLPREFIX)objdump
--CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -mno-sse -ggdb -m32 -fno-omit-frame-pointer
+-CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer
 +# 7.2 must disable -O2
 +CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -Wall -MD -mno-sse -ggdb -m32 -fno-omit-frame-pointer
  CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
  ASFLAGS = -m32 -gdwarf-2 -Wa,-divide
  # FreeBSD ld wants ``elf_i386_fbsd''
-@@ -171,6 +172,10 @@ mkfs: mkfs.c fs.h
- # 4.4 - add _testsyscall to UPROGS
- # 6.1 - add _testvm to UPROGS
- # 6.2 - add _testvinfo to UPROGS
+@@ -116,6 +117,7 @@ entryother: entryother.S
+ 
+ initcode: initcode.S
+ 	$(CC) $(CFLAGS) -nostdinc -I. -c initcode.S
++	$(OBJCOPY) --remove-section .note.gnu.property initcode.o
+ 	$(LD) $(LDFLAGS) -N -e start -Ttext 0 -o initcode.out initcode.o
+ 	$(OBJCOPY) -S -O binary initcode.out initcode
+ 	$(OBJDUMP) -S initcode.o > initcode.asm
+@@ -146,6 +148,7 @@ vectors.S: vectors.pl
+ ULIB = ulib.o usys.o printf.o umalloc.o
+ 
+ _%: %.o $(ULIB)
++	$(OBJCOPY) --remove-section .note.gnu.property ulib.o
+ 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $@ $^
+ 	$(OBJDUMP) -S $@ > $*.asm
+ 	$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
+@@ -165,6 +168,15 @@ mkfs: mkfs.c fs.h
+ # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
+ .PRECIOUS: %.o
+ 
++# 3.4 - add _expr and _hello to UPROGS
++# 4.4 - add _testsyscall to UPROGS
++# 6.1 - add _testvm to UPROGS
++# 6.2 - add _testvinfo to UPROGS
 +# 6.4 - add _testmmap to UPROGS
 +# 7.1 - add _ps to UPROGS
 +# 7.2 - add _testsched to UPROGS
 +# 7.3 - add _testforkcb to UPROGS
- 
++
  UPROGS=\
  	_cat\
-@@ -194,6 +199,9 @@ UPROGS=\
- 	_testvm\
- 	_testvinfo\
- 	_testmmap\
+ 	_echo\
+@@ -181,6 +193,15 @@ UPROGS=\
+ 	_usertests\
+ 	_wc\
+ 	_zombie\
++	_expr\
++	_hello\
++	_testsyscall\
++	_testvm\
++	_testvinfo\
++	_testmmap\
 +	_testsched\
 +	_ps\
 +	_testforkcb\
  
  fs.img: mkfs README $(UPROGS)
  	./mkfs fs.img README $(UPROGS)
-@@ -264,12 +272,15 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
- # 4.6 - add testsyscall.c to EXTRA
- # 6.1 - add testvm.c to EXTRA
- # 6.2 - add testvinfo.c to EXTRA
+@@ -247,10 +268,19 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
+ # rename it to rev0 or rev1 or so on and then
+ # check in that version.
+ 
++# 3.4 - add expr.c and hello.c to EXTRA
++# 4.6 - add testsyscall.c to EXTRA
++# 6.1 - add testvm.c to EXTRA
++# 6.2 - add testvinfo.c to EXTRA
 +# 7.1 - add ps.c to EXTRA
 +# 7.2 - add testsched.c to EXTRA
 +# 7.3 - add testforkcb.c to EXTRA
- 
++
  EXTRA=\
  	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
  	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
- 	printf.c umalloc.c expr.c hello.c testsyscall.c testvm.c testvinfo.c\
--	testmmap.c\
+-	printf.c umalloc.c\
++	printf.c umalloc.c expr.c hello.c testsyscall.c testvm.c testvinfo.c\
 +	testmmap.c ps.c testsched.c testforkcb.c\
  	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
  	.gdbinit.tmpl gdbutil\
  
+diff --git a/console.c b/console.c
+index a280d2ba..910f1476 100644
+--- a/console.c
++++ b/console.c
+@@ -129,7 +129,7 @@ panic(char *s)
+ static ushort *crt = (ushort*)P2V(0xb8000);  // CGA memory
+ 
+ static void
+-cgaputc(int c)
++cgaputc(int c, int color)
+ {
+   int pos;
+ 
+@@ -144,7 +144,8 @@ cgaputc(int c)
+   else if(c == BACKSPACE){
+     if(pos > 0) --pos;
+   } else
+-    crt[pos++] = (c&0xff) | 0x0700;  // black on white
++    // crt[pos++] = (c&0xff) | 0x0700;  // black on white
++    crt[pos++] = color;
+ 
+   if(pos < 0 || pos > 25*80)
+     panic("pos under/overflow");
+@@ -162,6 +163,18 @@ cgaputc(int c)
+   crt[pos] = ' ' | 0x0700;
+ }
+ 
++// Exercise 5 - Create csetcolor function
++
++int color = 7;
++
++void csetcolor(int newcolor) {
++  if (newcolor < 1 || newcolor > 255) {
++    color = 7;
++  }
++  color = newcolor;
++}
++
++
+ void
+ consputc(int c)
+ {
+@@ -175,7 +188,9 @@ consputc(int c)
+     uartputc('\b'); uartputc(' '); uartputc('\b');
+   } else
+     uartputc(c);
+-  cgaputc(c);
++
++  // Exercise 5 - Use color variable to set the color of the text
++  cgaputc(c, (c&0xff) | (color << 8));
+ }
+ 
+ #define INPUT_BUF 128
+@@ -277,8 +292,17 @@ consolewrite(struct inode *ip, char *buf, int n)
+ 
+   iunlock(ip);
+   acquire(&cons.lock);
+-  for(i = 0; i < n; i++)
++  for(i = 0; i < n; i++) {
++    // Exercise 5 - Create an escape sequence to change the color of the text
++    if (buf[i] == '\x1B' && i + 1 < n) {
++      int color_code = buf[i + 1];
++      csetcolor(color_code);
++      i+=2;
++      continue;
++    }
++    // Regular character output
+     consputc(buf[i] & 0xff);
++  }
+   release(&cons.lock);
+   ilock(ip);
+ 
 diff --git a/defs.h b/defs.h
-index b3025edc..9602dfb2 100644
+index 82fb9828..9602dfb2 100644
 --- a/defs.h
 +++ b/defs.h
 @@ -10,6 +10,9 @@ struct sleeplock;
@@ -1945,23 +2048,402 @@ index b3025edc..9602dfb2 100644
  
  // swtch.S
  void            swtch(struct context**, struct context*);
+@@ -185,6 +189,10 @@ void            switchuvm(struct proc*);
+ void            switchkvm(void);
+ int             copyout(pde_t*, uint, void*, uint);
+ void            clearpteu(pde_t *pgdir, char *uva);
++void            vmprint(pde_t *pgdir);  // 6.1 add vmprint def
++
++typedef uint pte_t; // 6.2 incl. pte_t def
++pte_t           *walkpgdir(pde_t *pgdir, const void *va, int alloc); // 6.2 add walkpgdir def
+ 
+ // number of elements in fixed-size array
+ #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
 diff --git a/exec.c b/exec.c
-index 1a109aa8..58012333 100644
+index b40134f3..58012333 100644
 --- a/exec.c
 +++ b/exec.c
-@@ -93,8 +93,8 @@ exec(char *path, char **argv)
+@@ -93,6 +93,9 @@ exec(char *path, char **argv)
        last = s+1;
    safestrcpy(curproc->name, last, sizeof(curproc->name));
  
--  cprintf("exec - ");
--  vmprint(pgdir);  // 6.1 add vmprint call to exec
 +  // cprintf("exec - ");
 +  // vmprint(pgdir);  // 6.1 add vmprint call to exec
- 
++
    // Commit to the user image.
    oldpgdir = curproc->pgdir;
+   curproc->pgdir = pgdir;
+diff --git a/expr.c b/expr.c
+new file mode 100644
+index 00000000..38f3c636
+--- /dev/null
++++ b/expr.c
+@@ -0,0 +1,37 @@
++#include "types.h"
++#include "stat.h"
++#include "user.h"
++
++int
++main(int argc, char *argv[])
++{
++  int i;
++
++  if (argc < 4) {
++    printf(2, "Usage: expr <number> <operator> <number>\n");
++    exit();
++  }
++
++    int a = atoi(argv[1]);
++    int b = atoi(argv[3]);
++    char *op = argv[2];
++
++    if (strcmp(op, "+") == 0) {
++        printf(1, "%d\n", a + b);
++    } else if (strcmp(op, "-") == 0) {
++        printf(1, "%d\n", a - b);
++    } else if (strcmp(op, "*") == 0) {
++        printf(1, "%d\n", a * b);
++    } else if (strcmp(op, "/") == 0) {
++        if (b == 0) {
++            printf(2, "Division by zero\n");
++            exit();
++        }
++        printf(1, "%d\n", a / b);
++    } else {
++        printf(2, "Invalid operator\n");
++        exit();
++    }
++
++    exit();
++}
+diff --git a/hello.c b/hello.c
+new file mode 100644
+index 00000000..e87f3c97
+--- /dev/null
++++ b/hello.c
+@@ -0,0 +1,31 @@
++#include "types.h"
++#include "stat.h"
++#include "user.h"
++
++void print_rainbow()
++{
++    char escape_code[3];
++    char *text = "Hello, world!\n";
++
++    for (int i = 0; i < 256; i++)
++    {
++        escape_code[0] = 0x1B;
++        escape_code[1] = i;
++        escape_code[2] = '\0';
++
++        write(1, escape_code, 3);
++        write(1, text, 14);
++    }
++}
++
++int main(int argc, char *argv[])
++{
++    print_rainbow();
++
++    char ret_code[3];
++    ret_code[0] = 0x1B;
++    ret_code[1] = 7;
++    ret_code[2] = '\0';
++    write(1, ret_code, 3);
++    exit();
++}
+diff --git a/lab3.ex4.ex5.patch b/lab3.ex4.ex5.patch
+new file mode 100644
+index 00000000..c59558b2
+--- /dev/null
++++ b/lab3.ex4.ex5.patch
+@@ -0,0 +1,133 @@
++diff --git a/Makefile b/Makefile
++index 09d790cf..006a2beb 100644
++--- a/Makefile
+++++ b/Makefile
++@@ -76,7 +76,7 @@ AS = $(TOOLPREFIX)gas
++ LD = $(TOOLPREFIX)ld
++ OBJCOPY = $(TOOLPREFIX)objcopy
++ OBJDUMP = $(TOOLPREFIX)objdump
++-CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer
+++CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -mno-sse -ggdb -m32 -fno-omit-frame-pointer
++ CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
++ ASFLAGS = -m32 -gdwarf-2 -Wa,-divide
++ # FreeBSD ld wants ``elf_i386_fbsd''
++@@ -116,6 +116,7 @@ entryother: entryother.S
++ 
++ initcode: initcode.S
++ 	$(CC) $(CFLAGS) -nostdinc -I. -c initcode.S
+++	$(OBJCOPY) --remove-section .note.gnu.property initcode.o
++ 	$(LD) $(LDFLAGS) -N -e start -Ttext 0 -o initcode.out initcode.o
++ 	$(OBJCOPY) -S -O binary initcode.out initcode
++ 	$(OBJDUMP) -S initcode.o > initcode.asm
++@@ -146,6 +147,7 @@ vectors.S: vectors.pl
++ ULIB = ulib.o usys.o printf.o umalloc.o
++ 
++ _%: %.o $(ULIB)
+++	$(OBJCOPY) --remove-section .note.gnu.property ulib.o
++ 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $@ $^
++ 	$(OBJDUMP) -S $@ > $*.asm
++ 	$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
++@@ -165,6 +167,8 @@ mkfs: mkfs.c fs.h
++ # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
++ .PRECIOUS: %.o
++ 
+++# exercise 4 - add _expr and _hello to UPROGS
+++
++ UPROGS=\
++ 	_cat\
++ 	_echo\
++@@ -181,6 +185,8 @@ UPROGS=\
++ 	_usertests\
++ 	_wc\
++ 	_zombie\
+++	_expr\
+++	_hello
++ 
++ fs.img: mkfs README $(UPROGS)
++ 	./mkfs fs.img README $(UPROGS)
++@@ -247,10 +253,12 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
++ # rename it to rev0 or rev1 or so on and then
++ # check in that version.
++ 
+++# exercise 4 - add expr.c and hello.c to EXTRA
+++
++ EXTRA=\
++ 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
++ 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
++-	printf.c umalloc.c\
+++	printf.c umalloc.c expr.c hello.c\
++ 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
++ 	.gdbinit.tmpl gdbutil\
++ 
++diff --git a/console.c b/console.c
++index a280d2ba..910f1476 100644
++--- a/console.c
+++++ b/console.c
++@@ -129,7 +129,7 @@ panic(char *s)
++ static ushort *crt = (ushort*)P2V(0xb8000);  // CGA memory
++ 
++ static void
++-cgaputc(int c)
+++cgaputc(int c, int color)
++ {
++   int pos;
++ 
++@@ -144,7 +144,8 @@ cgaputc(int c)
++   else if(c == BACKSPACE){
++     if(pos > 0) --pos;
++   } else
++-    crt[pos++] = (c&0xff) | 0x0700;  // black on white
+++    // crt[pos++] = (c&0xff) | 0x0700;  // black on white
+++    crt[pos++] = color;
++ 
++   if(pos < 0 || pos > 25*80)
++     panic("pos under/overflow");
++@@ -162,6 +163,18 @@ cgaputc(int c)
++   crt[pos] = ' ' | 0x0700;
++ }
++ 
+++// Exercise 5 - Create csetcolor function
+++
+++int color = 7;
+++
+++void csetcolor(int newcolor) {
+++  if (newcolor < 1 || newcolor > 255) {
+++    color = 7;
+++  }
+++  color = newcolor;
+++}
+++
+++
++ void
++ consputc(int c)
++ {
++@@ -175,7 +188,9 @@ consputc(int c)
++     uartputc('\b'); uartputc(' '); uartputc('\b');
++   } else
++     uartputc(c);
++-  cgaputc(c);
+++
+++  // Exercise 5 - Use color variable to set the color of the text
+++  cgaputc(c, (c&0xff) | (color << 8));
++ }
++ 
++ #define INPUT_BUF 128
++@@ -277,8 +292,17 @@ consolewrite(struct inode *ip, char *buf, int n)
++ 
++   iunlock(ip);
++   acquire(&cons.lock);
++-  for(i = 0; i < n; i++)
+++  for(i = 0; i < n; i++) {
+++    // Exercise 5 - Create an escape sequence to change the color of the text
+++    if (buf[i] == '\x1B' && i + 1 < n) {
+++      int color_code = buf[i + 1];
+++      csetcolor(color_code);
+++      i+=2;
+++      continue;
+++    }
+++    // Regular character output
++     consputc(buf[i] & 0xff);
+++  }
++   release(&cons.lock);
++   ilock(ip);
++ 
+diff --git a/lab4.ex6.patch b/lab4.ex6.patch
+new file mode 100644
+index 00000000..f6ac0150
+--- /dev/null
++++ b/lab4.ex6.patch
+@@ -0,0 +1,144 @@
++diff --git a/Makefile b/Makefile
++index 006a2beb..841af482 100644
++--- a/Makefile
+++++ b/Makefile
++@@ -167,7 +167,8 @@ mkfs: mkfs.c fs.h
++ # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
++ .PRECIOUS: %.o
++ 
++-# exercise 4 - add _expr and _hello to UPROGS
+++# 3.4 - add _expr and _hello to UPROGS
+++# 4.4 - add _testsyscall to UPROGS
++ 
++ UPROGS=\
++ 	_cat\
++@@ -186,7 +187,8 @@ UPROGS=\
++ 	_wc\
++ 	_zombie\
++ 	_expr\
++-	_hello
+++	_hello\
+++	_testsyscall\
++ 
++ fs.img: mkfs README $(UPROGS)
++ 	./mkfs fs.img README $(UPROGS)
++@@ -253,12 +255,13 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
++ # rename it to rev0 or rev1 or so on and then
++ # check in that version.
++ 
++-# exercise 4 - add expr.c and hello.c to EXTRA
+++# 3.4 - add expr.c and hello.c to EXTRA
+++# 4.6 - add testsyscall.c to EXTRA
++ 
++ EXTRA=\
++ 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
++ 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
++-	printf.c umalloc.c expr.c hello.c\
+++	printf.c umalloc.c expr.c hello.c testsyscall.c\
++ 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
++ 	.gdbinit.tmpl gdbutil\
++ 
++diff --git a/syscall.c b/syscall.c
++index ee852616..f2027701 100644
++--- a/syscall.c
+++++ b/syscall.c
++@@ -103,6 +103,9 @@ extern int sys_unlink(void);
++ extern int sys_wait(void);
++ extern int sys_write(void);
++ extern int sys_uptime(void);
+++// 4.6 add an extern syscall function
+++extern int sys_hello(void);
+++extern int sys_getppid(void);
++ 
++ static int (*syscalls[])(void) = {
++ [SYS_fork]    sys_fork,
++@@ -126,6 +129,9 @@ static int (*syscalls[])(void) = {
++ [SYS_link]    sys_link,
++ [SYS_mkdir]   sys_mkdir,
++ [SYS_close]   sys_close,
+++// 4.6 add a syscall into the syscall table
+++[SYS_hello]   sys_hello,
+++[SYS_getppid] sys_getppid,
++ };
++ 
++ void
++diff --git a/syscall.h b/syscall.h
++index bc5f3565..f0751155 100644
++--- a/syscall.h
+++++ b/syscall.h
++@@ -20,3 +20,7 @@
++ #define SYS_link   19
++ #define SYS_mkdir  20
++ #define SYS_close  21
+++
+++// 4.6 add a syscall
+++#define SYS_hello  22
+++#define SYS_getppid 23
++\ No newline at end of file
++diff --git a/sysfile.c b/sysfile.c
++index bfe61b7d..624d0783 100644
++--- a/sysfile.c
+++++ b/sysfile.c
++@@ -442,3 +442,15 @@ sys_pipe(void)
++   fd[1] = fd1;
++   return 0;
++ }
+++
+++// 4.6 add a syscall
+++int sys_hello(void)
+++{
+++  cprintf("Hello, world!\n");
+++  return 0;
+++}
+++
+++int sys_getppid(void)
+++{
+++  return myproc()->parent->pid;
+++}
++\ No newline at end of file
++diff --git a/testsyscall.c b/testsyscall.c
++new file mode 100644
++index 00000000..b8c368c0
++--- /dev/null
+++++ b/testsyscall.c
++@@ -0,0 +1,14 @@
+++#include "types.h"
+++#include "stat.h"
+++#include "user.h"
+++
+++int main(int argc, char *argv[])
+++{
+++    // invoke the hello() syscall
+++    hello();
+++
+++    // invoke the getppid() syscall
+++    printf(1, "Parent PID via getppid() syscall: %d\n", getppid());
+++
+++    exit();
+++}
++diff --git a/user.h b/user.h
++index 4f99c52b..97c94fc1 100644
++--- a/user.h
+++++ b/user.h
++@@ -23,6 +23,9 @@ int getpid(void);
++ char* sbrk(int);
++ int sleep(int);
++ int uptime(void);
+++// 4.6 add a syscall declaration in the user space
+++int hello(void);
+++int getppid(void);
++ 
++ // ulib.c
++ int stat(const char*, struct stat*);
++diff --git a/usys.S b/usys.S
++index 8bfd8a1b..ae621f8f 100644
++--- a/usys.S
+++++ b/usys.S
++@@ -29,3 +29,6 @@ SYSCALL(getpid)
++ SYSCALL(sbrk)
++ SYSCALL(sleep)
++ SYSCALL(uptime)
+++// 4.6 add syscall extern declaration
+++SYSCALL(hello)
+++SYSCALL(getppid)
++\ No newline at end of file
 diff --git a/proc.c b/proc.c
-index ed0b52ce..5e22e550 100644
+index 806b1b18..5e22e550 100644
 --- a/proc.c
 +++ b/proc.c
 @@ -7,7 +7,7 @@
@@ -2013,18 +2495,26 @@ index ed0b52ce..5e22e550 100644
    acquire(&ptable.lock);
  
    np->state = RUNNABLE;
-@@ -232,8 +251,8 @@ exit(void)
+@@ -231,6 +250,10 @@ exit(void)
+   struct proc *p;
    int fd;
  
-   // 6.1 add vmprint call to exit
--  cprintf("exit - ");
--  vmprint(curproc->pgdir);  
++  // 6.1 add vmprint call to exit
 +  // cprintf("exit - ");
 +  // vmprint(curproc->pgdir);  
- 
++
    if(curproc == initproc)
      panic("init exiting");
-@@ -318,16 +337,20 @@ wait(void)
+ 
+@@ -261,6 +284,7 @@ exit(void)
+     }
+   }
+ 
++
+   // Jump into the scheduler, never to return.
+   curproc->state = ZOMBIE;
+   sched();
+@@ -313,16 +337,20 @@ wait(void)
  
  //PAGEBREAK: 42
  // Per-CPU process scheduler.
@@ -2046,7 +2536,7 @@ index ed0b52ce..5e22e550 100644
    struct cpu *c = mycpu();
    c->proc = 0;
    
-@@ -337,18 +360,35 @@ scheduler(void)
+@@ -332,18 +360,35 @@ scheduler(void)
  
      // Loop over process table looking for process to run.
      acquire(&ptable.lock);
@@ -2143,13 +2633,21 @@ index 00000000..d19b0e3c
 +    exit();
 +}
 diff --git a/syscall.c b/syscall.c
-index 0166b6ff..64202e4c 100644
+index ee852616..64202e4c 100644
 --- a/syscall.c
 +++ b/syscall.c
-@@ -111,6 +111,16 @@ extern int sys_usedvp(void);
- extern int sys_usedpp(void);
- // 6.3 add an extern syscall function
- extern int sys_mmap(void);
+@@ -103,6 +103,24 @@ extern int sys_unlink(void);
+ extern int sys_wait(void);
+ extern int sys_write(void);
+ extern int sys_uptime(void);
++// 4.6 add an extern syscall function
++extern int sys_hello(void);
++extern int sys_getppid(void);
++// 6.2 add an extern syscall function
++extern int sys_usedvp(void);
++extern int sys_usedpp(void);
++// 6.3 add an extern syscall function
++extern int sys_mmap(void);
 +// 7.1 add an extern syscall function
 +extern int sys_getnumproc(void);
 +extern int sys_getmaxpid(void);
@@ -2163,10 +2661,18 @@ index 0166b6ff..64202e4c 100644
  
  static int (*syscalls[])(void) = {
  [SYS_fork]    sys_fork,
-@@ -142,6 +152,16 @@ static int (*syscalls[])(void) = {
- [SYS_usedpp]  sys_usedpp,
- // 6.3 add a mmap syscall into the syscall table
- [SYS_mmap]    sys_mmap,
+@@ -126,6 +144,24 @@ static int (*syscalls[])(void) = {
+ [SYS_link]    sys_link,
+ [SYS_mkdir]   sys_mkdir,
+ [SYS_close]   sys_close,
++// 4.6 add a syscall into the syscall table
++[SYS_hello]   sys_hello,
++[SYS_getppid] sys_getppid,
++// 6.2 add a syscall into the syscall table
++[SYS_usedvp]  sys_usedvp,
++[SYS_usedpp]  sys_usedpp,
++// 6.3 add a mmap syscall into the syscall table
++[SYS_mmap]    sys_mmap,
 +// 7.1 add a syscall into the syscall table
 +[SYS_getnumproc] sys_getnumproc,
 +[SYS_getmaxpid] sys_getmaxpid,
@@ -2181,15 +2687,23 @@ index 0166b6ff..64202e4c 100644
  
  void
 diff --git a/syscall.h b/syscall.h
-index d670a06c..81d459c5 100644
+index bc5f3565..81d459c5 100644
 --- a/syscall.h
 +++ b/syscall.h
-@@ -30,4 +30,17 @@
- #define SYS_usedpp 25
- 
- // 6.3 add a syscall
--#define SYS_mmap 26
-\ No newline at end of file
+@@ -20,3 +20,27 @@
+ #define SYS_link   19
+ #define SYS_mkdir  20
+ #define SYS_close  21
++
++// 4.6 add a syscall
++#define SYS_hello  22
++#define SYS_getppid 23
++
++// 6.2 add a syscall
++#define SYS_usedvp 24
++#define SYS_usedpp 25
++
++// 6.3 add a syscall
 +#define SYS_mmap 26
 +
 +// 7.1 add a syscall
@@ -2206,18 +2720,19 @@ index d670a06c..81d459c5 100644
 +#define SYS_exitcb 33
 \ No newline at end of file
 diff --git a/sysfile.c b/sysfile.c
-index bc7e2015..10719e00 100644
+index bfe61b7d..10719e00 100644
 --- a/sysfile.c
 +++ b/sysfile.c
-@@ -16,6 +16,7 @@
+@@ -15,6 +15,8 @@
+ #include "sleeplock.h"
  #include "file.h"
  #include "fcntl.h"
- #include "memlayout.h" // 6.2 add memlayout.h for P2V
++#include "memlayout.h" // 6.2 add memlayout.h for P2V
 +#include "x86.h" // 7.3 trapframe
  
  // Fetch the nth word-sized system call argument as a file descriptor
  // and return both the descriptor and the corresponding struct file.
-@@ -25,13 +26,13 @@ argfd(int n, int *pfd, struct file **pf)
+@@ -24,13 +26,13 @@ argfd(int n, int *pfd, struct file **pf)
    int fd;
    struct file *f;
  
@@ -2235,7 +2750,7 @@ index bc7e2015..10719e00 100644
      *pf = f;
    return 0;
  }
-@@ -44,8 +45,10 @@ fdalloc(struct file *f)
+@@ -43,8 +45,10 @@ fdalloc(struct file *f)
    int fd;
    struct proc *curproc = myproc();
  
@@ -2248,7 +2763,7 @@ index bc7e2015..10719e00 100644
        curproc->ofile[fd] = f;
        return fd;
      }
-@@ -53,86 +56,82 @@ fdalloc(struct file *f)
+@@ -52,86 +56,82 @@ fdalloc(struct file *f)
    return -1;
  }
  
@@ -2352,7 +2867,7 @@ index bc7e2015..10719e00 100644
      iunlockput(ip);
      end_op();
      return -1;
-@@ -142,10 +141,11 @@ sys_link(void)
+@@ -141,10 +141,11 @@ sys_link(void)
    iupdate(ip);
    iunlock(ip);
  
@@ -2366,7 +2881,7 @@ index bc7e2015..10719e00 100644
      iunlockput(dp);
      goto bad;
    }
-@@ -172,29 +172,30 @@ isdirempty(struct inode *dp)
+@@ -171,29 +172,30 @@ isdirempty(struct inode *dp)
    int off;
    struct dirent de;
  
@@ -2405,7 +2920,7 @@ index bc7e2015..10719e00 100644
      end_op();
      return -1;
    }
-@@ -202,24 +203,26 @@ sys_unlink(void)
+@@ -201,24 +203,26 @@ sys_unlink(void)
    ilock(dp);
  
    // Cannot unlink "." or "..".
@@ -2438,7 +2953,7 @@ index bc7e2015..10719e00 100644
      dp->nlink--;
      iupdate(dp);
    }
-@@ -239,26 +242,27 @@ bad:
+@@ -238,26 +242,27 @@ bad:
    return -1;
  }
  
@@ -2471,7 +2986,7 @@ index bc7e2015..10719e00 100644
      panic("create: ialloc");
  
    ilock(ip);
-@@ -267,15 +271,16 @@ create(char *path, short type, short major, short minor)
+@@ -266,15 +271,16 @@ create(char *path, short type, short major, short minor)
    ip->nlink = 1;
    iupdate(ip);
  
@@ -2492,7 +3007,7 @@ index bc7e2015..10719e00 100644
      panic("create: dirlink");
  
    iunlockput(dp);
-@@ -283,40 +288,46 @@ create(char *path, short type, short major, short minor)
+@@ -282,40 +288,46 @@ create(char *path, short type, short major, short minor)
    return ip;
  }
  
@@ -2549,7 +3064,7 @@ index bc7e2015..10719e00 100644
        fileclose(f);
      iunlockput(ip);
      end_op();
-@@ -333,14 +344,14 @@ sys_open(void)
+@@ -332,14 +344,14 @@ sys_open(void)
    return fd;
  }
  
@@ -2567,7 +3082,7 @@ index bc7e2015..10719e00 100644
      end_op();
      return -1;
    }
-@@ -349,18 +360,18 @@ sys_mkdir(void)
+@@ -348,18 +360,18 @@ sys_mkdir(void)
    return 0;
  }
  
@@ -2592,7 +3107,7 @@ index bc7e2015..10719e00 100644
      end_op();
      return -1;
    }
-@@ -369,20 +380,21 @@ sys_mknod(void)
+@@ -368,20 +380,21 @@ sys_mknod(void)
    return 0;
  }
  
@@ -2619,7 +3134,7 @@ index bc7e2015..10719e00 100644
      iunlockput(ip);
      end_op();
      return -1;
-@@ -394,46 +406,48 @@ sys_chdir(void)
+@@ -393,46 +406,48 @@ sys_chdir(void)
    return 0;
  }
  
@@ -2682,52 +3197,79 @@ index bc7e2015..10719e00 100644
        myproc()->ofile[fd0] = 0;
      fileclose(rf);
      fileclose(wf);
-@@ -475,10 +489,12 @@ int sys_usedpp(void)
-   uint num_pages = 0;
-   uint va = 0;
- 
--  for (va = 0; va < curproc->sz; va+= PGSIZE) {
+@@ -442,3 +457,217 @@ sys_pipe(void)
+   fd[1] = fd1;
+   return 0;
+ }
++
++// 4.6 add a syscall
++int sys_hello(void)
++{
++  cprintf("Hello, world!\n");
++  return 0;
++}
++
++int sys_getppid(void)
++{
++  return myproc()->parent->pid;
++}
++
++// 6.2 add a syscall usedvp
++int sys_usedvp(void)
++{
++  struct proc *curproc = myproc();
++  uint sz = curproc->sz;
++  uint num_pages = sz / PGSIZE;
++
++  return num_pages;
++}
++
++// 6.2 add a syscall usedpp
++int sys_usedpp(void)
++{
++  struct proc *curproc = myproc();
++  pde_t *pgdir = curproc->pgdir;
++  pte_t *pgtab;
++  uint num_pages = 0;
++  uint va = 0;
++
 +  for (va = 0; va < curproc->sz; va += PGSIZE)
 +  {
-     pgtab = walkpgdir(pgdir, (void *)va, 0);
-     // exists and mapped
--    if (pgtab && (*pgtab & PTE_P)) {
++    pgtab = walkpgdir(pgdir, (void *)va, 0);
++    // exists and mapped
 +    if (pgtab && (*pgtab & PTE_P))
 +    {
-       num_pages++;
-     }
-   }
-@@ -487,25 +503,171 @@ int sys_usedpp(void)
- }
- 
- // 6.3 add a syscall mmap
--int sys_mmap(void) 
++      num_pages++;
++    }
++  }
++
++  return num_pages;
++}
++
++// 6.3 add a syscall mmap
 +int sys_mmap(void)
- {
-   int size;
- 
-   // must be an integer
--  if(argint(0, (int*)&size) < 0){
++{
++  int size;
++
++  // must be an integer
 +  if (argint(0, (int *)&size) < 0)
 +  {
-     return -1;
-   }
- 
-   // must be a multiple of a page
--  if (size > 0 && size % PGSIZE != 0) {
++    return -1;
++  }
++
++  // must be a multiple of a page
 +  if (size > 0 && size % PGSIZE != 0)
 +  {
-     return -1;
-   }
- 
-   // grow virtual memory size
-   struct proc *curproc = myproc();
-   curproc->sz += size;
--  
++    return -1;
++  }
 +
-   switchuvm(curproc);
- 
-   return curproc->sz - size;
++  // grow virtual memory size
++  struct proc *curproc = myproc();
++  curproc->sz += size;
++
++  switchuvm(curproc);
++
++  return curproc->sz - size;
 +}
 +
 +extern struct
@@ -2872,7 +3414,7 @@ index bc7e2015..10719e00 100644
 +  struct proc *curproc = myproc();
 +  curproc->tf->eip = curproc->original_eip;
 +  return 0;
- }
++}
 \ No newline at end of file
 diff --git a/testforkcb.c b/testforkcb.c
 new file mode 100644
@@ -2909,6 +3451,73 @@ index 00000000..c80ab23f
 +  wait();
 +
 +  printf(1, "Test zakończony\n");
++  exit();
++}
+diff --git a/testmmap.c b/testmmap.c
+new file mode 100644
+index 00000000..37beb22c
+--- /dev/null
++++ b/testmmap.c
+@@ -0,0 +1,61 @@
++#include "types.h"
++#include "user.h"
++
++void print_usage(const char *message) {
++  int used_virtual = usedvp();
++  int used_physical = usedpp();
++  
++  printf(1, "%s\n", message);
++  printf(1, "(usedvp) Number of used virtual pages: %d\n", used_virtual);
++  printf(1, "(usedpp) Number of used physical pages: %d\n", used_physical);
++}
++
++int main() {
++  int rc;
++  print_usage("Initial usage:");
++
++  // Allocate a page
++  rc = mmap(4096);
++  if (rc == -1) {
++    printf(1, "mmap failed\n");
++    exit();
++  }
++  else {
++    printf(1, "mmap succeeded with address %p\n", rc);
++  }
++  print_usage("After allocating a page:");
++
++  // Allocate two pages
++  rc = mmap(4096 * 2);
++  if (rc == -1) {
++    printf(1, "mmap failed\n");
++    exit();
++  }
++  else {
++    printf(1, "mmap succeeded with address %p\n", rc);
++  }
++  print_usage("After allocating two pages:");
++
++  // 6.3 try access non-existent physical memory
++
++  // Try to access an-existent physical memory
++  char *valid_address = (char*)(rc - 4096 * 2);
++  printf(1, "Trying to access valid physical memory at address %p\n", valid_address);
++  char value = *valid_address;
++  printf(1, "Value at valid address: %c\n", value);
++
++  // Try to access non-existent physical memory
++  char *invalid_address = (char*)(rc + 4096);
++  printf(1, "Trying to access non-existent physical memory at address %p\n", invalid_address);
++  value = *invalid_address; // This should cause a segmentation fault
++  printf(1, "Value at on-demand created address: %c\n", value);
++
++  // Try write to freshly allocated memory
++  printf(1, "Trying to write 'a' to freshly allocated memory\n");
++  *invalid_address = 'a';
++  printf(1, "Value at freshly allocated address: %c\n", *invalid_address);
++
++  print_usage("After accessing non-existent physical memory:");
++
 +  exit();
 +}
 diff --git a/testsched.c b/testsched.c
@@ -2992,48 +3601,125 @@ index 00000000..ed3db71b
 +    printf(1, "testsched done.\n");
 +    exit();
 +}
+diff --git a/testsyscall.c b/testsyscall.c
+new file mode 100644
+index 00000000..b8c368c0
+--- /dev/null
++++ b/testsyscall.c
+@@ -0,0 +1,14 @@
++#include "types.h"
++#include "stat.h"
++#include "user.h"
++
++int main(int argc, char *argv[])
++{
++    // invoke the hello() syscall
++    hello();
++
++    // invoke the getppid() syscall
++    printf(1, "Parent PID via getppid() syscall: %d\n", getppid());
++
++    exit();
++}
+diff --git a/testvinfo.c b/testvinfo.c
+new file mode 100644
+index 00000000..cb12b40e
+--- /dev/null
++++ b/testvinfo.c
+@@ -0,0 +1,29 @@
++#include "types.h"
++#include "user.h"
++
++void print_usage(const char *message) {
++  int used_virtual = usedvp();
++  int used_physical = usedpp();
++  
++  printf(1, "%s\n", message);
++  printf(1, "(usedvp) Number of used virtual pages: %d\n", used_virtual);
++  printf(1, "(usedpp) Number of used physical pages: %d\n", used_physical);
++}
++
++int main() {
++  print_usage("Initial usage:");
++
++  // Allocate a page
++  sbrk(4096);
++  print_usage("After allocating a page:");
++
++  // Allocate two pages
++  sbrk(4096 * 2);
++  print_usage("After allocating two pages:");
++
++  // Deallocate three pages
++  sbrk(-4096 * 3);
++  print_usage("After deallocating three pages:");
++
++  exit();
++}
 diff --git a/testvm.c b/testvm.c
-index 51c701b3..8308f393 100644
---- a/testvm.c
+new file mode 100644
+index 00000000..8308f393
+--- /dev/null
 +++ b/testvm.c
-@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
-     // write to the first byte of each page
-     for (int i = 0; i < 5; i++)
-     {
--        *(char *)(mem + i * 4096) = 'a' + i;
+@@ -0,0 +1,19 @@
++// 6.1 add testvm.c
++#include "types.h"
++#include "stat.h"
++#include "user.h"
++
++int main(int argc, char *argv[])
++{
++    // allocate 5 pages of memory using sbrk
++    void *mem = sbrk(5 * 4096);
++
++    // write to the first byte of each page
++    for (int i = 0; i < 5; i++)
++    {
 +        *(char *)(mem + i * 4096) = 'a';
-     }
- 
-     // exit
++    }
++
++    // exit
++    exit();
++}
 diff --git a/trap.c b/trap.c
-index 960a0edd..0bb4670e 100644
+index 41c66ebf..0bb4670e 100644
 --- a/trap.c
 +++ b/trap.c
-@@ -52,19 +52,19 @@ trap(struct trapframe *tf)
-     uint va = rcr2();
+@@ -47,6 +47,33 @@ trap(struct trapframe *tf)
+   }
  
-     if (va <= myproc()->sz) {
--      cprintf("pid %d %s: dynamic mmap available at %x.\n", myproc()->pid, myproc()->name, va);
+   switch(tf->trapno){
++  case T_PGFLT:
++    // Assume dynamic mmap failed.
++    uint va = rcr2();
++
++    if (va <= myproc()->sz) {
 +      cprintf("(trap PGFLT) pid %d %s: dynamic mmap available at %x.\n", myproc()->pid, myproc()->name, va);
- 
-       // impl alloc
-       uint vapg = PGROUNDDOWN(va);
- 
-       if (allocuvm(myproc()->pgdir, vapg, vapg + PGSIZE) == 0) {
--        cprintf("pid %d %s: page fault at %x.\n", myproc()->pid, myproc()->name, va);
++
++      // impl alloc
++      uint vapg = PGROUNDDOWN(va);
++
++      if (allocuvm(myproc()->pgdir, vapg, vapg + PGSIZE) == 0) {
 +        cprintf("(trap PGFLT) pid %d %s: page fault at %x.\n", myproc()->pid, myproc()->name, va);
-         myproc()->killed = 1;
-       }
-       else {
--        cprintf("pid %d %s: resized page at %x.\n", myproc()->pid, myproc()->name, va);
++        myproc()->killed = 1;
++      }
++      else {
 +        cprintf("(trap PGFLT) pid %d %s: resized page at %x.\n", myproc()->pid, myproc()->name, va);
-         switchuvm(myproc());
--        cprintf("pid %d %s: switched to new page at %x.\n", myproc()->pid, myproc()->name, va);
++        switchuvm(myproc());
 +        cprintf("(trap PGFLT) pid %d %s: switched to new page at %x.\n", myproc()->pid, myproc()->name, va);
-         break;
-       }
-     }
-@@ -130,8 +130,12 @@ trap(struct trapframe *tf)
++        break;
++      }
++    }
++    else {
++      cprintf("pid %d %s: page fault at %x.\n",
++              myproc()->pid, myproc()->name, va);
++      myproc()->killed = 1;
++    }
++    break;
+   case T_IRQ0 + IRQ_TIMER:
+     if(cpuid() == 0){
+       acquire(&tickslock);
+@@ -103,8 +130,12 @@ trap(struct trapframe *tf)
    // Force process to give up CPU on clock tick.
    // If interrupts were on while locks held, would need to check nlock.
    if(myproc() && myproc()->state == RUNNING &&
@@ -3049,7 +3735,7 @@ index 960a0edd..0bb4670e 100644
    // Check if the process has been killed since we yielded
    if(myproc() && myproc()->killed && (tf->cs&3) == DPL_USER)
 diff --git a/user.h b/user.h
-index f189a9ad..e5e9b0e1 100644
+index 4f99c52b..e5e9b0e1 100644
 --- a/user.h
 +++ b/user.h
 @@ -1,5 +1,14 @@
@@ -3067,10 +3753,18 @@ index f189a9ad..e5e9b0e1 100644
  
  // system calls
  int fork(void);
-@@ -31,6 +40,17 @@ int usedvp(void);
- int usedpp(void);
- // 6.3 add mmap(int) syscall declaration
- int mmap(int size);
+@@ -23,6 +32,25 @@ int getpid(void);
+ char* sbrk(int);
+ int sleep(int);
+ int uptime(void);
++// 4.6 add a syscall declaration in the user space
++int hello(void);
++int getppid(void);
++// 6.2 add usedvp() and usedpp() syscall declarations
++int usedvp(void);
++int usedpp(void);
++// 6.3 add mmap(int) syscall declaration
++int mmap(int size);
 +// 7.1 add syscall declaration
 +int getnumproc(void);
 +int getmaxpid(void);
@@ -3085,16 +3779,28 @@ index f189a9ad..e5e9b0e1 100644
  
  // ulib.c
  int stat(const char*, struct stat*);
+@@ -36,4 +64,4 @@ uint strlen(const char*);
+ void* memset(void*, int, uint);
+ void* malloc(uint);
+ void free(void*);
+-int atoi(const char*);
++int atoi(const char*);
+\ No newline at end of file
 diff --git a/usys.S b/usys.S
-index 65c3fe7b..33a62e37 100644
+index 8bfd8a1b..33a62e37 100644
 --- a/usys.S
 +++ b/usys.S
-@@ -36,4 +36,14 @@ SYSCALL(getppid)
- SYSCALL(usedvp)
- SYSCALL(usedpp)
- // 6.3 add syscall extern declaration
--SYSCALL(mmap)
-\ No newline at end of file
+@@ -29,3 +29,21 @@ SYSCALL(getpid)
+ SYSCALL(sbrk)
+ SYSCALL(sleep)
+ SYSCALL(uptime)
++// 4.6 add syscall extern declaration
++SYSCALL(hello)
++SYSCALL(getppid)
++// 6.2 add syscall extern declaration
++SYSCALL(usedvp)
++SYSCALL(usedpp)
++// 6.3 add syscall extern declaration
 +SYSCALL(mmap)
 +// 7.1 add syscall extern declaration
 +SYSCALL(getnumproc)
@@ -3108,7 +3814,7 @@ index 65c3fe7b..33a62e37 100644
 +SYSCALL(exitcb)
 \ No newline at end of file
 diff --git a/vm.c b/vm.c
-index c3399ea3..e3281e4a 100644
+index 7134cfff..e3281e4a 100644
 --- a/vm.c
 +++ b/vm.c
 @@ -7,13 +7,12 @@
@@ -3140,7 +3846,17 @@ index c3399ea3..e3281e4a 100644
    c->gdt[SEG_UDATA] = SEG(STA_W, 0, 0xffffffff, DPL_USER);
    lgdt(c->gdt, sizeof(c->gdt));
  }
-@@ -41,10 +40,13 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
+@@ -32,17 +31,22 @@ seginit(void)
+ // Return the address of the PTE in page table pgdir
+ // that corresponds to virtual address va.  If alloc!=0,
+ // create any required page table pages.
+-static pte_t *
++
++// 6.2 remove static keyword in order to use in sysfile.c
++pte_t *
+ walkpgdir(pde_t *pgdir, const void *va, int alloc)
+ {
+   pde_t *pde;
    pte_t *pgtab;
  
    pde = &pgdir[PDX(va)];
@@ -3158,7 +3874,7 @@ index c3399ea3..e3281e4a 100644
        return 0;
      // Make sure all those PTE_P bits are zero.
      memset(pgtab, 0, PGSIZE);
-@@ -65,15 +67,16 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
+@@ -63,15 +67,16 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
    char *a, *last;
    pte_t *pte;
  
@@ -3181,7 +3897,7 @@ index c3399ea3..e3281e4a 100644
        break;
      a += PGSIZE;
      pa += PGSIZE;
-@@ -104,33 +107,35 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
+@@ -102,33 +107,35 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
  
  // This table defines the kernel's mappings, which are present in
  // every process's page table.
@@ -3228,7 +3944,7 @@ index c3399ea3..e3281e4a 100644
        freevm(pgdir);
        return 0;
      }
-@@ -139,8 +144,7 @@ setupkvm(void)
+@@ -137,8 +144,7 @@ setupkvm(void)
  
  // Allocate one page table for the machine for the kernel address
  // space for scheduler processes.
@@ -3238,7 +3954,7 @@ index c3399ea3..e3281e4a 100644
  {
    kpgdir = setupkvm();
    switchkvm();
-@@ -148,71 +152,68 @@ kvmalloc(void)
+@@ -146,71 +152,68 @@ kvmalloc(void)
  
  // Switch h/w page table register to the kernel-only page table,
  // for when no process is running.
@@ -3329,7 +4045,7 @@ index c3399ea3..e3281e4a 100644
        return -1;
    }
    return 0;
-@@ -220,27 +221,29 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
+@@ -218,27 +221,29 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
  
  // Allocate page tables and physical memory to grow process from oldsz to
  // newsz, which need not be page aligned.  Returns new size or 0 on error.
@@ -3366,7 +4082,7 @@ index c3399ea3..e3281e4a 100644
        cprintf("allocuvm out of memory (2)\n");
        deallocuvm(pgdir, newsz, oldsz);
        kfree(mem);
-@@ -254,23 +257,24 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
+@@ -252,23 +257,24 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
  // newsz.  oldsz and newsz need not be page-aligned, nor does newsz
  // need to be less than oldsz.  oldsz can be larger than the actual
  // process size.  Returns the new process size.
@@ -3399,7 +4115,7 @@ index c3399ea3..e3281e4a 100644
          panic("kfree");
        char *v = P2V(pa);
        kfree(v);
-@@ -282,39 +286,39 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
+@@ -280,39 +286,39 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
  
  // Free a page table and all the physical memory pages
  // in the user part.
@@ -3450,7 +4166,7 @@ index c3399ea3..e3281e4a 100644
  copyuvm(pde_t *pgdir, uint sz)
  {
    pde_t *d;
-@@ -322,19 +326,21 @@ copyuvm(pde_t *pgdir, uint sz)
+@@ -320,19 +326,21 @@ copyuvm(pde_t *pgdir, uint sz)
    uint pa, i, flags;
    char *mem;
  
@@ -3479,7 +4195,7 @@ index c3399ea3..e3281e4a 100644
        kfree(mem);
        goto bad;
      }
-@@ -346,38 +352,38 @@ bad:
+@@ -344,38 +352,38 @@ bad:
    return 0;
  }
  
@@ -3531,7 +4247,7 @@ index c3399ea3..e3281e4a 100644
        n = len;
      memmove(pa0 + (va - va0), buf, n);
      len -= n;
-@@ -387,29 +393,33 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
+@@ -385,10 +393,33 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
    return 0;
  }
  
@@ -3541,7 +4257,6 @@ index c3399ea3..e3281e4a 100644
 -// Blank page.
 -//PAGEBREAK!
 -// Blank page.
--
 +// PAGEBREAK!
 +//  Blank page.
 +// PAGEBREAK!
@@ -3549,32 +4264,62 @@ index c3399ea3..e3281e4a 100644
 +// PAGEBREAK!
 +//  Blank page.
  
- // 6.1 add vmprint defintion
--void vmprint(pde_t *pgdir) {
++// 6.1 add vmprint defintion
 +void vmprint(pde_t *pgdir)
 +{
-   cprintf("pgdir %p\n", pgdir);
- 
-   for (int i = 0; i < 512; i++) 
++  cprintf("pgdir %p\n", pgdir);
++
++  for (int i = 0; i < 512; i++) 
 +    // PTE_P = present
-     if (pgdir[i] & PTE_P) { 
--      uint pa = PTE_ADDR(pgdir[i]);
--      cprintf(".. %d: pde %p pa %p\n", i, PGROUNDDOWN(pgdir[i]), pa);
++    if (pgdir[i] & PTE_P) { 
 +      // PTE_ADDR = address
 +      uint pa = PTE_ADDR(pgdir[i]); // obtain physical address
 +      // SHOW PDE (page directory entry) physical address -> virtual address
 +      cprintf(".. %d: pde 0x%x pa 0x%x\n", i, pa, P2V(pa));
- 
++
 +      // SHOW PTE (page table entry) physical address -> virtual address
-       pte_t* pt = (pte_t*)P2V(pa); 
-       for (int j = 0; j < 1024; j++) {
-           if (pt[j] & PTE_P) {
-               uint pte_pa = PTE_ADDR(pt[j]);
--              cprintf(".. .. %d: pte %p pa %p\n", j, PGROUNDDOWN(pt[j]), pte_pa);
++      pte_t* pt = (pte_t*)P2V(pa); 
++      for (int j = 0; j < 1024; j++) {
++          if (pt[j] & PTE_P) {
++              uint pte_pa = PTE_ADDR(pt[j]);
 +              cprintf(".. .. %d: pte 0x%x pa 0x%x\n", j, PTE_ADDR(pt[j]), V2P(pte_pa));
-           }
-       }
--  }
++          }
++      }
 +    }
- }
++}
 \ No newline at end of file
+diff --git a/xv6.patch b/xv6.patch
+new file mode 100644
+index 00000000..671aacd2
+--- /dev/null
++++ b/xv6.patch
+@@ -0,0 +1,29 @@
++diff --git a/Makefile b/Makefile
++index 09d790c..3f4dbb7 100644
++--- a/Makefile
+++++ b/Makefile
++@@ -76,7 +76,7 @@ AS = $(TOOLPREFIX)gas
++ LD = $(TOOLPREFIX)ld
++ OBJCOPY = $(TOOLPREFIX)objcopy
++ OBJDUMP = $(TOOLPREFIX)objdump
++-CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb -m32 -Werror -fno-omit-frame-pointer
+++CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -mno-sse -ggdb -m32 -fno-omit-frame-pointer
++ CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
++ ASFLAGS = -m32 -gdwarf-2 -Wa,-divide
++ # FreeBSD ld wants ``elf_i386_fbsd''
++@@ -116,6 +116,7 @@ entryother: entryother.S
++ 
++ initcode: initcode.S
++ 	$(CC) $(CFLAGS) -nostdinc -I. -c initcode.S
+++	$(OBJCOPY) --remove-section .note.gnu.property initcode.o
++ 	$(LD) $(LDFLAGS) -N -e start -Ttext 0 -o initcode.out initcode.o
++ 	$(OBJCOPY) -S -O binary initcode.out initcode
++ 	$(OBJDUMP) -S initcode.o > initcode.asm
++@@ -146,6 +147,7 @@ vectors.S: vectors.pl
++ ULIB = ulib.o usys.o printf.o umalloc.o
++ 
++ _%: %.o $(ULIB)
+++	$(OBJCOPY) --remove-section .note.gnu.property ulib.o
++ 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $@ $^
++ 	$(OBJDUMP) -S $@ > $*.asm
++ 	$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
