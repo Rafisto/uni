@@ -140,6 +140,20 @@ for (p1=ptable.proc; p1 < &ptable.proc[NPROC]; p1++) {
 p = highestPriorityProc;
 ```
 
+Modyfikacja schedulera nie wystarczy aby proces mógł wykonywać się proporcjonalnie długo do jego priorytetu, w tym celu wprowadzam parametr `execticks` do struktury `proc` i w `trap.c` sprawdzam jej stan oraz dokonuję stosownych modyfikacji
+
+```c
+// [...] trap.c
+if (tf->trapno == T_IRQ0+IRQ_TIMER) {
+  myproc()->execticks += 10;
+  if (myproc()->execticks >= myproc()->priority) {
+    yield();
+  }
+}
+```
+
+Jeśli istotnie proces powinien zwrócić kontrole (wykonać `yield()`) to zanim się to stanie chciałbym sprawdzić czy wykonywał się przez cały wirtualny czas `execticks`, ściśle związany z parametrem `priority`. Jeśli tak to proces musi oddać kontrole, jeśli nie dodaję do `execticks` sprytnie dobraną stałą, a następnie pozwalam wykonywać się dalej.
+
 Test widoczny w `testsched.c` napisałem aby umożliwiał sprawdzenie następujących warunków:
 
 - długie taski wykonują się zgodnie z priorytetem (im większy priorytet tym szybciej się kończą -> spełnia (a) )

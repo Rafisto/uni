@@ -486,6 +486,16 @@ highestPriorityProc = p;
 
 p = highestPriorityProc;
 </div></code></pre>
+<p>Modyfikacja schedulera nie wystarczy aby proces mógł wykonywać się proporcjonalnie długo do jego priorytetu, w tym celu wprowadzam parametr <code>execticks</code> do struktury <code>proc</code> i w <code>trap.c</code> sprawdzam jej stan oraz dokonuję stosownych modyfikacji</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// [...] trap.c</span>
+<span class="hljs-keyword">if</span> (tf-&gt;trapno == T_IRQ0+IRQ_TIMER) {
+  myproc()-&gt;execticks += <span class="hljs-number">10</span>;
+  <span class="hljs-keyword">if</span> (myproc()-&gt;execticks &gt;= myproc()-&gt;priority) {
+    <span class="hljs-built_in">yield</span>();
+  }
+}
+</div></code></pre>
+<p>Jeśli istotnie proces powinien zwrócić kontrole (wykonać <code>yield()</code>) to zanim się to stanie chciałbym sprawdzić czy wykonywał się przez cały wirtualny czas <code>execticks</code>, ściśle związany z parametrem <code>priority</code>. Jeśli tak to proces musi oddać kontrole, jeśli nie dodaję do <code>execticks</code> sprytnie dobraną stałą, a następnie pozwalam wykonywać się dalej.</p>
 <p>Test widoczny w <code>testsched.c</code> napisałem aby umożliwiał sprawdzenie następujących warunków:</p>
 <ul>
 <li>długie taski wykonują się zgodnie z priorytetem (im większy priorytet tym szybciej się kończą -&gt; spełnia (a) )</li>
@@ -532,6 +542,7 @@ uint original_eip;           <span class="hljs-comment">// Original EIP</span>
   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 </div></code></pre>
+<p>Wystarczy następnie że w funkcji <code>fork</code> sprawdzę czy obecny jest adres <code>fork_callback</code> i jeśli tak to go wykonam.</p>
 
 </body>
 </html>
