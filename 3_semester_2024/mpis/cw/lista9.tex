@@ -1,0 +1,230 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\makeatletter
+\newenvironment{definition}[1]{% 
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Metody Probabilistyczne i Statystyka}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Lista 9}
+
+\subsection{1L9}
+
+Pokażmy, że dla dowolnych $a,b,c,d\in\mathbb{R}$ takich, że $ac \neq 0$ współczynnik korelacji
+\[
+\rho(X,Y) = \frac{\mathbf{cov}(X,Y)}{\sigma_X \sigma_Y}
+\]
+spełnia $\rho(aX + b, cY + d) = \rho(X,Y)$.
+
+\noindent
+Weźmy:
+
+\begin{align}
+    &\rho(aX+b,cY+d) =\\
+    &= \frac{\mathbf{cov}(aX+b, cY+d)}{\sigma_{aX+b} \sigma_{cX+d}} = \\
+    &= \frac{\mathbf{E}((aX+b)(cY+d)) - \mathbf{E}(aX+b)\cdot\mathbf{E}(cY+d)}{\sqrt{\mathbf{var}(aX+b)}\sqrt{\mathbf{var}(cY+d)}}=\\
+    &= \frac{\mathbf{E}(acXY+adX+bcY+bd) - (a\mathbf{E}(X)+b)(c\mathbf{E}(Y)+d)}{\sqrt{a^2\mathbf{var}(X)}\sqrt{c^2\mathbf{var}(Y)}} =\\
+    &= \frac{ac\mathbf{E}(XY)+ad\mathbf{E}(X)+bc\mathbf{E}(Y)+bd - ac\mathbf{E}(X)\mathbf{E}(Y) - ad\mathbf{E}(X) - bc\mathbf{E}(Y) - bd}{ac\cdot \sigma_X \sigma_Y} =\\
+    &= \frac{ac\left[\mathbf{E}(XY)-\mathbf{E}(X)\mathbf{E}(Y)\right]}{ac\cdot \sigma_X \sigma_Y} =\\
+    &= \frac{\mathbf{cov}(X,Y)}{\sigma_X \sigma_Y} =\\
+    &= \rho(X,Y)
+\end{align}
+
+\subsection{2L9}
+
+Rzucamy dwiema szcześciennymi kostkami, niech $X$ - mniejszy, $Y$ - większy z rzutów. Obliczmy $\mathbf{cov}(X,Y)$ oraz $\rho(X,Y)$.
+
+\noindent
+Z zadania 1L6 wiemy, że wartości 
+
+\begin{align}
+    \mathbf{E}(X) &= \frac{91}{36}\\
+    \mathbf{E}(Y) &= \frac{161}{36}\\
+\end{align}
+Ponadto z zadania 3L7 mamy
+\begin{align}
+    \mathbf{var}(X) = \frac{2555}{1296}\\
+    \mathbf{var}(Y) = \frac{2555}{1296}\\
+\end{align}
+Wyznaczmy teraz
+\begin{align}
+    \mathbf{E}(XY) = \sum_{x} \sum_{y} xy \cdot P(X=x \land Y=y) = \dots
+\end{align}
+Znając rozkład łączny z zadania 1L6 możemy zsumować wszystkie kombinacje prawdopodobieństw:
+\begin{align}
+    &\dots = \frac{1}{36} \cdot (1+4+9+16+25+36) + \\
+    &+ \frac{2}{36} \cdot (2+3+6+4+8+12+5+10+15+20+6+12+18+24+30) = \\
+    &= \frac{441}{36}
+\end{align}
+Zatem
+\begin{align}
+    \mathbf{cov}(X,Y) = \mathbf{E}(XY) - \mathbf{E}(X)\cdot\mathbf{E}(Y)
+    =\frac{441}{36} - \frac{91}{36} \cdot \frac{161}{36} = \frac{1225}{1296} \approx 0.94
+\end{align}
+oraz
+\begin{align}
+    \mathbf{\rho}(X,Y) = \frac{\mathbf{cov}(X,Y)}{\sigma_X \sigma_Y} \approx \frac{\frac{1225}{1296}}{\frac{2555}{1296}} \sim 0.48
+\end{align}
+
+\subsection{3L9}
+
+Niech $X_1,X_2 \sim U([0,1])$ - niezależne zmienne losowe. Niech $Y=\min\{X_1,X_2\}$, $Z=\max\{X_1,X_2\}$. Obliczmy $\mathbf{cov}(Y,Z)$ oraz $\rho(Y,Z)$.
+
+\noindent
+TBD.
+
+\subsection{4L9}
+
+Niech $X \sim U(\left[0,\pi\right])$ i niech $Y=\sin(X), Z=\cos(X)$ Sprawdźmy zależność i korelację.
+
+\noindent
+Z zadania 2L8 pamiętamy następujące fakty:
+
+\begin{align}
+    \mathbf{E}(Y) = \frac{2}{\pi}\\
+    \mathbf{E}(Z) = 0
+\end{align}
+Wyznaczmy $\mathbf{E}(YZ)$, wiedząc że $f_X(x) = \frac{1}{\pi}$
+\begin{align}
+    \mathbf{E}(YZ) &= \mathbf{E}(\sin(X) \cos(X)) = \int_{-\infty}^{\infty} \sin(x)\cos(x) f_X(x) dx = \\
+    &= \int_{0}^{\pi} \frac{1}{2}\sin(2x) \frac{1}{\pi} dx = \frac{1}{2\pi} \int_{0}^{\pi} \sin(2x) dx = \\
+    &= \frac{1}{2\pi} \left[\frac{1}{2} \cos(2x)\right]_{0}^{\pi} = \frac{1}{4\pi} \left[\cos(2\pi) - \cos(0)\right] = 0
+\end{align}
+Policzmy zatem $\mathbf{cov}\{Y,Z\}$
+\begin{align}
+    \mathbf{cov}(Y,Z) = \mathbf{E}(YZ) - \mathbf{E}(Y)\mathbf{E}(Z) = 0 - \frac{2}{\pi} \cdot 0 = 0
+\end{align}
+Wobec tego mamy pewność, że zmienne są nieskorelowane. Sprawdźmy natomiast zależność zmiennych.
+\begin{align}
+    P(Y\leq \frac{1}{2} \land Z\leq \frac{1}{2}) = \frac{1}{6}
+\end{align}
+Obie funkcje są powyżej $y=\frac{1}{2}$ jedynie w przedziale $[\frac{\pi}{6},\frac{\pi}{3}]$
+Zobaczmy natomiast, że osobno, $Y\leq \frac{1}{2}$ w przedziale $[\frac{\pi}{2},\pi]$, a $Z\leq \frac{1}{2}$ w przedziale $[\frac{\pi}{3},\pi]$. Wtedy:
+\begin{align}
+    P(Y\leq \frac{1}{2}) \cdot P(Z\leq \frac{1}{2}) = \frac{1}{3} \cdot \frac{2}{3} = \frac{2}{9}
+\end{align}
+Widzimy, że warunek niezależności nie został spełniony, więc zmienne losowe $Y,Z$ są zależne nieskorelowane.
+
+\subsection{5L9}
+
+Wyznaczmy funkcję tworzące prawdopodobieństwo oraz funkcje tworzące momenty zmiennej losowej $X\sim Geo(p)$
+
+\begin{align}
+    \varphi_X(z) &= \mathbf{E}(z^x) = \sum_{n\geq 0} z^n P(X=n) = \sum_{n\geq 0} z^n p(1-p)^{n-1} =\\
+    &= \sum_{n\geq 1} z^n p(1-p)^{n-1} = pz \sum_{n\geq 1} z^{n-1} (1-p)^{n-1} = pz \sum_{n\geq 1} (z(1-p))^{n-1} =\\
+    &= pz \sum_{n\geq 0} (z(1-p))^n
+    = pz \frac{1}{1-z(1-p)} = \frac{pz}{1-z(1-p)} 
+\end{align}
+Oraz MGF:
+\begin{align}
+    M_X(t) = \mathbf{E}(e^{tX}) = \varphi_X(e^t) = \frac{pe^t}{1-e^t(1-p)}
+\end{align}
+Wyznaczmy następnie wartość oczekiwaną i wariancję
+\begin{align}
+    \mathbf{E}(X) &= \varphi_X'(1) = \frac{d}{dz} (\frac{pz}{1-z(1-p)}) = \frac{p}{(1-z(1-p))^2} = \frac{p}{(1-1+p)^2} = \frac{1}{p}\\
+\end{align}
+Wyznaczmy pomocniczo $\varphi_X''(1)$
+\begin{align}
+    \varphi_X''(1) = \frac{d}{dz} \varphi_X'(z) = \frac{p}{(1-z(1-p))^2} = \frac{2(p-1)}{(1-z(1-p))^2} = \frac{2(1-p)}{p^2}
+\end{align}
+Wobec tego
+\begin{align}
+    \mathbf{var}(X) &= \varphi_X''(1) + \varphi_X'(1) - (\varphi_X'(1))^2 = \frac{2(1-p)}{p^2} + \frac{1}{p} - \frac{1}{p^2} = \frac{2-2p+p-1}{p^2} = \frac{1-p}{p^2}
+\end{align}
+Weźmy zmienną losową $Y\sim NB(k,p)$, możemy z poprzedniej części zapisać:
+\begin{align}
+    M_X(t) &= \frac{pe^t}{1-e^t{1-p}}\\
+    M_{\sum_{i=0}^{k} X_i} (t) &= M_{X_1+X_2+\dots+X_k}(t) = \prod_{i=0}^{k} M_X(t) = (M_X(t))^k
+\end{align}
+
+\subsection{6L9}
+
+Mamy wyznaczyć MGF dla zmiennej losowej o standardowym rozkładzie normalnym $X\sim\mathcal{N}(0,1)$. Znając PMF dla rozkładu normalnego:
+\[
+    f_X(t) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}
+\]
+
+\begin{align}
+    M_X(t) &= \int_{-\infty}^{\infty} e^{xt} \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}} dx =
+    \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{xt}\cdot e^{-\frac{x^2}{2}} dx =\\
+    &= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{-\frac{1}{2}(x-t)^2 + \frac{t^2}{2}} dx =
+    \frac{1}{\sqrt{2\pi}} e^{\frac{t^2}{2}} \int_{-\infty}^{\infty} e^{-\frac{1}{2}(x-t)^2} dx =
+    \frac{1}{\sqrt{2\pi}} e^{\frac{t^2}{2}} \sqrt{2\pi} = e^{\frac{t^2}{2}} 
+\end{align}
+Jeśli teraz $Y\sim\mathcal{N}(\mu, \sigma^2)$ to z własności MGF możemy napisać:
+
+\begin{align}
+    M_Y(t) &= M_{\sigma X + \mu} (t) = \mathbf{E}(e^{t(\sigma X + \mu)}) = \mathbf{E}(e^{t\mu})\mathbf{E}(e^{t\sigma X}) =\\
+    &= e^{t\mu} M_X(\sigma t) = e^{t\mu} \cdot e^{\frac{(\sigma t)^2}{2}} = e^{t\mu + \frac{(\sigma t)^2}{2}}
+\end{align}
+Weźmy dwie nowe niezależne zmienne losowe $X\sim\mathcal{N}(\mu_1, \sigma_1^2)$ oraz $Y\sim\mathcal{N}(\mu_2, \sigma_2^2)$.
+\begin{align}
+    M_{X+Y} (t) &= M_X(t)\cdot M_Y(t) =\\
+    &= e^{t\mu_1 +\frac{(\sigma_1 t)^2}{2} + t\mu_2 +\frac{(\sigma_2 t)^2}{2}} =\\
+    &= e^{t(\mu_1+\mu_2) + \frac{1}{2}(t^2(\sigma_1^2+\sigma_2^2))}
+\end{align}
+Widzimy wobec tego że nasza nowa zmienna $X+Y \sim \mathcal{N}(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$
+
+\end{document}

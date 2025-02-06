@@ -1,0 +1,253 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Metody Probabilistyczne i Statystyka}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Lista 8}
+
+\subsection{1L8}
+
+Wyznaczmy wariancję zmiennej losowej $Y$ z zadania 5L6, ostatniego podpunktu. Mamy:
+\[
+    \mathbf{E}(Y) = \frac{1}{n+1}
+\]
+Policzmy:
+
+todo: powtórz całkę
+\setcounter{equation}{0}
+\begin{align}
+    \mathbf{E}(Y^2) &= \int_{0}^{1} t^2 f_Y(t) dt = \int_0^1 t^2 n(1-t)^{n-1} dt =\\
+    &= n\int_0^1 t^2(1-t)^{n-1} dt = n \cdot\left[\frac{-t^2(1-t)^n}{n} + \int \frac{2t(1-t^n)}{n} dt  \right]_0^1 =\\
+    &= \left[-t^2(1-t)^n + 2\left(-\frac{(1-t)^{n+2}}{n+2} + \frac{(1-t)^{n+1}}{n+1} \right) \right]_0^1 =\\
+    &= \frac{2}{(n+2)(n+1)}
+\end{align}
+Zatem:
+\begin{align}
+    \mathbf{var}(Y) &= \mathbf{E}(Y^2) - (\mathbf{E}(Y))^2
+    = \frac{2}{(n+2)(n+1)} - \frac{1}{(n+1)^2} =\\ 
+    &= \frac{2(n+1) - (n+2)}{(n+2)(n+1)^2} 
+    = \frac{2n+2-n-2}{(n+2)(n+1)^2} 
+    = \frac{n}{(n+2)(n+1)^2}
+\end{align}
+
+todo: policz $E(Z^2)$
+
+\noindent
+Wyznaczmy wariancję zmiennej losowej $Z$. Mamy:
+\begin{align}
+    \mathbf{var}(Z) &= E(Z^2)-(E(Z))^2 
+    = \frac{2}{n+2} - \left(\frac{n}{n+1}\right)^2 =\\
+    &= \frac{n(n+1)^2 - n^2(n+2)}{(n+2)(n+1)^2}
+    = \frac{n^3 + 2n^2 + n - n^3 - 2n^2}{(n+2)(n+1)^2} =\\
+    &= \frac{n}{(n+2)(n+1)^2}
+\end{align}
+
+\subsection{2L8}
+
+Weźmy $X$ - zmienna losowa o rozkładzie jednostajnym na przedziale $[0,\pi]$, którego gęstość:
+\[
+    f_X(t) = \begin{cases}
+        \frac{1}{\pi} \quad &\text{dla} \quad t\in(0,\pi) \\
+        0 \quad &\text{dla} \quad t\notin(0,\pi)
+    \end{cases} 
+\]
+Wyznaczmy wartość oczekiwaną i wariancję zmiennych losowych $Y=\sin X$ oraz $Z=\cos X$. Wiemy, że jeśli 
+pewna funkcja $g(x)$ jest ciąła oraz dane jest $f_X$ to zachodzi:
+\[
+    \mathbf{E}(g(X)) = \int_{-\infty}^{\infty} g(x) f(x) dx
+\]
+Policzmy:
+\setcounter{equation}{0}
+\begin{align}
+    \mathbf{E}(Y) = \mathbf{E}(\sin(X))
+    &= \int_{-\infty}^{\infty} \sin(X) f_X(x) dx
+    = \int_{0}^{\pi} \sin(X) \cdot \frac{1}{\pi} dx =\\
+    &= \frac{1}{\pi} \cdot \int_{0}^{\pi} \sin(X) dx 
+    = \frac{1}{\pi} \left[-\cos(x) \right]_{0}^{\pi}
+    = \frac{1}{\pi} \left(-\cos(x) + cos(0)\right)
+    = \frac{2}{\pi}
+\end{align}
+Następnie policzmy
+\begin{align}
+    \mathbf{E}(Y^2) &= \int_{-\infty}^{\infty} \sin^2(x) \frac{1}{\pi} dx 
+    = \frac{1}{\pi} \int_{0}^{\pi} \sin^2(x) dx
+    = \frac{1}{\pi} \int_{0}^{\pi} \frac{1-\cos(2x)}{2} dx =\\
+    &= \frac{1}{2\pi} \int_{0}^{\pi} 1-\cos(2x) dx
+    = \frac{1}{2\pi} \left[x - \sin(2x) \right]_{0}^{\pi}
+    = \frac{1}{2\pi} \cdot \pi
+    = \frac{1}{2}
+\end{align}
+Finalnie
+\begin{align}
+    \mathbf{var}(Y) = \mathbf{E}(Y^2) - (\mathbf{E}(Y))^2 = \frac{1}{2} - \frac{4}{\pi^2}
+\end{align}
+Wyznaczmy teraz wartość oczekiwaną i wariancję dla $Z$:
+\begin{align}
+    \mathbf{E}(Z) = \mathbf{E}(\cos(X))
+    = \int_{-\infty}^{\infty} \cos(x) f_X(x) dx
+    = \frac{1}{\pi} \int_{0}^{\pi} \cos(x) dx = 0
+\end{align}
+Następnie:
+\begin{align}
+    \mathbf{E}(Z^2) = \mathbf{E}(\cos(X)^2) 
+    = \frac{1}{\pi} \cdot \int_{-\infty}^{\infty} \cos^2(x) f_X(x) dx
+    = \frac{1}{\pi} \cdot \frac{\pi}{2} = \frac{1}{2}
+\end{align}
+Zatem:
+\begin{align}
+    \mathbf{var}(Z) = \mathbf{E}(Z^2) - (\mathbf{E}(Z))^2 = \frac{1}{2}
+\end{align}
+
+\subsection{3L8}
+
+Funkcja masy prawdopodobieństwa dla rozkładu normalnego $X\sim \mathcal{N}(0,1)$ będzie wynosić
+\setcounter{equation}{0}
+\begin{align}
+    f_X(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+    = \frac{1}{2\sqrt{\pi}} \exp\left(-\frac{x^2}{2}\right) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}
+\end{align}
+Liczymy:
+\begin{align}
+    \mathbf{E}(X^k) = \int_{-\infty}^{\infty} x^k \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}} dx
+    = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} x^k e^{-\frac{x^2}{2}} dx = \dots
+\end{align}
+Całkujmy przez części
+\begin{align}
+    u &= x^{k-1} \quad  du = (k-1)x^{k-2} dx\\
+    dv &= xe^{-\frac{x^2}{2}} \quad v = -e^{-\frac{x^2}{2}}
+\end{align}
+zachodzi
+\begin{align}
+    \dots &= \frac{1}{\sqrt{2\pi}} \left(\left[-x^{k-1} e^{-\frac{x^2}{2}} \right]_{-\infty}^{\infty} + (k-1)\int_{-\infty}^{\infty} x^{k-2} e^{-\frac{x^2}{2}} dx\right) =\\
+    &= (k-1)\mathbf{E}(X^{k-2})
+\end{align}
+Zobaczmy, że skoro $\mathbf{E}(X)=0$ oraz $\mathbf{E}^2(X)=1$, to dla $k\in\{1,2\dots\}$ zachodzi:
+\begin{align}
+    \mathbf{E}(X^{2k+1})&=0\\
+    \mathbf{E}(X^{2k})&=(2k-1)(2k-3)\dots(3)\cdot\mathbf{E}(X^2) =\\
+    &= \frac{2k(2k-1)(2k-2)\dots 3\cdot 2\cdot 1}{2k(2k-2)\cdot\dots4\cdot2} 
+    = \frac{(2k)!}{2^k k!}
+\end{align}
+
+\subsection{4L8}
+
+Niech $X_1,\dots,X_n$ będą niezależne o rozkładach $Exp(\lambda_i)$, wyznaczmy rozkład zmiennej losowej 
+$Y=\min\{X_1,\dots, X_n\}$.
+
+\[
+    f_{X_i}(t) = P(X=t) = \begin{cases}
+        \lambda_i e^{-\lambda_i t} \quad &t > 0\\
+        0 \quad &t\leq 0
+    \end{cases}
+\]
+Spróbujmy
+\setcounter{equation}{0}
+\begin{align}
+    1-F_{Y}(t) &= P(Y\geq t) = \prod_{i=1}^{k} e^{-\lambda_i t} = e^{-t\cdot \left[\sum_{k=1}^{k} \lambda_i \right]}\\
+    F_{Y}(t) &= 1 - e^{-t\cdot \left[\sum_{k=1}^{k} \lambda_i \right]}\\
+\end{align}
+
+\noindent
+Widzimy, że $Y\sim Exp(\sum_{k=1}^{k} \lambda_i)$.
+
+\subsection{5L8}
+
+Wiedząc, że zmienna losowa $X$ jest dana dystrybuantą:
+\[
+F_X(t) = \begin{cases}
+    0 \quad & t < 0 \\
+    \frac{2}{\pi} \arcsin(\sqrt{t}) \quad & t\in[0,1] \\
+    1 \quad & t > 1
+\end{cases}
+\]
+Wyznaczmy gęstość prawdopodobieństwa:
+\begin{align}
+    f_X(t) = \frac{d}{dx} F_X(t) = \frac{d}{dx} \left(\frac{2}{\pi} \arcsin(\sqrt{x}) \right) =\\
+    = \frac{2}{\pi} \left[\frac{1}{2\sqrt{x}} \frac{1}{\sqrt{1-x}} \right]
+    = \frac{1}{\pi\sqrt{x(1-x)}}
+\end{align}
+Wyznaczmy wartość oczekiwaną:
+\begin{align}
+    \mathbf{E}(X) = \int_{-\infty}^{\infty} x f_x(x) dx
+    = \int_{-\infty}^{\infty} x\cdot \frac{1}{\pi\sqrt{x(x-1)}} dx
+    = \frac{1}{\pi} \int_{0}^{1} x\cdot \frac{1}{\sqrt{x(x-1)}} dx = \dots
+\end{align}
+Dokonajmy podstawienia
+\begin{align}
+    x &= \sin^2(\Theta)\\
+    dx &= 2\sin(\Theta)cos(\Theta)d\Theta = \sin(2\Theta)d\Theta\\
+    0 \rightarrow \Theta&=0 \\
+    1 \rightarrow \Theta&=\frac{\pi}{2}
+\end{align}
+Mamy
+\begin{align}
+    \dots &= \frac{1}{\pi} \int_{0}^{\frac{\pi}{2}} \sqrt{\frac{\sin^2(\Theta)}{\cos^2(\Theta)}} \sin(2\Theta) d\Theta
+    = \frac{1}{\pi} \int_{0}^{\frac{\pi}{2}} \frac{\sin(\Theta)}{\cos(\Theta)} \cdot 2\sin(\Theta)\cos(\Theta) d\Theta =\\
+    &= \frac{2}{\pi} \int_{0}^{\frac{\pi}{2}} \sin^2(\Theta) d\Theta
+    = \frac{2}{\pi} \cdot \frac{\pi}{4} = \frac{1}{2}
+\end{align}
+
+\end{document}

@@ -1,0 +1,268 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Metody Probabilistyczne i Statystyka}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Lista 5}
+
+\subsection{1L5}
+
+Niech $H$-orły, $T$-reszki. Dla $4$ rzutów niezależnych mamy $H=4-T$ i analogicznie $T=4-H$.
+Niech $R$ - $\#$ rozwiązań równania kwadratowego:
+\begin{align}
+    x^2 - (H-T)x + H-T = 0
+\end{align}
+Wyznaczmy rozkład $R$. Podstawmy $T=4-H$ do (1):
+\begin{align}
+    x^2 - (H-(4-H))x + H - (4-H) =\\
+    = x^2 - (2H - 4)x + 2H - 4
+\end{align}
+Policzmy
+\begin{align}
+    \Delta(H) = (2H-4)^2 - 4(2H-4) =\\
+    = 4H^2 - 16H + 16 - 8H + 16 = \\
+    4H^2 - 24H + 32
+\end{align}
+Zobaczmy jak prezentuje się liczba rozwiązań równania w zależności od $H$:
+\begin{itemize}
+    \item $H=0 \rightarrow \Delta(H) = 32 \rightarrow R=2$
+    \item $H=1 \rightarrow \Delta(H) = 12 \rightarrow R=2$
+    \item $H=2 \rightarrow \Delta(H) = 0 \rightarrow R=1$
+    \item $H=3 \rightarrow \Delta(H) = -4 \rightarrow R=0$
+    \item $H=4 \rightarrow \Delta(H) = 0 \rightarrow R=1$
+\end{itemize}
+Wszystkich możliwości w rzutach mamy $\Omega = 2^4$, zatem:
+\begin{itemize}
+    \item $P(R=0) = P(H=3) = (\frac{1}{2})^4\cdot \binom{4}{3} = \frac{1}{16} \cdot 4 = \frac{1}{4}$
+    \item $P(R=1) = P(H=2\lor H=4) = (\frac{1}{2})^4\cdot\left[\binom{4}{2} +\binom{4}{4}\right]= \frac{7}{16}$
+    \item $P(R=2) = P(H=0\lor H=1) = (\frac{1}{2})^4\cdot\left[\binom{4}{0} +\binom{4}{1}\right]= \frac{5}{16}$
+\end{itemize}
+
+\subsection{2L5}
+
+Niech $X$ - dystrybuanta zmiennej losowej z PMF $P(X=k)=\frac{1}{k(k+1)}$ dla $k\in\mathbb{Z_{+}}$.\\ Niech $Y=\left|\sin\left(\frac{\pi\cdot X}{2}\right)\right|$. Wyznaczmy PMF dla $Y$.\\\\
+\noindent
+Zobaczmy jak zachowuje się wyrażenie $P(X=k)$ dla kolejnych $k$:
+\begin{itemize}
+    \item $X=1 \rightarrow Y=|\sin(\frac{\pi}{2})| = 1$
+    \item $X=2 \rightarrow Y=|\sin(\pi)| = 0$
+    \item $X=3 \rightarrow Y=|\sin(\frac{3\pi}{2})| = 1$ ...
+\end{itemize}
+Zatem wystarczy nam wyznaczyć $P(Y=1)$ oraz $P(Y=0) = 1 - P(Y=1)$. Zapiszmy wpierw $P_Y(y)$:
+\setcounter{equation}{0}
+\begin{align}~
+   P_Y(y)=P(Y=y)=P(g(X)=y)=P(X\in g^{-1}(y)) = \sum_{x\in g^{-1}(y)\cap\text{rng}(X)} p_X(x)
+\end{align}
+Zatem w naszym wypadku
+\begin{align}
+    P(Y=1) &= \sum_{k=2n-1, n\in\mathbb{Z_{+}}} \frac{1}{k(k+1)} =\\
+    &=\sum_{n\in\mathbb{Z_{+}}}\frac{1}{(2n-1)(2n)} =\\
+    &=\sum_{n\in\mathbb{Z_{+}}}\frac{1}{2n-1} - \frac{1}{2n} =\\
+    &=\lim_{n\rightarrow\infty}\left(1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \dots- \frac{1}{2n}\right) =\\
+    &=\ln(2)\\
+\end{align}
+Wobec tego
+\begin{align}
+    P(Y=1) &= \ln(2)\\
+    P(Y=0) &= 1-\ln(2)
+\end{align}
+
+\subsection{3L5}
+
+Weźmy $Y\sim [0,1]$ rozkład jednostajny. $X=Y^2$, wyznaczmy $F_X$ oraz $f_X$.\\\\
+\noindent
+Rozkład jednostajny wyznacza nam CDF i PDF dla $Y$
+\begin{itemize}
+    \item $F_Y(y) = \begin{cases}
+        0 &\text{ dla } y < 0\\
+        y &\text{ dla } y \in[0,1]\\
+        1 &\text{ dla } y > 1 
+    \end{cases}$
+    \item $f_Y(y)=\begin{cases}
+        1 &\text{ dla } y\in[0,1]\\
+        0 &\text{ dla } y\notin[0,1]
+    \end{cases}$
+\end{itemize}
+\noindent
+Widzimy, że skoro $X=Y^2$, to funkcja przekształcenia wynosi $g(x)=x^2$, jest ściśle rosnąca na $[0,1]$. Możemy zgodnie z twierdzeniem o funkcjach zmiennych losowych zapisać:
+\setcounter{equation}{0}
+\begin{align}
+    F_X(x) &= F_Y(g^{-1}(x)) = F_Y(\sqrt{x}) = \begin{cases}
+        0 \text{ dla } x < 0\\
+        \sqrt{x} \text{ dla } x \in[0,1]\\
+        1 \text{ dla } x > 1 
+    \end{cases}\\
+    f_X(x) &= f_Y(g^{-1}(x)) \cdot \frac{d}{dx} g^{-1} (x) = f_Y(g^{-1}(x)) \cdot \frac{d}{dx} \sqrt{x} = \begin{cases}
+        \frac{1}{2\sqrt{x}} &\text { dla } x\in[0,1]\\
+        0 &\text{ dla } x\notin[0,1]
+    \end{cases} 
+\end{align}
+Wstępne sprawdzenie w postaci $\int_{0}^{1} f_X(x) dx=1$ pokazuje, że jest \textit{chyba} całkiem nienajgorzej.
+
+\subsection{4L5}
+
+Mamy dany rozkład z PDF $f(x) = \exp(-e^{-x}-x)$. Wyznaczmy CDF.
+\setcounter{equation}{0}
+\begin{align}
+    F_X(t)= \int_{-\infty}^{t} f_X(x) dx = \int_{\infty}^{t} \exp(-e^{-x}-x)dx = \dots
+\end{align}
+Zobaczmy, że można łatwo zgadnąć funkcję pierwotną:
+\begin{align}
+    \frac{d}{dx} \left({e^{-e}}^{-x}\right)=
+    \frac{d}{dx} \left(-e^{-x}\right) \cdot {e^{-e}}^{-x}=
+    \frac{d}{dx} (-x) \cdot -e^{-x} \cdot {e^{-e}}^{-x} = e^{-e^{-x}-x}
+\end{align}
+Zatem
+\begin{align}
+    ... = \left[\exp(-e^{-x})\right]_{-\infty}^{t} = \exp(-e^{-t}) - \lim_{x\rightarrow -\infty} \exp(-e^{-x}) = \exp(-e^{-t})
+\end{align}
+
+\subsection{5L5}
+
+$F_X$ - CDF dla $X$, wyznacz dystrybuanty $Y=-X, Z=|X|, U=X^2$.\\\\
+\noindent
+Wiemy że $y(x)=-x$ jest ściśle malejąca, zatem:
+\setcounter{equation}{0}
+\begin{align}
+    F_Y(y)=1-F_X(g^{-1}(y))=1-F_X(-y)
+\end{align}
+Zmienna losowa $Z$ przyjmuje jedynie wartości nieujemne, wobec tego powinniśmy sumować poszczególne wartości przypadki w nieujemnym przedziale dziedziny.
+\begin{align}
+    Z = |X| &= \begin{cases}
+        X &\text{ dla } x\geq 0\\
+        -X &\text{ dla } x < 0
+    \end{cases}\\
+    F_Z(z) &= \begin{cases}
+        F_X(z) - F_X(-z) &\text{ dla } z\geq 0\\
+        0 &\text{ dla } z < 0
+    \end{cases}
+\end{align}
+Podobnie w przypadku zmiennej $U$. Odwrotność funkcji $u^{-1}(x) = \sqrt{u}$, więc:
+\begin{align}
+    F_U(u) = \begin{cases}
+        F_X(\sqrt{u}) - F_X(-\sqrt{u}) &\text{ dla } u\geq 0\\
+        0 &\text{ dla } u < 0
+    \end{cases}
+\end{align}
+
+\newpage
+
+\subsection{6L5}
+
+Analogicznie do zadania poprzedniego, tym razem dany mamy rozkład $X$ o PDF $f_X$ oraz funkcje $g(x)=\sqrt[3]{x}$ oraz $h(x)=e^{-x}$. Oznaczmy $Y=g(X)$ oraz $Z=h(X)$.\\\\
+\noindent
+Wyznaczmy gęstości prawdopodobieństwa oraz dystrybuanty dla zmiennych $Y$ oraz $Z$:
+\begin{itemize}
+    \item Wyznaczmy dla $Y$ ($g(x)$ jest ściśle rosnąca)
+    \setcounter{equation}{0}
+    \begin{align}
+     f_Y(y)&=f_X(g^{-1}(y)\cdot \frac{d}{dy} g^{-1}(y) = 3y^2\cdot f_X(y^3)\\
+     F_Y(t)&=\int_{-\infty}^{t} f_Y(y) dy =\int_{-\infty}^{t} 3x^2 \cdot f_X(x^3) dx =\\
+     &= \left[F_X(x^3)\right]_{-\infty}^{t} = F_X(t^3)-\lim_{x\rightarrow -\infty} F_X(x^3) = F_X(t^3)
+    \end{align}
+    \item Wyznaczamy dla $Z$ ($h(x)$ jest ściśle malejąca)
+    \begin{align}
+        f_Z(z)&=-f_X(h^{-1}(z))\cdot \frac{d}{dz} h^{-1}(z) = \frac{1}{z}\cdot f_X(-\ln(z))\\
+        F_Z(t)&=\int_{-\infty}^{t} f_Z(z)dz = \int_{-\infty}^{0} \frac{1}{z}f_X(-\ln(z)) =\\ 
+        &=\left[-F_X(-\ln(z))\right]_{-\infty}^{t}=
+        \left[F_X(-\ln(z))\right]_{t}^{-\infty} = 1-F_X(-\ln(t))
+    \end{align}
+\end{itemize}
+Zobaczmy jak wyglądają gęstości i dystrybuanty jeśli dystrybuanta $X$ jest zadana wzorem:
+\[
+F_X = \begin{cases}
+    0 &\text{ dla } t < -1\\
+    (t+1)/2 &\text{ dla } t \in[-1,1]\\
+    1 &\text{ dla } t > 1
+\end{cases}
+\]
+Widzimy od razu, że wyznaczenie $f_x, f_y, F_Y, f_z, F_Z$ nie stanowi problemu:
+\begin{align}
+    f_x &= \begin{cases}
+        (t+1)/2 &\text{ dla } t \in[-1,1]\\
+        0 &\text{ dla } t \notin[-1,1]
+    \end{cases}\\
+    f_y &= \begin{cases}
+        \frac{3}{2}t^2 &\text{ dla } t \in[-1,1]\\
+        0 &\text{ dla } t \notin[-1,1]
+    \end{cases}\\
+    F_y &= \begin{cases}
+        0 &\text{ dla } t < -1\\
+        \frac{1}{2}(t^3+1) &\text{ dla } t \in[-1,1]\\
+        1 &\text{ dla } t > 1
+    \end{cases}\\
+    f_z &= \begin{cases}
+        \frac{1}{2x} &\text{ dla } t\in[\frac{1}{e},e]\\
+        0 &\text{ dla } t\notin[\frac{1}{e},e]
+    \end{cases}\\
+    F_z &= \begin{cases}
+        0 &\text{ dla } t < -1\\
+        \frac{1+\ln(t)}{2} &\text{ dla } t \in[-1,1]\\
+        1 &\text{ dla } t > 1
+    \end{cases}
+\end{align}
+
+\end{document}

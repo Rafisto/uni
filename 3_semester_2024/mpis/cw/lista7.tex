@@ -1,0 +1,294 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Metody Probabilistyczne i Statystyka}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Lista 7}
+
+\subsection{1L7}
+
+Weźmy $X,Y:\Omega\rightarrow\{(0,1),(1,0),(-1,0),(0,-1)\}$ z równym prawdopodobieństwem. Wtedy PMF:
+\[
+p_X(x) = p_Y(x) = \begin{cases}
+    \frac{1}{4} & \text{dla } x = -1\\
+    \frac{1}{2} & \text{dla } x = 0\\
+    \frac{1}{4} & \text{dla } x = 1\\
+\end{cases}
+\]
+Zatem $\mathbf{E}(X) = \mathbf{E}(Y) = 0$, oraz widzimy że $\mathbf{E}(XY) = 0$. Jednak zmienne nie są niezależne:
+\[
+    p_X(1)p_Y(1) = \frac{1}{4} \cdot \frac{1}{4} = \frac{1}{16} \neq p_{XY}(1,1) = 0
+\]
+
+\subsection{2L7}
+
+Pokażmy, że $\mathbf{var}(aX+b) = a^2 \mathbf{var}(X)$. Zapiszmy:
+\setcounter{equation}{0}
+\begin{align}
+    \mathbf{var}(aX+b) &= \mathbf{E}((aX+b)^2) - \mathbf{E}(aX+b)^2\\
+    &= \mathbf{E}(a^2X^2+2abX+b^2) - (\mathbf{E}(aX)+\mathbf{E}(b))^2\\
+    &= \mathbf{E}(a^2X^2)+\mathbf{E}(2abX)+\mathbf{E}(b^2) - (a\mathbf{E}(X)+b)^2\\
+    &= a^2\mathbf{E}(X^2)+2ab\mathbf{E}(X)+b^2 - a^2\mathbf{E}(X)^2-2ab\mathbf{E}(X)-b^2\\
+    &= a^2\mathbf{E}(X^2)-a^2\mathbf{E}(X)^2\\
+    &= a^2(\mathbf{E}(X^2)-\mathbf{E}(X)^2)\\
+    &= a^2\mathbf{var}(X)
+\end{align}
+
+\subsection{3L7}
+
+\subsubsection*{Wyznaczenie $\mathbf{var}(X)$ oraz $\mathbf{var}(Y)$ dla rozkładu 1L6}
+
+Z zadania 1L6 wiemy, że:
+\setcounter{equation}{0}
+\begin{align}
+    E(X) = \frac{91}{36}\\
+    E(Y) = \frac{161}{36}\\
+\end{align}
+Policzmy $\mathbf{E}(X^2)$ oraz $\mathbf{E}(Y^2)$:
+\begin{align}
+    E(X^2) &= \sum_{x\in\text{rng}(X)} x^2 P(X=x) =\\
+    &= \frac{1}{36}\cdot\left(1^2\cdot 11 + 2^2\cdot 9 + 3^2\cdot 7+4^2\cdot5 + 5^2\cdot 3+6^2\cdot 1\right)
+    = \frac{301}{36}\\\\
+    E(Y^2) &= \sum_{y\in\text{rng}(Y)} y^2 P(Y=y) =\\
+    &= \frac{1}{36}\cdot\left(6^2\cdot 11 + 5^2\cdot 9 + 4^2\cdot 7 + 3^2\cdot 5 + 2^2\cdot 3 + 1^2\cdot 1 \right)
+    = \frac{791}{36}
+\end{align}
+Policzmy $\mathbf{var}(X)$ oraz $\mathbf{var}(Y)$:
+\begin{align}
+    \mathbf{var}(X) &= \mathbf{E}(X^2) - \mathbf{E}(X)^2 = \frac{301}{36} - \left(\frac{91}{36}\right)^2 = \frac{2555}{1296}\\
+    \mathbf{var}(Y) &= \mathbf{E}(Y^2) - \mathbf{E}(Y)^2 = \frac{791}{36} - \left(\frac{161}{36}\right)^2  = \frac{2555}{1296}
+\end{align}
+
+\subsubsection*{Wyznaczenie $\mathbf{var}(X)$ dla $X\sim Geo(p)$}
+
+Pomocna suma:
+\begin{align}
+    \sum_{k\geq 1} x^k = \frac{1}{1-x} \\
+    \sum_{k\geq 1} kx^{k-1} = \frac{1}{(1-x)^2}
+\end{align}
+Wyznaczmy $\mathbf{E}(X)$:
+\begin{align}
+    \mathbf{E}(X) &= \sum_{k\geq 1} k\cdot P(X=k)
+    = \sum_{k\geq 1} k\cdot p(1-p)^{k-1} =\\
+    &= p\sum_{k\geq 1} k(1-p)^{k-1}
+    =p\cdot\frac{1}{(1-(1-p))^2}
+    = \frac{1}{p}
+\end{align}
+Wyznaczmy $\mathbf{E}(X^2)$:
+\begin{align}
+    \mathbf{E}(X^2) &= \sum_{k\geq 1} k^2\cdot P(X=k)
+    = \sum_{k\geq 1} k^2\cdot p(1-p)^{k-1} =\\
+    &= p\sum_{k\geq 1} k^2(1-p)^{k-1}
+    = p\cdot\frac{2-p}{(1-(1-p))^3}
+    = \frac{2-p}{p^2}
+\end{align}
+Wyznaczmy $\mathbf{var}(X)$:
+\begin{align}
+    \mathbf{var}(X) &= \mathbf{E}(X^2) - \mathbf{E}(X)^2
+    = \frac{2-p}{p^2} - \frac{1}{p^2}
+    = \frac{1-p}{p^2}
+\end{align}
+
+\subsubsection*{Wyznaczenie $\mathbf{var}(X)$ dla $X\sim Po(\lambda)$}
+
+Wyznaczmy $\mathbf{E}(X)$:
+\begin{align}
+    \mathbf{E}(X) &= \sum_{k\geq 0} k\cdot \frac{e^{-\lambda}\lambda^k}{k!}
+    = \sum_{k\geq 1} \frac{e^{-\lambda}\lambda^k}{(k-1)!}
+    = e^{-\lambda}\lambda\sum_{k\geq 0} \frac{\lambda^{k}}{k!}
+    = e^{-\lambda}\lambda e^{\lambda}
+    = \lambda
+\end{align}
+Wyznaczmy $\mathbf{E}(X^2)$:
+\begin{align}
+    \mathbf{E}(X^2) &= \sum_{k=0}^\infty k^2 \cdot \frac{e^{-\lambda}\lambda^k}{k!}
+    = \sum_{k=1}^\infty k^2 \cdot \frac{e^{-\lambda}\lambda^k}{k!}
+    = \sum_{k=1}^\infty k \cdot \frac{e^{-\lambda}\lambda^k}{(k-1)!} \\
+    &= \sum_{k=0}^\infty (k+1) \cdot \frac{e^{-\lambda}\lambda^{k+1}}{k!}
+    = \lambda \sum_{k=0}^\infty k \cdot \frac{e^{-\lambda}\lambda^k}{k!} + \lambda \sum_{k=0}^\infty \frac{e^{-\lambda}\lambda^k}{k!} \\
+    &= \lambda \cdot \mathbf{E}(X) + \lambda \cdot 1 \quad \mathbf{E}(X) = \lambda \text{ and } \sum_{k=0}^\infty \frac{e^{-\lambda}\lambda^k}{k!} = 1 \\
+    &= \lambda \cdot \lambda + \lambda \quad \mathbf{E}(X) = \lambda \\
+    &= \lambda^2 + \lambda.
+\end{align}
+Wyznaczmy $\mathbf{var}(X)$:
+\begin{align}
+    \mathbf{var}(X) &= \mathbf{E}(X^2) - \mathbf{E}(X)^2 
+    = \lambda^2 + \lambda - \lambda^2 
+    = \lambda
+\end{align}
+
+\subsection{4L7}
+
+Z zadania 8L3 wiemy, że optymalna wartość prawdopodobieństwa wyniosła $p=\frac{1}{n}$. Prawdopodobieństwo, 
+że w pojedyńczej próbie zajdzie wymiana wynosi:
+\setcounter{equation}{0}
+\begin{align}
+    s = n \cdot p (1-p)^{n-1} = n \cdot \frac{1}{n} (1-\frac{1}{n})^{n-1} = \left(\frac{n-1}{n}\right)^{n-1}
+\end{align}
+Oczekujemy sukcesu po $k$ próbach, to znaczy dla $k-1$ poprzednich ramek czasowych nie mogła zajść wymiana:
+\begin{align}
+    P(X=k) = s \cdot (1-s)^{k-1}
+\end{align}
+Widzimy, że $X\sim Geo\left(\left(\frac{n-1}{n}\right)^{n-1}\right)$, zatem korzystając z 3L7 możemy napisać:
+\begin{align}
+    \mathbf{E}(X) = \frac{1}{p} = \left(\frac{n}{n-1}\right)^{n-1}\\
+    \mathbf{var}(X) = \frac{1-p}{p^2} = \frac{n^{2n-2} - \left(n^2-n\right)^{n-1}}{(n-1)^{2n-2}}
+\end{align}
+
+\subsection{5L7}
+
+Niech $X\sim Po(\lambda)$ będzie zmienną losową opisującą źródło pakietów. Wiemy, że funkcja masy prawdopodobieństwa dla rozkładu Poissona jest dana wzorem:
+\[
+    P(X=N) = \frac{e^{-\lambda}\lambda^{N}}{N!}
+\]
+Niech $Y$ będzie zmienną losową opisującą ile pakietów dotarło do celu. Wtedy:
+\setcounter{equation}{0}
+\begin{align}
+    P(Y=n) = \begin{cases}
+        P(X=n) \cdot p^n (1-p)^0 \binom{n}{0} \quad &\text{Wszystkie pakiety dotarły}\\
+        P(X=n+1) \cdot p^n (1-p)^1 \binom{n+1}{1} \quad &\text{Dokładnie jeden pakiet nie dotarł}\\
+        P(X=n+2) \cdot p^n (1-p)^2 \binom{n+2}{2} \quad &\text{Dokładnie dwa pakiety nie dotarły}\\
+        \vdots
+    \end{cases}
+\end{align}
+Zatem funkcja masy prawdopodobieństwa dla $Y$ będzie dana wzoremn:
+\begin{align}
+    P(Y=n) &= \sum_{k=0}^{\infty} P(X=n+k) \cdot p^n (1-p)^k \binom{n+k}{k} =\\
+    &= \sum_{k=0}^{\infty} \frac{e^{-\lambda}\lambda^{n+k}}{(n+k)!} \cdot p^n (1-p)^k \binom{n+k}{k} =\\
+    &= e^{-\lambda}\lambda^n p^n \sum_{k=0}^{\infty} \frac{\lambda^k}{(n+k)!} (1-p)^k \frac{(n+k)!}{k!n!} =\\
+    &= \frac{e^{-\lambda} \lambda^n p^n}{n!} \sum_{k=0}^{\infty} \frac{(\lambda\cdot(1-p))^k}{k!} = \\
+    &= \frac{e^{-\lambda} \lambda^n p^n}{n!} e^{\lambda(1-p)} = \quad \text{(Szereg Maclaurina)} \\
+    &= \frac{e^{-\lambda} \cdot e^{\lambda-p\lambda} \lambda^{n} p^n}{n!} = \frac{e^{-\lambda p}(\lambda p)^n}{n!}
+\end{align}
+\noindent
+Wobec tego $Y\sim Po(\lambda p)$.
+
+\subsection{6L7}
+
+Niech $X\sim Geo(p)$ oraz $Y\sim Geo(r)$ będą niezależnymi zmiennymi losowymi o rozkładzie geometrycznym. Wyznaczmy rozkład zmiennej losowej
+$Z=\min{X,Y}$.
+
+Funkcja masy $P(X=k) = p(1-p)^{k-1}, k\in\mathbb{Z}^{+}$. Rozpiszmy prawdopodobieństwo dla $Z$:
+\setcounter{equation}{0}
+\begin{align}
+    P(Z=k) &= P(\min\{X,Y\}=k) =\\
+    &= P(X=k)P(Y>k) + P(X=k)P(Y=k) + P(X>k)P(Y=k) = \dots
+\end{align}
+Szansa, że zajdzie $P(X>k)$ (więcej niż $k$ prób do pierwszego sukcesu) wynosi $P(X>k)=(p-1)^k$, wobec tego:
+\begin{align}
+    \dots &= p(1-p)^{k-1}\cdot (1-r)^{k} + p(1-p)^{k-1}\cdot r(1-r)^{k-1} + (1-p)^k \cdot r(1-r)^{k-1}\\
+    &= (1-p)^{k-1}\left[p(1-r)^k + pr(1-r)^{k-1} + (1-p)r(1-r)^{k-1} \right]\\
+    &= \left[(1-p)(1-r)\right]^{k-1}\left[p(1-r) + pr + (1-p)r\right]\\
+    &= \left[(1-p)(1-r)\right]^{k-1}\left[p + r - pr\right]\\
+    &= (1-\left((1-p)(1-r)\right)^{k-1}\left[p+r - pr\right] 
+    \sim Geo(p+r-pr)
+\end{align}
+
+\subsection{7L7}
+
+Weźmy $X\sim Geo(p)$. Pokażmy, że zachodzi następująca zależność:
+\[
+    P(X=n+m|X>m) = P(X=n) \quad n,m\in\mathbb{N}
+\]
+
+\noindent
+Wiemy, że $P(X=k) = p(1-p)^{k-1}$, zatem zapiszmy:
+\setcounter{equation}{0}
+\begin{align}
+    P(X=n+m|X>m) = \frac{P(X=n+m \land X>m)}{P(X>m)} = \dots
+\end{align} 
+Z $X=n+m$ jednoznacznie wynika z $X>m$, zatem:
+\begin{align}
+    \dots = \frac{P(X=n+m)}{P(X>m)} = \frac{p(1-p)^{n+m-1}}{(1-p)^{m}} = p(1-p)^{n-1} = P(X=n)
+\end{align}
+Wymyślmy rozsądną interpretacja powyższego faktu.
+\begin{itemize}
+    \item Niezależnie od ilości porażek, które uzyskaliśmy wcześniej, rozkład prawdopodobieństwa $X$ nie zmienia się - nie przybliża nas do sukcesu.
+\end{itemize}
+
+
+\subsection{8L7}
+
+Załóżmy, że $\mathbf{E}(R) = 100$ oraz $\mathbf{var}(R) = 100$. 
+Zastosujmy nieówność Markowa oraz Czebyszewa do oszacowania z góry $P(R\geq 200)$.\\
+
+\noindent
+Nierówność Markowa:
+\setcounter{equation}{0}
+\begin{align}
+    P(R\geq 200) \leq \frac{\mathbf{E}(X)}{200} = \frac{100}{200} = \frac{1}{2}
+\end{align}
+
+\noindent
+Nierówność Czebyszewa:
+\begin{align}
+    P(R\geq 200) &= P(R - 100\geq 100) = P(|R-100|\geq 100) =\\
+    &= P(|R-\mathbf{E}(X)| \geq 100) \leq \frac{\mathbf{var}(R)}{100^2}
+    = \frac{100}{100^2} = \frac{1}{100}
+\end{align}
+
+
+\end{document}

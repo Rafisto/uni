@@ -1,0 +1,358 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Metody Probabilistyczne i Statystyka}  
+\author{Rafał Włodarczyk}
+\date{INA 3, 2024}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Lista 6}
+
+\subsection{1L6}
+
+Rzucamy niezależnie dwoma szcześciennymi kostkami. $X$ - mniejszy z rzutów.
+$Y$ - większy z rzutów. Wyznaczmy rozkład łączny oraz rozkłady brzegowe zmiennych X i Y.\\
+
+\noindent
+Zliczamy wszystkie przypadki dla których w min wyniósł $X$, a max $Y$. Wprowadźmy dwie zmienne losowe
+$R_1: \Omega \rightarrow \{1,2,\dots,6\}$ oraz $R_2: \Omega \rightarrow \{1,2,\dots,6\}$, gdzie $R_1$ odpowiada za pierwszy rzut,
+a $R_2$ za drugi rzut. Dokonajmy zliczenia poszczególnych wartości $\min,\max$:
+
+\begin{table}[h]
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \begin{tabular}{c|ccccccc}
+            $R_1/R_2$ & 1 & 2 & 3 & 4 & 5 & 6 \\ \bottomrule
+            1 & 1 & 1 & 1 & 1 & 1 & 1 & \\
+            2 & 1 & 2 & 2 & 2 & 2 & 2 & \\
+            3 & 1 & 2 & 3 & 3 & 3 & 3 & \\
+            4 & 1 & 2 & 3 & 4 & 4 & 4 & \\
+            5 & 1 & 2 & 3 & 4 & 5 & 5 & \\
+            6 & 1 & 2 & 3 & 4 & 5 & 6 &
+        \end{tabular}
+        \caption{Tabela $\min{R_1,R_2}$}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \begin{tabular}{c|ccccccc}
+            $R_1/R_2$ & 1 & 2 & 3 & 4 & 5 & 6 \\ \bottomrule
+            1 & 1 & 2 & 3 & 4 & 5 & 6 & \\
+            2 & 2 & 2 & 3 & 4 & 5 & 6 & \\
+            3 & 3 & 3 & 3 & 4 & 5 & 6 & \\
+            4 & 4 & 4 & 4 & 4 & 5 & 6 & \\
+            5 & 5 & 5 & 5 & 5 & 5 & 6 & \\
+            6 & 6 & 6 & 6 & 6 & 6 & 6 &
+        \end{tabular}
+        \caption{Tabela $\max{R_1,R_2}$}
+    \end{minipage}
+\end{table}
+\noindent
+Dzieląc liczbę przypadków przez liczbę możliwych wyników otrzymujemy
+rozkłady brzegowe $P_X(x)$ oraz $P_Y(y)$:
+\begin{table}[h]
+    \centering  
+    \begin{tabular}{c|cccccccc}
+        $X$ & 1 & 2 & 3 & 4 & 5 & 6 & & \\ \toprule
+        $P(X)$ & 11/36 & 9/36 & 7/36 & 5/36 & 3/36 & 1/36 & & \\ \bottomrule
+        \\
+        $Y$ & 1 & 2 & 3 & 4 & 5 & 6 & & \\ \toprule
+        $P(Y)$ & 1/36 & 3/36 & 5/36 & 7/36 & 9/36 & 11/36 & & \\ \bottomrule
+    \end{tabular}
+    \caption{Rozkłady brzegowe zmiennej $X$ i $Y$}
+\end{table}
+
+\noindent
+Wyznaczmy następnie rozkład łączny, czyli funkcję $P_{X,Y}(x,y)$, która określa prawdopodobieństwo, że zmienna $X$ przyjmie wartość $x$ oraz zmienna $Y$ przyjmie wartość $y$.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c|cccccccc}
+        $X/Y$ & 1 & 2 & 3 & 4 & 5 & 6 & & \\ \toprule
+        1 & 1/36 & 2/36 & 2/36 & 2/36 & 2/36 & 2/36\\
+        2 & 0 & 1/36 & 2/36 & 2/36 & 2/36 & 2/36\\
+        3 & 0 & 0 & 1/36 & 2/36 & 2/36 & 2/36\\
+        4 & 0 & 0 & 0  & 1/36 & 2/36 & 2/36\\
+        5 & 0 & 0 & 0  & 0 & 1/36 & 2/36\\
+        6 & 0 & 0 & 0  & 0 & 0 & 1/36\\
+    \end{tabular}
+    \caption{Rozkład łączny zmiennych $X$ i $Y$}
+\end{table}
+
+\noindent
+Odpowiedzmy na pytanie, czy zmienne losowe $X$ i $Y$ są niezależne. Wiemy, że zmienne losowe
+są niezależne gdy spełniony jest warunek:
+\[
+    (\forall A,B \in \mathcal{B}) P(X\in A \land Y \in B) = P(X \in A)P(Y \in B)
+\]
+gdzie $\mathcal{B}$ to zbiór borelowski. W naszym przypadku zbiór borelowski to $\{1,2,3,4,5,6\}$.
+Zobaczmy, że przykładowo dla wartości $A=\{1\}, B=\{1\}$. $P(X \in A \land Y \in B) = 1/36$, $P(X \in A)P(Y \in B) = 11/36 \cdot 1/36 = 11/216$,
+wobec tego zmienne losowe $X$ i $Y$ są zależne.\\
+
+\noindent
+Obliczmy wartość oczekiwaną zmiennej $X$ oraz $Y$:
+\begin{align}
+    E(X) &= \sum_{x=1}^{6} xP(X=x)= \\
+    &= 1\cdot 11/36 + 2\cdot 9/36 + 3\cdot 7/36 + 4\cdot 5/36 + 5\cdot 3/36 + 6\cdot 1/36 = 91/36 \\
+    E(Y) & =\sum_{y=1}^{6} yP(Y=y)= \\
+    &= 1\cdot 1/36 + 2\cdot 3/36 + 3\cdot 5/36 + 4\cdot 7/36 + 5\cdot 9/36 + 6\cdot 11/36 = 161/36
+\end{align}
+
+\subsection{2L6}
+
+Niech $F(s,t)$ będzie łączną dystrybuantą wektora losowego $(X,Y)$. Pokażmy, że dla dowolnych $a,b,c,d\in\mathbb{R}$ zachodzi:
+\[
+    P(a<X\leq b, c<Y\leq d) = F(b,d) - F(a,d) - F(b,c) + F(a,c)
+\]
+\noindent
+Możemy od $P(X\leq b, Y\leq d)$ odjąć przedziały brzegowe $P(X\leq a, Y\leq d)$, $P(X\leq b, Y\leq c)$, ale zgodnie z zasadą włączeń i wyłączeń
+musimy dodać z powrotem $P(X\leq a, Y\leq c)$, ponieważ dwukrotnie policzyliśmy przedział $P(X\leq a, Y\leq c)$. Ostatecznie otrzymujemy:
+\setcounter{equation}{0}
+\begin{align}
+    &P(a<X\leq b, c<Y\leq d) =_{\text{inclusion-exclusion principle}} \\
+    &= P(X\leq b, Y\leq d) - P(X\leq a, Y\leq d) - P(X\leq b, Y\leq c) + P(X\leq a, Y\leq c) = \\
+    &= F(b,d) - F(a,d) - F(b,c) + F(a,c)
+\end{align}
+
+\subsection{3L6}
+
+Wyznaczmy wartość oczekiwaną zmiennych losowych z zadań 1L5 oraz 3L5.\\
+
+\noindent
+W zadaniu 1L5 rozkład prawdopodobieństwa dla zmiennej losowej $R$ ($r\in\{0,1,2\}$) wyniósł:
+\[
+    P(R=r) = \begin{cases}
+        \frac{1}{4} & \text{dla } r=0 \\
+        \frac{7}{16} & \text{dla } r=1 \\
+        \frac{5}{16} & \text{dla } r=2
+    \end{cases}
+\]
+Zatem wartość oczekiwana wynosi:
+\setcounter{equation}{0}
+\begin{align}
+    \mathbf{E}(R) &= \sum_{r=0}^{2} r\cdot P(R=r) 
+    = 0\cdot \frac{1}{4} + 1\cdot \frac{7}{16} + 2\cdot \frac{5}{16} = \frac{17}{16}
+\end{align}
+
+\noindent
+W zadaniu 3L5 rozkład prawdopodobieństwa dla zmiennej losowej $X$ wyniósł:
+\[
+    P(X=x) = f_X(x) = \begin{cases}
+        \frac{1}{2\sqrt{x}} &\text { dla } x\in[0,1]\\
+        0 &\text{ dla } x\notin[0,1]
+    \end{cases} 
+\]
+Wyznaczmy wartość oczekiwaną zmiennej losowej $X$:
+\begin{align}
+    \mathbf{E}(X) 
+    &= \int_{-\infty}^{\infty} x f_X(x) dx
+    = \int_{0}^{1} \frac{x}{2\sqrt{x}} dx
+    = \int_{0}^{1} \frac{1}{2}\sqrt{x} dx =\\
+    &= \frac{1}{2} \cdot \left[\frac{2}{3} x^{\frac{3}{2}}\right]_{0}^{1}
+    = \frac{1}{2} \cdot \frac{2}{3}  \cdot \left[1^{\frac{3}{2}} - 0\right]
+    = \frac{1}{3}
+\end{align}
+
+\subsection{4L6}
+
+Niech $X: \Omega \rightarrow \mathbb{Z}_{+}$ będzie zmienną losową. 
+Wyznacz $\mathbf{E}(X)$ dla dwóch przypadków:
+\begin{enumerate}
+    \item $P(X=k) = \frac{1}{2^k}$
+    \item $P(X=k)=\frac{6}{\pi^2}\frac{1}{k^2}$ 
+\end{enumerate}
+
+\noindent
+Rozważmy przypadek pierwszy. Wartość oczekiwana dla zmiennej losowej $X$ wynosi:
+\setcounter{equation}{0}
+\begin{align}
+    \mathbf{E}(X) 
+    = \sum_{k\geq 1} k\cdot P(X=k) 
+    = \sum_{k\geq 1} k\cdot \left(\frac{1}{2}\right)^k
+\end{align}
+Spójrzmy na funkcję tworzącą dla podanej sumy:
+\begin{align}
+    \sum_{k\geq 1} x^k &= \frac{1}{1-x}\\
+    \frac{d}{dx} \left(\sum_{k\geq 1} x^k\right) &= \frac{d}{dx} \left(\frac{1}{1-x}\right)\\
+    \sum_{k\geq 1} kx^{k-1} &= \frac{1}{(1-x)^2}\\
+    \sum_{k\geq 1} kx^k &= \frac{x}{(1-x)^2}
+\end{align}
+Podstawmy $x=1/2$:
+\begin{align}
+    \mathbf{E}(X) = \sum_{k\geq 1} k\cdot \left(\frac{1}{2}\right)^k = \frac{1/2}{\left(1-\frac{1}{2}\right)^2} = 2
+\end{align}
+
+\noindent
+Rozważmy przypadek drugi. Wartość oczekiwana dla zmiennej losowej $X$ wynosi:
+\begin{align}
+    \mathbf{E}(X)
+    = \sum_{k\geq 1} k\cdot P(X=k) = \sum_{k\geq 1} k\cdot \frac{6}{\pi^2}\frac{1}{k^2} = \frac{6}{\pi^2}\sum_{k\geq 1} \frac{1}{k}
+\end{align}
+Szereg $\sum_{k\geq 1} \frac{1}{k}$ jest rozbieżny, zatem wartość oczekiwana dla zmiennej losowej $X$ nie istnieje.
+
+\subsection{5L6}
+
+Niech $X_1,\dots X_n$ będą niezależnymi zmiennyim losowymi o rozkładzie $F$. Niech
+$Y=\min\{X_1,\dots,X_n\}$ oraz $Z=\max\{X_1,\dots,X_n\}$. Wyznaczmy dystrybuantę zmiennych losowych $Y$ oraz $Z$.\\
+
+\subsubsection*{Dystrybuanty w przypadku ogólnym}
+
+Dla zmiennej losowej $Y$ dystrybuanta wynosi:
+\setcounter{equation}{0}
+\begin{align}
+    F_Y(t) = P(Y\leq t) &= P(\min\{X_1,\dots, X_n\} \leq t) =\\
+    &= P(X_1 \leq t \lor \dots \lor X_n \leq t) =\\
+    &= 1 - P(\min\{X_1,\dots,X_n\} > t) =\\
+    &= 1 - P(X_1 > t\land \dots \land X_n \land t) =\\
+    &= 1 - P(X_1>t)P(X_2>t)\cdot \dots \cdot P(X_n>t)=\\
+    &= 1 - \left(1-P(X_1\leq t\right))^n\\
+    &= 1 - (1-F(t))^n
+\end{align}
+Dla zmiennej losowej $Z$ dystrybuanta wynosi:
+\begin{align}
+    F_Z(t) = P(Z\leq t) &= P(\max\{X_1,\dots, X_n\} \leq t) =\\
+    &=P(X_1 \leq t \land X_2 \leq t \land \dots \land X_n \leq t) =\\
+    &=P(X_1\leq t)P(X_2\leq t)\cdot P(X_n\leq t) =\\
+    &=F(t)^n
+\end{align}
+
+\subsubsection*{Dla $X_i$ z ustalonym PMF}
+
+Załóżmy, że $X_i$, $i\in\{1\dots, n\}$ to dyskretne zmienne losowe z PMF:
+\[
+    P(X_i = k) = \frac{1}{N}, k\in\{1,\dots, N\}
+\]
+Wyznaczmy funkcje masy $Y$, możemy ją zapisać jako różnicę dystrybuant:
+\begin{align}
+    P(Y = k) &= F_Y(k) - F_Y(k-1)\\
+    P(Y = k) &= \left[1 - \left(1 - \frac{k}{N}\right)^n\right] - \left[1 - \left(1 - \frac{k-1}{N}\right)^n\right]\\
+    P(Y = k) &= \left(1 - \frac{k-1}{N}\right)^n - \left(1 - \frac{k}{N}\right)^n, \quad k \in \{1, 2, \dots, N\}.
+\end{align}
+Podobnie z funkcją masy $Z$:
+\begin{align}
+    P(Z = k) &= F_Z(k) - F_Z(k-1)\\
+    P(Z = k) &= \left(\frac{k}{N}\right)^n - \left(\frac{k-1}{N}\right)^n, \quad k \in \{1, 2, \dots, N\}
+\end{align}
+
+Wyznaczmy następnie $\mathbf{E}(Y)$. Wartość oczekiwana zmiennej losowej $Y$ jest dana wzorem:
+\begin{align}
+    \mathbf{E}(Y) &= \sum_{k=1}^N k \cdot P(Y = k)\\
+    &= \sum_{k=1}^N k \left[\left(1 - \frac{k-1}{N}\right)^n - \left(1 - \frac{k}{N}\right)^n\right]\\
+    &= \mathbf{E}(Y) = \sum_{k=1}^N \left(1 - \frac{k-1}{N}\right)^n
+\end{align}
+Podobnie wyznaczmy $\mathbf{E}(Z)$. Wartość oczekiwana zmiennej losowej $Z$ jest dana wzorem:
+\begin{align}
+    \mathbf{E}(Z) &= \sum_{k=1}^N k \cdot P(Z = k)\\
+    &= \sum_{k=1}^N k \left[\left(\frac{k}{N}\right)^n - \left(\frac{k-1}{N}\right)^n\right]\\
+    &= \mathbf{E}(Z) = N - \sum_{k=0}^{N-1} \left(\frac{k}{N}\right)^n
+\end{align}
+
+\subsubsection*{Dla $X_i$ z rozkładem jednostajnym}
+
+Załóżmy teraz, że $X_i$ ma rozkład jednostajny na przedziale $[0,1]$. Wówczas dystrybuanta \( F(t) \) i gęstość \( f(t) \) są dane wzorami:
+\[
+F_X(t) = P(X_i \leq t) = t, \quad t \in [0, 1],
+\]
+\[
+f_X(t) = \frac{d}{dt} F_X(t) = 1, \quad t \in [0, 1].
+\]
+Z wcześniejszych ustaleń:
+\begin{align}
+F_Y(t) &= 1 - (1 - F(t))^n = 1 - (1 - t)^n, \quad t \in [0, 1]\\
+f_Y(t) &= \frac{d}{dt} F_Y(t) = \frac{d}{dt} \left[1 - (1 - t)^n\right] = n(1 - t)^{n-1}, \quad t \in [0, 1]
+\end{align}
+Podobnie zapisujemy:
+\begin{align}
+F_Z(t) &= F_X(t)^n = t^n, \quad t \in [0, 1]\\
+f_Z(t) &= \frac{d}{dt} F_Z(t) = \frac{d}{dt} \left[t^n\right] = n t^{n-1}, \quad t \in [0, 1]
+\end{align}
+Wartość oczekiwana \( Y \) jest dana wzorem:
+\begin{align}
+    \mathbf{E}(Y) &= \int_0^1 t \cdot f_Y(t) \, dt = \int_0^1 t \cdot n(1 - t)^{n-1} \, dt\\
+    \mathbf{E}(Y) &= n \int_0^1 t (1 - t)^{n-1} \, dt\\
+    \mathbf{E}(Y) &= n \left[ -\frac{t (1 - t)^n}{n} \bigg|_0^1 + \int_0^1 \frac{(1 - t)^n}{n} \, dt \right]\\
+    \mathbf{E}(Y) &= n \cdot \frac{1}{n} \int_0^1 (1 - t)^n \, dt = \int_0^1 (1 - t)^n \, dt\\
+    \mathbf{E}(Y) &= \left[ -\frac{(1 - t)^{n+1}}{n+1} \right]_0^1 = \frac{1}{n+1}\\
+\end{align}
+Wartość oczekiwana \( Z \) jest dana wzorem:
+\begin{align}
+    \mathbf{E}(Z) &= \int_0^1 t \cdot f_Z(t) \, dt = \int_0^1 t \cdot n t^{n-1} \, dt\\
+    \mathbf{E}(Z) &= n \int_0^1 t^n \, dt = n \left[ \frac{t^{n+1}}{n+1} \right]_0^1 = \frac{n}{n+1}
+\end{align}
+
+\subsection{6L6}
+
+Niech $X: \Omega \rightarrow \mathbb{N}$. Pokażmy, że $\mathbf{E}(X)=\sum_{k=0}^{\infty} P(X>k)$, o ile podany szereg jest zbieżny.\\
+
+\noindent
+Rozpiszmy z definicji. Możemy zamienić $k\cdot P(X=k)$ na sumę $\sum_{l=1}^{k} P(X=k)$, zatem:
+\setcounter{equation}{0}
+\begin{align}
+    \sum_{k=1}^{\infty} k\cdot P(X=k) 
+    &= \sum_{k=1}^{\infty} \sum_{l=1}^{k} P(X=k) 
+    = \sum_{l=1}^{\infty} \sum_{k=l}^{\infty} P(X = k) =\\
+    &= \sum_{l=1}^{\infty} P(X \geq l) 
+    = \sum_{l=0}^{\infty} P(X > l) 
+\end{align}
+
+
+\end{document}
