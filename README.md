@@ -12,7 +12,7 @@ Table of Contents
   - [😖 **Probability and Statistics** 😖](#-probability-and-statistics-)
   - [✉️ **Databases** ✉️](#️-databases-️)
   - [🤔 **Algebra** 🤔](#-algebra-)
-  - [🌌 **Physics I** 🌌:](#-physics-i-)
+  - [🌌 **Physics I** 🌌](#-physics-i-)
   - [**Procedural Programming (lab 5.0 - max)** in `C`](#procedural-programming-lab-50---max-in-c)
   - [💻 **Object-Oriented Programming (lab 5.5 - max)** 💻](#-object-oriented-programming-lab-55---max-)
   - [📚 **Logic and Formaltructures** 📚](#-logic-and-formaltructures-)
@@ -43,6 +43,7 @@ Table of Contents
 
 ✨***Long Cheatsheet***✨
 - See [notes.pdf (polish)](./3_semester_2024/mpis/notes.pdf)
+- See [various exercises](./3_semester_2024/mpis/cw/)
 
 ## ✉️ **Databases** ✉️
 
