@@ -8,7 +8,7 @@ Table of Contents
 - [Notes Repository 🚀](#notes-repository-)
   - [📊 **Calculus I and Calculus II** 📊](#-calculus-i-and-calculus-ii-)
   - [🤭 **Discrete Mathematics** 🤭](#-discrete-mathematics-)
-  - [🧠 **Operating Systems** 🧠](#-operating-systems-)
+  - [🧠 **Computer architecture and Operating Systems (lab 5.5 - max)** 🧠](#-operating-systems-)
   - [😖 **Probability and Statistics** 😖](#-probability-and-statistics-)
   - [✉️ **Databases** ✉️](#️-databases-️)
   - [🤔 **Algebra** 🤔](#-algebra-)
