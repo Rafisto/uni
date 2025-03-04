@@ -1,0 +1,176 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{AiSD}  
+\author{Rafał Włodarczyk}
+\date{INA 4, 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Lecture I - Losowe sortowanie}
+
+Definiujemy problem:
+
+\begin{enumerate}
+    \item Input: $A=(a_1,\dots,a_n), |A|=n$
+    \item Output: Permutacja tablicy wyjściowej $(a_1',a_2',\dots,a_n')$, takie że: $a_1'\leq a_2' \leq \dots \leq a_n'$.
+\end{enumerate}
+
+\subsection{Worst-case analysis}
+
+\begin{align}
+    T(n) = \max_{\text{wszystkie wejścia}}\{\text{\#operacji po wszystkich |n|-wejściach}\}
+\end{align}
+
+\subsection{Average-case analysis}
+
+Zakładamy pewien rozkład prawdopodobieństwa na danych wejściowych. Z reguły myślimy o rozkładzie jednostajnym. Niech $T$ - zmienna losowa liczby operacji wykonanych przez badany algorytm.
+
+\begin{align}
+    \mathbf{E}(T) - \text{wartość oczekiwana T}
+\end{align}
+
+\noindent
+Później możemy badać wariancję, oraz koncentrację.
+
+\subsection{Analiza losowego sortowania}
+
+Dla poprzedniego algorytmu zobaczmy, że: $n! \sim \sqrt{2\pi n} \left(\frac{n}{e}\right)^n$ $\left[\text{czyli } f(n)\sim g(n) \equiv \lim_{n\rightarrow \infty} \frac{f(n)}{g(n)} = 1 \right]$. To jest tragiczna złożoność.
+
+\subsection{Insertion Sort $(A,n)$}
+
+$(A,n) = ((a_1,a_2,\dots, a_n),n)$
+
+\begin{verbatim}
+for j = 2...n
+{
+    key = A[j]
+    i=j-1
+    while(i>0 && A[i]>key) {
+        A[i+1] = A[i]
+        i = i - 1
+    }
+    A[i+1] = key
+}
+\end{verbatim}
+
+\noindent
+Przykład: $A=(8, 2, 4, 9, 3, 6), n = 6$
+
+\begin{itemize}
+    \item $8_i, 2_j, 4, 9, 3, 6 \quad j=2, i=1, key = 2$ while
+    \item $2, 8_j, 4, 9, 3, 6$
+    \item $2, 8_i, 4_j, 9, 3, 6 \quad j=3, i=2, key = 4$ while
+    \item $2, 4, 8, 9, 3, 6$
+    \item $2, 4, 8_i, 9_j, 3, 6 \quad j=4, i=3, key = 9$ no while
+    \item $2, 4, 8, 9_i, 3_j, 6 \quad j=5, i=4, key = 3$ while
+    \item $2, 3, 4, 8, 9, 6$
+    \item $2, 3, 4, 8, 9_i ,6_j \quad j=6, i=5, key = 6$ while
+    \item $2, 3, 4, 6, 8, 9$
+\end{itemize}
+
+\begin{verbatim}
+| <= x | > x | x | ... |
+| <= x | x | > x | ... |
+\end{verbatim}
+
+\noindent
+Porównujemy element ze wszystkim co jest przed nim - wszystko przed $j$-tym elementem będzie posortowane. Insertion sort nie swapuje par elementów w tablicy, a przenosi tam gdzie jest jego miejsce.
+
+\subsubsection{Worst-case analysis - Insertion Sort $(A,n)$}
+
+Odwrotnie posortowana tablica powoduje najwięcej przesunięć. Ponieważ ustaliśmy że liczba operacji w while zależy od $j$, wtedy:
+
+\begin{align}
+    T(n) &= \sum_{j=2}^n O(j-1) = \sum_{j=1}^{n-1} O(j) = O\left(\sum_{j=1}^{n-1} j\right) =\\
+    &= O\left(\frac{1+n-1}{2}\cdot (n-1)\right) = O\left(\frac{(n-1)\cdot(n)}{2}\right) = O\left(\frac{n^2}{2}\right) = O(n^2)
+\end{align}
+c
+\subsubsection{Average-case analysis - Insertion Sort $(A,n)$}
+
+Policzmy dla uproszczenia, że na wejściu mamy $n$-elementowe permutacje, z których każda jest jednakowo prawdopodobna $p=\frac{1}{n!}$. Spróbujmy wyznaczyć $\mathbf{E}$, korzystając z inwersji permutacji. Wartość oczekiwana liczby inwersji w losowej permutacji wynosi:
+
+\begin{align}
+    \mathbf{E} \sim \frac{n^2}{4}
+\end{align}
+
+\noindent
+Pominęliśmy stałe wynikające z innych operacji niż porównywanie. W average-case będziemy około połowę szybiciej niż w worst-case.\\
+
+\noindent
+\textit{Pseudokod bez przykładu jest słaby.}
+
+\subsection{Przykład złożoności}
+
+Patrzymy na wiodący czynnik.
+
+\begin{align}
+    13n^2 + 91n\log n + 4n + 13^{10} &= O(n^2)\\
+    &= 13n^2 + O(n\log n)
+\end{align}
+\noindent
+Chcielibyśmy gdzie to konieczne, zapisać \textit{lower order terms}.\\
+
+\noindent
+\textit{Pytanie o dzielenie liczb} - istnieją algorytmy, które ze względu na arytmetyczne właściwości liczb sprawiają, że mniejsze liczby mogą dzielić się dłużej niż większe. Podczas tego kursu nie omawiamy złożoności dla takich algorytmów.  
+
+\end{document}
