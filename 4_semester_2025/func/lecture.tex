@@ -1,0 +1,296 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Programowanie Funkcyjne}  
+\author{Rafał Włodarczyk}
+\date{INA 4, 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Lecture I - Haskell}
+
+Haskell = leniwy język funkcyjny\\
+
+\[
+    \textit{functions are first class objects}
+\]
+
+\[
+    x \rightarrow \fbox{f} \rightarrow f(x)
+\]
+
+\noindent
+Rozważmy fragment kodu:
+\begin{verbatim}
+int c = 2;
+int f(int x) {
+    return (c*x);
+}
+\end{verbatim}
+Ta funkcja nie jest czysta - wykorzystuje swoje środowisko.\\\\
+Rozważmy fragment kodu:
+\begin{verbatim}
+int f(int x) {
+    printf("Hello");
+    return (2 * x);
+}
+\end{verbatim}
+Zadziała na środowisku zewnętrznym - to nie jest czysta funkcja
+\begin{verbatim}
+int f(int x) {
+    return (2*x);
+}
+\end{verbatim}
+Nie wpływa na otoczenie, nie wykorzystuje, ani nie zmienia występujacych obiektów.\\
+Języki funkcyjne operują na czystych funkcjach.
+
+\subsection{Instalacja Haskella - GHCup}
+
+\textit{ghci} - interaktywna konsola GHC (Glasgow Haskell Compilers)
+
+\begin{verbatim}
+ghci> 1 + 2
+3
+ghci> :? # help
+ghci> :q # exit
+ghci> :load file.hs
+\end{verbatim}
+
+\subsection{Problem wczytywania zmiennych}
+
+\begin{verbatim}
+!! readInt() {...} :: Int
+\end{verbatim}
+
+\begin{definition}{Funkcja jednej zmiennej}.\\
+
+\noindent
+Zdefiniujmy funkcję
+
+\begin{verbatim}
+w1.hs
+
+f x = 1 + x*(1+x)
+
+ghci>:load w1
+ghci>f 1
+3
+ghci>:type f
+f :: Num a => a -> a
+ghci>:info Num 
+\end{verbatim}
+Podstawowy typ Num
+\begin{verbatim}
+ghci> :info Num
+type Num :: * -> Constraint
+class Num a where
+    (+) :: a -> a -> a
+    (-) :: a -> a -> a
+    (*) :: a -> a -> a
+    negate :: a -> a
+    abs :: a -> a
+    signum :: a -> a
+    fromInteger :: Integer -> a
+    {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
+        -- Defined in ‘GHC.Num’
+instance Num Double -- Defined in ‘GHC.Float’
+instance Num Float -- Defined in ‘GHC.Float’
+instance Num Int -- Defined in ‘GHC.Num’
+instance Num Integer -- Defined in ‘GHC.Num’
+instance Num Word -- Defined in ‘GHC.Num’
+\end{verbatim}
+\end{definition}
+
+\subsection{Podstawowe typy}
+
+Int, Integer (unlimited size), Float, Double, Char, Bool
+
+\[
+\text{Int, Integer} \in \text{Integral} \subseteq \text{Num}
+\]
+
+\begin{center}
+\begin{tikzpicture}
+    \node at (3.5,4.5) {Num};
+    \draw (0,0) rectangle (7, 5);
+    \node at (1.5,2) [circle, draw] {Int, Integer};
+    \node at (1.5, 0.7) {Integral};
+    \node at (5, 3) [circle, draw] {Float, Double};
+    \node at (5, 1.5) {Real};
+\end{tikzpicture}
+\end{center}
+
+\noindent
+Pod spodem działa \href{https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system}{Teoria Typowania Hindleya - Milnera}
+
+\begin{verbatim}
+f(3.23 :: Double) # możemy explicite wymusić typ
+\end{verbatim}
+
+\begin{center}
+    \begin{tikzpicture}
+        \draw (-2,-2) rectangle(8, 6);
+        \node at (2, -1)  {EQ};
+        \node at (4, -1)  [circle, draw] {Char};
+        \node at (6, -1)  [circle, draw] {Bool};
+        \node at (3.5,4.5) {Num};
+        \draw (0,0) rectangle (7, 5);
+        \node at (1.5,2) [circle, draw] {Int, Integer};
+        \node at (1.5, 0.7) {Integral};
+        \node at (5, 3) [circle, draw] {Float, Double};
+        \node at (5, 1.5) {Real};
+    \end{tikzpicture}
+\end{center}
+
+\begin{definition}{w1.hs} Zdefiniujmy funkcje:\\
+
+\begin{verbatim}
+ghci> g x y = 1 + x * y
+ghci> :type g
+g :: (Fractional t1, Num a) => t1 -> t2 -> a
+ghci> g x y = 1 + x * y
+ghci> h = g (2::Int)
+ghci> :t h
+h :: Int -> Int
+\end{verbatim}
+\end{definition}
+Z podobną sytuacją mieliśmy do czynienia przy potęgowaniu liczb kardynalnych:
+\begin{align}
+    \left| C^{B\times A} \right| = \left| \left(C^B\right)^A \right| 
+\end{align}
+    
+\subsection{$\lambda$-wyrażenie}
+
+\begin{definition}{$\lambda$-wyrażenie (funkcja anonimowa)}
+\[
+    \left(\lambda x \rightarrow \text{expr}\right)(t) = \text{expr}\left[x\leadsto  t\right]
+\]
+Chcielibyśmy znaleźć:
+\begin{align}
+\Psi &: C^{B\times A} \rightarrow \left(C^B\right)^A\\
+\Psi (t) &= \left(\lambda a : A \rightarrow \left(\lambda b: B \rightarrow f (a,b) \right)\right)\\
+\Psi (f) (a) &= (\lambda b : B \rightarrow f(a,b))
+\end{align}
+Funkcję $\Psi$ nazywamy funkcją curry. Wszyskie funkcje w Haskellu są poddane curryingowi.\\
+
+\textit{Curry Haskell - Amerykański Logik z XX wieku.}\\
+
+\end{definition}
+
+\noindent
+Podstawowym narzędziem języków funkcyjnych jest rekursja.
+
+\begin{information}{Silnia}
+Zapiszmy silnię w Haskellu. Najsilniejsze działanie w Haskellu to aplikacja funkcji na argumencie:
+\begin{verbatim}
+fact1 n = if n == 0 then 1 
+          else n * fact1 (n - 1);
+\end{verbatim}
+\textit{else} musi być w Haskellu - wynik zawsze musi być czymś.
+\end{information}
+
+
+\begin{information}{Pattern Matchings}
+Zapiszmy lepszą silnie:
+\begin{verbatim}
+fact2::Integer -> Integer
+fact2 0 = 1
+fact2 n = n * fact2(n-1)
+\end{verbatim}
+\end{information}
+
+\begin{information}{Case Expression}
+Zapiszmy za pomocą case expression:
+\begin{verbatim}
+fact3 n = case n of
+          0 -> 1
+          otheriwse -> n * fact3(n-1) 
+\end{verbatim}
+\end{information}
+
+\begin{information}{Pseudozmienne}
+Zapiszmy pseudozmienne:
+\begin{verbatim}
+fact4 n = let y = n - 1 in
+        if n == 0 then 1
+        else n * fact4 y
+
+fact4 n = (lambda y -> if n==0 then 1 else n * fact4 y)(n-1)
+\end{verbatim}
+\end{information}
+To jest język C
+\begin{verbatim}
+h x = x + x sin(x) sin^2 (x)
+float h(float x) {
+    float y = sin(x);
+    return (x + x*y + y*y);
+}
+\end{verbatim}
+Równoważnik Haskellowy:
+\begin{verbatim}
+h x = (\y -> x + x*y + y*y)(sin x)
+h x = let y = sin x in 
+      x + x*y + y*y
+\end{verbatim}
+
+\end{document}
