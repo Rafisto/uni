@@ -173,4 +173,99 @@ Chcielibyśmy gdzie to konieczne, zapisać \textit{lower order terms}.\\
 \noindent
 \textit{Pytanie o dzielenie liczb} - istnieją algorytmy, które ze względu na arytmetyczne właściwości liczb sprawiają, że mniejsze liczby mogą dzielić się dłużej niż większe. Podczas tego kursu nie omawiamy złożoności dla takich algorytmów.  
 
+\section{Lecture II - Merge Sort}
+
+\subsection{Merge sort $(A,1,n)$}
+
+Niech złożoność T(n) - złożność algorytmu.
+
+\newpage
+
+\noindent
+Funkcja merge sort
+\begin{verbatim}
+O(1)          | if |A[1...n]| == 1 return A[1...n]
+              | else
+T(floor(n/2)) |     B = MERGE_SORT(A,1,floor(n/2))
+T(ceil(n/2))  |     C = MERGE_SORT(A,floor(n/2)+1, n)
+O(n)          |     return MERGE(B,C)
+\end{verbatim}
+
+\noindent
+Funkcja merge
+\begin{verbatim}
+MERGE(X[1...k], Y[1...l])
+if k = 0 return Y[1...l]
+if l = 0 return X[1...k]
+if X[1] <= Y[1]
+    return X[1] o MERGE(X[2...k], Y[1...l])
+else   
+    return Y[1] o MERGE(X[1...k], Y[2...l])
+\end{verbatim}
+
+\begin{verbatim}
+MERGE(A,B)
+2 1 ---> [1] + MERGE(A,B (bez 1))
+7 9
+13 10
+19 11
+20 14
+  
+2 9  ---> [1,2] + MERGE(A (bez 2),B)
+7 10
+13 11
+19 14
+20 .
+
+... ---> [1,2,7,9,10,11,13,14]
+19 .
+20 .
+
+... ---> [1,2,7,9,10,11,13,14,19,20]
+\end{verbatim}
+
+\begin{verbatim}
+[10], [2], [5], [3], [7], [13], [1], [6]
+[2, 10], [3,5], [7,13], [1,6]
+[2,3,5,10], [1,6,7,13]
+[1,2,3,5,6,7,10,13]
+\end{verbatim}
+
+\noindent
+Złożoność obliczeniowa merge-a wynosi $O(k+l)$ - w najgorszym przypadku bierzemy najpierw z jednej strony, potem z drugiej i na zmianę.
+
+\begin{align}
+    T(n) &= T\left(\left\lfloor \frac{n}{2} \right\rfloor\right) + T\left(\left\lceil \frac{n}{2} \right\rceil\right) + O(n)\\
+    T(n) &= 2\cdot T\left(\frac{n}{2}\right) + O(n)
+\end{align}
+
+\newpage
+
+\noindent
+Rozpiszmy tzw drzewo rekursji:
+
+\begin{verbatim}
+        cn                             | cn
+       /  \                            |
+  cn/2      cn/2                       | cn
+  /   \     /   \                      |
+cn/4 cn/4 cn/4 cn/4                    | cn
+                                       |
+      [...]                            | ...
+                                       |
+O(1) ... O(1) ... O(1) # liści mamy n  | cn
+\end{verbatim}
+
+\noindent
+Musimy dodać wszystkie koszty, które pojawiły się w drzewie. Dodajmy piętra, a następnie zsumumjmy. 
+Żeby znać wysokość drzewa interesuje nas dla jakiego $h$ zajdzie $\frac{n}{2^h} = 1$
+
+\begin{align}
+    \frac{n}{2^h} = 1 \implies 2^h = n \implies h = \log_2 n
+\end{align}
+Zatem złożność:
+\begin{align}
+    \sum_{i=1}^{\log n} cn = cn\log n \sim O(n\log n)
+\end{align}
+
 \end{document}
