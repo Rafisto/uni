@@ -9,6 +9,7 @@
 
 \usepackage{color} 
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amsfonts}                                                                   
 \usepackage{graphicx}                                                             
 \usepackage{booktabs}
@@ -66,7 +67,7 @@
 
 \tableofcontents
 
-\section{Lecture I - Losowe sortowanie}
+\section{Lecture I - Sortowanie}
 
 Definiujemy problem:
 
@@ -267,5 +268,276 @@ Zatem złożność:
 \begin{align}
     \sum_{i=1}^{\log n} cn = cn\log n \sim O(n\log n)
 \end{align}
+
+\section{Lecture III - Narzędzia do analizy algorytmów}
+
+\textit{Dzisiejszy wykład prowadzi GODfryd}
+
+\subsection{Notacja asymptotyczna}
+
+\begin{itemize}
+    \item Big-$O$ ($O$-duże) $f: \mathbb{N} \rightarrow \mathbb{R}$
+    \item Big-$\Omega$ ($\Omega$-duże) $f: \mathbb{N} \rightarrow \mathbb{R}$
+    \item Big-$\Theta$ ($\Theta$-duże) $f: \mathbb{N} \rightarrow \mathbb{R}$
+    \item Small-$o$ ($o$-małe) $f: \mathbb{N} \rightarrow \mathbb{R}$
+\end{itemize}
+
+\subsection{Notacja Big-$O$}
+
+\begin{definition}{Notacja Big-$O$}
+    Funkcja $f(n)\in O(g(n))$, gdy:
+    \[
+        f(n) = O(g(n)) \equiv 
+        \left(\exists c>0\right)
+        \left(\exists n_0\in\mathbb{N}\right)
+        \left(\forall n\geq n_0\right)
+        \left(|f(n)| \leq c \cdot |g(n)|\right)
+    \]
+    \noindent
+    Przykład: $2n^2 = O(n^3)$, dla $n_0 = 2, c = 1$ definicja jest spełniona.\\
+    \\
+    \textit{Pomijamy tutaj stałe - interesuje nas rząd wielkości}
+
+    \[
+        O(g(n)) = \left\{f\in\mathbb{N}^\mathbb{R} : \text{f spełnia definicję}\right\}
+    \]
+
+    \noindent
+    $O(g(n))$ jest klasą funkcji, ale jako informatycy możemy zapisywać $f=O(g)$, zamiast $f\in O(g)$.
+    Notacja nie ma symetrii, to znaczy $f=O(g) \nrightarrow  g=O(f)$ 
+\end{definition}
+
+\begin{fact}{Definicja Big-O za pomocą granicy}
+    Możemy zapisać alternatywnie:
+    \[
+        f(n) = O(g(n)) \equiv \limsup_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| \leq \infty
+    \]
+    \noindent
+    Uwaga. Jeśli $\lim_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| < \infty$ (istnieje), to:
+    \[
+        \limsup_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| =  \lim_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| 
+    \]
+\end{fact}
+
+Przykłady:
+$
+\begin{cases}
+    f(n) = n^2\\
+    g(n) = (-1)^n n^2
+\end{cases}
+$
+
+
+Granica nie istnieje, ale $\limsup = 1$
+
+$
+\begin{cases}
+    \frac{f(n)}{g(n)} = \begin{cases}
+        1, \quad 2 \quad | \quad n\\
+        \frac{1}{n}, \quad 2 \quad \not| \quad n
+    \end{cases}
+\end{cases}
+$
+
+Granica nie istnieje.
+
+\begin{fact}{Dokładność zapisu Big-O}
+    Pomijamy składniki niższego rzędu jako mniej istotne, ale podkreślamy że istnieją:
+    \begin{align}
+        f(n) = n^3 + O(n^2) \equiv 
+        \left(\exists h(n) = O(n^2)\right)\left(f(n) = n^3 + h(n)\right)
+    \end{align}
+
+    \noindent
+    Rozważmy następnie stwierdzenie:
+    \begin{align}
+        n^2 + O(n) = O(n^2) \equiv 
+        \left(\forall f(n) = O(n)\right)
+        \left(\exists h(n) = O(n^2)\right)
+        \left(n^2 + f(n) = h(n)\right)
+    \end{align}
+    Rozumiemy to następująco - dodając dowolną funkcję z klasy funkcji liniowych do $n^2$ otrzymamy funkcję z klasy funkcji kwadratowych.
+\end{fact}
+
+\subsection{Notacja Big-$\Omega$}
+
+\begin{definition}{Notacja Big-$\Omega$}
+    Funkcja $f(n)\in \Omega(g(n))$, gdy:
+    \begin{align}
+        f(n) = \Omega(g(n)) \equiv 
+        \left(\exists c>0\right)
+        \left(\exists n_0\in\mathbb{N}\right)
+        \left(\forall n\geq n_0\right)
+        \left(|f(n)| \geq c \cdot |g(n)|\right)
+    \end{align}
+    \noindent
+    biorąc $c' = \frac{1}{c} > 0$ mamy: $(|g(n)| \leq c' \cdot |f(n)|)$, czyli $g(n) = O(f(n))$.\\
+    Przykład:
+    \begin{align}
+        2n^2 = O(n^3)\\
+        n^3 = \Omega(2n^2)\\
+        n = \Omega(\log n)
+    \end{align}
+
+    \noindent
+    \textit{Każda funkcja jest Omega od siebie samej.}
+\end{definition}
+
+\subsection{Notacja Big-$\Theta$}
+
+\begin{definition}{Notacja Big-$\Theta$}
+    Funkcja $f(n)\in \Theta(g(n))$, gdy:
+    \begin{align}
+        f(n) = \Theta(g(n)) \equiv 
+        \left(\exists c_1, c_2 > 0\right)
+        \left(\exists n_0\in\mathbb{N}\right)
+        \left(\forall n\geq n_0\right)
+        \left(c_1 \cdot |g(n)| \leq |f(n)| \leq c_2 \cdot |g(n)|\right)
+    \end{align}
+    \noindent
+    Przykład:
+    \begin{align}
+        n^2 = \Theta(2n^2)\\
+        n^3 = \Theta(n^3)\\
+        n^4 + 3n^2 + \log n = \Theta(n^4)
+    \end{align}
+\end{definition}
+
+\begin{fact}{Dokładność zapisu Theta}
+    \begin{align}
+        f(n) = \Theta(g(n)) \equiv f(n) = O(g(n)) \land f(n) = \Omega(g(n))\\
+        \Theta(f(n)) = O(f(n)) \cap \Omega(f(n))
+    \end{align}
+\end{fact}
+Rozważmy przypadek patologiczny
+\begin{align}
+    f(n) = n^{1+\sin \frac{\pi \cdot n}{2}}\quad g(n) = n\\
+    f\neq O(g), g\neq O(f)
+\end{align}
+
+\subsection{Notacja small-$o$}
+
+\begin{definition}{Notacja small-$o$}
+    Funkcja $f(n)\in o(g(n))$, gdy:
+    \begin{align}
+        f(n) = o(g(n)) \equiv 
+        \left(\forall c>0\right)
+        \left(\exists n_0\in\mathbb{N}\right)
+        \left(\forall n\geq n_0\right)
+        \left(|f(n)| < c \cdot |g(n)|\right)
+    \end{align}
+    \noindent
+    Równoważnie:
+    \begin{align}
+        f(n) = o(g(n)) \equiv \lim_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| = 0
+    \end{align}
+    \noindent
+    Przykład:
+    \begin{align}
+        n = o(n^2)\\
+        n^2 = o(n^3)\\
+        n^3 = o(2^n)
+    \end{align}
+\end{definition}
+
+\subsection{Notacja small-$\omega$}
+
+\begin{definition}{Notacja small-$\omega$}
+    Funkcja $f(n)\in \omega(g(n))$, gdy:
+    \begin{align}
+        f(n) = \omega(g(n)) \equiv 
+        \left(\forall c>0\right)
+        \left(\exists n_0\in\mathbb{N}\right)
+        \left(\forall n\geq n_0\right)
+        \left(|f(n)| > c \cdot |g(n)|\right)
+    \end{align}
+    \noindent
+    Równoważnie:
+    \begin{align}
+        f(n) = \omega(g(n)) \equiv \lim_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| = \infty
+    \end{align}
+    \noindent
+    Przykład:
+    \begin{align}
+        3.14n^2 + n = O(n^3) = \omega(n)
+    \end{align}
+\end{definition}
+
+\subsection{Metody rozwiązywania rekurencji}
+
+\begin{itemize}
+    \item Metoda podstawienia (indukcji) - Cormen
+    \item Metoda drzewa rekursji
+    \item Metoda master theorem
+\end{itemize}
+
+\subsection{Rozwiązywanie rekurencji}
+
+\begin{enumerate}
+    \item Zgadnij odpowiedź (wiodący składnik)
+    \item Sprawdź przez indukcję, czy dobrze zgadliśmy
+    \item Wylicz stałe
+\end{enumerate}
+
+\begin{information}{Historyjka}
+    Dwóch przyjaciół zgubiło się podczas podróży balonem.
+    \begin{itemize}
+        \item "Gdzie jesteśmy?"
+        \item "W balonie."
+    \end{itemize}
+    Osoba, którą spotkali, była matematykiem.\\ Odpowiedź była precyzyjna, dokładna i całkowicie bezużyteczna.
+\end{information}
+
+\subsection{Metoda podstawiania - Metoda dowodu indukcyjnego}
+
+Przykład 1. Rozwiążmy równanie rekurencyjne:
+\begin{align}
+    T(n) = 4T\left(\frac{n}{2}\right) + n \quad T(1) = \Theta(1)
+\end{align}
+Załóżmy, że $T(n)=O(n^3)$ - pokazać, że $T(n)\leq c\cdot n^3$. dla dużych $n$. 
+
+\begin{enumerate}
+    \item Krok początkowy $T(1) = \Theta(1) \leq c\cdot 1^3 = c$ ok.
+    \item Założmy, że $\forall_{k<n}  T(k) \leq c\cdot k^3$ (zał. indukcyjne, nie $\Theta(k^3)$ - chcemy konkretną stałą $c$)
+    \item $T(n) = 4T\left(\frac{n}{2}\right) + n \leq 4c\left(\frac{n}{2}\right)^3 + n = \frac{1}{2}cn^3 + n = cn^3 - \frac{1}{2}cn^3 + n \leq cn^3$.
+    \item Wystarczy wskazać $c$, takie że $\frac{1}{2}cn^3 - n \geq 0$, np $c\geq 2$
+    \item Pokazaliśmy, że $T(n) = O(n^3)$
+\end{enumerate}
+Załóżmy, że $T(n)=O(n^2)$ - pokazać, że $T(n)\leq c\cdot n^2$. dla dużych $n$.
+\begin{enumerate}
+    \item Krok początkowy $T(1) = \Theta(1) \leq c\cdot 1^2 = c$ ok.
+    \item Założmy, że $\forall_{k<n}  T(k) \leq c\cdot k^2$ (zał. indukcyjne)
+    \item $T(n) = 4T\left(\frac{n}{2}\right) + n \leq 4c\left(\frac{n}{2}\right)^2 + n = cn^2 + n = cn^2 - cn^2 + n \leq cn^2$.
+    \item Tego się nie da pokazać - nie jest prawdą, że $T(n) = O(n^2)$
+\end{enumerate}
+Wzmocnijmy zatem założenie indukcyjne:
+\begin{enumerate}
+    \item $T(n) \leq c_1 n^2 - c_2 n$ (zał. indukcyjne)
+    \item $T(n) = 4T\left(\frac{n}{2}\right) + n \leq 4(c_1 \frac{n}{2}^2 - c_2 \frac{n}{2}) + n$
+    \item $= c_1 n^2 - 2c_2 n + n = c_1n^2 - (2c_2 -1)n \leq$
+    \item $\leq c_1n^2 - c_2n$
+    \item Weźmy $c_1=1, c_2=2$, wtedy $T(n) \leq n^2 - 2n = O(n^2)$
+\end{enumerate}
+
+\noindent
+Przykład 2. Weźmy paskudną rekursję $T(n) = 2T(\sqrt{n}) + \log n$.\\
+Załóżmy, że $n$ jest potęgą $2$ oraz oznaczny $n=2^m, m=\log_2 n$.
+\begin{align}
+    T(2^m) = 2T((2^m)^\frac{1}{2}) + m
+\end{align}
+Oznaczmy $T(2^m) = S(m)$. Wtedy:
+\begin{align}
+    S(m) = 2S\left(\frac{m}{2}\right) + m
+\end{align}
+(dobrze znana rekurencja - $S(n) = O(m\log m))$ - patrz Lecture 2.
+Przejdźmy z powrotem na $T,n$:
+\begin{align}
+    T(2^m) = S(m)
+    T(2^m) = O(m \log m)
+    T(n) = O(\log n \log \log n)
+\end{align}
+Formalnie pokazaliśmy to tylko dla potęg $2$ - musielibyśmy jeszcze indukcyjnie to udowodnić.\\
+
+\textit{Kiedy podłogi i sufity mają znaczenie?}
 
 \end{document}
