@@ -293,4 +293,130 @@ h x = let y = sin x in
       x + x*y + y*y
 \end{verbatim}
 
+\section{Lecture II}
+
+Zbadajmy identyczność:
+\begin{verbatim}
+    id:: a -> a
+    id:: forall a => a -> a
+\end{verbatim}
+Lambda kwantyfikuje typy, a nie zmienne - głębokie znaczenie polimorfizmu\\
+\begin{align}
+    \exp &= \left(\lambda a: \text{Typ} \rightarrow (a\rightarrow a)\right)\\
+    \exp & (\text{Int}) :: \text{Int} \rightarrow \text{Int}\\
+    \exp & (\text{Double}) :: \text{Double} \rightarrow \text{Double}
+\end{align}
+
+\begin{verbatim}
+ghci> inc x = x + 1
+ghci> :t inc
+inc :: Num a => a -> a
+\end{verbatim}
+
+\begin{align}
+    \exp = (\forall a: \text{Num} \rightarrow (a\rightarrow a))    
+\end{align}
+Zasada: \textit{W linijce przed wyrażeniem opisuje jego typ.}
+
+\subsection{Tworzenie własnych typów}
+
+\begin{enumerate}
+    \item pary
+    \item listy
+\end{enumerate}
+
+\subsection{Pary}
+
+\begin{verbatim}
+ghci> :t (13, 'a')
+(13, 'a') :: Num a => (a, Char)
+ghci> :t (13::Integer, 'a')
+(13::Integer, 'a') :: (Integer, Char)
+\end{verbatim}
+
+\begin{verbatim}
+coll n = | n == 1 then 1
+         | even n then call (div n 2)  -- n `div` 2
+         | otherwise call (3*n + 1)
+
+collatz :: (Int, Int) -> (Int, Int)
+collatz (n, s) | n == 1 = (n, s)
+            | even n = collatz (div n 2, s + 1)
+            | otherwise = collatz (3 * n + 1, s + 1)
+\end{verbatim}
+
+\subsection{Listy}
+
+\begin{verbatim}
+[a] =    elementów a
+\end{verbatim}
+
+\begin{align}
+    \{[a_1,\dots,a_k]: a_1,\dots,a_k, a_i\in a, k\in \mathbb{N}\}
+\end{align}
+
+\begin{verbatim}
+[1,2,3]
+
+[1,_]->[2, ]->[3, ]->[ ]
+x_0: [x_1, x_2, ..., x_k] = [x_0, x_1, ... x_k]
+[] <- lista pusta
+[1,2,3] ~= 1:2:3:[]
+konkatenacja dwóch list ++
+[1,2,3] ++ [4,5,6] = [1,2,3,4,5,6]
+
+concat :: [[a]] -> [a]
+concat [[1,2,3],[5],[0,1]] = [1,2,3,4,0,1]
+
+length :: [a] -> Int
+length [] = 0
+length (x:xs) = 1 + length xs -- x, xs (some x-es)
+
+aplikacja funkcji do zmiennej ma najwyższy priorytet
+f x = ...
+
+[] ++ ys = ys
+(x:xs)++ys = x:(xs++ys)
+[1,2]++[] = 1:([2]++[]) = 1:(2:([]||[])) = [1,2]
+
+head [] = error bad: pusta lista
+head (x:_) = x
+
+tail [] = []
+tail (x:xs) = xs
+
+-- mapowanie
+[x_1,x_2,...x_k], f: a -> b
+[fx_1,fx_2... fx_k]
+
+map::(a->b)->[a]->[b]
+map _ [] = []
+-- ciąg którego głowa to jest x, a ogon to xs
+map f (x:xs) = f x : map f xs
+
+map(\x -> x^2)[1..10] -> [1^2, 2^2, ..., 100]
+
+-- filtrowanie
+
+filter::(a->Bool)->[a]->[a]
+filter even [1..10] -> [2,4,6,8,10]
+
+filter _ [] = []
+filter p (x:xs) = if p x then x:filter p xs
+                  else filter p xs
+
+-- prototypy
+
+list comprehension
+
+[f x_1 x_2 x_3 | x_1 <- xs, x_2 <- ys, x_3 <- zs]
+[f x_1 x_2 x_3 | x_1 <- xs, x_2 <- ys, x_1<x_2, x_3 <- zs]
+
+# wszystkie trójki pitagorejskie do 100
+[(x,y,z) | z <- [1..100] y<-[1..z], x<-[1..y], x^2+y^2==z^2, gcd(x,y)==1]
+
+\end{verbatim}
+
+
+
 \end{document}
