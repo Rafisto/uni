@@ -540,4 +540,261 @@ Formalnie pokazaliśmy to tylko dla potęg $2$ - musielibyśmy jeszcze indukcyjn
 
 \textit{Kiedy podłogi i sufity mają znaczenie?}
 
+\section{Lecture IV - Metoda drzewa rekursji}
+
+\subsection{Metoda drzewa rekursji}
+
+W danym węźle wstawiamy koszt operacji. Sumujemy koszty węzłów na danym poziomie.\\
+
+\begin{align}
+    T(n) = T\left(\frac{n}{2}\right) + T\left(\frac{n}{4}\right) + n^2, \quad T(1) = \Theta(1)
+\end{align}
+
+\noindent
+Chcemy sumować koszty na danym poziomie, a potem napisać pełną sumę.
+
+\begin{verbatim}
+              n^2                  | n^2
+         /         \ 
+   (n/2)^2         (n/4)^2         | 5/16 n^2
+  /      \          /     \
+(n/4)^2 (n/8)^2 (n/8)^2 (n/16)^2   | 25/256 n^2 = (5/16)^k n^2
+
+...
+\end{verbatim}
+
+\begin{align}
+    T^{*}(n) &= \sum_{k=0}^{\infty} \left(\frac{5}{16}\right)^k n^2 = \\
+    &= n^2 \sum_{k=0}^{\infty} \left(\frac{5}{16}\right)^k = \\
+    &= n^2 \cdot \left(\frac{1}{1-\frac{5}{16}}\right) = \\
+    &= \frac{16}{11} n^2
+\end{align}
+
+\noindent
+Nie mogłoby być mniej niż $n^2$, bo już w pierwszym rzędzie jest $n^2$.\\
+Nie jest to dokładne, ale dostaliśmy górne ograniczenie.\\
+
+\begin{align}
+    T(n) = O(n^2)
+\end{align}
+
+\begin{verbatim}
+      / \
+     / / \
+    / /   \ (h)
+   / /  (od pewnego momentu nie ma części drzewa)
+  / /
+ / /
+/   
+(H)
+\end{verbatim}
+Wysokości różnią się o stałą:
+
+\begin{align}
+    \frac{n}{2^H} = 1 \implies H = \log_2 n\\
+    \frac{n}{4^h} = 1 \implies h = \log_4 n
+\end{align}
+
+\vspace{1cm}
+
+\noindent
+\textit{Za chwilę będę dodawał rzeczy, które nie istnieją}
+
+\vspace{1cm}
+
+\noindent
+Pamiętajmy, że:
+\[
+    a^{\log_b n} = n^{\log_b a}
+\]
+
+\begin{align}
+    \hat{T}(n) &= \sum_{k=0}^{H=\log_2(n)} \left(\frac{5}{16}\right)^k n^2 =\\
+    &= n^2 \sum_{k=0}^{H} \left(\frac{5}{16}\right)^k =\\
+    &= n^2 \cdot \frac{1}{11} \left(16 - 5\left(\frac{5}{16}\right)^{\log_2 n}\right) =\\
+    &= \frac{16}{11} n^2 - \frac{5}{11} n^{2-1.67}
+\end{align}
+Rozważmy ograniczenie dolne:
+\begin{align}
+    \check{T}(n) = \sum_{k=0}^{h=\log_4(n)} \left(\frac{5}{16}\right)^k n^2
+    &= n^2 \frac{1}{11}\left(16 - C\cdot \left(\frac{5}{16}\right)^{\log_4 n}\right)
+\end{align}
+Zatem wiemy, że:
+\begin{align}
+    T(n) = O(\hat{T}(n)) = O(T^{*}(n))\\
+    T(n) = \Omega(\check{T}(n))\\
+    T(n) = \Theta(n^2) = \frac{16}{11} n^2 + o(n^2)
+\end{align}
+
+\subsection{Metoda iteracyjna}
+
+\begin{align}
+    T(n) &= 3T(\left(\frac{n}{4}\right)) + n =\\
+    T(n) &= 3\left(3T\left(\left(\frac{n}{16}\right)\right) + \left(\frac{n}{4}\right)\right) + n = 9T\left(\frac{n}{16}\right) + \frac{3}{4} n + n =\\
+    T(n) &= n + \frac{3}{4} n + 9\left(3T\left(\frac{n}{64}\right) + \frac{n}{16}\right) =\\
+    T(n) &= n + \frac{3}{4} n + \frac{9}{16} n + 27T\left(\frac{n}{64}\right) =\\
+    T(n) &= n + \frac{3}{4} n + \left(\frac{3}{4}\right)^2 n + \left(\frac{3}{4}\right)^3 n + \dots + 3^j T\left(\frac{n}{4^j}\right) =\\
+\end{align}
+Wyznaczmy koniec iteracji:
+\begin{align}
+    \frac{n}{4^j} = 1 \implies j = \log_4 n
+\end{align}
+To jest nic innego jak:
+\begin{align}
+    \sum_{j=0}^{\log_4 n} \left(\frac{3}{4}\right)^j = O(n)
+\end{align}
+
+\subsection{Master Theorem}
+
+\begin{theorem}{Master Theorem}
+    Jeśli $T(n) = a\cdot T(\lceil \frac{n}{b} \rceil) + \Theta(n^d)$ dla pewnych stałych $a>0, b>1, d>0$, oraz $T(1)=\Theta(1)$ to:
+    \[
+    T(n) = \begin{cases}
+        \Theta\left(n^d\right) \quad \text{jeśli} \quad d > \log_b a\\
+        \Theta\left(n^d \log n\right) \quad \text{jeśli} \quad d = \log_b a\\
+        \Theta\left(n^{log_b a}\right) \quad \text{jeśli} \quad d < \log_b a
+    \end{cases}
+    \]
+\end{theorem}
+
+\begin{align}
+\hat{T} (n) = a\cdot \hat{T} \left(\frac{n}{b} + 1 \right) + \Theta(n^d)\\
+\check{T} (n) = a\cdot \check{T} \left(\frac{n}{b} \right)
+\end{align}
+Dowód
+\begin{verbatim}
+wielkość               .                   liczba podproblemów    
+n                      c n^d               1                       
+n/b                    c (n/b)^d           a
+n/b^2                  c (n/(b^2))^d       a^2
+
+...
+
+koszt na poziomie 'k' = c (n/b^k)^d
+liczba podproblemów na poziomie 'k' = a^k
+
+suma kosztów 'k'-tym wierszu = c (a/b^d)^k * n^d
+\end{verbatim}
+
+Wysokość drzewa rekursji
+\begin{align}
+    \frac{n}{b^h} = 1 \implies h = \log_b n
+\end{align}
+
+Zatem:
+
+\begin{align}
+    T(n) = \Theta\left(\sum_{k=0}^{\log_b n} \cdot \left(\frac{a}{b^d}\right)^k n^d \right)
+\end{align}
+
+\textit{Mogę wziąć thetę zamiast o, bo dość dokładnie robię - ale trochę nie}
+
+\[
+    \sum_{k=0}^{h} q^k = \frac{1-q^{h+1}}{1-q} \quad \sum_{h=0}^{h} 1^k = (h+1)
+\]
+
+\begin{align}
+    T(n) = \Theta\left(n^d \sum_{k=0}^{\log_b n} \cdot \left(\frac{a}{b^d}\right)^k \right)
+\end{align}
+
+\noindent
+(1) Jeśli $\frac{a}{b^d} < 1$, to:
+\begin{align}
+    a < b^d \\
+    \log_b (a) < d \quad \text{zatem} \\
+    T(n) = \Theta(n^d)
+\end{align}
+(większość pracy dzieje się z korzenia - okolic korzenia)\\
+
+\noindent
+(2) Jeśli $\frac{a}{b^d} = 1$, to:
+\begin{align}
+    a = b^d \\
+    \log_b (a) = d \\
+    T(n) = \Theta(n^d \log n)
+\end{align}
+(suma kosztów w $k$-tym wierszu - każdy wiersz kontrybuuje równie mocno)\\
+
+\noindent
+(3) Jeśli $\frac{a}{b^d} > 1$, to:
+\begin{align}
+    a > b^d \\
+    \log_b (a) > d \\
+    T(n) = \Theta(n^{\log_b a})
+\end{align}
+(z każdym kolejnym poziomem koszt rośnie - większość złożoności kryje się na dole drzewa rekursji)
+
+\vspace{1cm}
+
+\textit{Z tego co dzieje się na początku... albo na końcu, bo to może być scalanie}\\
+\textit{Stworzyliście za dużo podproblemów.}
+    
+\vspace{1cm}
+
+\noindent
+Co jeśli rekurencja nie ma $n^d$, a ma $n\log(n)$? - możemy przybliżać\\
+
+\noindent
+Przykład
+
+\begin{align}
+    T(n) = 4 T\left(\frac{n}{2}\right) + 11 n \quad a=4, b=2, d=1\\
+    \log_b a = \log_2 4 = 2 > 1 = d \quad \text{to jest przypadek (3)}\\
+    T(n) = \Theta\left(n^{\log_a b}\right) = \Theta\left(n^{\log_2 4}\right) = \Theta\left(n^2\right)
+\end{align}
+
+\noindent
+Przykład
+
+\begin{align}
+    T(n) = 4 T\left(\frac{n}{3}\right) + 3n^2 \quad a=4, b=3, d=2\\
+    \log_b a = \log_3 4 > 2 = d \quad \text{to jest przypadek (1)}\\
+    T(n) = \Theta\left(n^d\right) = \Theta\left(n^2\right)
+\end{align}
+
+\noindent
+Przykład
+
+\begin{align}
+    T(n) = 27T\left(\frac{n}{3}\right) + 0.(3) n^3 \quad a=27, b=3, d=3\\
+    \log_b a = \log_3 27 = 3 = d \quad \text{to jest przypadek (2)}\\
+    T(n) = \Theta\left(n^d \log n\right) = \Theta\left(n^{3} \log n\right)
+\end{align}
+
+\subsection{Divide and Conquer}
+
+\begin{enumerate}
+    \item Podział problemu na mniejsze podproblemy.
+    \item Rozwiąż rekurencyjnie mniejsze (rozłączne) podproblemy.
+    \item Połącz rozwiązania problemów w celu rozwiązania problemu wejściowego.
+\end{enumerate}
+
+\subsection{Wyszukiwanie elementów w portowanej tablicy}
+
+\begin{itemize}
+    \item Input - posortowana tablica $A[1..n]$, element $x$
+    \item Output - indeks $i$ taki, że $A[i] = x$ lub błąd, gdy $x$ nie występuje w $A$
+\end{itemize}
+
+\subsection{Binary search}
+
+\begin{enumerate}
+    \item if $n=1, A[n] = x$ return $n$, else $A$ does not contain $x$
+    \item porównujemy $x$ z $A[\frac{n}{2}]$
+    \item jeśli $x = A[\frac{n}{2}]$ return $\frac{n}{2}$
+    \item jeśli $x < A[\frac{n}{2}]$, \text{BinarySearch}($A[1..\frac{n}{2}-1], x$)
+    \item jeśli $x > A[\frac{n}{2}]$, \text{BinarySearch}($A[\frac{n}{2}+1..n], x$)
+\end{enumerate}
+
+\vspace{1cm}
+
+\textit{Wy nie patrzcie na pseudokody na tablicy, tylko w książce}
+
+\vspace{1cm}
+
+\begin{align}
+    T(n) = 1 T\left(\frac{n}{2}\right) + \Theta(1) \\
+    T(n) = \Theta(\log n)
+\end{align}
+
 \end{document}
