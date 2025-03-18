@@ -417,6 +417,124 @@ list comprehension
 
 \end{verbatim}
 
+\section{Lecture III}
 
+\texttt{Prelude} - zestaw funkcji automatycznie ładowanych.
+
+Typ wbudowany:
+\begin{verbatim}
+    type String = [Char]
+\end{verbatim}
+
+\subsection{Sortowanie}
+
+\begin{verbatim}
+    {- SORTOWANIA -}
+    -- quicksort
+    qS [] = []
+    qS (x:xs) = (qS [y| y <- xs, y < x]) ++
+                [x] ++
+                (qS [y| y <- xs, y >= x])
+    
+    -- partition
+    partition :: (a -> Bool) -> [a] -> ([a], [a])
+    partition _ [] = ([], [])
+    partition p (x:xs) = if p x then (x:l, r)
+                                else (l, x:r)
+                            where (l, r) = partition p xs
+
+    -- qSort 
+    qSort []     = []
+    qSort [x]    = [x]
+    qSort (x:xs) = (qSort l) ++ [x] ++ (qSort r)
+                   where (l, r) = partition (<x) xs
+    
+    -- inSort
+    inSort []     = []
+    inSort (x:xs) = l ++ [x] ++ r
+                    where sxs = inSort xs
+                          (l, r) = partition (<x) sxs
+\end{verbatim}
+
+\subsection{Operacje}
+
+Operacje binarne: $+, -, *, \wedge, :, <$
+
+\texttt{[1..]} - nieskończona lista
+\texttt{zipWith (zipWith (+))} - suma 2 macierzy
+\begin{verbatim}
+    > zipWith (zipWith (+)) [[1,1],[1,1]] [[2,3],[4,5]]
+    [[3,4], [5, 6]]
+\end{verbatim}
+
+\begin{verbatim}
+    add [] = 0
+    add (x:xs) = x + add xs
+    
+    -- product
+    pro [] = 1
+    pro (x:xs) = x * pro xs
+\end{verbatim}
+
+$[x_1, x_2, x_3, x_4], *, e $ to wtedy
+$x_1 * (x_2 * (x_3 * (x_4 * e)))$ lub $(((x_1 * e) * x_2) * x_3) *x_4$
+
+\subsection{Monoidy}
+
+Jeśli $*$ jest łączne, a $e$ to element neutralny, to $(X, *, e)$ nazywamy monoidem.
+
+\begin{verbatim}
+    myfoldr op e [] = e
+    myfoldr op e (x:xs) = op x (myfoldr op e xs)
+    
+    myfoldl op e [] = e 
+    myfoldl op e (x:xs) = myfoldl op (op e x) xs
+\end{verbatim}
+
+foldl (*) e [x1, x2, x3, x4]
+\begin{verbatim}
+        *
+       / \
+      *  x4
+     / \
+    *  x3
+   / \
+  *  x2
+ / \
+e   x1
+\end{verbatim}
+foldr (*) e [x1, x2, x3, x4]
+\begin{verbatim}
+  *
+ / \
+x1  *
+   / \
+  x2  *
+     / \
+    x3  *
+       / \
+      x4  e
+
+\end{verbatim}
+$x \square y = y * x$ \\
+$foldl (\square) e [x1, x2, x3, x4]$
+\begin{verbatim}
+  \square
+ / \
+x4  \square
+   / \
+  x3  \square
+     / \
+    x2  \square
+       / \
+      x1  e
+\end{verbatim}
+
+\noindent
+foldl ($\square$) e xs = foldr (*) e (reverse xs)
+
+\noindent
+(flip f) x y = f y x \\
+reverse xs = foldl (flip(:)) [] xs
 
 \end{document}
