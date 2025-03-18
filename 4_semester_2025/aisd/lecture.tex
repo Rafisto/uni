@@ -67,6 +67,16 @@
 
 \tableofcontents
 
+\begin{center}
+    \textit{I welcome you on the path to insanity.}
+\end{center}
+
+\begin{center}
+    \textit{Good luck :)}
+\end{center}
+
+\newpage
+
 \section{Lecture I - Sortowanie}
 
 Definiujemy problem:
@@ -179,8 +189,6 @@ Chcielibyśmy gdzie to konieczne, zapisać \textit{lower order terms}.\\
 \subsection{Merge sort $(A,1,n)$}
 
 Niech złożoność T(n) - złożność algorytmu.
-
-\newpage
 
 \noindent
 Funkcja merge sort
@@ -793,8 +801,222 @@ Przykład
 \vspace{1cm}
 
 \begin{align}
-    T(n) = 1 T\left(\frac{n}{2}\right) + \Theta(1) \\
+    T(n) = 1 \cdot T\left(\frac{n}{2}\right) + \Theta(1) \\
     T(n) = \Theta(\log n)
 \end{align}
+
+\section{Lecture V - Divide and Conquer}
+
+\subsection{Potęgowanie liczby}
+
+\begin{itemize}
+    \item Input - liczba $x$, liczba całkowita $n$
+    \item Output - $x^n$
+\end{itemize}
+Bazowo zachodzi $n-1$ mnożeń $x$ przez siebie. (czyli $\Theta(n)$ operacji)
+\begin{align}
+    x \cdot x \cdot \dots \cdot x = x^{n}
+\end{align}
+Zróbmy to sprytniej:
+\begin{align}
+    x^n = \begin{cases}
+        x^{\frac{n}{2}} \cdot x^{\frac{n}{2}} \quad \text{dla parzystego} \quad n\\
+        x^{\frac{n-1}{2}} \cdot x^{\frac{n-1}{2}} \cdot x \quad \text{dla nieparzystego} \quad n
+    \end{cases}
+\end{align}
+Z liniowej liczby mnożeń zeszliśmy do logarytmicznej liczby mnożeń.\\
+\begin{align}
+    T(n) &= 1\cdot T\left(\frac{n}{2}\right) + \Theta(1)\\
+    T(n) &= \Theta(\log n)
+\end{align}
+
+\subsection{Wyliczenie $n$-tej liczby Fibonacciego}
+
+\begin{align}
+    F_n = \begin{cases}
+        0 \quad n = 0\\
+        1 \quad n = 1\\
+        F(n-1) + F(n-2) ,\quad n > 1
+    \end{cases}
+\end{align}
+Normalne wywołanie funkcji to $\Theta(\varphi^n)$\\\\
+Wykorzystajmy podejście bottom-up, liczymy i zapamiętujmy każdorazowo $F_2, F_3,\dots, F_n$\\
+Osiągnęliśmy złożoność liniową $\Theta(n)$\\\\
+Istnieje jednak zwarty wzór na $F(n)=\frac{1}{\sqrt{5}}\left(\frac{\varphi^n + \varphi^n}{2}\right)$
+a to możemy policzyć logarytmicznie.\\
+
+\textit{Tu pojawiają się liczby - jak one się nazywały - (z sali) niewymierne.}\\
+
+\noindent
+Istnieje macierz, która mnożona pozwala na policzenie $n$-tej liczby Fibonacciego.
+
+\begin{align}
+    \begin{pmatrix}
+        1 & 1 \\
+        1 & 0
+    \end{pmatrix}^n =
+    \begin{pmatrix}
+        F_{n+1} & F_{n} \\
+        F_{n} & F_{n-1}
+    \end{pmatrix}
+\end{align}
+Algorytm używający tego wzoru - połączony z szybkim potęgowaniem, ma złożoność $\Theta(\log n)$.
+
+\subsection{Mnożenie Liczb}
+
+\begin{itemize}
+    \item Input: $x,y$ (liczby $n$-bitowe)
+    \item Output: $x\cdot y$
+\end{itemize}
+Standardowe mnożenie w słupku to $\Theta(n^2)$ mnożeń i $\Theta(n)$ dodawań.
+
+\noindent
+Załóżmy, że $n$ jest parzyste:
+
+\begin{align}
+    x &= x_L \cdot 2^{\frac{n}{2}} + x_R\\
+    y &= y_L \cdot 2^{\frac{n}{2}} + y_R\\
+    x \cdot y &= \left(x_L \cdot 2^{\frac{n}{2}} + x_R\right) \cdot \left(y_L \cdot 2^{\frac{n}{2}} + y_R\right) =\\
+    &= x_L \cdot y_L \cdot 2^n + \left(x_L y_R + x_R y_L\right) \cdot 2^{\frac{n}{2}} + x_R y_R
+\end{align}
+
+\begin{align}
+    T(n) = 4T\left(\frac{n}{2}\right) + \Theta(n)\\
+    a = 4, b = 2, d = 1\\
+    \log_b a = \log_2 4 = 2 > 1 = d\\
+    T(n) = \Theta(n^2)
+\end{align}
+\textit{Asymptotycznie nie zyskaliśmy nic.}
+
+\noindent
+Ten przypadek pokazuje, że czasami nie wystarczy bezmyślnie podzielić a potem scalić.\\
+
+\noindent
+A co o tym myślał Gauss - tu jest dużo mnożeń - cztery.
+\begin{align}
+    (a+ib)(c+id) = ac - bd + i(bc + ad)\\
+    bc + ad = (a + b)(c + d) - ac - bd
+\end{align}
+Zobaczmy, że $ac, bd$ są już policzone wyżej - zamiast 4 mnożeń, mamy 3 mnożenia.
+\begin{align}
+    x\cdot y = x_L y_L 2^n + \left((x_L + x_R)(y_L + y_R) - x_Ly_L - x_Ry_R\right) + x_Ry_R
+\end{align}
+Wykonujemy i zapamiętujemy mnożenia $x_Ly_L, x_Ry_R, (x_L + x_R)(y_L + y_R)$ - zamiast 4 mnożeń, mamy 3 mnożenia.\\
+
+\noindent
+$\Theta(n)$ - wynika z przeunięć bitowych oraz dodawań.
+
+\begin{align}
+    T(n) = 3T\left(\frac{n}{2}\right) + \Theta(n)\\
+    a = 3, b = 2, d = 1\\
+    \log_b a = \log_2 3 > 1 = d\\
+    T(n) = \Theta(n^{\log_2 3}) = \Theta(n^{1.59})
+\end{align}
+
+\noindent
+Najszybszy znany algorytm - na podstawie szybkiej transformaty fouriera $\sim O(n\cdot \log n\cdot \log \log n)$
+
+\begin{verbatim}
+mutiply(x, y)
+    n = max {|x|, |y|}
+    if n == 1 return x * y
+    x_L, x_R = leftmost(ceil(n/2),x), rightmost(floor(n/2),x)
+    y_L, y_R = leftmost(ceil(n/2),y), rightmost(floor(n/2),y)
+
+    p1 = multiply(x_L, y_L)
+    p2 = multiply(x_R, y_R)
+    p3 = multiply(x_L + x_R, y_L + y_R)
+
+    return p1 << n + (p3 - p1 - p2) << ceil(n/2) + p2
+\end{verbatim}
+
+\noindent
+Podobnie możemy mnożyć macierze.
+
+\subsection{Mnożenie macierzy}
+
+\begin{itemize}
+    \item Input: $A, B$ - $n$-wymiarowe macierze
+    \item Output: $A \cdot B$
+\end{itemize}
+
+Naiwne mnożenie macierzy wykonuje $\Theta(n^3)$ mnożeń.\\
+
+Podzielmy macierz na 4 równe częsci:
+
+\begin{align}
+    \begin{pmatrix}
+        A & B\\
+        C & D
+    \end{pmatrix}
+    \times
+    \begin{pmatrix}
+        E & F\\
+        G & H
+    \end{pmatrix}
+    = 
+    \begin{pmatrix}
+        AE + BG & AF + BH\\
+        CE + DG & CF + DH
+    \end{pmatrix}
+\end{align}
+
+\begin{align}
+    T(n) = 8T\left(\frac{n}{2}\right) + O(n^2)\\
+    T(n) = O(n^3)
+\end{align}
+Znowu nic nie zyskaliśmy. Jesteśmy w stanie wyeliminować jedno mnożenie
+- osiągając ostatecznie $\Theta(n^{\log_2 7}) \sim \Theta(n^{2.81})$.\\
+
+Algorytmy state of the art - $\Theta(n^2 \text{polylog}(n))$.
+
+\subsection{Quick Sort}
+
+Algorytm na podział - scalanie już posortowanych. Pozwala na sortowanie w miejscu.
+
+\begin{verbatim}
+A[1..n]
+|       |------|      |
+1       p      q      n
+
+A[1..n]
+|       |   <=  |     | <    |      | 
+1       p       |pivot|      q      n
+\end{verbatim}
+
+\begin{enumerate}
+    \item Podziel $A[p..q]$ na dwie tablice:
+    $A[p..k-1]$, \textit{pivot}, $A[k+1..q]$
+    takie, że:
+    \[
+    \forall_{i\in[p..k-1]} A[i] \leq \textit{pivot}, \forall_{j\in[k+1..q]} A[j] > \textit{pivot}
+    \]
+    \item Quicksort($A,p,k-1$)\\
+    Quicksort($A,l-1,q$)
+\end{enumerate}
+Przykład - weźmy nieposortowaną tablicę:
+\begin{verbatim}
+Quicksort(A,1,n)
+[6, 1, 4, 3, 5, 7, 2, 8] # pivot = 6
+->
+[1, 4, 3, 5, 2, 6, 7, 8]
+                .
+Quicksort(A,1,5)
+Quicksort(A,7,8) ->
+[1, 4, 3, 2, 5, 6, 7, 8] # pivot = 1
+ .              .  .
+
+Quicksort(A,2,5) ->
+[1, 3, 2, 4, 5, 6, 7, 8] # pivot = 4
+ .        .     .  .
+
+Quicksort(A,2,3) ->
+[1, 2, 3, 4, 5, 6, 7, 8] # pivot = 3
+ .  .  .  .  .  .  .  .
+
+
+
+\end{verbatim}
+   
 
 \end{document}
