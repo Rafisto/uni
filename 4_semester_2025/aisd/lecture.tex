@@ -1013,10 +1013,269 @@ Quicksort(A,2,5) ->
 Quicksort(A,2,3) ->
 [1, 2, 3, 4, 5, 6, 7, 8] # pivot = 3
  .  .  .  .  .  .  .  .
-
-
-
 \end{verbatim}
    
+\section{Lecture VI - Quicksort}
+
+Rozważmy algorytmy służące do dzielenia tablicy w Quicksorcie
+
+\subsection{Lomuto Partition}
+
+\begin{verbatim}
+Lomato Partition(A, p, q) # A[p..q]
+    pivot = A[p]
+    i = p
+    for j = p + 1 to q
+        if A[j] <= pivot # expensive |A[p..q]| = n, then (n-1) comparisons ~ Theta(n)
+            i = i + 1
+            swap (A[i], [j]) # expensive, but if dependent
+    swap (A[i], A[p]) # pivot in between A[p..i] and A[i+1..q]
+    return i
+
+A
+|*| <= pivot |i| pivot < |j| ? |
+p                              q
+
+We either put the ? element in the '<= pivot' part, or '> pivot' part
+
+A
+| <= pivot | * | pivot < |
+p                      q
+\end{verbatim}
+
+\begin{verbatim}
+Example
+6, 10, 13, 5, 8, 3, 2, 11
+*  i       j
+
+swap(5,10)
+
+6, 5, 13, 10, 8, 3, 2, 11
+*  i          j
+
+do nothing
+
+6, 5, 13, 10, 8, 3, 2, 11
+*     i          j
+
+swap(3, 13)
+
+6, 5, 3, 10, 8, 13, 2, 11
+*     i          j
+
+6, 5, 3, 2, 8, 13, 10, 11
+*        i         j   
+
+6, 5, 3, 2, 8, 13, 10, 11
+*        i              j
+
+swap(6, 2)
+
+2, 5, 3, 6, 8, 13, 10, 11
+*        i              j
+
+return i = 3
+
+\end{verbatim}
+
+Biorąc pod uwagę, że dokonujemy $n-1$ porównań, złożoność Lomuto Partition wynosi $\Theta(n)$.
+
+\subsection{Hoare Partition}
+
+\begin{verbatim}
+Hoare Partition(A, p, q) # A[p..q]
+    pivot = A[floor((p+q)/2)]
+    i = p - 1
+    j = q + 1
+    while True
+        do    
+            i++
+        while A[i] < pivot
+
+        do 
+            j--
+        while A[j] > pivot
+
+        if i >= j return j
+        swap(A[i], A[j])
+\end{verbatim}
+
+\begin{verbatim}
+* - pivot
+
+Example
+  6, 10, 13, 5, 8, 3, 2, 11
+i p          *           q  j
+  i          *        j         # swap(6, 2)
+  
+  2, 10, 13, 5, 8, 3, 6, 11
+     i       *     j            # swap(10, 3)
+
+  2, 3, 13, 5, 8, 10, 6, 11
+            *
+
+  2, 3, 13, 5, 8, 10, 6, 11
+        i   j                   # swap (13, 5)
+
+  2, 3, 5, 13, 8, 10, 6, 11
+        *
+        j  i
+    
+A
+| <= pivot | < pivot |
+p          j         q
+
+return j
+\end{verbatim}
+
+W Hoare Partition tracimy pivot który może ulec przesunięciu. Porównań robimy więcej o stałą $n \pm c, c=1$. 
+Złożoność $\Theta(n)$ - zdecydowanie mniej swapów, 2-3 razy mniej niż Lomuto partition.
+
+\begin{verbatim}
+QS(A,p,q)
+    if p < q
+        r = Partition(A,p,q)
+        QS(A,p,r-1)
+        QS(A,r+1,q)
+\end{verbatim}
+
+\subsection{Worst Case Analysis for QS}
+
+Najgorzej będzie jak każdorazowo będziemy nierówno dzielić po 1-szym elemencie (odwrotnie posortowana tablica).
+
+\begin{verbatim}
+       cn
+   /       \
+  Theta(1)  c(n-1)
+           /    \ 
+      Theta(1)  c(n-2)
+                   ...
+                  /   \
+           Theta(1)   Theta(1) 
+\end{verbatim}
+
+\begin{align}
+    T(n) &= T(n-1) + T(0) + \Theta(n)\\
+    T(n) &= T(n-1) + \Theta(n) \leq \sum_{i=0}^{n} c(n-i) + \Theta(1) = \\
+    &= c\sum_{i=0}^{n} (n-i) + \Theta(n) =\\
+    &= c \frac{(n)(n+1)}{2} + \Theta(n) =\\
+    &= O(n^2)
+\end{align}
+
+\subsection{Best case Analysis for QS}
+
+Najlepiej będzie jak dzielimy na pół.
+
+\begin{align}
+    T(n) &= T(\frac{n}{2}) + T(\frac{n}{2}) + \Theta(n) \\
+    T(n) &= 2T(\frac{n}{2}) + \Theta(n) \\
+    T(n) &= \Theta(n\log n)
+\end{align}
+
+\subsection{Specific case analysis for QS}
+
+\begin{align}
+    T(n) &= T(\frac{n}{10}) + T(\frac{9n}{10}) + \Theta(n)
+\end{align}
+
+\begin{verbatim}
+    cn       | cn
+   /  \      | cn
+  /    \     | ..
+ /      \
+         \
+          \   
+\end{verbatim}
+
+Po zsumowaniu każde piętro będzie miało koszt $cn$. Zchodzimy końca wysokości drzewa.
+
+\begin{align}
+    \left(\frac{9}{10}\right)^h n &= 1\\
+    n &= \left(\frac{10}{9}\right)^h\\
+    h &= \log_{\frac{10}{9}} n
+\end{align}
+
+\subsection{Best/Worst case analysis for QS - Intuition}
+
+\begin{align}
+    L(n) &= 2 U\left(\frac{n}{2}\right) + \Theta(n)\\
+    U(n) &= L(n-1) + L(0) + \Theta(n)\\
+\end{align}
+
+Zatem rozwiążmy układ równań:
+
+\begin{align}
+    L(n) &= 2(L(\frac{n}{2} - 1) + \Theta(n)) + \Theta (n)
+    L(n) &= 2L(\frac{n}{2} - 1) + \Theta(n)
+    L(n) = \Theta(n \log n)
+\end{align}
+
+\subsection{Average case analysis for QS}
+
+\textit{Rozkład $T_n$ nie jest znany do dziś.}
+
+\begin{align}
+    T_n &= \text{\# porównań elementów sortowanej tablicy}, |A|=n\\
+    X_k(n) &= \begin{cases}
+        1 \quad \text{jeśli partition podzieli tablicę n-elementową na (k, n-k-1)}\\
+        0 \quad \text{w p.p.}
+    \end{cases}\\
+    0 \leq k \leq n - 1
+\end{align}
+
+\begin{align}
+    E(X_k) = 1\cdot P(X_k=1) + 0\cdot P(X_k=0) = 1\cdot P(X_k=1) = \frac{(n-1)!}{n!} = \frac{1}{n}
+\end{align}
+
+Zapiszmy wobec tego równanie na $T_n$
+
+\begin{align}
+    T_n &=^{distr.} \begin{cases}
+        T_0 + T_{n-1} + n-1 \quad \text{if (0,n-1) - split}\\
+        T_1 + T_{n-2} + n-1 \quad \text{if (1,n-2) - split}\\
+        \vdots\\
+        T_k + T_{n-1-k} + n - 1 \quad \text{if (k,n-k-1) - split}\\
+        T_{n-1} + T_{0} + n - 1 \quad \text{if (n-1,0) - split}
+    \end{cases}\\
+    T_n &=^{distr.} \sum_{k=0}^{n-1} X_k(T_k+T_{n-k-1} + n-1)
+\end{align}
+
+\begin{align}
+    E(T_n) &= E\left(\sum_{k=0}^{n-1} X_k(T_k+T_{n-k-1} + n-1)\right)=\\
+    E(T_n) &= \sum_{k=0}^{n-1} E\left(X_k(T_k+T_{n-k-1} + n-1)\right)=\\
+    E(T_n) &= \sum_{k=0}^{n-1} E\left(X_k\right) \cdot E(T_k+T_{n-k-1} + n-1)=\\
+    E(T_n) &= \frac{1}{n} \sum_{k=0}^{n-1} E(T_k) + E(T_{n-k-1}) + n-1=\\
+    E(T_n) &= \frac{1}{n} \left(\sum_{k=0}^{n-1} E(T_k) + \sum_{k=0}^{n-1} E(T_{n-k-1}) + \sum_{k=0}^{n-1} n-1\right)=\\
+    E(T_n) &= \frac{1}{n} \sum_{k=0}^{n-1} E(T_k) + \frac{1}{n} \sum_{k=0}^{n-1} E(T_{n-k-1}) + \frac{1}{n} \sum_{k=0}^{n-1} n-1 = \\
+    E(T_n) &= \frac{1}{n} \sum_{k=0}^{n-1} E(T_k) + \frac{1}{n} \sum_{k=0}^{n-1} E(T_{n-k-1}) + n - 1\\
+    E(T_n) &= \frac{2}{n} \sum_{k=0}^{n-1} E(T_k) + n - 1\\
+    t_n &= \frac{2}{n} \sum_{k=0}^{n-1} t_k + n - 1 \quad \text{rekurencja z pełną historią}\\
+\end{align}
+
+Możemy usunąć historię pisząc:
+
+\begin{align}
+    n t_n &= 2 \sum_{k=0}^{n-1} t_k + (n-1)n\\
+    (n-1) t_{n-1} &= 2 \sum_{k=0}^{n-2} t_k + (n-2)(n-1)\\
+    n t_n - (n-1) t_{n-1} &= 2 \sum_{k=0}^{n-1} t_k + (n-1)n - 2 \sum_{k=0}^{n-2} t_k - (n-2)(n-1)\\
+    n t_n - (n-1) t_{n-1} &= 2 t_{n-1} + 2 (n-1)\\
+    n t_n &= (n+1) t_{n-1} + 2(n-1)\\
+    \frac{t_n}{n+1} &= \frac{t_{n-1}}{n} + 2\frac{n-1}{n(n-1)}\\
+    f_n &= f_{n-1} + 2\frac{n-1}{n(n+1)}, f_0, f_1 = 0\\
+    f_n &= 2 \sum_{k=1}^{n} \frac{k-1}{k(k+1)} =\\
+    f_n &= 2 \sum_{k=1}^{n} \frac{2}{k+1} - \frac{1}{k}=\\
+    f_n &= 4 \sum_{k=1}^{n} \frac{1}{k+1} + 2\sum_{k=1}^{n} \frac{1}{k}=\\
+    f_n &= 4 (H_{n+1} - 1) + 2 H_n\\
+    f_n &= 4H_{n+1} + 2H_n - 1\\
+    f_n &= 2H_{n} - 4 + \frac{4}{n+1}\\
+    E(T_n) = t_n &= (n+1)f_n = 2nH_n + 2H_n - 4(n+1) + 4
+\end{align}
+
+\begin{align}
+    H_n = \ln n + \gamma + \frac{1}{2n} + \Theta\left(\frac{1}{n^2}\right)
+\end{align}
+
+Widzimy, że wiodący czynnik $T_n = 2n\ln n + \Theta(n)$.
+Wiemy dlaczego QS jest dobry - średnio wykona $2n\ln n$ porównań asymptotycznie.
 
 \end{document}
