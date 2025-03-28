@@ -10,3 +10,10 @@
 
 -- defnitelySort :: Ord a => [a] -> [a]
 -- defnitelySort xs = if isSorted xs then xs else defnitelySort (bubbleSort xs)
+
+bub :: Ord a => [a] -> [a]
+bub [] = []
+bub [x] = [x]
+bub (x:y:xs)
+    | x <= y = x : bub (y:xs)
+    | otherwise = bub (y : bub (x:xs))

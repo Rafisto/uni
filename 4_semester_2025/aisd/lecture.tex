@@ -1278,4 +1278,57 @@ Możemy usunąć historię pisząc:
 Widzimy, że wiodący czynnik $T_n = 2n\ln n + \Theta(n)$.
 Wiemy dlaczego QS jest dobry - średnio wykona $2n\ln n$ porównań asymptotycznie.
 
+\section{Lecture VII - Quicksort - further analysis}
+
+\begin{verbatim}
+    |  <=    |p|  < ... <=   |q|   <    |
+\end{verbatim}
+
+Możemy wyróznić dwa pivoty, w obrębie których prowadzimy sortowanie. 
+To wymaga stworzenia nowego alogrytmu partition. 
+
+\begin{enumerate}
+
+\item 1975 Sedgewick (liczba porównań w dual-pivot partition) 
+\[
+    E(\text{\# dual pivot partition})\sim \frac{16}{9} n \implies E(\text{\# QS}) \sim \frac{32}{15} n\log n
+\]
+
+\item 2009 Yaroslavsky, Bentley, Block - Dual pivot quick sort
+
+\item 2012 Sebastian Wild, Nebel
+
+\[
+    E(\text{\# dual pivot partition})\sim \frac{19}{12} n \implies E(\text{\# QS}) \sim 1.9 n\log n
+\]
+
+\item 2015 Aumuller Dietzfelbinger - zaprezentowali strategię count oraz pokazali jej optymalność:
+
+\[
+    E(\text{\# count partition})\sim \frac{3}{2} n \implies E(\text{\# QS}) \sim 1.8 n\log n
+\]
+\end{enumerate}
+
+\subsection{Strategia Count}
+
+Zakładamy $p < q$ - rozpatrujemy wartość oczekiwaną, ponieważ jedynie pierwsze sprawdzenie z pivotem jest wymagane.
+
+\begin{verbatim}
+1     s_{i-1}                  l_{i-1}
+|   |    <= p | < ... <= | q | <       |i|   ?  |
+    a                                           b
+\end{verbatim}
+Rozpatrzmy $i$-ty element w podziale (pamiętając, że $p < q$):
+\begin{itemize}
+    \item jeśli $s_{i-1} \geq l_{i-1}$ to porównujemy kolejny $A[i]$ najpierw z $p$, a potem ewentualnie z $q$
+    (jeśli $A[i] < p$ to nie musimy porównywać z $q$)
+    \item jeśli $s_{i-1} < l_{i-1}$ to $A[i]$ porównujemy najpierw z $q$, a potem ewentualnie z $p$
+\end{itemize}
+
+\begin{align}
+    E(T_n) = E(P_n) = \frac{1}{\binom{n}{2}} \sum_{1\leq p \leq q\leq n} E(T_{p-1}) + E(T_{q-p-1}) + E(T_q)
+\end{align}
+
+Tim Peters - Tim-sort - modyfikacja merge-sorta, wyznaczmy posortowane podciągi przed merge-m, mergeujmy podobnej wielkości tablice - specjalna polityka merge-owania.
+
 \end{document}
