@@ -1331,4 +1331,162 @@ Rozpatrzmy $i$-ty element w podziale (pamiętając, że $p < q$):
 
 Tim Peters - Tim-sort - modyfikacja merge-sorta, wyznaczmy posortowane podciągi przed merge-m, mergeujmy podobnej wielkości tablice - specjalna polityka merge-owania.
 
+
+... ograniczenie dolne, counting sort w czasie liniowym zbioru wielkości O(n)
+
+\subsection{Counting Sort}
+
+...
+
+\subsection{Radix Sort}
+
+... sortujemy po najmniej istotnej cyfrze
+
+\section{Lecture VIII}
+
+\subsection{Poprawność Radix Sort}
+
+Indukcja po $t$-numer cyfry.
+\begin{enumerate}
+    \item Jeśli liczby $1$-cyfrowe to z poprawności Counting Sorta ok.
+    \item Założmy indukcyjnie Radix Sort jest poprawny do $t-1$ cyfry.
+    \item Krok indukcyjny $t$-ta dwóch liczb jest taka sama. To z załóżenia indukcyjnego dalej oraz stable property Counting Sorta liczby do $t$-tej cyfry dalej pozostaną posortowane.\\
+    $t$-ta cyfra różna: z poprawności counting sorta OK.
+\end{enumerate}
+
+\subsection{Złożoność obliczeniowa Radix Sort}
+
+\begin{verbatim}
+|r-bitowy kawalek| r'b... | r'b... | ... | r'b... |
+b-bitów dzielmy na kawałki (cyfry w podstawie r)
+\end{verbatim}
+Mamy $n$, $b$-bitowych liczb, które dzielę na ($r$-bitowe cyfry $\frac{b}{r}$ takich cyfr).\\
+Cyfry są z $|\{0,\dots,2^n -1\}| = 2^n$.
+Zatem pojedyńczy counting sort $n$-liczb względem jednej cyfry to:
+\begin{align}
+    O(n + 2^r)
+\end{align}
+Zatem Radix Sort będzie miał złożoność obliczeniową
+\begin{align}
+    O\left(\frac{b}{r} (n + 2^r)\right)
+\end{align}
+W celu ustalenia nalepszego $r$ - minimalnego $f$ - wykorzystamy funkcję $W$-Lamberta
+\begin{align}
+    f(r) = \frac{b}{r}\left(n + 2^r\right)
+\end{align}
+Zapropojujmy funkcję $r=\log n$, wtedy:
+\begin{align}
+    O\left(\frac{b}{\log n} \left(n + 2^{\log n}\right)\right) = O\left(\frac{b\cdot n}{\log n}\right)=\\
+\end{align}
+Założmy, że zbiór sortowanych elementów to:
+\begin{align}
+    \{0,\dots,n^d-1\} - \text{do tego zbioru należą b-bitowe sortowane liczby}
+\end{align}
+Wtedy maksymalne $b=\log n^d = d \log n$:
+\begin{align}
+    (\dots) = O\left(\frac{d n \log n}{\log n}\right) = O(d\cdot n)  
+\end{align}
+
+\subsection{Statystyki pozycyjne}
+
+\begin{definition}{Statystyka pozycyjna}
+    $k$-tą statystykę pozycyjną nazywamy $k$-tą najmniejszą wartość z zadanego zbioru.
+\end{definition}
+
+\begin{itemize} 
+    \item Co się dzieje, jeśli $k=1 \rightarrow \Theta(n)$.
+    \item Co się dzieje, jeśli $k=n \rightarrow \Theta(n)$. 
+    \item Co się dzieje, jeśli $k = \lfloor \frac{n-1}{2} \rfloor \lor \lfloor \frac{n+1}{2} \rfloor \rightarrow$
+    sortowanie 
+\end{itemize}
+
+Wykojnajmy
+
+\subsection{RandomSelect(A,p,q,i)}
+\begin{verbatim}
+    IF p == q return A[p]
+    r = Rand_Partition(A,p,q) # jako pivota przyjmieny losowy element
+    k = r - p + 1
+    IF i == k return A[r]
+    IF i < k return RandomSelect(A, p, r-1, i)
+    ELSE return RandomSelect(A, r+1, q, i-k)
+\end{verbatim}
+
+\begin{verbatim}
+Szukajmy 4-tej statystyki pozycyjnej
+
+6, 10, 13, 5, 8, 3, 2, 11
+    * = pivot
+
+6, 5, 8, 3, 2, 10, 13, 11 RandomSelect(A,1, 8,4) r=6, k=6-1+1=6
+
+i1  2  3  4  5
+ 2, 3, 6, 5, 8 RandomSelect(A,1,5,4) r=2, k=2-1+1=2
+    * = pivot 
+
+ 6, 5, 8 RandomSelect(A, 3, 5, 2), r=4, k=4-3+1=2
+ * = pivot
+
+Return 6 (Sort check)
+2, 3, 5, 6, 8, 10, 11, 13
+4th element is 6.
+\end{verbatim}
+Best Case
+\begin{align}
+    T(n) &= 1T\left(\frac{n}{2}\right) + \Theta(n) \quad \text{n to partition}\\
+    a = 1, b =2, d &= 1, log_2 1 = 0 < 1 \implies \\ T(n) &= \Theta(n)
+\end{align}
+Worst Case
+\begin{align}
+    T(n) &= 1T\left(n-1\right) + \Theta(n) \quad \text{partition is unfortunate}\\
+    T(n) &= O(n^2)
+\end{align}
+Average Case
+\begin{align}
+    E(T_n) = (n-1) + \frac{2}{n} \sum_{k=\lceil \frac{n}{2} \rceil}^{n-1} E(T_k)
+\end{align}
+Można to rozwiązać indukcyjnie, aby wykazać, że $E(T_n) = \Theta(n)$.
+\begin{align}
+    T_n = \begin{cases}
+        T_{n-1} + n-1 : (0,n-1)\\
+        T_{n-2} + n-1 : (1,n-2)\\
+        \vdots
+        T_{\lceil\frac{n}{2}\rceil} + n-1 : (\lfloor \frac{n}{2} \rfloor, \lceil \frac{n}{2} \rceil)\\
+    \end{cases}
+\end{align}
+
+\subsection{Select(A,p,q,i)}
+
+Algorytm ma duże podobieństwo z RandomSelect. Nie wybieramy losowego pivota - tylko inteligentnie.
+Niech $|A[p..q]|=n$.
+\begin{enumerate}
+    \item Dzielimy $A[p..q]$ na $\lfloor \frac{n}{5} \rfloor$ pięcio elementowych części oraz ostatnią część rozmiaru $\leq 5$.
+    \item Sortujemy te grupy i wybieramy z każdej z nich medianę. $M=\{m_1,m_2,\dots,m_{\lfloor\frac{n}{5}\rfloor}\}$
+    \item Znajdujemy medianę $M: Select(M,1,\lceil \frac{n}{5} \rceil, \lfloor \frac{\lceil \frac{n}{5} \rceil}{2} \rfloor) \implies x$.
+    $M$ wygląda jak osobna tablica - da się to zrobić in place.
+    \item Ustaw $x$ (medianę median) jako pivot $\text{Partition}(A,p,q)$
+    Dalej tak samo jak RandomSelect, oczywiście odpaląc rekurencyjnie Select.
+\end{enumerate}
+
+\begin{verbatim}
+Dzielimy na 5 części
+|.....|.....|.....|.....|.... |
+sort 5-el części, wyzn medianę
+
+max
+| . | . | . | . | . |
+| . | . | . | . | . |
+| .m| .m| .m| .m| .m|
+| . | . | . | . | . |
+| . | . | . | . |   |
+min
+
+Zapuszczam selecta na M, |M|=5
+\end{verbatim}
+Pierwsze dwa kroki algorytmu zajmą $O(n)$ - podzielenie tablicy i posortowanie piątek. 
+Późniejsze kroki są dane jako rekurencja:
+\begin{align}
+    T(n) = T\left(\lceil \frac{n}{5} \rceil\right) + T(?) + O(n) \text{(? na następnym wykładzie)}
+\end{align}
+
 \end{document}
