@@ -1489,4 +1489,199 @@ Późniejsze kroki są dane jako rekurencja:
     T(n) = T\left(\lceil \frac{n}{5} \rceil\right) + T(?) + O(n) \text{(? na następnym wykładzie)}
 \end{align}
 
+\section{Lecture IX - Select}
+
+\begin{enumerate}
+    \item Dziel wejściową tablicę na 5-elementowe podtablice i znajdź ich mediany - $\Theta(n)$
+    \item Select $(\dots)$ - znajdź medianę median. - $T\left(\lceil \frac{n}{5} \rceil\right)$
+    \item Użyj mediany median jako pivot w $\text{Partition}$ - $\Theta(n)$
+    \item Idź do lewej albo prawej podtablicy w zależności od indeksu pivot i uszkanej statystyki pozycyjnej. $T(?)$
+\end{enumerate}
+
+\begin{align}
+    T(n) = T\left(\lceil \frac{n}{5} \rceil\right) + T(?) + \Theta(n)
+\end{align}
+
+\begin{verbatim}
+Dzielimy na 5 części
+|.....|.....|.....|.....|.... |
+sort 5-el części, wyzn medianę
+
+max
+| .w| .w| .w| . | . |
+| .w| .w| .w| . | . |
+| .w>  w> .M> .s> .s|
+| . | . | .s| .s| .s|
+| . | . | .s| .s| .s|
+min
+
+M - mediana median (zakładamy porządek)
+w - większe od mediany median (forall i : M < w_i)
+s - mniejsze od mediany median (forall i : M < s_i)
+". " - części o których nic nie powiemy
+
+Wszystkich piątek jest ceil(n/5)
+Wartości mniejszych od M jest 3*(1/2 ceil(n/5) - 1 - 1) (minus skrajna oraz mediana median)
+    Każda piątka kontrubuuję, ale nie liczymy skrajnych piątek - ponieważ wyznaczamy ograniczenie dolne
+    | .w| .w| .w| . | .  |. |
+    | .w| .w| .w| . | .  | . |
+    | .w>  w> .M> .l> .l | .s|
+    | . | . | .s| .l| .l | .s|
+    | . | . | .s| .l| .l | .s|
+
+    l - zliczamy
+    s - ignorujemy (można lepiej, ale nie trzeba)
+-||- większych jest 1/2 ceil(n/5)
+\end{verbatim}
+
+\begin{align}
+    \text{Wartości mniejszych od M} &\geq \left(\frac{1}{2} \lceil \frac{n}{5} \rceil - 1 - 1\right) \cdot 3 \geq \\
+    &\geq \frac{3}{10}n - 6
+\end{align}
+
+\begin{verbatim}
+Prezentowana tablica
+| 3/10 n - 6 | M | n - (3/10 m - 6) - 1 = 7/10n + 5 |
+\end{verbatim}
+Zatem
+\begin{align}
+T(n) \geq T\left(\lceil \frac{n}{5} \rceil\right) + T\left(\frac{7}{10}n + 5\right) + \Theta(n)\\
+\frac{3}{4} n \geq \frac{7}{10}n + 5 \quad \text{dla} \quad n>100\\
+T(n) \leq T\left(\frac{n}{5}\right) + T\left(\frac{3}{4}n\right) + \Theta(n)
+\end{align}
+Niech $T(1)=\Theta(1)$ .Chcemy pokazać, że $T(n) = \Theta(n)$.\\
+Założenie indukcyjne:
+\begin{align}
+    \left(\forall k<n\right) T(k) \leq ck
+\end{align}
+Krok indukcyjny
+\begin{align}
+    T(n) \leq T\left(\frac{n}{5}\right) + T\left(\frac{3}{4}n\right) + \Theta(n) \leq c\cdot \frac{n}{5} + c\cdot \frac{3}{4} n + \Theta(n) <\\ 
+    c \cdot \frac{19}{20} n + \Theta(n) <\\
+    cn - \frac{1}{20} cn + \Theta(n) <\\
+    cn - \frac{1}{20} cn + dn <\\
+    \text{wyznaczmy} \quad \left(-\frac{1}{20} cn + dn\right) \leq 0\\
+    \left(-\frac{1}{20} c + d\right) \leq 0\\
+    c \geq 20 d
+\end{align}
+Zatem istnieje takie $c$, że nierówność jest prawdziwa, więc:
+\begin{align}
+    T(n) = O(n)
+\end{align}
+\textit{Cel analizy algorytmu - pokazać że rekurencje tego typu mogą się zdarzyć}
+
+\subsection{Struktury Danych}
+
+Interesują nas struktury danych, które implementują $Set$ interface.\\
+Ma to być zbiór dynamiczny - możemy dodawać oraz usuwać elementy.\\
+Zakładamy \textbf{comparison model}.\\
+
+\noindent
+Podstawowe metody $Set$ interface:
+\begin{enumerate}
+    \item \textit{build(A)} - buduje "set" z danych zawartych w $A$. Mamy $a\in A, a.key$ - klucz identyfikujący element.
+    \item \textit{length(A)} - zwraca moc zbioru $A$
+    \item \textit{find(k)} - zwraca element $a\in A \text{ taki że } a.key = k \text{ lub null}$
+    \item \textit{insert(a)} - dodaj element $a$ do zbioru $A$
+    \item \textit{delete(k)} - usuń (czasem zwróć) element zbioru $A$ o kluczu $k$
+    \item \textit{find\_min()}, \textit{find\_max()}, \textit{find\_prev(k)}, \textit{find\_next(k)} (\textit{find n}), \textit{list\_ordered()} - zwróć element o najmniejszym lub największym kluczu $k$.
+\end{enumerate}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+\textbf{Struktura} & \textbf{Build} & \textbf{Find} & \textbf{Insert/Delete} & \textbf{Find mM} & \textbf{Find pn} & \textbf{List\_ordered} \\ \hline
+Unsorted Array & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n\log n) $ \\ \hline
+Sorted Array & $\Theta(n\log n)$ & $\Theta(\log(n))$ & $\Theta(n)$ & $\Theta(1)$ & $\Theta(\log n)$ & $\Theta(n)$ \\ \hline
+Linked List & $\Theta(n)$ & $\Theta(n)$ & insert $\Theta(1)$, delete $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n\log n)$ \\ \hline
+BST & & & & & & $\Theta(n)$\\ \hline
+
+\end{tabular}
+\caption{Porównanie różnych struktur danych}
+\label{tab:structure_comparison}
+\end{table}
+
+\subsection{Binary Search Tree}
+
+Drzewo przeszukiwań binarnych
+\begin{verbatim}
+Single Tree Node
+| parent                      |
+| left | key | values | right |
+
+"O" represents a node
+        O 5
+       /   \
+    3 O     O 10
+     /     / \
+  1 O   8 O   O 12
+               \
+                O 15
+                 \
+                  O 18
+                 /
+                O 16
+
+InorderTreeWalk(p)
+1, 3, 5, 8, 10, 12, 15, 16, 18
+\end{verbatim}
+Zakładamy interfejs zbioru (klucze się nie powtarzają). W przeciwnym przypadku zakładamy multizbiór.\\\\
+\noindent
+BST Property. Niech $x\in T$, $x$ jest węzłem drzewa $T$ (BST), wtedy:
+\begin{itemize}
+    \item każdy $y\in x.left$ ma $y.key < x.key$
+    \item każdy $y\in x.right$ ma $y.key > x.key$
+\end{itemize}
+
+\subsection{Operacje na BST}
+
+\begin{verbatim}
+InorderTreeWalk (x\in T)
+    if (x != null) 
+        InorderTreeWalk (x.left)
+        print(x)
+        InorderTreeWalk (x.right)
+\end{verbatim}
+
+\begin{align}
+    T(n) = T(k) + \Theta(1) + T(n-1-k)
+\end{align}
+Pokażmy, że $T(n) = \Theta(n)$\\
+Założenie indukcyjne: $\forall k<n \quad T(k)\leq ck$
+Krok indukcyjny: 
+\begin{align}
+    T(n) = T(j) + \Theta(1) + T(n-1-j) &\leq\\
+    cj + \Theta(1) + c(n-1-j) &=\\
+    = cn - c - \Theta(1) &\leq cn
+\end{align}
+Zatem $T(n) = O(n)$, musimy przejść $n$ elementów,
+zatem ograniczenie dolne również wynosi $n$, więc $T(n) = \Theta(n)$.
+
+\begin{verbatim}
+TreeSearch(x, k)
+    if x == null OR k == x.key
+        return x
+    if k < x.key
+        return TreeSearch(x.left, k)
+    else 
+        return TreeSearch(x.right, k)
+
+TreeMinimum(x) -> T(n) = O(h)
+TreeMaximum(x) -> T(n) = O(h)
+\end{verbatim}
+
+\begin{verbatim}
+TreeSuccessor(x)
+    if x.right != null
+        return TreeMinimum(x.right)
+    y = x.p
+    while y != null AND x == y.right
+        x = y
+        y = y.p
+    return y
+
+TreeSuccessor(x) -> T(n) = O(h)
+\end{verbatim}
+
 \end{document}
