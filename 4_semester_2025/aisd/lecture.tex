@@ -9,6 +9,8 @@
 
 \usepackage{color} 
 \usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
 \usepackage{amssymb}
 \usepackage{amsfonts}                                                                   
 \usepackage{graphicx}                                                             
@@ -1683,5 +1685,176 @@ TreeSuccessor(x)
 
 TreeSuccessor(x) -> T(n) = O(h)
 \end{verbatim}
+
+\section{Lecture X}
+
+\begin{verbatim}
+TreeInsert(x, el) ~ O(h) - nie było kodu na wykładzie :/
+TreeInsert(x, el)
+    if x == null
+        return el
+    if el.key < x.key
+        x.left = TreeInsert(x.left, el)
+        x.left.p = x
+    else
+        x.right = TreeInsert(x.right, el)
+        x.right.p = x
+    return x
+\end{verbatim}
+
+\begin{verbatim}
+TreeDelete(x)
+1. x jest liściem
+    - zwolnij pamięć zajmowaną przez x
+    - ustaw wskaźnik jego ojca (na niego na null)
+2. x ma jedno poddrzewo
+    - x ma syna v to
+        - zwalniamy pamięć x
+        - ojciec x wskazuje na v
+        - v.p wskazuje na x.p
+3. x ma dwa poddrzewa
+    - znajdź następnik x->y
+    - zastąp dane x danymi y
+    - skasuj y
+\end{verbatim}
+
+\subsection{Wysokość Drzewa BST}
+
+Wysokość drzewa to liczba krawędzi wzdłuż najdłuższej ścieżki od korzenia do liścia.
+
+\begin{align}
+h = (n-1) = O(n)
+\end{align}
+
+\begin{verbatim}
+Worst Case
+O 1
+ \
+  O 2
+   \
+    O 3
+
+Best Case
+   O 1
+   / \
+  O 2 O 3
+\end{verbatim}
+
+\begin{definition}{Drzewo zbalansowane}
+    Mówimy, że drzewo jest zbalansowane jeśli jego wysokość to $O(\log n)$.
+\end{definition}
+
+\subsection{BST\_Sort}
+
+Dodaj wszystkie elementy tablicy A do drzewa BST.
+InorderTreeWalk(T)
+
+\begin{verbatim}
+3 7 5 6 8 1 2
+  
+    3
+ /    \
+1      7
+ \    / \
+  2  5   8
+     \
+      6
+
+QS
+1 2 3 7 5 6 8
+1 2     5 6 7 8
+ 2      5 6   8
+          6
+
+Widzimy znaczące podobieństwo w porównaniach.
+\end{verbatim}
+
+\begin{align}
+    E(\text{Time}(\text{BST\_SORT})) &= E(\text{Time}(\text{QuickSort})) = \Theta(n\log n)\\
+    \text{Time}(\text{BST\_SORT}) &= \sum_{x\in T} \text{depth(x)}\\
+    E\left(\sum_{x\in T} \text{depth}(x)\right) &= \Theta(n\log n)\\
+    E\left(\frac{1}{n}\sum_{x\in T} \text{depth}(x)\right) &= \Theta(\log n)\\
+    &\text{średnia głębokość węzła w losowym drzewie BST}\\
+    h = \max_{x\in T}\{\text{depth}(x)\}
+\end{align}
+
+\begin{align}
+\frac{1}{n} \sum_{x\in T} \text{depth}(x) \leq \frac{1}{n} ((n-\sqrt(n))(\log n) + \sqrt{n}\cdot\sqrt{n}) \leq \log n + 1 = O(\log n), \text{ ale } h = O(\sqrt{n}) 
+\end{align}
+
+\begin{theorem}{Wysokość BST}
+    Niech $T$ będzie losowym drzewem BST o $n$-węzłach, wtedy:
+    \begin{align}
+        E(h(T)) \leq 3\log_2 n + o(\log n)
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+Nierówność Jensena jeśli $f$-wypukła, to:
+\begin{align}
+    f(E(X)) \leq E(f(X))
+\end{align}
+
+\begin{enumerate}
+    \item Nierówność Jensena
+    \item Zamiast analizować zmienną losową $H_n$, będziemy się zajmować $Y_n=2^{H_n}$
+    \item Pokażemy, że $E(Y_n) = O(n^3)$
+    \item $2^{E(H_n)} \leq E(2^{H_n}) = E(Y_n) = O(n^3)$
+    \item $E(H_n) = 3\log_2 n + o(\log n)$
+\end{enumerate}
+Pokażmy, że $E(Y_n) = O(n^3)$.
+\begin{verbatim}
+     r
+    / \
+ k-1   n-k
+\end{verbatim}
+Zakładając że korzeń tworzy $(k-1,n-k)$-split:
+\begin{align}
+    H_n =^{d}  &= 1 + \max\{H_{k-1}, H_{n-k}\}\\
+    Y_n =^{d}  &= 2 \max\{Y_{k-1}, Y_{n-k}\}\\
+    Z_{n,k} =^{d} &= \begin{cases}
+        1 \quad \text{jesli korzeń n-el drzewa wykonuje} (k-1,n-k)\text{-split}\\
+        0 \quad \text{w p.p.}
+    \end{cases}\\
+    E(Z_{n,k}) &= 1\cdot P(\text{(k-1,n-k)-split})=\frac{(n-1)!}{n!}=\frac{1}{n!}\\
+    Y_n =^{d} &= \sum_{k=1}^{n} Z_{n,k} \cdot 2 \max\{Y_{k-1}, Y_{n-k}\}\\
+    E(Y_n) &= E\left(\sum_{k=1}^{n} Z_{n,k} \cdot 2\max\{Y_{k-1}, Y_{n-k}\}\right)\\
+    E(Y_n) &= 2\sum_{k=1}^{n} E\left(Z_{n,k} \cdot \max\{Y_{k-1}, Y_{n-k}\}\right)\\
+    E(Y_n) &= 2\sum_{k=1}^{n} E(Z_{n,k}) \cdot E\left(\max\{Y_{k-1}, Y_{n-k}\}\right)\\
+    E(Y_n) &= \frac{2}{n} \sum_{k=1}^{n} E(\max\{Y_{k-1}, Y_{n-k}\})\\
+    &\leq_{(\max xy \leq x+y)} \frac{2}{n} \sum_{k=1}^{n} E(Y_{k-1}) + E(Y_{n-k})
+\end{align}
+\begin{align}
+    E(H_n) = O(\log n), H_n = \log_2 Y_n \\
+    Y_{k-1} = 2^10, Y{n-k} = 2^11\\
+    \max{2^{10},2^{11}} = 2^{11}\\
+    2^{10}+2^{11} = 3\cdot 2^{10}
+\end{align}
+\begin{align}
+    &= \frac{2}{n} \sum_{k=1}^{n} E(Y_{k-1}) + \sum_{k=1}^{n} E(Y_{n-k})\\
+    &= \frac{4}{n} \sum_{k=0}^{n-1} E(Y_{k})\\
+    Y_n &= E(Y_n)\\
+    y_n &\leq \frac{4}{n} \sum_{k=0}^{n-1} y_k\\
+    ny_n \leq 4 \sum_{k=0}^{n-1} y_k\\
+    y_n = O(n^3)
+\end{align}
+Dowód indukcyjny. Założenie indukcyjne $y_0=y_1=0, \forall k<n y_k \leq cn^3$
+\begin{align}
+   \text{krok indukcyjny}\quad
+   y_n &\leq \frac{4}{n} \sum_{k=0}^{n-1} y_k\\
+   &\leq_{\text{ind}} \frac{4}{n} \sum_{k=0}^{n-1} ck^3 =\\
+   &=\frac{4c}{n}\sum_{k=0}^{n-1} k^3=\\
+   &=\frac{4c}{n} \cdot \frac{n^2(n-1)^2}{4}=\\
+   &=cn(n-1)^2 \leq cn^3
+\end{align}
+Zatem:
+\begin{align}
+    E(Y_n) = O(n^3)
+\end{align}
+\end{proof}
+Dokładny wynik pokazany przez Devroye 1986r.
+\begin{align}
+    E(H_n) \sim 2.9882\log_2 n
+\end{align}
 
 \end{document}
