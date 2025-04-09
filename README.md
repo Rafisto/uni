@@ -5,17 +5,32 @@ I hereby present a treasure trove of resources covering various topics in mathem
 
 Table of Contents
 
-- [Notes Repository 🚀](#notes-repository-)
-  - [📊 **Calculus I and Calculus II** 📊](#-calculus-i-and-calculus-ii-)
-  - [🤭 **Discrete Mathematics** 🤭](#-discrete-mathematics-)
-  - [🧠 **Computer architecture and Operating Systems (lab 5.5 - max)** 🧠](#-operating-systems-)
-  - [😖 **Probability and Statistics** 😖](#-probability-and-statistics-)
-  - [✉️ **Databases** ✉️](#️-databases-️)
-  - [🤔 **Algebra** 🤔](#-algebra-)
-  - [🌌 **Physics I** 🌌](#-physics-i-)
-  - [**Procedural Programming (lab 5.0 - max)** in `C`](#procedural-programming-lab-50---max-in-c)
-  - [💻 **Object-Oriented Programming (lab 5.5 - max)** 💻](#-object-oriented-programming-lab-55---max-)
-  - [📚 **Logic and Formaltructures** 📚](#-logic-and-formaltructures-)
+| **IV Semester**                    | | | |
+| -------------------------------------- | --------------------------------------- | ------------------------------------------- | -------------------------------------------------------- |
+| Course                                 | Description                             | Notes                                       | Exercises                                                |
+| 📚 **Algorithms and Data Structures** 📚 | Basic algorithms and data structures    | [Notes](./4_semester_2025/aisd/lecture.pdf) | [Exercises](./4_semester_2025/aisd/lab/)                 |
+| 🧑‍💻 **Functional Programming** 🧑‍💻         | Functional programming in Haskell       | [Notes](./4_semester_2025/func/lecture.pdf) | [Exercises](./4_semester_2025/func/lab/)                 |
+| 🌐 **Computer Networks** 🌐              | Basics of computer networks             | [Notes](./4_semester_2025/net/lecture.pdf)  | [Exercises](./4_semester_2025/net/lab/)                  |
+| 🖥️ **Parallel Programming** 🖥️           | Go and Ada parallel programming         | -                                           | [Exercises](./4_semester_2025/parallel/lab/)                   |
+| **III Semester**                     |
+| Course                                 | Description                             | Notes                                       | Exercises                                                |
+| 🧠 **Operating Systems** 🧠              | UNIX and xv6 + x86 Assembly             | -                                           | [See below](#-operating-systems-)                        |
+| ✉️ **Databases** ✉️                      | SQL and MariaDB                         | -                                           |                                                          |
+| 😖 **Probability** 😖                    | Probability and Statistics              | -                                           |                                                          |
+| 💻 **Programming Course** 💻             | Java                                    | -                                           |                                                          |
+| **II Semester**                      |
+| Course                                 | Description                             | Notes                                       | Exercises                                                |
+| 🤔 **Abstract Algebra** 🤔               | Group theory, intro to Cryptography     | -                                           | [See below](#-algebra-)                                  |
+| 📊 **Mathematical Analysis II** 📊       | Vector Calculus, Differential Equations | -                                           | [See below](#-calculus-i-and-calculus-ii-)               |
+| 💻 **Object-Oriented Programming** 💻    | C++ and Java                            | -                                           | [See below](#-object-oriented-programming-lab-55---max-) |
+| 🤭 **Discrete Mathematics** 🤭           | Combinatorics                           | -                                           | [See below](#-discrete-mathematics-)                     |
+| 🌌 **Physics I** 🌌                      | Classical Mechanics and Relativity      | -                                           | [See below](#-physics-i-)                                |
+| **I Semester**                       |
+| Course                                 | Description                             | Notes                                       | Exercises                                                |
+| 🤔 **Algebra I** 🤔                      | Group theory, linear algebra            | -                                           | [See below](#-algebra-)                                  |
+| 📊 **Mathematical Analysis I** 📊        | Limits and Derivatives                  | -                                           | [See below](#-calculus-i-and-calculus-ii-)               |
+| 📚 **Logic and Formal Structures** 📚    | Introduction to Mathematics             | -                                           | [See below](#-logic-and-formaltructures-)                |
+| 💻 **Introduction to Programming** 💻    | C                                       | -                                           | [See below](#procedural-programming-lab-50---max)        |
 
 ## 📊 **Calculus I and Calculus II** 📊
 
