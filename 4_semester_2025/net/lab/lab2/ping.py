@@ -24,6 +24,10 @@ def ping(destination, timeout=5):
         reply = sr1(packet, verbose=0, timeout=timeout)
         rtt = (time.time() - start_time) * 1000
 
+        if reply is None:
+            print(f"Request timed out for {dest_ip}")
+        else:
+            print(f"Reply from {dest_ip}: bytes=32 time={rtt:.2f} ms")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Simple traceroute implementation using Scapy")
