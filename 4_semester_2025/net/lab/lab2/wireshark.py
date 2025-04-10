@@ -24,7 +24,7 @@ def packet_callback(packet, display_filter=None, verbose=False, output_file=None
     if display_filter and not display_filter(packet):
         return
     
-    output = f"\nPacket #{packet_count} [{timestamp}]: {len(packet)} bytes"
+    output = f"[{timestamp}]#{packet_count}:{len(packet)} bytes"
     
     if Ether in packet:
         output += f"\n  Ethernet: {packet[Ether].src} -> {packet[Ether].dst}"
@@ -73,20 +73,13 @@ def main():
     global start_time
     
     parser = argparse.ArgumentParser(description="Packet sniffer using Scapy")
-    parser.add_argument("-i", "--interface", default=None,
-                       help="Network interface to sniff on (default: auto-detect)")
-    parser.add_argument("-f", "--filter", default="",
-                       help="BPF filter to apply (e.g., 'tcp port 80')")
-    parser.add_argument("-d", "--display-filter", default="",
-                       help="Display filter to show only matching packets")
-    parser.add_argument("-c", "--count", type=int, default=0,
-                       help="Number of packets to capture (0 for unlimited)")
-    parser.add_argument("-v", "--verbose", action="store_true",
-                       help="Show verbose packet output")
-    parser.add_argument("-o", "--output", default=None,
-                       help="Output file to save captured packets")
-    parser.add_argument("-t", "--timeout", type=int, default=0,
-                       help="Capture timeout in seconds (0 for no timeout)")
+    parser.add_argument("-i", "--interface", default=None, help="Network interface to sniff on (default: auto-detect)")
+    parser.add_argument("-f", "--filter", default="", help="Filter to apply (e.g., 'tcp port 80')")
+    parser.add_argument("-d", "--display-filter", default="", help="Display filter to show only matching packets")
+    parser.add_argument("-c", "--count", type=int, default=0, help="Number of packets to capture (0 for unlimited)")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show verbose packet output")
+    parser.add_argument("-o", "--output", default=None, help="Output file to save captured packets")
+    parser.add_argument("-t", "--timeout", type=int, default=10, help="Capture timeout in seconds (10 default)")
     
     args = parser.parse_args()
     

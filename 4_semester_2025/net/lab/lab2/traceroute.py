@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from scapy.all import IP, ICMP, sr1
 import argparse
 import socket
@@ -7,7 +6,7 @@ import time
 ICMP_TIME_EXCEEDED = 11
 ICMP_ECHO_REPLY = 0
 
-def traceroute(destination, max_hops=30, timeout=2, verbose=False):
+def traceroute(destination, max_hops=30, timeout=1, verbose=False):
     """
     Perform a traceroute to a destination using ICMP or UDP packets.
     """
