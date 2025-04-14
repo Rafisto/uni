@@ -20,6 +20,7 @@
 \usepackage{wrapfig}
 \usepackage{hyperref}
 \usepackage{etoolbox}
+\usepackage{tikz}
 
 \makeatletter
 \newenvironment{definition}[1]{%
@@ -1946,5 +1947,285 @@ Dokładny wynik pokazany przez Devroye 1986r.
 \begin{align}
     E(H_n) \sim 2.9882\log_2 n
 \end{align}
+
+\section{Lecture XI}
+
+\subsection{Red Black Trees}
+
+'78 Guibas, Sedgewick - Red Black (RB) Trees 
+\begin{itemize}
+    \item Własność 0 - Drzewa RB są drzewami BST - mają BST Property - po lewej stronie węzła występują wartości mniejsze, a po prawej większe
+    \item Własność 1 - Każdy węzeł ma kolor czerwony albo czarny (to może być bit)
+    \item Własność 2 - Korzeń oraz \textit{liście} są czarne
+    \item Własność 3 - Jeśli węzeł jest czerwony, to jego bezpośrednie dzieci są czarne
+    \item Własność 4 - $\forall X$ Każda prosta ścieżka od węzła X do liści ma tyle samo czarnych węzłów. $(\text{black\_height}(x)$, inaczej $ \text{bh}(x))$. Prosta ścieżka oznacza, że nie zawracamy, zawsze idziemy w dół.
+\end{itemize}
+
+\subsection{Red Black Tree Example}
+
+\begin{center}
+\begin{tikzpicture}[level distance=1cm, sibling distance=1cm,
+    every node/.style={circle, draw, minimum size=0.5cm, inner sep=0pt},
+    edge from parent/.style={draw, -latex}]
+    
+    % Root node
+    \node[fill=black, text=white] {7}
+        % Left subtree
+        child {node[fill=black, text=white] {3}
+            child[missing]
+            child[missing]
+        }
+        % Right subtree
+        child {node[fill=red, text=black] {18}
+            child {node[fill=black, text=white] {10}
+                child {node[fill=red, text=black] {8}}
+                child {node[fill=red, text=black] {11}}
+            }
+            child {node[fill=black, text=white] {22}
+                child[missing]
+                child {node[fill=red, text=black] {26}}
+            }
+        };
+\end{tikzpicture}
+\end{center}
+Programując - ostatni liść - $nil$ nie ma klucza, kolor jest czarny, a wskaźnik na ojca - to każdy węzeł.
+Liście drzewa RB to wszystkie $nil$-węzły.\\
+\textbf{Przykład} Czarna wysokość $\text{bh}(18)=2$\\
+
+\noindent
+\textbf{Lemat} Niech $T$ będzie drzewem czerwono-czarnym o $n$-węzłach. Wtedy:
+\begin{align}
+    \text{wysokość}(T) \leq 2\log_2(n+1)
+\end{align}
+
+\noindent
+\textbf{Dowód} Czarni rodzice wchłaniają czerwone dzieci.
+
+\begin{center}
+    \begin{tikzpicture}[level distance=1.5cm, sibling distance=1.5cm,
+        every node/.style={circle, draw, minimum size=1cm, inner sep=0pt},
+        edge from parent/.style={draw, -latex}]
+        
+            % Root node
+            \node[fill=black, text=white] {7, 18}
+                % Left subtree
+                child {node[fill=black, text=white] {3}}
+                child {node[fill=black, text=white] {8,10,11}
+                }
+                child {node[fill=black, text=white] {22,26}
+                };
+    \end{tikzpicture}
+\end{center}
+W drzewie binarnym liczba liści wynosi $n+1$\\
+(zawsze dokładamy 2 liście do każdego węzła - można to pokazać indukcyjnie)\\
+
+\noindent
+\textbf{2-3-4}-Tree. Liczba liści nie zmienia się.
+
+\noindent
+Mamy $n+1$ liści w drzewie czerwono-czarnym oraz w 2-3-4-drzewie (dowód - indukcyjnie)
+\begin{itemize}
+    \item Niech $h$ - wysokość drzewa czerwono-czarnego.
+    \item Niech $h'$ - wysokość odpowiadającego mu 2-3-4-drzewa.
+\end{itemize}
+Zauważmy, że $h' = \text{bh}(\text{korzenia RB drzewa})$. Ograniczmy liczbę liści za pomocą funkcji od tej wysokości
+\begin{align}
+    2^{h'} \leq \# \text{liści} \leq 4^{h'}
+\end{align}
+Węzły binarne o wysokości $h'$ dają $2^{h'}$ węzłów.\\
+Węzły 2-3-4 o wysokości $h'$ dają $4^{h'}$ węzłów.\\
+Naszych liści jest $n+1$, zatem:
+\begin{align}
+    2^{h'} &\leq n+1\\
+    h' &\leq \log_2(n+1)
+\end{align}
+Z konstrukcji wchłaniania wiemy, że $h \leq 2h'$ (ponieważ każdy czarny węzeł może wchłaniać czerwone dzieci - z 2 razy wyższego drzewa). Zatem:
+\begin{align}
+    h &\leq 2 \log_2(n+1)
+\end{align}
+\textit{W Javie 8 HashMapy były implementowane jako drzewa czerwono-czarne.}\\
+
+\noindent
+Modyfikacja drzewa czerwono-czarnego obejmuje operacje różne od BST.
+Drzewo będzie wtedy zmieniać swoją strukturę aby zachować czarną wysokość - stąd również nazwa - self-balancing trees.
+Operacje niemodifikujące drzewa czerwono-czarnego są tożsame z operacjami na drzewach BST.
+
+\subsection{Insert w Red Black Trees}
+
+RB\_Insert(T,z)
+\begin{enumerate}
+    \item Wstawiamy węzeł $z$ do drzewa $T$ tak jak w przypadku BST
+    \item Ustawiamy kolor węzła $z$ na czerwony
+    \item Naprawiamy drzewo $T$ - wywołujemy funkcję RB\_Fixup(T,z)
+\end{enumerate}
+
+Chcemy umieścić nowy węzeł ($15$) w drzewie czerwono-czarnym.
+\begin{center}
+\begin{tikzpicture}[level distance=1cm, sibling distance=1cm,
+    every node/.style={circle, draw, minimum size=0.5cm, inner sep=0pt},
+    edge from parent/.style={draw, -latex}]
+    
+    % Root node
+    \node[fill=black, text=white] {7}
+        % Left subtree
+        child {node[fill=black, text=white] {3}
+            child[missing]
+            child[missing]
+        }
+        % Right subtree
+        child {node[fill=red, text=black] {18}
+            child {node[fill=black, text=white] {10}
+                child {node[fill=red, text=black] {8}}
+                child {node[fill=red, text=black] {11}
+                child {node[fill=red, text=black] {15}}
+                }
+            }
+            child {node[fill=black, text=white] {22}
+                child[missing]
+                child {node[fill=red, text=black] {26}}
+            }
+        };
+\end{tikzpicture}
+\end{center}
+
+Operacje używane w procedurze Fixup
+\begin{enumerate}
+    \item \texttt{recolor} - $O(1)$ - zmiana koloru węzła - z czerwonego na czarny, z czarnego na czerwony
+    \item \texttt{rotate} - $O(1)$ - rotacja węzła $x$ w lewo lub w prawo.
+\end{enumerate}
+
+\begin{center}
+\begin{tikzpicture}
+    \begin{scope}[xshift=-6cm]
+        \node[draw, circle] (x) at (0, 0) {$A$};
+        \node[draw, circle] (y) at (2, 1) {$B$};
+        \node[draw, circle] (T2) at (1, -1) {$\beta$};
+        \node[draw, circle] (T1) at (-1, -1) {$\alpha$};
+        \node[draw, circle] (T3) at (3, -1) {$\gamma$};
+
+        \draw[-latex] (x) -- (T1);
+        \draw[-latex] (x) -- (T2);
+        \draw[-latex] (y) -- (x);
+        \draw[-latex] (y) -- (T3);
+
+        \node at (1, -2) {Before Right Rotation};
+    \end{scope}
+
+    \begin{scope}[xshift=6cm]
+        \node[draw, circle] (x) at (0, 0) {$A$};
+        \node[draw, circle] (y) at (-2, 1) {$B$};
+        \node[draw, circle] (T2) at (1, -1) {$\gamma$};
+        \node[draw, circle] (T1) at (-1, -1) {$\beta$};
+        \node[draw, circle] (T3) at (-3, -1) {$\alpha$};
+
+        \draw[-latex] (x) -- (T1);
+        \draw[-latex] (x) -- (T2);
+        \draw[-latex] (y) -- (x);
+        \draw[-latex] (y) -- (T3);
+
+        \node at (-1, -2) {After Right Rotation};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{align}
+    \left(\forall a\in\alpha b\in\beta c\in\gamma\right) \left(a\leq B\leq b leq A\leq c\right)
+\end{align}
+
+RB\_Fixup(T,z)
+
+\noindent
+\textbf{Case 1} - $z$ jest czerwony, ojciec $x$, wujek $w=z.p.p \leadsto \text{inne dziecko}$, $x=z.p$ jest czerwony oraz $w$-czerwony.
+
+\begin{center}
+    \begin{tikzpicture}[
+        level distance=1.2cm, sibling distance=2.5cm,
+        every node/.style={circle, draw, minimum size=0.5cm, inner sep=0pt},
+        edge from parent/.style={draw, -latex},
+        level 2/.style={sibling distance=1.5cm},
+        level 3/.style={sibling distance=1cm}
+        ]
+
+        \begin{scope}[xshift=-3cm]
+        \node[fill=black, text=white] {}
+            child {node[fill=red, text=white] {}
+                child {node[fill=red] {}
+                    child {node[fill=black] {}}
+                    child {node[fill=black] {}}
+                }
+                child {node[fill=black] {}}
+            }
+            child {node[fill=red, text=black] {}
+                child {node[fill=black, text=black] {}}
+                child {node[fill=black, text=black] {}}
+            };
+        \end{scope}
+
+        \begin{scope}[xshift=3cm]
+        \node[fill=red] {}
+            child {node[fill=black] {}
+                child {node[fill=red] {}
+                    child {node[fill=black] {}}
+                    child {node[fill=black] {}}
+                }
+                child {node[fill=black] {}}
+            }
+            child {node[fill=black] {}
+                child {node[fill=black, text=black] {}}
+                child {node[fill=black, text=black] {}}
+            };  
+        \end{scope}
+    \end{tikzpicture}
+\end{center}
+\textbf{Case 2} - $z$ - czerwony, $x$ - czarny, $w$ - czarny, zachodzi zig-zag
+
+\noindent
+\textbf{Case 3} - $z$ - czerwony, $x$ - czarny, $w$ - czarny, bez zig-zag\\
+
+\noindent
+\textit{Poddałem się z rysowaniem tego w tikz}\\
+
+Ostatecznie
+\begin{center}
+    \begin{tikzpicture}[
+        level distance=1.2cm, sibling distance=2.5cm,
+        every node/.style={circle, draw, minimum size=0.5cm, inner sep=0pt},
+        edge from parent/.style={draw, -latex},
+        level 2/.style={sibling distance=1.5cm},
+        level 3/.style={sibling distance=1cm}
+        ]
+
+        % Root node
+        \node[fill=black, text=white] {10}
+            % Left subtree
+            child {node[fill=red, text=black] {7}
+                child{node[fill=black, text=white] {3}}
+                child{node[fill=black, text=white] {8}}
+            }
+            % Right subtree
+            child {node[fill=red, text=black] {18}
+                child {node[fill=black, text=white] {11}
+                    child {node[fill=red, text=black] {15}}
+                }
+                child {node[fill=black, text=white] {22}
+                    child[missing]
+                    child {node[fill=red, text=black] {26}}
+                }
+            };
+    \end{tikzpicture}
+\end{center}
+
+\noindent
+Wnioski
+\begin{itemize}
+    \item Fixup - $O(\log n)$
+    \item Insert - $O(\log n)$
+    \item RB\_Insert - $O(\log n)$
+\end{itemize}
+
+\noindent
+Inne drzewa od Red Black Trees to drzewa AVL (różnica stałych przy logarytmach), self-leaning left trees, skip list.
+
+\textit{Następny wykład - kolejna struktura implementująca interfejs set}
 
 \end{document}
