@@ -17,7 +17,7 @@ def partition(arr, low, high, pivot_index):
     return i
 
 def simulate_trial(args):
-    """Simulate a single trial and return whether it meets the alpha condition."""
+    """Simulate a single trial and return the distribution of the partition sizes"""
     n, alpha, pivot_strategy = args
     arr = np.random.randint(0, 1000, n)
     low, high = 0, len(arr) - 1
@@ -36,25 +36,42 @@ def simulate_trial(args):
     total_size = left_size + right_size + 1
     left_ratio = left_size / total_size
     
-    return 1 if left_ratio <= alpha else 0
+    # return 1 if left_ratio <= alpha else 0
+    return 1 if (left_ratio == alpha or left_ratio == 1 - alpha) else 0
 
 def simulate_partition_probabilities(n, alpha_values, pivot_strategy, trials=10000):
     """Simulate partition probabilities using multiprocessing."""
-    probabilities = []
-    num_processes = cpu_count()
+    probabilities = {alpha: 0 for alpha in alpha_values}
     
+    for i in range(trials):
+        print(f"Trial {i}")
+        arr = np.random.randint(0, 1000, n)
+        low, high = 0, len(arr) - 1    
+       
+        if pivot_strategy == "random":
+            pivot_index = randint(low, high)
+        elif pivot_strategy == "median_of_three":
+            pivot_candidates = sample(range(low, high + 1), 3)
+            pivot_index = sorted(pivot_candidates, key=lambda x: arr[x])[1]
+        else:
+            raise ValueError("Invalid pivot strategy")
+    
+        partition_index = partition(arr, low, high, pivot_index)
+        left_size = partition_index - low
+        right_size = high - partition_index
+        total_size = left_size + right_size + 1
+        left_ratio = left_size / total_size
+
+        ratio = min(left_ratio, 1 - left_ratio)
+        for alpha in alpha_values:
+            if alpha - 0.01 <= ratio < alpha + 0.01:
+                probabilities[alpha] += 1
+        
+    # Normalize probabilities
     for alpha in alpha_values:
-        print(f"Simulating for alpha = {alpha:.2f} with pivot strategy: {pivot_strategy}")
-        
-        trial_args = [(n, alpha, pivot_strategy) for _ in range(trials)]
-        
-        with Pool(processes=num_processes) as pool:
-            results = pool.map(simulate_trial, trial_args)
-        
-        count = sum(results)
-        probabilities.append(count / trials)
-    
-    return probabilities
+        probabilities[alpha] /= trials
+
+    return [probabilities[alpha] for alpha in alpha_values]
 
 
 def main():
@@ -71,11 +88,11 @@ def main():
     plt.plot(alpha_values, random_pivot_probs, label="Random Pivot", marker='o')
     plt.plot(alpha_values, median_of_three_probs, label="Median of Three Pivot", marker='x')
 
-    plt.plot(alpha_values, alpha_values, label="\alpha Function", linestyle='--', color='gray')
-    plt.plot(alpha_values, 2*alpha_values**2, label="2\alpha^2 Function", linestyle='--', color='orange')
+    plt.plot(alpha_values, [0.04 for i in alpha_values], label="alpha Function", linestyle='--', color='gray')
+    plt.plot(alpha_values, 1/10*np.sqrt(alpha_values)-0.01, label="sqrt alpha Function", linestyle='--', color='red')
+    plt.plot(alpha_values, 1/10*np.log2(alpha_values+1), label="log2 alpha Function", linestyle='--', color='orange')
 
-
-    plt.xlabel("Alpha (α)")
+    plt.xlabel("Alpha ($\\alpha$)")
     plt.ylabel("Probability")
 
 
