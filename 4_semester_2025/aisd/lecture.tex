@@ -157,7 +157,7 @@ Odwrotnie posortowana tablica powoduje najwięcej przesunięć. Ponieważ ustali
     T(n) &= \sum_{j=2}^n O(j-1) = \sum_{j=1}^{n-1} O(j) = O\left(\sum_{j=1}^{n-1} j\right) =\\
     &= O\left(\frac{1+n-1}{2}\cdot (n-1)\right) = O\left(\frac{(n-1)\cdot(n)}{2}\right) = O\left(\frac{n^2}{2}\right) = O(n^2)
 \end{align}
-c
+
 \subsubsection{Average-case analysis - Insertion Sort $(A,n)$}
 
 Policzmy dla uproszczenia, że na wejściu mamy $n$-elementowe permutacje, z których każda jest jednakowo prawdopodobna $p=\frac{1}{n!}$. Spróbujmy wyznaczyć $\mathbf{E}$, korzystając z inwersji permutacji. Wartość oczekiwana liczby inwersji w losowej permutacji wynosi:
@@ -193,17 +193,18 @@ Chcielibyśmy gdzie to konieczne, zapisać \textit{lower order terms}.\\
 Niech złożoność T(n) - złożność algorytmu.
 
 \noindent
-Funkcja merge sort
+Funkcja Merge Sort stanowi o strukturze algorytmu:
 \begin{verbatim}
-O(1)          | if |A[1...n]| == 1 return A[1...n]
-              | else
-T(floor(n/2)) |     B = MERGE_SORT(A,1,floor(n/2))
-T(ceil(n/2))  |     C = MERGE_SORT(A,floor(n/2)+1, n)
-O(n)          |     return MERGE(B,C)
+MERGE_SORT(A,1,n)
+if |A[1...n]| == 1 return A[1...n]         | O(1)
+else                                   
+    B = MERGE_SORT(A,1,floor(n/2))         | T(floor(n/2))
+    C = MERGE_SORT(A,floor(n/2)+1, n)      | T(ceil(n/2))
+    return MERGE(B,C)                      | O(n)
 \end{verbatim}
 
 \noindent
-Funkcja merge
+Funkcja Merge pozwala łączyć poszczególne wywołania rekurencyjne:
 \begin{verbatim}
 MERGE(X[1...k], Y[1...l])
 if k = 0 return Y[1...l]
@@ -328,27 +329,20 @@ Zatem złożność:
         \limsup_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| =  \lim_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| 
     \]
 \end{fact}
-
 Przykłady:
-$
-\begin{cases}
-    f(n) = n^2\\
-    g(n) = (-1)^n n^2
-\end{cases}
-$
-
-
-Granica nie istnieje, ale $\limsup = 1$
-
-$
-\begin{cases}
-    \frac{f(n)}{g(n)} = \begin{cases}
-        1, \quad 2 \quad | \quad n\\
-        \frac{1}{n}, \quad 2 \quad \not| \quad n
+\begin{align}
+    \begin{cases}
+        f(n) = n^2\\
+        g(n) = (-1)^n n^2
     \end{cases}
-\end{cases}
-$
-
+\end{align}
+Granica nie istnieje, ale $\limsup = 1$
+\begin{align}
+    \frac{f(n)}{g(n)} = \begin{cases}
+        1, \quad 2 \quad &| \quad n\\
+        \frac{1}{n}, \quad 2 \quad &{\not|} \quad n
+    \end{cases}
+\end{align}
 Granica nie istnieje.
 
 \begin{fact}{Dokładność zapisu Big-O}
@@ -758,7 +752,7 @@ Przykład
 
 \begin{align}
     T(n) = 4 T\left(\frac{n}{3}\right) + 3n^2 \quad a=4, b=3, d=2\\
-    \log_b a = \log_3 4 > 2 = d \quad \text{to jest przypadek (1)}\\
+    \log_b a = \log_3 4 < 2 = d \quad \text{to jest przypadek (1)}\\
     T(n) = \Theta\left(n^d\right) = \Theta\left(n^2\right)
 \end{align}
 
@@ -1024,7 +1018,7 @@ Rozważmy algorytmy służące do dzielenia tablicy w Quicksorcie
 \subsection{Lomuto Partition}
 
 \begin{verbatim}
-Lomato Partition(A, p, q) # A[p..q]
+Lomuto Partition(A, p, q) # A[p..q]
     pivot = A[p]
     i = p
     for j = p + 1 to q
@@ -1169,15 +1163,15 @@ Najgorzej będzie jak każdorazowo będziemy nierówno dzielić po 1-szym elemen
 Najlepiej będzie jak dzielimy na pół.
 
 \begin{align}
-    T(n) &= T(\frac{n}{2}) + T(\frac{n}{2}) + \Theta(n) \\
-    T(n) &= 2T(\frac{n}{2}) + \Theta(n) \\
+    T(n) &= T\left(\frac{n}{2}\right) + T\left(\frac{n}{2}\right) + \Theta(n) \\
+    T(n) &= 2T\left(\frac{n}{2}\right) + \Theta(n) \\
     T(n) &= \Theta(n\log n)
 \end{align}
 
 \subsection{Specific case analysis for QS}
 
 \begin{align}
-    T(n) &= T(\frac{n}{10}) + T(\frac{9n}{10}) + \Theta(n)
+    T(n) &= T\left(\frac{n}{10}\right) + T\left(\frac{9n}{10}\right) + \Theta(n)
 \end{align}
 
 \begin{verbatim}
@@ -1207,30 +1201,29 @@ Po zsumowaniu każde piętro będzie miało koszt $cn$. Zchodzimy końca wysoko�
 Zatem rozwiążmy układ równań:
 
 \begin{align}
-    L(n) &= 2(L(\frac{n}{2} - 1) + \Theta(n)) + \Theta (n)
-    L(n) &= 2L(\frac{n}{2} - 1) + \Theta(n)
-    L(n) = \Theta(n \log n)
+    L(n) &= 2\left(L(\frac{n}{2} - 1) + \Theta(n)\right) + \Theta (n)\\
+    L(n) &= 2L\left(\frac{n}{2} - 1\right) + \Theta(n)\\
+    L(n) &= \Theta(n \log n)
 \end{align}
 
 \subsection{Average case analysis for QS}
 
-\textit{Rozkład $T_n$ nie jest znany do dziś.}
+\textit{Rozkład $T_n$ nie jest znany do dziś.}\\
 
+\noindent
+Zapiszmy dla $0 \leq k \leq n - 1$:
 \begin{align}
     T_n &= \text{\# porównań elementów sortowanej tablicy}, |A|=n\\
     X_k(n) &= \begin{cases}
         1 \quad \text{jeśli partition podzieli tablicę n-elementową na (k, n-k-1)}\\
         0 \quad \text{w p.p.}
-    \end{cases}\\
-    0 \leq k \leq n - 1
+    \end{cases}
 \end{align}
-
+Możemy wyznaczyć wartość oczekiwaną zmiennej losowej $X_k$:
 \begin{align}
     E(X_k) = 1\cdot P(X_k=1) + 0\cdot P(X_k=0) = 1\cdot P(X_k=1) = \frac{(n-1)!}{n!} = \frac{1}{n}
 \end{align}
-
-Zapiszmy wobec tego równanie na $T_n$
-
+Zapiszmy wobec tego równanie na $T_n$, uwzględniające wszystkie przypadki:
 \begin{align}
     T_n &=^{distr.} \begin{cases}
         T_0 + T_{n-1} + n-1 \quad \text{if (0,n-1) - split}\\
@@ -1250,33 +1243,42 @@ Zapiszmy wobec tego równanie na $T_n$
     E(T_n) &= \frac{1}{n} \left(\sum_{k=0}^{n-1} E(T_k) + \sum_{k=0}^{n-1} E(T_{n-k-1}) + \sum_{k=0}^{n-1} n-1\right)=\\
     E(T_n) &= \frac{1}{n} \sum_{k=0}^{n-1} E(T_k) + \frac{1}{n} \sum_{k=0}^{n-1} E(T_{n-k-1}) + \frac{1}{n} \sum_{k=0}^{n-1} n-1 = \\
     E(T_n) &= \frac{1}{n} \sum_{k=0}^{n-1} E(T_k) + \frac{1}{n} \sum_{k=0}^{n-1} E(T_{n-k-1}) + n - 1\\
-    E(T_n) &= \frac{2}{n} \sum_{k=0}^{n-1} E(T_k) + n - 1\\
-    t_n &= \frac{2}{n} \sum_{k=0}^{n-1} t_k + n - 1 \quad \text{rekurencja z pełną historią}\\
+    E(T_n) &= \frac{2}{n} \sum_{k=0}^{n-1} E(T_k) + n - 1
 \end{align}
-
-Możemy usunąć historię pisząc:
-
+Podstawmy dla wygody $t_n=E(T_n)$:
+\begin{align}
+    t_n &= \frac{2}{n} \sum_{k=0}^{n-1} t_k + n - 1 \quad \text{rekurencja z pełną historią}
+\end{align}
+Możemy usunąć historię odejmując od siebie kolejne wyrazy rekurencji.
 \begin{align}
     n t_n &= 2 \sum_{k=0}^{n-1} t_k + (n-1)n\\
-    (n-1) t_{n-1} &= 2 \sum_{k=0}^{n-2} t_k + (n-2)(n-1)\\
+    (n-1) t_{n-1} &= 2 \sum_{k=0}^{n-2} t_k + (n-2)(n-1)
+\end{align}
+Zachodzi odejmowanie stronami
+\begin{align}
     n t_n - (n-1) t_{n-1} &= 2 \sum_{k=0}^{n-1} t_k + (n-1)n - 2 \sum_{k=0}^{n-2} t_k - (n-2)(n-1)\\
     n t_n - (n-1) t_{n-1} &= 2 t_{n-1} + 2 (n-1)\\
     n t_n &= (n+1) t_{n-1} + 2(n-1)\\
-    \frac{t_n}{n+1} &= \frac{t_{n-1}}{n} + 2\frac{n-1}{n(n-1)}\\
+    \frac{t_n}{n+1} &= \frac{t_{n-1}}{n} + 2\frac{n-1}{n(n+1)}
+\end{align}
+Dokonajmy podstawienia $f_n=\frac{t_n}{n+1}$, $f_0=0$, $f_1=0$:
+\begin{align}
     f_n &= f_{n-1} + 2\frac{n-1}{n(n+1)}, f_0, f_1 = 0\\
     f_n &= 2 \sum_{k=1}^{n} \frac{k-1}{k(k+1)} =\\
     f_n &= 2 \sum_{k=1}^{n} \frac{2}{k+1} - \frac{1}{k}=\\
-    f_n &= 4 \sum_{k=1}^{n} \frac{1}{k+1} + 2\sum_{k=1}^{n} \frac{1}{k}=\\
-    f_n &= 4 (H_{n+1} - 1) + 2 H_n\\
-    f_n &= 4H_{n+1} + 2H_n - 1\\
-    f_n &= 2H_{n} - 4 + \frac{4}{n+1}\\
+    f_n &= 4 \sum_{k=1}^{n} \frac{1}{k+1} - 2\sum_{k=1}^{n} \frac{1}{k}=\\
+    f_n &= 4 (H_{n+1} - 1) - 2 H_n\\
+    f_n &= 4 \left(H_{n} + \frac{1}{n+1} - 1\right) - 2H_n\\
+    f_n &= 2H_{n} - 4 + \frac{4}{n+1}
+\end{align}
+Wróćmy z podstawienia $t_n = (n+1)f_n$:
+\begin{align}
     E(T_n) = t_n &= (n+1)f_n = 2nH_n + 2H_n - 4(n+1) + 4
 \end{align}
 
 \begin{align}
     H_n = \ln n + \gamma + \frac{1}{2n} + \Theta\left(\frac{1}{n^2}\right)
 \end{align}
-
 Widzimy, że wiodący czynnik $T_n = 2n\ln n + \Theta(n)$.
 Wiemy dlaczego QS jest dobry - średnio wykona $2n\ln n$ porównań asymptotycznie.
 
@@ -1338,11 +1340,36 @@ Tim Peters - Tim-sort - modyfikacja merge-sorta, wyznaczmy posortowane podciągi
 
 \subsection{Counting Sort}
 
-...
+Counting sort
+\footnote{Cormen (194-196) - Chapter 8 - Sorting in Linear Time - 8.2 Counting Sort} 
+zakłada, że każdy z wejściowych elementów mieści się w przedziale $[0,k]$, dla pewnego $k\in\mathbb{Z}$.
+Gdy $k=O(n)$, to złożoność algorytmu wynosi $\Theta(n+k) = \Theta(n)$.
+\noindent
+Do jego wykonania potrzebujemy tablicy pomocniczej.
+\begin{verbatim}
+COUNTING-SORT(A, B, k)
+let C[0..k] be a new array
+for i = 0..k
+    C[i] = 0
+for j = 1..length[A]
+    C[A[j]] = C[A[j]] + 1
+for i = 1..k
+    C[i] = C[i] + C[i - 1]
+for j = length[A]..1
+    B[C[A[j]]] = A[j]
+    C[A[j]] = C[A[j]] - 1
+\end{verbatim}
+Counting sort ma własność stabliności - zachowuje elementy tej samej wartości w kolejności, w jakiej występują w tablicy wejściowej.
 
 \subsection{Radix Sort}
 
-... sortujemy po najmniej istotnej cyfrze
+Radix Sort polega na sortowaniu liczb w systemie pozycyjnym, przy pomocy innego stabilnego sortowania.
+
+\begin{verbatim}
+RADIX-SORT(A, d)
+for i = 1..d
+    COUNTING-SORT(A, i)
+\end{verbatim}
 
 \section{Lecture VIII}
 
@@ -1402,10 +1429,12 @@ Wtedy maksymalne $b=\log n^d = d \log n$:
     sortowanie 
 \end{itemize}
 
-Wykojnajmy
-
 \subsection{RandomSelect(A,p,q,i)}
+
+Nazwa RandomSelect bierze się z tego, że wybieramy losowy element jako pivot.
+$p$ to indeks początkowy, $q$ to indeks końcowy, $i$ to numer zadanej statystyki pozycyjnej.
 \begin{verbatim}
+RandomSelect(A, p, q, i)
     IF p == q return A[p]
     r = Rand_Partition(A,p,q) # jako pivota przyjmieny losowy element
     k = r - p + 1
@@ -1413,49 +1442,105 @@ Wykojnajmy
     IF i < k return RandomSelect(A, p, r-1, i)
     ELSE return RandomSelect(A, r+1, q, i-k)
 \end{verbatim}
+\textbf{Przykład}. Szukajmy 4-tej statystyki pozycyjnej (Pivot oznaczamy '*'):
 
 \begin{verbatim}
-Szukajmy 4-tej statystyki pozycyjnej
-
 6, 10, 13, 5, 8, 3, 2, 11
-    * = pivot
-
-6, 5, 8, 3, 2, 10, 13, 11 RandomSelect(A,1, 8,4) r=6, k=6-1+1=6
-
-i1  2  3  4  5
- 2, 3, 6, 5, 8 RandomSelect(A,1,5,4) r=2, k=2-1+1=2
-    * = pivot 
-
- 6, 5, 8 RandomSelect(A, 3, 5, 2), r=4, k=4-3+1=2
- * = pivot
-
-Return 6 (Sort check)
-2, 3, 5, 6, 8, 10, 11, 13
-4th element is 6.
+   *
 \end{verbatim}
-Best Case
+
+\noindent
+Po podziale względem pivota:
+
+\begin{verbatim}
+6, 5, 8, 3, 2, 10, 13, 11    RandomSelect(A, 1, 8, 4), r = 6, k = 6 - 1 + 1 = 6
+               *
+\end{verbatim}
+Bierzemy lewą część:
+\begin{verbatim}
+2, 3, 6, 5, 8    RandomSelect(A, 1, 5, 4)
+      *
+Pivot index: r = 2, k = 2 - 1 + 1 = 2
+\end{verbatim}
+I dalej:
+\begin{verbatim}
+6, 5, 8    RandomSelect(A, 3, 5, 2)
+*
+Pivot index: r = 4, k = 4 - 3 + 1 = 2
+\end{verbatim}
+
+\noindent
+Zwracamy czwarty element posortowanej tablicy \textbf{6} (dla sprawdzenia: posortowana tablica):
+
+\[
+2,\ 3,\ 5,\ 6,\ 8,\ 10,\ 11,\ 13
+\]
+
+\subsection{Best Case dla RandomSelect}
+
+Każdorazowo dzielimy tablicę na pół.
 \begin{align}
-    T(n) &= 1T\left(\frac{n}{2}\right) + \Theta(n) \quad \text{n to partition}\\
+    T(n) &= 1\cdot T\left(\frac{n}{2}\right) + \Theta(n) \quad \text{n to partition}\\
     a = 1, b =2, d &= 1, log_2 1 = 0 < 1 \implies \\ T(n) &= \Theta(n)
 \end{align}
-Worst Case
+
+\subsection{Worst Case dla RandomSelect}
+
+Każdorazowo wybieramy pivot tak, że dzielimy tablicę na $n-1$ i $0$-elementową część.
 \begin{align}
     T(n) &= 1T\left(n-1\right) + \Theta(n) \quad \text{partition is unfortunate}\\
     T(n) &= O(n^2)
 \end{align}
-Average Case
+
+\subsection{Average Case dla RandomSelect}
+
 \begin{align}
     E(T_n) = (n-1) + \frac{2}{n} \sum_{k=\lceil \frac{n}{2} \rceil}^{n-1} E(T_k)
 \end{align}
-Można to rozwiązać indukcyjnie, aby wykazać, że $E(T_n) = \Theta(n)$.
+Możemy zapisać (rozbicia na $k$ i $n-k-1$, z których bierzemy tylko jedno z nich). Wiemy, że $n-1$ to koszt Partition, zatem:
 \begin{align}
     T_n = \begin{cases}
         T_{n-1} + n-1 : (0,n-1)\\
         T_{n-2} + n-1 : (1,n-2)\\
-        \vdots
+        \vdots\\
         T_{\lceil\frac{n}{2}\rceil} + n-1 : (\lfloor \frac{n}{2} \rfloor, \lceil \frac{n}{2} \rceil)\\
     \end{cases}
 \end{align}
+Można to rozwiązać indukcyjnie, aby wykazać, że $E(T_n) = \Theta(n)$.\\
+\textit{Uwaga. Te przekształcenia wykonałem po wykładzie}\\
+
+\noindent
+Wiemy, że ograniczenie dolne na $T_n$ wynosi $\Omega(n)$, ponieważ $n-1=O(n)$ to sam koszt dla Partition.
+Ustalmy ograniczenie górne metodą, którą wykorzystaliśmy przy analizie Quick Sorta. Mamy:
+\begin{align}
+    X_k = \begin{cases}
+        1 \quad \text{jeśli partition podzieli tablicę n-elementową na (k, n-k-1)}\\
+        0 \quad \text{w p.p.}
+    \end{cases}
+\end{align}
+Zauważmy, że $k\in \{0,\dots,\frac{n}{2}\}$, zatem $E(X_k) = \frac{2}{n}$. Zapiszmy następnie:
+\begin{align}
+    T_n &= \sum_{k=0}^{\frac{n}{2}} X_k \left(T_{n-k-1} + n-1\right)\\
+    T_n &= \frac{2}{n} \cdot \left(\sum_{k=0}^{\left\lfloor \frac{n}{2} \right\rfloor} T_{n-k-1} + \sum_{k=0}^{\left\lfloor \frac{n}{2} \right\rfloor} (n-1)\right)
+\end{align}
+Widzimy, że druga suma jest $O(n)$, zatem rozważmy dalej pierwszą część:
+\begin{align}
+    T_n &= \frac{2}{n} \sum_{k=\frac{n}{2}-1}^{n-1} T_k + O(n)\\
+\end{align}
+Wystarczy pokazać, że pierwszy człon równiez jest $O(n)$. Zróbmy to indukcyjnie.
+\begin{align}
+    S_n &= \frac{2}{n} \sum_{k=\frac{n}{2}}^{n-1} T_k\\
+\end{align}
+Przypadek bazowy $S_1 = T_1 = O(1)$\\
+Założenie indukcyjne $\forall_{k<n} S_k \leq ck$. Przeprowadźmy krok indukcyjny:
+\begin{align}
+    S_n &= \frac{2}{n} \sum_{k=\frac{n}{2}}^{n-1} T_k \leq \frac{2}{n} \sum_{k=\frac{n}{2}}^{n-1} ck =\\
+    &= \frac{2c}{n} \left(\sum_{k=0}^{n-1} k - \sum_{k=0}^{\frac{n}{2}} k\right) =\\
+    &= \frac{2c}{n} \left(\frac{n(n-1)}{2} - \frac{n(n+2)}{8} \right) \leq\\
+    &\leq \frac{2c}{n} \left(\frac{1}{8} n (3n-2)\right) =\\
+    &= \frac{3}{4}cn \leq cn
+\end{align}
+Zatem $S_n \leq cn$ i ostatecznie $T_n = \Theta(n)$.
 
 \subsection{Select(A,p,q,i)}
 
@@ -1597,7 +1682,7 @@ Podstawowe metody $Set$ interface:
 Unsorted Array & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n\log n) $ \\ \hline
 Sorted Array & $\Theta(n\log n)$ & $\Theta(\log(n))$ & $\Theta(n)$ & $\Theta(1)$ & $\Theta(\log n)$ & $\Theta(n)$ \\ \hline
 Linked List & $\Theta(n)$ & $\Theta(n)$ & insert $\Theta(1)$, delete $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n\log n)$ \\ \hline
-BST & & & & & & $\Theta(n)$\\ \hline
+BST & $\Theta()$ & $\Theta()$ & $\Theta()$ & $\Theta()$ & $\Theta()$ & $\Theta(n)$\\ \hline
 
 \end{tabular}
 \caption{Porównanie różnych struktur danych}
@@ -1808,18 +1893,23 @@ Pokażmy, że $E(Y_n) = O(n^3)$.
     / \
  k-1   n-k
 \end{verbatim}
+\noindent
 Zakładając że korzeń tworzy $(k-1,n-k)$-split:
 \begin{align}
     H_n =^{d}  &= 1 + \max\{H_{k-1}, H_{n-k}\}\\
     Y_n =^{d}  &= 2 \max\{Y_{k-1}, Y_{n-k}\}\\
     Z_{n,k} =^{d} &= \begin{cases}
-        1 \quad \text{jesli korzeń n-el drzewa wykonuje} (k-1,n-k)\text{-split}\\
+        1 \quad \text{jesli korzeń n-el drzewa wykonuje } (k-1,n-k)\text{-split}\\
         0 \quad \text{w p.p.}
-    \end{cases}\\
+    \end{cases}
+\end{align}
+\begin{align}
     E(Z_{n,k}) &= 1\cdot P(\text{(k-1,n-k)-split})=\frac{(n-1)!}{n!}=\frac{1}{n!}\\
     Y_n =^{d} &= \sum_{k=1}^{n} Z_{n,k} \cdot 2 \max\{Y_{k-1}, Y_{n-k}\}\\
     E(Y_n) &= E\left(\sum_{k=1}^{n} Z_{n,k} \cdot 2\max\{Y_{k-1}, Y_{n-k}\}\right)\\
-    E(Y_n) &= 2\sum_{k=1}^{n} E\left(Z_{n,k} \cdot \max\{Y_{k-1}, Y_{n-k}\}\right)\\
+    E(Y_n) &= 2\sum_{k=1}^{n} E\left(Z_{n,k} \cdot \max\{Y_{k-1}, Y_{n-k}\}\right)
+\end{align}
+\begin{align}
     E(Y_n) &= 2\sum_{k=1}^{n} E(Z_{n,k}) \cdot E\left(\max\{Y_{k-1}, Y_{n-k}\}\right)\\
     E(Y_n) &= \frac{2}{n} \sum_{k=1}^{n} E(\max\{Y_{k-1}, Y_{n-k}\})\\
     &\leq_{(\max xy \leq x+y)} \frac{2}{n} \sum_{k=1}^{n} E(Y_{k-1}) + E(Y_{n-k})
