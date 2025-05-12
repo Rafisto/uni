@@ -2228,4 +2228,128 @@ Inne drzewa od Red Black Trees to drzewa AVL (różnica stałych przy logarytmac
 
 \textit{Następny wykład - kolejna struktura implementująca interfejs set}
 
+\section{Lecture XIII}
+
+\subsection{Programowanie Dynamiczne - Wstęp}
+
+Dzisiejszy wykład prowadzi p. Gębala.
+
+\section{Lecture XIV}
+
+\subsection{Programowanie Dynamiczne - Kontynuacja}
+
+\subsection{Grafy Skierowane}
+
+$G=(V,E), |V|=n, |E|=m$, $V$ - wierzchołki, $E$ - krawędzie.\\
+
+\begin{tikzpicture}
+    % Nodes
+    \node[circle, draw] (A) at (0, 0) {A};
+    \node[circle, draw] (B) at (2, 0) {B};
+    
+    % Arrow with label
+    \draw[->] (A) -- (B) node[midway, above] {3};
+\end{tikzpicture}
+
+\subsection{Najkrótsze ścieżki w DAG'ach - Directed Acyclic Graph}
+
+Grafy skierowane acykliczne nie posiadają cykli. Jesteśmy w stanie posortować grafy skierowane acykliczne w kolejności topologicznej.
+
+Graf S1. Może być więcej niż jedno źródło/ujście.
+
+\noindent
+Chcemy policzyć najkrótsze ścieżki od $S$ do każdego innego wierzchołka.
+
+Załóżmy że chcemy dojść do $A$.
+
+\begin{align}
+    L(A) = \min\{L(S) + w(s,A), L(C) + w(C,A)\}
+\end{align}
+
+\begin{verbatim}
+Input: G=(V,E)
+S\in V = source vertice
+
+for each v\in V
+    L(v) = \infty // jeżeli nie ma trasy to dystans będzie ustalony na nieskończoność
+L(S) = 0
+for each v in V\{s} // w porządku topologicznym
+    L(v) = min_((u,v)\in E) {L(u) + w(u,v)}
+\end{verbatim}
+
+Nie chcemy w programowaniu dynamicznym rekurencji, ponieważ nasze podproblemy będą się powtarzać.
+To jest zasadnicza różnica między programowaniem rekurencyjnym (np. divide and conquer), a dynamicznym.
+Będziemy zapamiętywać rozwiązania.
+
+Przed pętlą mamy $\Theta(|V|)$, a w pętli $\Theta(\text{indeg}(V))$, suma wszystkich krawędzi przychodzących, czyli mamy $\Theta(|E|)$.
+Złożność zadanego algorytmu to $\Theta(n+m)$, w najgorszym przypadku - mając najwięcej $m=n^2$ krawędzi, mamy $\Theta(n+n^2)$.\\
+
+\noindent
+Jak tworzyć algorytmy dynamiczne:
+\begin{enumerate}
+    \item Zdefinować podproblem.
+    \item Zdefinować kolejność na porproblemach.
+    \item Zdefiniować relację.
+\end{enumerate}
+
+\subsection{Edit Distance Problem}
+
+Input: $w_1, w_2$ - słowa $|w_1|=n, |w_2|=m$, $\Sigma$ - alfabet
+Output: $\text{EditDistance}(w_1,w_2)$ - minimalna liczba operacji dodania, usunięcia, podmiany znaków w słowach $w_1 \leadsto w_2$
+
+\begin{verbatim}
+Przykład - chcemy przejść ze SNOWY do SUNNY
+
+S_NOWY
+SUNN_Y 
+010110 -> w sumie 3 operacje.
+- Rozpychamy U, zmieniamy O na N, Usuwamy W. Mamy 3 operacje.
+
+_SNOW_Y
+SUN__NY
+1101110 -> w sumie 5 operacji.
+- Wstawiamy S, podmieniamy S na U, Usuwamy O, Usuwamy W, Wstawiamy N
+\end{verbatim}
+
+$E(i,j)$ - edit distance $w_1[1\dots i], w_2[1\dots j]$\\
+
+Z jakich podproblemów dochodzimy do $E(i,j)$?
+\begin{itemize}
+    \item dodanie litery do $w_2$ - $E(i, j-1) + 1$
+    \item usunięcie litery z $w_2$ - $E(i-1, j) + 1$ Dopasowujemy do $w_2$ bez jednej litery.
+    \item podmiana listery z $w_2$ - $E(i-1, j-1) + 1$ Podmiana litery in place
+    \item bez zmian $w_2$ - $E(i-1, j-1)$
+\end{itemize}
+
+$\text{diff}(w_1[i],w_2[i])$ - zwraca 0 lub 1 w zależnosci czy jest różnica w znakach.
+
+\begin{verbatim}
+for i=0 to m
+    E(i,0) = i
+for j=0...n E(0,j) = j
+for i=1 to m
+    for j=1 to n
+        E(i,j) = min(E(i-1,j)+1, E(i,j-1)+1, E(i-1,j-1) + diff(w[i],w[j]))
+\end{verbatim}
+
+Analiza złożności obliczeniowej - pętla1 - $\Theta(m)$, pętla2 - $\Theta(n)$, pętla ostatnia $\Theta(n\cdot m)$.
+
+Złożoność pamięciowa $\Theta(m\cdot n)$, lub jeśli nie zależy nam na krokach to $\Theta(\min\{m,n\})$
+(pamiętamy każdorazowo ostatnie dwa wiersze).
+
+\begin{verbatim}
+    S N O W Y
+  0 1 2 3 4 5
+S 1 0 1 2 3 4
+U 2 1 1 2 3 4
+N 3 2 1 2 3 4
+N 4 3 2 2 3 4
+Y 5 4 3 3 3 3
+
+Therefore
+EditDistance("SNOWY","SUNNY") = 3
+\end{verbatim}
+
+Co na ogół jest podproblemami - np. prefix ciągu, podciąg zwarty (consecutive).
+
 \end{document}

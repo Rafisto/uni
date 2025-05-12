@@ -11,7 +11,7 @@ cols       dd 200.0
 last_addr  dd 0xFC80
 
 ; Max interations per pixel
-max_i      dw 256
+max_i      dw 16
 
 ; Frame of reference (map 320,200 to [-2.0, 0.475] x [-1.125, 1.125])
 ; x0 := scaled x coordinate of pixel (scaled to lie in the Mandelbrot X scale (-2.00, 0.475))
