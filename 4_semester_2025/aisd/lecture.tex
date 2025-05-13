@@ -2238,7 +2238,55 @@ TBD.
 
 \subsection{Funkcje Hashujące}
 
-TBD.
+Universal Hash Property. Prawdopdobieństwo kolizji dla funkcji hashującej wynosi:
+
+\begin{align}
+    Pr(h_{a,b}(x) - P_{a,b}(y)) = \frac{1}{m}
+\end{align}
+
+\begin{align}
+    f_{a,b} (x) = (ax+b) \mod p\\
+    g: \mathbb{Z_p} \rightarrow B \text{t.ż.} \forall_{i\in B} |\{y\in\mathbb{Z}_p : g(y) = i\}| \leq \left\lceil \frac{p}{m} \right\rceil
+\end{align}
+Naturalny wybór $g(y) = y \mod m$
+\begin{align}
+    h_{a,b}(x) = g(f_{a,b}(x))\\
+    \mathcal{H} = \{h_{a,b} \text{t.ż.} a,b\in\mathbb{Z_p},\quad a\neq 0 \}
+\end{align}
+Lemat, Dla $x,y\in A$, t.ż. $x\neq y$ zdefiniujmy:
+\begin{align}
+    \delta_H (x,y) = \delta_g (\mathbb{Z}_p, \mathbb{Z}_p) = \sum_{x,yy\in\mathbb{Z}_p} \delta_g (x,y)\\
+\end{align}
+Funkcja $\delta$ - zliczająca kolizje.
+\begin{align}
+    \delta_f = \begin{cases}
+        1 \quad \text{jeśli } f(x)=f(y)\\
+        0 \quad \text{w p.p.}
+    \end{cases}
+\end{align}
+Dowód. Niech $r,s\in\mathbb{Z}_p,\quad r\neq s$, para $(r,s)$ odpowiada $(f_{a,b}(x),f_{a,b}(y))$, ponieważ $a\neq 0$, $x\neq y$, $f_{a,b}(x)\neq=f_{a,b}(y)$.
+Możemy skorzystać ze znajomości algebry abstrakcyjnej:
+\begin{align}
+    ax + b = r \mod p
+    ay + b = s \mod p
+\end{align}
+Wiemy, że za pomocą rozszerzonego algorytmu Euklidesa możemy znaleźć unikalne $a,b$, takie że zadane kongruencje będą spełnione.
+Znajdźmy takie $a,b$ ,że nie zajdzie kolizja. Zatem:
+\begin{align}
+    (r,s) = (f_{a,b}(x),f_{a,b}(y)), \text{to}\\
+    H(a,b)(x) = H(a,b)(y) \iff g(r)=g(s), \text{stąd}\\
+    \delta_H(x,y) = \sum_{x,y\in\mathbb{Z}_p} \delta_g (x,y)
+\end{align}
+Lemat 2. $\forall_{x,y\in A} \delta_{H}(x,y) \leq \frac{|H|}{|B|} = \frac{|H|}{m}$. Dowód:
+\begin{align}
+    m_i = |\{y\in\mathbb{Z}_p : g(y) = i\}| < \left\lceil \frac{p}{m} \right\rceil\\
+    p, m \in \mathbb{Z} : \left\lceil \frac{p}{m} \right\rceil \leq \left(\frac{p-1}{m}\right) + 1
+\end{align}
+Dla ustalonego $r\in\mathbb{Z}_p$ mamy co najwyżej $\frac{p-1}{m}$ 's'-ów kolidujących. Możliwe $r\in\mathbb{Z}_p$ jest $p$ stąd mamy:
+\begin{align}
+    \delta_H(x,y) \leq \frac{p(p-1)}{m} = \frac{|H|}{m} = \frac{|H|}{|B|}
+\end{align}
+Wybierające jedną z tych funkcji ($1$ out of $m$) $\leq \frac{1}{m}$
 
 \section{Lecture XIII}
 
