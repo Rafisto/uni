@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+
+#include "dual_pivot_quick_sort_select.hpp"
+
+using namespace std;
+
+int main()
+{
+    std::vector<int> numbers;
+
+    size_t comparisons = 0;
+    size_t swaps = 0;
+
+    int size = 0;
+
+    cin >> size;
+
+    for (int i = 0; i < size; ++i)
+    {
+        int n = 0;
+        cin >> n;
+        numbers.push_back(n);
+    }
+
+    vector<int> result = dual_pivot_quick_sort_with_logging<int>(numbers.size(), numbers, comparisons, swaps);
+
+    if (size < 30)
+    {
+        for (const int &n : result)
+        {
+            std::cout << n << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    cout << "comparisons: " << comparisons << endl;
+    cout << "swaps: " << swaps << endl;
+
+    return 0;
+}

@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+
+#include "quick_sort.hpp"
+
+using namespace std;
+
+int main()
+{
+    vector<int> numbers;
+
+    size_t comparisons = 0;
+    size_t swaps = 0;
+
+    int size = 0;
+    int temp;
+
+    cin >> size;
+
+    for (int i = 0; i < size; ++i)
+    {
+        cin >> temp;
+        numbers.push_back(temp);
+    }
+
+    vector<int> result = quick_sort<int>(size, numbers, comparisons, swaps);
+
+    if (size < 30)
+    {
+        for (const int &n : result)
+        {
+            cout << n << " ";
+        }
+        cout << endl;
+    }
+
+    cout << "comparisons: " << comparisons << endl;
+    cout << "swaps: " << swaps << endl;
+
+    return 0;
+}

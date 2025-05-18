@@ -2,6 +2,7 @@
 .idea/
 projekty/
 res/
+mail/
 *.class
 *.out
 log.txt
