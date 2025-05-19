@@ -2797,7 +2797,7 @@ Delete(Q, i)
     else
         while (r > 1 && Q[parent(i)] < Q[i])
             swap(Q[i], Q[parent(i)])
-            i = parent(i)
+            i = parent(i) : O(log n)
 \end{verbatim}
 
 \begin{verbatim}
