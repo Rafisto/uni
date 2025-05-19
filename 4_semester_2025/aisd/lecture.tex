@@ -2597,4 +2597,228 @@ EditDistance("SNOWY","SUNNY") = 3
 
 Co na ogół jest podproblemami - np. prefix ciągu, podciąg zwarty (consecutive).
 
+\section{Lecture XV}
+
+\subsection{Kopiec binarny (Binary Heap)}
+
+\begin{itemize}
+    \item Pełne drzewo binarne przetrzymywane w tablicy.
+\end{itemize}
+
+\begin{verbatim}
+I :  1   2   3   4  5  6  7  8  9  10
+A : [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]
+       
+        16
+      /    \ 
+    14      10
+   /   \    / \
+  8     7   9 3
+ / \   /
+2   4 1
+
+left(i) = 2i (LSH)
+right(i) = 2i + 1 (LSH + 1)
+parent(i) = i // 2 (RSH)
+size(A) = rozmiar listy
+\end{verbatim}
+
+\subsection{Własność kopca (maksymalnego)}
+
+\begin{align}
+    \forall_i A[\text{parent}(i)] > A[i]
+\end{align}
+
+\begin{itemize}
+    \item Wysokość węzła to długość najdłuższej prostej ścieżki od tego węzła do liścia.
+\end{itemize}
+
+\begin{verbatim}
+HEAPIFY(A, i)
+    l = left(i)
+    r = right(i)
+    # find maximum element from i, l, r
+    if (l <= size(A) AND A[l] > A[i]) 
+        largest = l
+    else
+        largest = i
+    if (r <= size(A) AND A[r] > A[largest])
+        largest = r
+    # end find
+
+    # swap if so
+    if largest != i
+        swap(A[i], A[largest])
+    HEAPIFY(A, largest)
+\end{verbatim}
+Przykład
+\begin{verbatim}
+1st step 
+
+      16
+     /    \
+    i4      >10
+   /  \   / \ 
+  14   7 9  5
+ / \   /
+2   8 3
+
+2nd step
+
+      16
+     /    \
+    14      10
+   /  \   / \ 
+  i4   7 9  5
+ / \   /
+2   8 3
+
+3rd step
+
+      16
+     /    \
+    14      10
+   /  \   / \ 
+  8   7 9  5
+ / \   /
+2   i4 3
+\end{verbatim}
+Złożoność obliczeniowa
+
+\begin{verbatim}
+          i
+     /        \
+ (2/3 el.) (1/3 el.)
+ ..        ..
+ ..        ..
+ ..  (schodek)
+    
+L = 2^h - 1
+P = 2^{h-1} - 1 - liczba elementów
+\end{verbatim}
+
+\begin{align}
+    T(n) = O(1) + T(2/3 n)
+\end{align}
+Z Master Theorem mamy:
+\begin{align}
+    a &= 1\\
+    b &= \frac{3}{2}\\
+    d &= 0\\
+\end{align}
+Zatem $\log_{\frac{3}{2}} 1 = d = 0$, więc mamy $n^d \log n = \log n$
+\begin{align}
+    T(n) = O(\log n)
+\end{align}
+\textit{floor(size(A)/2)} to indeks pierwszego nie-liścia. Pierwszym nie-liściem jest parent ostatniego liścia.
+\begin{verbatim}
+BuildHeap(A)
+    size(A) = length(A)
+    for i = floor(size(A)/2) to 1 // i--
+        HEAPIFY(A,i)
+\end{verbatim}
+
+\begin{verbatim}
+A: 4, 1, 3, 2, 16, 9, 10, 14, 8, 7
+
+       4
+      /  \
+     1     3
+   /   \  / \
+  2    16 9 10
+/  \  /
+14 8  7
+
+...
+intermediate-steps
+...
+
+AT i = 2
+
+       4
+      /  \
+     16   10
+   /   \  / \
+  14   7  9 3
+/  \  /
+2  8  1
+
+AT i = 1 
+
+       16
+      /  \
+     14   10
+   /   \  / \
+  8   7  9   3
+/  \  /
+2  4  1
+
+RESULT: 16, 14, 10, 14, 8, 7, 9, 3, 2, 4, 1
+\end{verbatim}
+Złożność obliczeniowa dla BuildHeap.
+\begin{align}
+    |A| &= n, \frac{n}{2} \text{razy Heapify}\\
+    O(n\log n)
+\end{align}
+
+\begin{fact}{Kopiec} W $n$-elementowym kopcu binarnym mamy co najwyżej $\left\lceil \frac{n}{2^{h+1}}\right\rceil$ węzłów o wysokości $h$.
+Dowód.\\ Indukcja po $h$. Dla $h=0$ (liście) mamy co najwyżej $\frac{n}{2^{0+1}}$ liści to jest prawda.\\
+Założenie indukcyjne $\forall_{k < h} \# \text{węzłów o wysokości} k \leq \left\lceil \frac{n}{2^{k+1}}\right\rceil$\\
+Krok indukcyjny. Węzły o wysokości $k-1$ zał. ind $\leq \left\lceil \frac{n}{2^{k-1+1}}\right\rceil$.
+Zatem węzłów o wysokości $h$ mamy co najwyżej $\frac{1}{2} \left\lceil \frac{n}{2^{k}}\right\rceil \leq  \left\lceil \frac{n}{2^{k+1}}\right\rceil$
+\end{fact}
+Złożoność obliczeniową BuildHeap można również wyrazić jako
+\begin{align}
+    &O\left(\sum_{h=1}^{\log n} \text{\# węzłów o wysokości h} \cdot h\right)\leq\\
+    &\leq O\left(\sum_{h=0}^{\log n} \frac{n}{2^{h+1}} \cdot h\right)=\\
+    &=O\left(n \sum_{h=0}^{\log n} \frac{h}{2^{h-1}}\right)=\\
+    &=O\left(\frac{n}{\left(1-\frac{1}{2}\right)^2}\right)=\\
+    &=O\left(n \right)
+\end{align}
+Istnieje HeapSort.
+
+\subsection{Kolejka Priorytetowa (PQ)}
+
+\begin{itemize}
+    \item Insert(Q,x)
+    \item Maximum(Q) : return Q[1], O(1)
+    \item ExtractMax(Q) - zwraca element o najw. priorytecie, usuń z Q
+    \item Increase/Decrease Key(Q,x,y) - zmieniamy z x na y
+    \item Delete(Q,i)
+    \item Union(Q1,Q2) : BuildHeap([Q1,Q2]), O(|Q1|+|Q2|)
+\end{itemize}
+
+\begin{verbatim}
+Delete(Q, i)
+    Q[i] = Q[size(Q)]
+    size(Q)--
+    if (Q[i] < Q[parent(i)])
+        Heapify(Q, i)
+    else
+        while (r > 1 && Q[parent(i)] < Q[i])
+            swap(Q[i], Q[parent(i)])
+            i = parent(i)
+\end{verbatim}
+
+\begin{verbatim}
+Insert(Q, key)
+    size(Q)++
+    i = size(Q)
+    while(i > 1 && Q[parent(i)] < key)
+        Q[i] = Q[parent(i)]
+        i = parent(i)
+    Q[i] = key : O(log n)
+\end{verbatim}
+
+\begin{verbatim}
+ExtractMax(Q)
+    if Q.size < 1 return null
+    else
+        max=Q[1]
+        Q[1] = Q[size(Q)]
+        size(Q)--
+        Heapify(Q,1)
+        return max
+\end{verbatim}
+
 \end{document}
