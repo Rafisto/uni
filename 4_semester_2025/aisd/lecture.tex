@@ -2821,4 +2821,229 @@ ExtractMax(Q)
         return max
 \end{verbatim}
 
+\section{Lecture XVI}
+
+\subsection{Kolejka priorytetowa - Priority Queue}
+
+\newpage
+
+\begin{verbatim}
+Decrease/Increase Key(Q, i, newKey)
+    if Q[i] > newKey # decrease
+        Q[i] = newKey
+        Heapify(Q, i)
+    else if Q[i] < newKey # increase
+        while i > 1 && Q[parent(i)] < newKey
+            Q[i] = Q[parent(i)]
+        Q[i] = newKey
+\end{verbatim}
+
+\begin{center}
+\begin{tikzpicture}[level distance=0.5cm, sibling distance=2.5cm,
+    every node/.style={circle, draw, minimum size=0.5cm, inner sep=0pt},
+    edge from parent/.style={draw, -latex},
+    level 2/.style={sibling distance=1cm},
+    level 3/.style={sibling distance=1cm}
+    ]
+
+    % Root node
+    \node {16}
+        % Left subtree
+        child {node {14}
+            child {node {8}
+                child {node {2}}
+                child {node {4}}
+            }
+            child {node {7}}
+        }
+        % Right subtree
+        child {node {10}
+            child {node {9}}
+            child {node {3}
+                child {node {1}}
+                child[missing]
+            }
+        };
+\end{tikzpicture}
+\end{center}
+
+\begin{verbatim}
+Decrease/IncreaseKey(Q,9,11)
+\end{verbatim}
+
+\begin{center}
+\begin{tikzpicture}[level distance=0.5cm, sibling distance=2.5cm,
+    every node/.style={circle, draw, minimum size=0.5cm, inner sep=0pt},
+    edge from parent/.style={draw, -latex},
+    level 2/.style={sibling distance=1cm},
+    level 3/.style={sibling distance=1cm}
+    ]
+
+    % Root node
+    \node {16}
+        % Left subtree
+        child {node {14}
+            child {node {11}
+                child {node {2}}
+                child {node {8}}
+            }
+            child {node {7}}
+        }
+        % Right subtree
+        child {node {10}
+            child {node {9}}
+            child {node {3}
+                child {node {1}}
+                child[missing]
+            }
+        };
+\end{tikzpicture}
+\end{center}
+
+% \begin{table}[h!]
+% \centering
+% \begin{tabular}{|l|l|l|l|}
+% \hline
+% \textbf{Procedura} & \textbf{Kopiec Binarny} & \textbf{Kopiec Dwumianowy} & \textbf{Kopiec Fibonacciego (Amortyzowana)}\\ \hline
+% Insert & $O(\log n)$ & $O(\log n)$ & $O(1)$ \\ \hline
+% Maximum & $O(1)$ & $O(\log n)$ & $O(1)$ \\ \hline
+% ExtractMax & $O(\log n)$ & $O(\log n)$ & $O(\log n)$ \\ \hline
+% D\/IKey & $O(\log n)$ & $O(\log n)$ & $O(1)$ \\ \hline
+% Delete & $O(\log n)$ & $O(\log n)$ & $O(\log n)$ \\ \hline
+% Union & $O(n_1 + n_2)$ & $O(\log (n_1 + n_2))$ & $O(1)$ \\ \hline
+% \end{tabular}
+% \caption{Złożoności operacji w kopcach}
+% \end{table}
+
+\subsection{Inne struktury danych}
+
+\begin{enumerate}
+    \item TREAP (1996) - Drzewo BST i Kopiec
+    \item ZIP-TREE (2021)
+\end{enumerate}
+
+\subsection{Grafy}
+
+Graf prosty to struktura $G=(V,E)$, gdzie:
+\begin{itemize}
+    \item $V$ - zbiór wierzchołków $\{1,\dots,n\}$, $|V|=n$
+    \item $E\subseteq\{\{i,j\}:i,j\in V, i\neq j\}$, $|E|=m$
+\end{itemize}
+
+\noindent   
+Graf skierowany to struktura $G=(V,E)$, gdzie:
+\begin{itemize}
+    \item $V$ - zbiór wierzchołków $\{1,\dots,n\}$, $|V|=n$
+    \item $E\subseteq\{(i,j):i,j\in V, i\neq j\}$, $|E|=m$
+\end{itemize}
+
+\subsection{Listy sąsiedztwa}
+
+Grafy mogą być przechowywane w postaci \textbf{Listy sąsiedztwa}. 
+Używa się jej w przypadku grafów rzadkich, czyli takich które mają mało krawędzi.
+Dla każdego wierzchołka $V_i$ przechowujemy listę sąsiadów.
+\begin{verbatim}
+V1 | 3 6
+V2 | 1 3 5
+V3 | 2
+V4 | 1 5
+V5 | 3
+V6 | 
+\end{verbatim}
+Odpowiada następującemu grafowi:
+\begin{center}
+\begin{tikzpicture}[every node/.style={circle, draw, minimum size=0.8cm}, node distance=2cm]
+    \node (V1) at (0,2) {1};
+    \node (V2) at (2,3.5) {2};
+    \node (V3) at (4,2) {3};
+    \node (V4) at (0,0) {4};
+    \node (V5) at (4,0) {5};
+    \node (V6) at (2,-1) {6};
+
+    \draw[->] (V1) -- (V3);
+    \draw[->] (V1) -- (V6);
+    \draw[->] (V2) -- (V1);
+    \draw[->] (V2) -- (V3);
+    \draw[->] (V2) -- (V5);
+    \draw[->] (V4) -- (V1);
+    \draw[->] (V4) -- (V5);
+    \draw[->] (V5) -- (V3);
+\end{tikzpicture}
+\end{center}
+\noindent
+Złożoność pamięciowa przechowywania tego grafu to $O(n+m)=O(|V|+|E|)$, gdzie $m$ to liczba krawędzi.
+\textbf{Wielkość grafu} definujemy przez $|V|+|E|$. Zatem jest to liniowe, względem wielkości grafu.
+Sprawdzenie czy krawędź istnieje można zrobić w $O(n)$, ponieważ musimy przejść przez wszystkie sąsiadujące wierzchołki.
+
+Można listę wzkaźnikową zastąpić drzewem BST.
+
+\subsection{Macierz sąsiedztwa}
+
+Niech $A=(a_{i,j}), i,j\in\{1,\dots,n\}$ będzie macierzą sąsiedztwa grafu $G=(V,E)$.
+\begin{align}
+    a_{i,j} = \begin{cases}
+        1 & \text{jeżeli } (i,j)\in E\\
+        0 & \text{jeżeli } (i,j)\notin E
+    \end{cases}
+\end{align}
+Złożność pamięciowa to $O(n^2)$, ponieważ mamy $n^2$ elementów w macierzy. Gdy graf jest gęsty $|E| = O(n^2)$ ma to sens.
+Sprawdzenie czy krawędź istnieje jest w $O(1)$, ponieważ wystarczy zbadać wartość $a_{i,j}$.\\
+
+\noindent
+;-; (Michał tu był)\\
+
+\noindent
+\textbf{Drzewo} to jest graf, który nie ma cykli.
+
+\begin{verbatim}
+EXPLORE(G,v) # G - Graf, v - wierzchołek startowy
+    visited(v) = true
+    previsit(v)
+    for each edge (v,u) in E
+        if not visited(u) EXPLORE(G,u)
+    postvisit(v)
+\end{verbatim}
+
+\noindent
+Mówimy, że $G$ jest \textbf{Grafem spójnym}, jeżeli dla każdego wierzchołka $v\in V$ istnieje ścieżka z $v$ do $u$.
+
+\subsection{DFS - Depth First Search}
+
+\begin{verbatim}
+DFS(G)
+    for each vertex v in G
+        visited(v) = false
+    for each vertex v in G
+        if not visited(v) EXPLORE(G,v)
+\end{verbatim}
+Złożoność obliczeniowa DFS to $O(|V|+|E|)$, ponieważ w najgorszym przypadku przechodzimy przez wszystkie wierzchołki i krawędzie.
+DFS działa w czasie liniowym od wielości grafu.
+
+\subsection{Zliczanie komponentów spójnych}
+
+\begin{verbatim}
+ConnectedComponents
+    cc = 1
+    previsit(v):
+        ccnum[v] = cc
+    for each vertex v in G
+        visited(v) = false
+    for each vertex v in G
+        if not visited(v)  
+            EXPLORE(G,v)
+            c++
+\end{verbatim}
+
+\subsection{Globalny zegar}
+
+\begin{verbatim}
+previsit(v):
+    pre[v] = clock
+    clock+=1
+
+postvisit(v):
+    post[v] = clock
+    clock+=1
+\end{verbatim}
+
 \end{document}
