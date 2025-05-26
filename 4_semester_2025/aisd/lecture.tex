@@ -3046,4 +3046,100 @@ postvisit(v):
     clock+=1
 \end{verbatim}
 
+\section{Lecture XVII}
+
+\subsection{Drzewo przejścia w DFS}
+
+Własność 1. Jeżeli istnieje ścieżka z $v$ do $u$. $u,v \in V$
+\begin{itemize}
+    \item $\text{pre}(v) < \text{pre}(u) < \text{post}(u) < \text{post}(v)$, jeżeli istnieje ścieżka z $v$ do $u$.
+    \item $\text{pre}(v) < \text{post}(v) < \text{pre}(u) < \text{post}(u)$, jeżeli nie istnieje ścieżka z $v$ do $u$.
+\end{itemize}
+Nazewnictwo:
+\begin{itemize}
+    \item Tree Edge - krawędź, która prowadzi do potomka w drzewie DFS.
+    \item Back Edge - krawędź powrotna, czyli taka, która prowadzi do wierzchołka, który już został odwiedzony.
+    \item Cross Edge - krawędź do wierzchołka, który nie jest potomkiem.
+    \item Forward Edge - krawędź do potomka, który nie jest bezpośrednim dzieckiem.
+\end{itemize}
+Włansość 2. $(u,v)\in E$.
+\begin{itemize}
+    \item Tree/Forward edge. $\text{pre}(u) < \text{pre}(v) < \text{post}(v) < \text{post}(u)$
+    \item Back edge. $\text{pre}(v) < \text{pre}(u) < \text{post}(u) < \text{post}(v)$
+    \item Cross edge. $\text{pre}(v) < \text{post}(v) < \text{pre}(u) < \text{post}(u)$
+\end{itemize}
+Własność 3. W grafie skierowanym istnieje cykl iff DFS występuje Back Edge.
+D-d. $v_0\rightarrow v_1 \dots v_k\rightarrow v_0$ jest cyklem.
+Powiedzmy, że DFS odwiedzi jako pierwszy w tym cyklu wierzchołek $v_i$, dalej eksplorując natknie się na $v_{i-1}$,
+wtedy krawędź $(v_i,v_{i-1})$ będzie Back Edge, ponieważ $v_{i-1}$ jest już odwiedzony.
+
+\subsection{Sortowanie topologiczne}
+
+Sortowanie topologiczne elementów grafu. Nie jesteśmy w stanie posortować grafu cyklicznego.
+Chcemy sortować topologicznie grafy skierowane acykliczne (DAG).
+
+\begin{itemize}
+    \item $G=(V,E)$ - graf skierowany acykliczny.
+    \item $(V,\prec)$ - porządek topologiczny na $V$.
+\end{itemize}
+Musimy zachować $\text{post}(u) < \text{post}(v)$, jeżeli istnieje krawędź $(u,v)\in E$.
+Pomysł:
+\begin{enumerate}
+    \item Najpierw wykonajmy DFS zapisując wartości $\text{pre},\text{post}$
+    \item Zwróćmy wierzchołki w malejącym porządku po $\text{post}$.
+\end{enumerate}
+
+\noindent
+W grafie skierowanym $G=(V,E)$ powiemy, że wierzchołki $u,v\in V$ są \textbf{połączone}, jeżeli istnieje ścieżka z $u$ do $v$ oraz z $v$ do $u$.
+
+\noindent
+Definicja. Silnie spójna komponenta grafu skierowanego $G=(V,E)$.
+Będziemy mówić, że $v_1, \dots, v_k$ tworzą silnie spójną kompnentę w grafie $G$, jeśli:
+\begin{itemize}
+    \item $\forall_{i,j} \quad v_i, v_j \in V$ są połączone.
+    \item Nie istnieje wierzchołek $u\in V$ taki, że $u$ jest połączony z każdym $v_i$ i $v_j$.
+\end{itemize}
+
+\noindent
+Tworzymy Metagraf Silnie spójnych składowych.
+\begin{itemize}
+    \item \textbf{Źródłem (Source)} jest wierzchołek, do którego nie wchodzi żadna krawędź z innej kompnenty.
+    \item \textbf{Ujściem (Sink)} jest wierzchołek, z którego nie wychodzi żadna krawędź do innej kompnenty.
+\end{itemize}
+
+\noindent
+Własność 4. Wierzchołek z najwyższą wartością $\text{post}$ w silnie spójnej kompnencie jest źródłem tej kompnenty.\\
+
+\noindent
+Własność 5. Niech $C, C'$ będą silnie spójnymi składowymi w grafie skierowanym $G$,
+oraz istnieje w $G$ krawędź $(u,v)$, gdzie $u\in C$ i $v\in C'$. Wtedy maksymalna wartość $\text{post}$ wierzchołka z $C$ jest większa niż maksymalna wartość $\text{post}$ z $C'$.\\
+D-d. Rozważmy dwa przypadki
+\begin{itemize}
+    \item DFS najpierw odwiedzi wierzchołek $u\in C$ przed wierzchołkami z $C'$. Jasno widzimy, że $\text{post}(u) > \text{post}(v)$.
+    \item DFS najpierw odwiedzi wierzchołek z $v\in C'$ przed wierzchołkami $C$. DFS wyeksploruje wierzchołki z $C'$ oraz pozostałe silne spójne składowe dalej,
+     ale explore nie przejdzie przez $C$, ponieważ nie może się cofnąć. Następne posty w $C$ będą miały zatem większą wartość niż posty w $C'$.
+\end{itemize}
+
+\noindent
+Własność 6. Niech $G^R=(V,E^R) : E^R =\{(v,u), (u,v)\in E\}$. Źródło grafu $G^R$ jest ujściem w meta-grafie z $G$.
+
+\noindent
+Algorytm.
+\begin{itemize}
+    \item Input: $G=(V,E)$ - graf skierowany.
+    \item Output: Metagraf silnie spójnych składowych $G$
+\end{itemize}
+Korki algorytmu:
+\begin{enumerate}
+    \item Wylicz $G^R$
+    \item Wykonaj DFS na $G^R$ i zapisz $\text{post}$.
+\end{enumerate}
+\begin{verbatim}
+    while G nie pusty
+        v = wierzchołek z największą wartością post
+        S = EXPLORE(G,v)
+        V = V \ S
+\end{verbatim}
+Złożność obliczeniowa algorytmu to $O(|V|+|E|)$, ponieważ wyznaczamy $G^R$, wykonujemy DFS na grafie $G^R$ oraz $G$.
+
 \end{document}
