@@ -3142,4 +3142,121 @@ Korki algorytmu:
 \end{verbatim}
 Złożność obliczeniowa algorytmu to $O(|V|+|E|)$, ponieważ wyznaczamy $G^R$, wykonujemy DFS na grafie $G^R$ oraz $G$.
 
+\section{Lecture XVIII}
+
+Pathfinding
+
+\section{Lecture XIX}
+
+\subsection{Dowód dla Dijkstra Algorithm}
+
+1. Prezentujemy założenie indukcyjne. $d\in \mathbb{R}_{+}, w \in \mathbb{R}_{+}$
+\begin{align} 
+    \left(\forall_{x\in\mathbb{R}}\right) \text{dist}(x) \leq d
+\end{align}
+
+\noindent
+Czy możemy wagi krawędzi rozszerzyć z $\mathbb{R}_{+}$ na $\mathbb{R}$?
+
+\begin{itemize}
+    \item W grafie, w którym znajdują się ujemne cykle nie ma sensu przeprowadzać Algorytmu Dijsktry.
+    \item W grafie, w którym nie znajdują się ujemne cykle można przeprowadzić Algorytm Dijkstry, pomimo występowania krawędzi o ujemnych wagach. Nie zmienia to faktu, iż dowód indukcyjny takigo algorytmu jest niemożliwy.
+\end{itemize}
+
+W algorytmie Dijkstry wykonujemy procedurę update, która jest bezpieczna na wielokrotne jej powtarzanie.
+Jeśli dystans do $u$ był już ustawiony poprawnie oraz na najkrótszej ścieżce od S przechodzi przez $u$ do $v$, 
+to wtedy dystans do $v$ zostanie poprawnie ustawiony, zakładąc, że dystans do $u$ jest poprawnie ustawiony.
+
+\begin{verbatim}
+update((u,v) \in E)
+    if dist(u) + w(u,v) < dist(v):
+        dist(v) = dist(u) + w(u,v)
+        prev(v) = u
+\end{verbatim}
+
+Jaka jest możliwie najdłuższa możliwa ścieżka w grafie, którego krawędzie mogą mieć ujemne wagi.
+Najdłuższa ścieżka (w sensie liczby krawędzie) będzie przechodzić przez $|V|-1$ krawędzi.
+Nie może być dłuższa, ponieważ wtedy powstałaby ścieżka długości $|V|$, która musiałaby być cyklem z krawędziami ujemnej wagi, a założyliśmy że tak nie jest.
+
+\subsection{Algorytm Bellmana-Forda}
+
+\begin{itemize}
+    \item Input: $G=(V,E), e\in E: w_e \in \mathbb{R}$, bez ujemnych cykli $s\in V$
+    \item Output: $\forall v\in V$, do którego da się dojść z $S$, mamy wyznaczone $\text{dist}(v),\text{prev}(v)$ - najkrótszą możliwą ścieżkę
+\end{itemize}
+
+\begin{verbatim}
+for all v in V
+    dist(v) = infinity
+    prev(v) = null
+dist(s) = 0
+repeat |V|-1 times
+    for all e in E
+        update(e)
+\end{verbatim}
+
+Złożoność obliczeniowa algorytmu - $O(|V|\cdot |E|)$
+
+\subsection{Algorytmy Zachłanne}
+
+\subsection{Definicja Drzewa}
+
+\begin{definition}{Drzewo}
+    Acykliczny spójny graf nieskierowany.
+\end{definition}
+
+\subsection{Minimalne drzewo rozpinające, MST - Minimum Spanning Tree}
+
+Minimalne drzewo ropzinające jest potrzebne do stworzenia najtańszych ścieżek między wierzchołkami.
+
+\begin{itemize}
+    \item Input: Graf $G=(V,E), e\in E w_e$
+    \item Output: Drzewo $T=(V,\mathcal{E})$ t.ż. $\mathcal{E}\subseteq E$ oraz $\text{weight}(T)=\sum_{e\in E} w(e)$ jest minimalna.
+\end{itemize}
+
+Chcielibyśmy z grafu stworzyć drzewo, o minimalnej sumie wag składających się na niego krawędzi.
+
+Własności drzewa rozpinającego:
+
+\subsection{Własności minimalnego drzewa rozpinającego}
+
+\begin{itemize}
+    \item Usunięcie krawędzi należącej do cyklu nie rozspójni grafu.
+    \item Drzewo o $n$ wierzchołkach ma $n-1$ krawędzi.
+    \item Definicja Równoważna. Każdy spójny nieskierowany graf $G=(V,E)$ taki, że $|E|=|V|-1$ jest drzewem.
+    Załóżmy, że $G$ ma cykl i $e\in E$ nalezy do tego cyklu. Wtedy $G-e$ jest grafem spójnym z własności pierwszej. Ale nasz graf 
+    $G$ ma $|V|-1$ krawędzi, więc nie może być spójny, ponieważ usunięcie krawędzi $e$ spowoduje rozspójnienie grafu, zatem
+    $G$ nie może mieć cyklu, więc jest drzewem.
+\end{itemize}
+
+\begin{itemize}
+    \item Minimalne drzewo rozpinające nie musi być unikalne.
+\end{itemize}
+
+\subsection{Cut Property}
+
+Niech $X$ będzie podzbiorem krawędzi minimalnego drzewa rozpinającego grafu $G=(V,E)$. Wybierzmy podzbiór wierzchołków $S\subset V$,
+takich, że żadna krawędź z $X$ nie przechodzi pomiędzy wierzchołkami z $S$ i $V\setminus S$. Niech $e\in E$ będzie krawędzią o najmniejszej
+wadze, która przechodzi pomiędzy $S$ i $V\setminus S$. Wtedy $X\cup \{e\}$ należy do minimalnego drzewa rozpinającego grafu $G$.
+
+\noindent 
+Dowód. Niech $T$ to minimalne drzewo rozpinające grafu $G$. Z założeń wiemy, że krawędzie należące do $X$ są częścią 
+minimalnego drzewa rozpinającego. Jeśli $e\in T$ to wszystko jest ok. Założmy zatem, że $e\notin T$. Wtedy zmodyfikujmy
+$T$ w taki sposób, że $\widetilde{T}=T\setminus \{e'\}\cup \{e\}$, gdzie $e'$ jest krawędzią z $T$, która przechodzi pomiędzy $S$ i $V\setminus S$.
+$\widetilde{T}$ jest nieskierowany, ponieważ wszystkie krawędzie biorą się z grafu nieskierowanego. Poprzez usunięcie krawędzi $e'$ krawędź $e$ jest jedyną
+krawędzią, która przechodzi pomiędzy $S$ i $V\setminus S$, zatem nie może tworzyć cyklu. Spójność grafu $\widetilde{T}$ jest zachowana, ponieważ
+usunięcie krawędzi $e'$ nie rozspójnia grafu. $\widetilde{T}$ ma $|V|-1$ krawędzi, zatem jest drzewem.
+
+\noindent
+Skoro $T$ jest MST:
+\begin{align}
+    \text{weight}(\widetilde{T}) &= \text{weight}(T) - \text{weight}(e') + \text{weight}(e) \\
+    \text{weight}(T) &\leq \text{weight}(\widetilde{T}) \\
+    w(e) &\leq w(e') \text{ Skoro $e$ jest krawędzią o najmniejszej wadze}
+\end{align}
+
+W takim razie $\text{weight}(\widetilde{T}) = \text{weight}(T)$, zatem $\widetilde{T}$ również jest minimalnym drzewem rozpinającym grafu $G$.
+Zatem $X\cup \{e\}$ jest częścią minimalnego drzewa rozpinającego grafu $G$.
+
+
 \end{document}

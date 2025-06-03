@@ -1,0 +1,125 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Programowanie Funkcyjne}  
+\author{Rafał Włodarczyk}
+\date{INA 4, 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Haskell 27.05}
+
+\subsection{Monady}
+
+Rozważmy następujące przykłady:
+\begin{verbatim}
+> [1..5]>>= (\x -> [x,x])
+[1,1,2,2,3,3,4,4,5,5]
+
+> [1..5]>>= (\x -> if even x then [x,x] else [])
+[2,2,4,4]
+
+bind powoduje spłaszczenie, może zmieniać długość listy
+
+> fmap (\x -> if even x then [x,x] else []) [1..5]
+[[],[2,2],[],[4,4],[]]
+
+> concat $ fmap (\x -> if even x then [x,x] else []) [1..5]
+[2,2,4,4]
+
+msublists [] = [[]]
+msublists (x:xs) = do
+  t <- [False, True]
+  y <- msublists xs
+  return (if t then x:y else y)
+\end{verbatim}
+
+Konstruktor danych:
+\begin{align}
+    F_M(X) &= X \times M \text{data Writer m a = W(a,m)}\\
+    \text{Funktor:}\\
+    F_M(f) (x,m) &= (fx, m) \quad \text{fmap} f(W(x,m)) = W(fx,m)\\
+    \text{M-monoid}\\
+    (f,m) <*> (x,n) &= (fx, m * n) \quad (M,*,e)\\
+    pure x &= (x,e)
+\end{align}
+
+Rozważmy bind:
+\begin{verbatim}
+\text{>>= :: Ma -> (a -> Mb) -> Mb}
+((x,m) >>= f) = let (y,n) = f x in
+                            (y m*n) 
+
+(mx >> my) = mx >>= (\lambda _ -> my)
+(x,m) >> (y,n) = (y, m * n)
+
+tell m = ((),m) :: W_mon
+\end{verbatim}
+Przykład z korporacji
+Przykład z korporacji
+\begin{verbatim}
+[(k_1,[l_1^1,\dots l_n^1]), (k_2,[l_1^2,\dots l_n^2]), ... ,(k_n,[l_1^2,\dots l_n^2])]
+l_1^1, ... l_n^1 < n
+\end{verbatim}
+
+\end{document}
