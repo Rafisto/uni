@@ -1,0 +1,179 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Programowanie Funkcyjne}  
+\author{Rafał Włodarczyk}
+\date{INA 4, 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Haskell 03.06}
+
+\subsection{Monada Writer}
+
+\begin{align}
+    \mathcal{M} &= (M,\cdot, e)\\
+    W_{\mathcal{M}} (X) &= X \times M\\
+    f &: X \rightarrow Y \\
+    W_{\mathcal{M}} (f) &: W_{\mathcal{M}} (X) \rightarrow W_{\mathcal{M}} (Y)\\
+    W_{\mathcal{M}} (f) &: X \times M \rightarrow Y \times M\\
+    W_{\mathcal{M}} (f) (x, m) &= (f(x), m)
+    W_{\mathcal{M}} (Y^X) &\rightarrow W_{\mathcal{M}} (X) \rightarrow W_{\mathcal{M}} (Y)\\
+    (Y^X \times M) &\rightarrow (X \times M) \rightarrow (Y \times M)\\
+    (f,m) <*> (x,n) &= (f(x), m + n)\\
+    <|> \cdot W_{\mathcal{M}} (X) &\rightarrow W_{\mathcal{M}} (Y) \rightarrow W_{\mathcal{M}} (X \times Y)\\
+    (x,m) <|> (y,n) &= ((x,y), m + n)
+\end{align}
+
+\begin{verbatim}
+    (>>=) :: m a -> (a -> m b) -> mb
+    f :: X -> Y x M    (x,m) \in X x M
+    f (x) = (f1 (x), f2 (x))
+    f = (f1, f2)
+
+    ((x,m) >>= f) = let (y, n) = f(x)
+        in (y, m * n)
+
+    ((x,m) >>= (f1, f2)) = (f1(x), m * f2(x))
+
+    pure x = return x = (x,e)
+    prue : a -> ma
+
+    Własności (aksjomaty) monadyczne w starych książkach.
+    (A1) (mx >>= return) = mx
+    (A2) ((return x) >>= f) = f x
+    (A3) ((mx >>= f) >>= g) = (mx >>= (\x -> f(x) >>= g))
+    (A4) mf <*> mx = do {f <- mf; x <- mx; return (fx)} 
+                   = mf >>= (\f -> (mx >>= (\x -> return (fx))))
+\end{verbatim}
+
+W parserach do gramatyk bezkontekstowych możemy wykorzystać jedynie \text{<*>}
+
+\begin{verbatim}
+    Writer
+    return x = (x,e)
+    return = (id, const e)
+
+    (A1) : ((x,m) >>= return) =
+           ((x,m) >>= (id, const e)) = (x, m * e) = (x, m)
+
+    (A2) : ((return x) >>= f) = (f1,f2) = (x,e) >>= (f1, f2) =
+           (f1(x), e * f2(x)) = (f1(x),f2(x)) = f(x)
+
+    (A3) : (((x,m) >>= f) >> g) = ...
+\end{verbatim}
+
+Pozostałe własności można sprawdzić automatycznie tą samą techniką.
+
+\subsection{Operator Kleisli'ego}
+
+Rybka. W języku Kleisli'ego własności monadyczne są jasno widoczne.
+
+\begin{verbatim}
+    (>=>) :: (a -> mb) -> (b -> mc) -> (a -> mc)
+    (f >=> g) =def= (\x -> f(x) >>= g)
+    (f >=> return)(x) = (f(x) >>= return) =A1= f(x)
+    (A1') f >=> return = f
+
+    (return >=> g)(x) = (return x) >>= g =A2= g(x)
+    (A2') return >=> f = f
+    (A3') (f >=> g) >=> h = f >=> (g >=> h)
+
+    id >=> id // dla listy to konkatenacja listy list (operator spłaszczania)
+\end{verbatim}
+
+\subsection{Monada State}
+
+\begin{verbatim}
+    Fix S 
+    ST (X) = (X x S)^S
+    f : X -> Y
+    ST (f) : ST(X) -> ST(Y)
+           : (X x S)^S -> (Y x S)^S
+    ST(f) (phi) = (\s : S -> let (x,t) = phi(s) in
+                             (f(x),t))
+    <*> = ??
+
+    (>>=) :: ma -> (a -> mb) -> mb
+    (>>=) : (X x S)^S -> (X -> (Y x S)^S) -> (Y x S)^S
+    (phi >>= f) = \s -> let(x,t) = phi(s),
+                        (y,r) = f(x)(t) in
+                        (y,r)
+                = \s -> let(x,t) = phi(s)
+                        (y,r) = u(f(x,t)) in
+                        (y,r)
+                = \s -> let(x,t) = phi(s) = u(f) . phi
+                    
+    u(f)(x,t) = (fx)(t)
+
+    (Zadanie) (f >=> g) = c (u(g) . u(f))
+
+    return x = \s -> (x,s)
+    u(return) = id
+\end{verbatim}
+
+
+
+
+
+\end{document}
