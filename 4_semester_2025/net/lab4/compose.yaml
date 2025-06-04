@@ -1,0 +1,134 @@
+services:
+  pc1:
+    build: .
+    container_name: pc1
+    hostname: pc1
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      net1:
+        ipv4_address: 192.168.1.100
+    volumes:
+      - ./pc1.sh:/init.sh:ro
+    command: sh init.sh
+  pc2:
+    build: .
+    container_name: pc2
+    hostname: pc2
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      net2:
+        ipv4_address: 192.168.2.100
+    volumes:
+      - ./pc2.sh:/init.sh:ro
+    command: sh init.sh
+  pc3:
+    build: .
+    container_name: pc3
+    hostname: pc3
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      net2:
+        ipv4_address: 192.168.2.101
+    volumes:
+      - ./pc3.sh:/init.sh:ro
+    command: sh init.sh
+  router6:
+    build: .
+    container_name: router6
+    hostname: router6
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      net1:
+        ipv4_address: 192.168.1.10
+      net3:
+        ipv4_address: 192.168.3.10
+      net4:
+        ipv4_address: 192.168.4.10
+    volumes:
+      - ./router6.sh:/init.sh:ro
+    command: sh init.sh
+  router5:
+    build: .
+    container_name: router5
+    hostname: router5
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      net3:
+        ipv4_address: 192.168.3.11
+      net5:
+    volumes:
+      - ./router5.sh:/init.sh:ro
+    command: sh init.sh
+  router2:
+    build: .
+    container_name: router2
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      net4: 
+        ipv4_address: 192.168.4.11
+      net2:
+        ipv4_address: 192.168.2.10
+    volumes:
+      - ./router2.sh:/init.sh:ro
+    command: sh init.sh
+  router3:
+    build: .
+    container_name: router3
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      net2:
+        ipv4_address: 192.168.2.11
+    volumes:
+      - ./router3.sh:/init.sh:ro
+    command: sh init.sh
+networks:
+  net1:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+  net2:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
+  net3:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 192.168.3.0/24
+  net4:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 192.168.4.0/24
+  net5:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.5.0/24
