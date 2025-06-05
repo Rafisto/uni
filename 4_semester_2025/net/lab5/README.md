@@ -6,6 +6,9 @@
   - [Running the Server](#running-the-server)
 - [Analyzing `server3.pl`](#analyzing-server3pl)
 - [Header responder](#header-responder)
+- [WWW server](#www-server)
+- [Packet Analysis](#packet-analysis)
+- [An interesting fact](#an-interesting-fact)
 
 ## Running `server3.pl` 
 
@@ -100,8 +103,95 @@ After handling the request, the connection is closed and the `$c` is freed from 
 
 ## Header responder
 
-```
+```bash
 go mod init netlab-header
 go get -u github.com/gin-gonic/gin
 code main.go
 ```
+
+## WWW server
+
+```bash
+go mod init netlab-www
+go get -u github.com/gin-gonic/gin
+code main.go
+```
+
+## Packet Analysis
+
+Let's run Wireshark to see the HTTP packets.
+
+```bash
+sudo wireshark # select local interface
+```
+
+The first packet is the TCP handshake, which is used to establish a connection between the client and the server.
+- SYN (cli)
+- SYN-ACK (srv)
+- ACK (cli)
+
+The second packet is the HTTP request sent by the client to the server.
+
+![GET /HTTP/1.1](wireshark.png)
+
+```bash
+Frame 7: 1458 bytes on wire (11664 bits), 1458 bytes captured (11664 bits) on interface lo, id 0
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)
+Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1
+Transmission Control Protocol, Src Port: 56288, Dst Port: 8080, Seq: 1, Ack: 1, Len: 1392
+Hypertext Transfer Protocol
+    GET / HTTP/1.1\r\n
+    Host: localhost:8080\r\n
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0\r\n
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n
+    Accept-Language: en-US,en;q=0.5\r\n
+    Accept-Encoding: gzip, deflate, br, zstd\r\n
+    Connection: keep-alive\r\n
+    Cookie: ...
+    Upgrade-Insecure-Requests: 1\r\n
+    Sec-Fetch-Dest: document\r\n
+    Sec-Fetch-Mode: navigate\r\n
+    Sec-Fetch-Site: none\r\n
+    Sec-Fetch-User: ?1\r\n
+    Priority: u=0, i\r\n
+    Pragma: no-cache\r\n
+    Cache-Control: no-cache\r\n
+    \r\n
+    [Response in frame: 9]
+    [Full request URI: http://localhost:8080/]
+```
+
+There is some information in the HTTP request:
+- GET method, of the HTTP protocol version 1.1
+- Uses CRLF (`\r\n`) as a line ending, which is the standard for HTTP requests.
+
+Server responds with the contents of `index.html` file, which is sent as a response body.
+
+```bash
+Frame 9: 723 bytes on wire (5784 bits), 723 bytes captured (5784 bits) on interface lo, id 0
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)
+Internet Protocol Version 4, Src: 127.0.0.1, Dst: 127.0.0.1
+Transmission Control Protocol, Src Port: 8080, Dst Port: 56288, Seq: 1, Ack: 1393, Len: 657
+Hypertext Transfer Protocol
+    HTTP/1.1 200 OK\r\n
+    Accept-Ranges: bytes\r\n
+    Content-Length: 472\r\n
+    Content-Type: text/html; charset=utf-8\r\n
+    Last-Modified: Thu, 05 Jun 2025 05:23:48 GMT\r\n
+    Date: Thu, 05 Jun 2025 05:29:38 GMT\r\n
+    \r\n
+    [Request in frame: 7]
+    [Time since request: 0.000315794 seconds]
+    [Request URI: /]
+    [Full request URI: http://localhost:8080/]
+    File Data: 472 bytes
+Line-based text data: text/html (18 lines)
+```
+
+![HTTP Response Status OK](wireshark2.png)
+
+As you can see, the stateless nature of HTTP is evident here. The server does not maintain any state between requests.
+
+## An interesting fact
+
+You can force a client to use HTTP/0.9 instead of HTTP/1.1, for steganography purposes.
