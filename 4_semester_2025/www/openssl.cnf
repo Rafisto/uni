@@ -1,0 +1,28 @@
+[ req ]
+default_bits       = 2048
+default_keyfile    = self-signed.key
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_req
+prompt             = no
+
+[ req_distinguished_name ]
+C  = PL
+ST = Lower Silesia
+L  = Wroclaw
+O  = PWr
+OU = INA
+CN = learnasm
+emailAddress = admin@learnasm
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ v3_req ]
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = learnasm
+DNS.2 = www.learnasm

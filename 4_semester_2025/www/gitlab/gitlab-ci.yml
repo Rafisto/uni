@@ -1,0 +1,34 @@
+variables:
+  HARBOR_URL: wn1501.k8s.kdm.wcss.pl
+  IMAGE_NAME: ${CI_PROJECT_NAME}
+
+stages:
+  - build
+
+build:
+  image: docker:27.0.3
+  stage: build
+  tags:
+    - cybertron
+  services:
+  - name: docker:27.0.3-dind
+    entrypoint: ["dockerd-entrypoint.sh", "--tls=false", "--mtu=1440", "--insecure-registry=wn1501.k8s.kdm.wcss.pl"]
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_BUILDKIT: 1
+    BUILDKIT_INLINE_CACHE: 1
+  before_script:
+    - echo "${regUser}"
+    - echo "${regToken}"
+    - echo "${regToken}" | docker login -u "${regUser}" --password-stdin "http://${HARBOR_URL}"
+  script:
+    - i=0; while [ "$i" -lt 12 ]; do docker info && break; sleep 5; i=$(( i + 1 )) ; done
+    - docker build -t "${HARBOR_URL}/cybertron/${IMAGE_NAME}:latest" ./userdb/
+    - docker push "${HARBOR_URL}/cybertron/${IMAGE_NAME}:latest"
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging" || $CI_COMMIT_BRANCH == "master"'
+      exists:
+        - userdb/Dockerfile
