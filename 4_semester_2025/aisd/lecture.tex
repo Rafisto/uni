@@ -3258,5 +3258,69 @@ Skoro $T$ jest MST:
 W takim razie $\text{weight}(\widetilde{T}) = \text{weight}(T)$, zatem $\widetilde{T}$ również jest minimalnym drzewem rozpinającym grafu $G$.
 Zatem $X\cup \{e\}$ jest częścią minimalnego drzewa rozpinającego grafu $G$.
 
+\section{Lecture XX}
+
+\subsection{Algorytm Kruskala}
+
+\section{Lecture XXI}
+
+\subsection{Problem Min-Cut}
+
+\begin{itemize}
+    \item Input: Graf $G=(V,E)$.
+    \item Output: Minimalny zbiór krawędzi rozspójniający graf.
+\end{itemize}
+Niech zbiór $A$ będzie zbiorem krawędzi łączących $S$ i $V-S$.
+Możemy zbudować minimalne drzewo rozpinające, w $S$ $V-S$:
+\begin{align}
+    \text{Pr}(A\in\text{MinCut}) \geq \frac{1}{n(n-1)}
+\end{align}
+Możemy stworzyć algorytm Kruskala (nieskierowany, więc nie musimy sortować krawędzi) do ostatniego jego kroku, w którym miałby on znaleźć ostatnią
+krawędź, która przechodzi pomiędzy $S$ i $V-S$. Wtedy ta krawędź rozspójniłaby graf.
+
+Powtórzmy $\Theta(n^2)$ razy algorytm Kruskala, aby znaleźć minimalne przecięcie - wraz z $n$ dążącym do nieskończoności porafimy wyznaczyć najmniejszy zbiór rozcinający.
+
+Złożoność całej procedury to $\Theta(n^2) \cdot O(|E|\log |V|)$.
+
+Zapiszmy dla klaryfikacji w worst case $|E|=|V|^2$, więc $\log(|E|) = O(\log |V|^2) = O(2\log |V|) = O(\log |V|)$.
+
+Pokażmy postulowaną wyżej nierówność. Załóżmy, że $|\text{MinCut}|=C$.
+Załóżmy, że jesteśmy w kroku algorytmu Kruskala, w którym mamy $k$ komponent.
+Liczba krawędzi, które możemy wybrać to będzie co najmniej $\frac{kC}{2}$
+Prawdopodobieństwo, że wybierzemy krawędź z MinCuta wynosi co najmniej:
+\begin{align}
+    \frac{C}{\frac{kC}{2}} &= \frac{2}{k} \geq \text{Pr}(\text{że wybiorę krawędź} \in\text{MinCut})\\
+    \text{Pr}(\text{że nie wybiorę krawędzi} \in \text{MinCut}) &\geq 1 - \frac{2}{k} = \frac{k-2}{k}\\
+    \text{Pr}(A\in\text{MinCut}) &\geq \frac{n-2}{n} \cdot \frac{n-3}{n-1} \cdot \frac{n-4}{n-2} \cdot \dots \cdot \frac{2}{4} \cdot \frac{1}{3} = \\
+    &= \frac{2}{n(n-1)}
+\end{align}
+Ogólny framework dający cut property.
+\begin{verbatim}
+x={}
+repeat until |X|=|V|-1
+    wybierz S \subset V, dla którego w X nie ma krawędzi pomiędzy S i V\S.
+    znajdź krawędź e \in E o najmniejszej wadze pomiędzy S i V\S.
+    X = X u {e}
+\end{verbatim}
+Kruskal nie wybiera S-explicite, ponieważ wybiera najtańszą krawędź.
+
+\subsection{Algorytm Prima}
+
+\begin{verbatim}
+Prim(G=(V,E), (w_i)i=1,...|E|) -> MST dla grafu G
+    for v in V 
+        cost(v) = infinity
+        prev(v) = null
+    cost(u) = 0
+    H = MakePQ(V) // priorytetem jest cost(v)
+    while H is not empty
+        v = ExtractMin(H)
+        for each {v,z} in E
+            if cost(z) > w(v,z)
+                cost(z) = w(v,z)
+                prev(z) = v
+                decreaseKey(H,z)
+\end{verbatim}
+
 
 \end{document}
