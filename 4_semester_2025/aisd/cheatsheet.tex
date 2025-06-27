@@ -1,0 +1,628 @@
+\documentclass[landscape,a4paper]{article}
+\usepackage[fontsize=2px]{fontsize}
+\usepackage{amssymb,amsmath,amsthm,amsfonts}
+\usepackage{multicol,multirow}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    {\geometry{top=0.3cm,left=0.3cm,right=0.3cm,bottom=0.3cm} }
+	{\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+		{\geometry{top=0.3cm,left=0.3cm,right=0.3cm,bottom=0.3cm} }
+		{\geometry{top=0.3cm,left=0.3cm,right=0.3cm,bottom=0.3cm} }
+	}
+\pagestyle{empty}
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+% -----------------------------------------------------------------------
+
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{geometry}
+\geometry{margin=0.5cm}
+
+\begin{document}
+
+\raggedright
+\footnotesize
+
+\begin{center}
+    \textbf{Rafał Włodarczyk} (27.06.2025) https://github.com/Rafisto/uni/blob/master/4\_semester\_2025/aisd/cheatsheet.tex)
+\end{center}
+
+\begin{multicols}{5}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\section{Logarytmy}
+
+$
+\log_a b + \log_a c = \log_a(b \cdot c)
+; \log_a b - \log_a c = \log_a\left(\frac{b}{c}\right);
+;a^{\log_a b} = b
+;n \cdot \log_a b = \log_a b^n
+;\log_a b = \frac{\log_c b}{\log_c a}
+;a^{\log_b n} = n^{\log_b a}
+$
+
+\section{Notacja Asymptotyczna}
+
+$
+    f(n) = O(g(n)) \equiv \limsup_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| \leq \infty
+$
+
+$
+    f(n) = \Omega(g(n)) \equiv \limsup_{n\rightarrow \infty} \left|\frac{g(n)}{f(n)}\right| \leq \infty
+$
+
+$
+    f(n) = o(g(n)) \equiv \lim_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| = 0
+$
+
+$
+    f(n) = \omega(g(n)) \equiv \lim_{n\rightarrow \infty} \left|\frac{f(n)}{g(n)}\right| = \infty
+$
+
+\subsection{Metoda podstawiania - Metoda dowodu indukcyjnego}
+Przykład 1. Rozwiążmy równanie rekurencyjne:
+$
+    T(n) = 4T\left(\frac{n}{2}\right) + n \quad T(1) = \Theta(1)
+$
+Wzmocnijmy zatem założenie indukcyjne:
+\begin{enumerate}
+    \item $T(n) \leq c_1 n^2 - c_2 n$ (zał. indukcyjne)
+    \item $T(n) = 4T\left(\frac{n}{2}\right) + n \leq 4(c_1 \frac{n}{2}^2 - c_2 \frac{n}{2}) + n$
+    \item $= c_1 n^2 - 2c_2 n + n = c_1n^2 - (2c_2 -1)n \leq$
+    \item $\leq c_1n^2 - c_2n$
+    \item Weźmy $c_1=1, c_2=2$, wtedy $T(n) \leq n^2 - 2n = O(n^2)$
+\end{enumerate}
+
+Przykład 2. Weźmy paskudną rekursję $T(n) = 2T(\sqrt{n}) + \log n$.\\
+Załóżmy, że $n$ jest potęgą $2$ oraz oznaczny $n=2^m, m=\log_2 n$.
+$
+    T(2^m) = 2T((2^m)^\frac{1}{2}) + m
+$
+Oznaczmy $T(2^m) = S(m)$. Wtedy:
+$
+    S(m) = 2S\left(\frac{m}{2}\right) + m
+$
+(dobrze znana rekurencja - $S(n) = O(m\log m))$ - patrz Lecture 2.
+Przejdźmy z powrotem na $T,n$:
+$
+    T(2^m) = S(m)\\
+    T(2^m) = O(m \log m)\\
+    T(n) = O(\log n \log \log n)
+$
+
+\section{Master Theorem}
+
+$
+    T(n) = a \cdot T\left(\lceil\frac{n}{b}\rceil\right) + \Theta(n^d)
+$
+
+$
+    T(n) = \begin{cases}
+        \Theta\left(n^d\right) \quad \text{jeśli} \quad d > \log_b a\\
+        \Theta\left(n^d \log n\right) \quad \text{jeśli} \quad d = \log_b a\\
+        \Theta\left(n^{log_b a}\right) \quad \text{jeśli} \quad d < \log_b a
+    \end{cases}
+$
+
+\subsection{Fibonacci}
+
+Istnieje macierz, która mnożona pozwala na policzenie $n$-tej liczby Fibonacciego.
+
+$
+    \begin{pmatrix}
+        1 & 1 \\
+        1 & 0
+    \end{pmatrix}^n =
+    \begin{pmatrix}
+        F_{n+1} & F_{n} \\
+        F_{n} & F_{n-1}
+    \end{pmatrix}
+$
+Algorytm używający tego wzoru - połączony z szybkim potęgowaniem, ma złożoność $\Theta(\log n)$.
+
+\subsection{Mnożenie liczb}
+
+$
+    (a+ib)(c+id) = ac - bd + i(bc + ad)\\
+    bc + ad = (a + b)(c + d) - ac - bd
+$
+Zobaczmy, że $ac, bd$ są już policzone wyżej - zamiast 4 mnożeń, mamy 3 mnożenia.
+$
+    x\cdot y = x_L y_L 2^n + \left((x_L + x_R)(y_L + y_R\\ - x_Ly_L - x_Ry_R\right) + x_Ry_R\quad T(n) = \Theta(n^{\log_2 3})
+$
+
+\begin{verbatim}
+mutiply(x, y)
+    n = max {|x|, |y|}
+    if n == 1 return x * y
+    x_L, x_R = leftmost(ceil(n/2),x), rightmost(floor(n/2),x)
+    y_L, y_R = leftmost(ceil(n/2),y), rightmost(floor(n/2),y)
+
+    p1 = multiply(x_L, y_L)
+    p2 = multiply(x_R, y_R)
+    p3 = multiply(x_L + x_R, y_L + y_R)
+
+    return p1 << n + (p3 - p1 - p2) << ceil(n/2) + p2
+\end{verbatim}
+
+\begin{verbatim}
+COUNTING-SORT(A, B, k)
+let C[0..k] be a new array
+for i = 0..k
+    C[i] = 0
+for j = 1..length[A]
+    C[A[j]] = C[A[j]] + 1
+for i = 1..k
+    C[i] = C[i] + C[i - 1]
+for j = length[A]..1
+    B[C[A[j]]] = A[j]
+    C[A[j]] = C[A[j]] - 1
+\end{verbatim}
+
+\begin{verbatim}
+BS(A[1..n], key) // BinarySearch O(log(n))
+    if (key == BS[mid]) ret mid
+    if (key >= BS[mid]) ret BS(A[mid...n], key)
+    else ret BS(A[1...mid-1], key)
+    ret -1
+\end{verbatim}
+
+\begin{verbatim}
+LomutoPartition(A[1..n]) // O(n)
+    pivot = A[1], i = 1 // any
+    for j = 1 to n
+        if A[j] <= pivot
+            i = i + 1
+            swap (A[i], A[j])
+    swap (A[i+1], A[n])
+    ret i + 1
+\end{verbatim}
+
+\begin{verbatim}
+InsertionSort(A[1..n])
+for j = 2...n
+    key = A[j]
+    i=j-1
+    while(i>0 && A[i]>key)
+        A[i+1] = A[i]
+        i = i - 1
+    A[i+1] = key
+\end{verbatim}
+
+\begin{verbatim}
+MergeSort(A[1..n]) // O(nlogn)
+    if (n==1) return A[1]
+    return Merge(
+        MergeSort(A[1, mid]),
+        MergeSort(A[mid+1,n])
+    )
+
+Merge(A[1..k], B[1..l]) // O(k+l)
+    i = 1, j = 1
+    RES = []
+    while (i <= k) AND (j <= l)
+        if (A[i] <= B[j]) RES+=A[i], i++
+        else RES+=B[j], j++
+    RES+=A[i..k] OR RES+=B[j..l]
+    ret RES
+\end{verbatim}
+
+\begin{verbatim}
+RandomSelect(A, p, q, i)
+    if p == q return A[p]
+    r = Rand_Partition(A,p,q) # Hoare
+    k = r - p + 1
+    if i == k return A[r]
+    if i < k return RandomSelect(A, p, r-1, i)
+    else return RandomSelect(A, r+1, q, i-k)
+\end{verbatim}
+
+\begin{verbatim}
+Select5(A, p, q, i)
+    divide A[p..q] into groups of 5 elements
+    for each group sort it and find its median
+    store these medians in a new array M
+    mms = Select5(M, 0, len(M) - 1, len(M)/2)
+    r = Partition A[p..q] around mms
+    k = r - p + 1
+    if (i == k) return A[r]
+    if (i < k) return Select5(A, p, r - 1, i)
+    else return Select5(A, r + 1, q, i - k)
+\end{verbatim}
+
+\subsection{Struktury Danych}
+
+\subsection{Drzewa}
+
+Zbalansowane drzewo $h=O(\log_2 n)$
+
+Drzewo statystyk pozycyjnych - RBT z rozmiarem poddrzewa.
+
+\begin{verbatim}
+OS_Select(x, i) // O(log n), wykonaj x=root
+    r = size(x.left) + 1
+    if i == r return x
+    if i < r return OS_Select(x.left, i)
+    else return OS_Select(x.right, i - r)
+\end{verbatim}
+
+\begin{verbatim}
+OS_Rank(x) // O(log n), statystyka wezla x
+    r = x.left.size + 1
+    y = x
+    while (y != root) 
+        if (y == y.p.right) // y jest prawym synem
+            r += size(y.parent.left) + 1
+        y = y.p
+    return r
+    
+\end{verbatim}
+
+\subsection{Kopce}
+
+\begin{verbatim}
+left(i) = 2i (LSH)
+right(i) = 2i + 1 (LSH + 1)
+parent(i) = i // 2 (RSH)
+size(A) = rozmiar listy
+\end{verbatim}
+
+\begin{verbatim}
+HEAPIFY(A, i) // O(h)
+    l = left(i), r = right(i)
+    if (l <= size(A) AND A[l] > A[i]) 
+        largest = l
+    else largest = i
+    if (r <= size(A) AND A[r] > A[largest])
+        largest = r
+    if (largest != i) swap(A[i], A[largest])
+    HEAPIFY(A, largest)
+\end{verbatim}
+
+\subsection{PQ}
+
+\begin{verbatim}
+Maximum(Q) return Q[1]
+
+Union(Q1,Q2) // O(|Q1|+|Q2|)
+    BuiltHeap([Q1,Q2])
+
+Insert(Q,key) // O(log n)
+    size(Q)++, i = size(Q)
+    while(i>1 AND Q[parent(i)<key]
+        Q[i] = Q[oarent(i)]
+        i = parent(i)
+    Q[i]=key
+
+ExtractMax(Q) // O(log n)
+    max = Q[1]
+    Q[1] = Q[size(Q)]
+    size(Q)--
+    HEAPIFY(Q,1)
+    return max
+
+Delete(Q, i) // O(log n)
+Q[i] = Q[size(Q)]
+size(Q)--
+if (Q[i]<Q[parent(i)]) HEAPIFY(Q,i)
+else
+    while(i<1 AND Q[parent(i)]<Q[i])
+        swap (Q[parent(i)],Q[i])
+        i = parent(i)
+
+Increase/DecreaseKey(A, i, newK)
+if A[i] > newK
+    A[i] = newK
+    HEAPIFY(A,i)
+else
+    while i>1 AND A[parent(i)] < newK
+        A[i] = A[parent(i)]
+        i = parent(i)
+    A[i] = newK
+\end{verbatim}
+
+\subsection{Grafy}
+
+\subsection{Cut Property}
+
+Niech $X$ będzie podzbiorem krawędzi minimalnego drzewa rozpinającego grafu $G=(V,E)$. Wybierzmy podzbiór wierzchołków $S\subset V$,
+takich, że żadna krawędź z $X$ nie przechodzi pomiędzy wierzchołkami z $S$ i $V\setminus S$. Niech $e\in E$ będzie krawędzią o najmniejszej
+wadze, która przechodzi pomiędzy $S$ i $V\setminus S$. Wtedy $X\cup \{e\}$ należy do minimalnego drzewa rozpinającego grafu $G$.
+
+\subsection{Min-Cut Problem}
+
+Możemy zbudować minimalne drzewo rozpinające, w $S$ $V-S$:
+\begin{align}
+    \text{Pr}(A\in\text{MinCut}) \geq \frac{1}{n(n-1)}
+\end{align}
+Możemy stworzyć algorytm Kruskala (nieskierowany, więc nie musimy sortować krawędzi) do ostatniego jego kroku, w którym miałby on znaleźć ostatnią
+krawędź, która przechodzi pomiędzy $S$ i $V-S$. Wtedy ta krawędź rozspójniłaby graf.
+
+Powtórzmy $\Theta(n^2)$ razy algorytm Kruskala, aby znaleźć minimalne przecięcie - wraz z $n$ dążącym do nieskończoności porafimy wyznaczyć najmniejszy zbiór rozcinający.
+
+Sortowanie Topologiczne
+Wykonujemy DFS, zapisując czasy pre i post.
+Sortujemy wierzchołki według czasu post w porządku malejącym.
+
+Mamy krawędź między składowymi silnie spójnymi (SCC), jeśli istnieje krawędź między wierzchołkami tych składowych w oryginalnym grafie.
+
+Odwracamy kierunek wszystkich krawędzi, otrzymując graf $G^T$.
+Wykonujemy DFS na grafie $G^T$.
+
+Ujście $G$ ma największy post w $G^T$.
+DFS na $G$ zaczyna się od ujścia $G$.
+
+\textbf{Komponenty:} \\
+\textit{Silnie Spójne Składowe} — w obrębie jednej komponenty można dojść do każdego węzła.
+
+Źródło - Wierzchołek grafu skierowanego, nie będący końcem żadnej krawędzi.\\
+Ujście - Wierzchołek grafu skierowanego, nie będący początkiem żadnej krawędzi.
+
+\begin{verbatim}
+EXPLORE(G,v) # G - Graph, v - start vertex
+    visited(v) = true
+    previsit(v)
+    for each edge (v,u) in E
+        if not visited(u) EXPLORE(G,u)
+    postvisit(v)
+\end{verbatim}
+
+\begin{verbatim}
+DFS(G) // O(|V|+|E|)
+    for each vertex v in G
+        visited(v) = false
+    for each vertex v in G
+        if not visited(v) EXPLORE(G,v)
+\end{verbatim}
+
+\begin{verbatim}
+BFS(G, s) // O(|V|+|E|)
+    for each vertex v in G
+        visited(v) = false
+    visited(s) = true
+    enqueue(Q, s)
+    while Q not empty
+        v = dequeue(Q)
+        for each neighbor u of v
+            if not visited(u)
+                visited(u) = true
+                enqueue(Q, u)
+\end{verbatim}
+
+\begin{verbatim}
+Bellman-Ford(G, s) // O(|V|*|E|)
+for all v in V
+    dist(v) = infinity
+    prev(v) = null
+dist(s) = 0
+repeat |V|-1 times
+    for all e in E
+        if dist(u) + w(u,v) < dist(v):
+            dist(v) = dist(u) + w(u,v)
+            prev(v) = u
+\end{verbatim}
+
+\begin{verbatim}
+Dijkstra(G, s) // O((|V|+|E|) log |V|)
+for each vertex v in G
+    dist(v) = infinity
+    visited(v) = false
+dist(s) = 0
+Q = makePQ(vertices) // by dist
+while Q not empty
+    u = extract-min(Q)
+    if visited(u) continue
+    visited(u) = true
+    for each neighbor v of u
+        if dist(v) > dist(u) + w(u,v)
+            dist(v) = dist(u) + w(u,v)
+            decrease-key(Q, v, dist(v))
+\end{verbatim}
+
+\begin{verbatim}
+Prim(G=(V,E), (w_i)i=1,...|E|) -> MST dla grafu G
+for v in V 
+    cost(v) = infinity
+    prev(v) = null
+cost(u) = 0
+H = MakePQ(V) // priorytetem jest cost(v)
+while H is not empty
+    v = ExtractMin(H)
+    for each {v,z} in E
+        if cost(z) > w(v,z)
+            cost(z) = w(v,z)
+            prev(z) = v
+            decreaseKey(H,v,cost(z))
+\end{verbatim}
+
+\begin{verbatim}
+Kruskal(G=(V,E), w) // O(|E| log |E|), O(|E| log |V|)
+for all v in V
+    makeSet(v)
+x = {}
+for all {u,v} in sorted E
+    if find(u) != find(v)
+        x = x U ({u,v})
+        union(u,v)
+ret x
+\end{verbatim}
+
+\section{House Robber}
+
+\begin{verbatim}
+rob(values: list):
+    prev, curr = 0, 0
+    for value in values:
+        prev, curr = curr, 
+            max(curr, prev + value)
+    return curr
+\end{verbatim}
+
+\section{Edit Distance}
+
+$|W_1|=i, |W_2|=j$. Miminum z możliwości do $(i,j)$:
+
+\begin{itemize}
+    \item insert $(i,j-1)\rightarrow(i,j)$ (+1)
+    \item delete $(i-1,j)\rightarrow(i,j)$ (+1)
+    \item replace $(i-1,j-1)\rightarrow(i,j)$ (+1)
+    \item keep $(i-1,j-1)\rightarrow(i,j)$ (+0)
+\end{itemize}
+
+\begin{verbatim}
+for (size_t n = 1; n <= s1; ++n) {
+    for(size_t m = 1; m <= s2; ++m) {
+        dp[n][m] = std::min({
+        dp[n-1][m] + 1,
+        dp[n][m-1] + 1,
+        dp[n-1][m-1] +
+        diff(word1[n-1], word2[m-1])});
+    }
+}
+\end{verbatim}
+
+\section{0/1 Knapsack}
+
+$
+    max(v+arr[i-1][j-w], arr[i-1][j])
+$
+
+\section{Coin change 1}
+
+Minimalna liczba monet potrzebna do wydania reszty
+
+\begin{verbatim}
+for(int i = 1; i <= amount; ++i) {
+    for(int j = 0; j < coins.size(); ++j) {
+        if (coins[j] <= i) {
+            L[i] = std::min(L[i], 1 + L[i - coins[j]]);
+        }
+    }
+}
+\end{verbatim}
+
+\section{Coin change 2}
+
+Unbounded Knapsack. Na ile sposobów możemy wydać resztę amount.
+
+\begin{verbatim}
+def change(amount: int, coins: List[int]) -> int:
+    dp = [0] * (amount + 1)
+    dp[0] = 1
+
+    for c in coins:
+        for a in range(c, amount + 1): 
+            dp[a] += dp[a-c]
+
+    return dp[amount]
+\end{verbatim}
+
+\section{Longest Common Subsequence}
+
+Największy wspólny podciąg. "ace" is a subsequence of "abcde".
+
+\begin{verbatim}
+int longestCommonSubsequence(string &a, string &b) {
+    short m[1001][1001] = {0};
+    for (auto i = 0; i < a.size(); ++i)
+        for (auto j = 0; j < b.size(); ++j)
+            m[i + 1][j + 1] = a[i] == b[j] 
+            ? m[i][j] + 1
+            : max(m[i + 1][j], m[i][j + 1]);
+    return m[a.size()][b.size()];
+}
+\end{verbatim}
+
+\section{Longest Increasing Subsequence}
+
+\begin{verbatim}
+def lengthOfLIS(self, nums: List[int]) -> int:
+    if not nums:
+        return 0
+        
+    n = len(nums)
+    dp = [1] * n
+
+    for i in range(1, n):
+        for j in range(i):
+            if nums[i] > nums[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+\end{verbatim}
+
+\section{Perły}
+
+Potrzeba $(a_i,p_i)$ ale możemy zastępować gorsze perły lepszymi.
+
+\begin{verbatim}
+REP(i, MAX)
+    REP(j, MAX)
+        t[i][j] = INF;
+t[n - 1][n - 1] = (a[n - 1] + 10) * p[n - 1];
+FORD(i, n - 2, 0)
+{
+    t[i][i] = (a[i] + 10) * p[i] + 
+        *min_element(t[i + 1], t[i + 1] + MAX);
+    FOR(j, i + 1, n - 1)
+        t[i][j] = a[i] * p[j] + t[i + 1][j];
+}
+return *min_element(t[0], t[0] + MAX)
+\end{verbatim}
+
+\subsection{Red Black Trees}
+
+'78 Guibas, Sedgewick - Red Black (RB) Trees 
+\begin{itemize}
+    \item Własność 0 - Drzewa RB są drzewami BST - mają BST Property - po lewej stronie węzła występują wartości mniejsze, a po prawej większe
+    \item Własność 1 - Każdy węzeł ma kolor czerwony albo czarny (to może być bit)
+    \item Własność 2 - Korzeń oraz \textit{liście} są czarne
+    \item Własność 3 - Jeśli węzeł jest czerwony, to jego bezpośrednie dzieci są czarne
+    \item Własność 4 - $\forall X$ Każda prosta ścieżka od węzła X do liści ma tyle samo czarnych węzłów. $(\text{black\_height}(x)$, inaczej $ \text{bh}(x))$. Prosta ścieżka oznacza, że nie zawracamy, zawsze idziemy w dół.
+\end{itemize}
+
+\end{multicols}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+\textbf{Struktura} & \textbf{Build} & \textbf{Find} & \textbf{Insert/Delete} & \textbf{Find mM} & \textbf{Find pn} & \textbf{List\_ordered} \\ \hline
+Unsorted Array & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n\log n) $ \\ \hline
+Sorted Array & $\Theta(n\log n)$ & $\Theta(\log n)$ & $\Theta(n)$ & $\Theta(1)$ & $\Theta(\log n)$ & $\Theta(n)$ \\ \hline
+Linked List & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n\log n)$ \\ \hline
+BST & $\Theta(n^2)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ & $\Theta(n)$ \\ \hline
+RBT & $\Theta(n \log n)$ & $\Theta(\log n)$ & $\Theta(\log n)$ & $\Theta(\log n)$ & $\Theta(\log n)$ & $\Theta(n)$ \\ \hline
+MinHeap & $\Theta(n\log n)$ & $\Theta(n)$ & $\Theta(\log n)$ & $\Theta(1)$ (min) / $\Theta(n)$ (max) & $\Theta(n)$ & $\Theta(n \log n)$ \\ \hline
+\end{tabular}
+\caption{Porównanie różnych struktur danych (złożoność w najgorszym przypadku)}
+\label{tab:structure_comparison_worst_case}
+\end{table}
+
+\end{document}
