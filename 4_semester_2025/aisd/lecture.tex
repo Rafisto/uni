@@ -3322,5 +3322,18 @@ Prim(G=(V,E), (w_i)i=1,...|E|) -> MST dla grafu G
                 decreaseKey(H,z)
 \end{verbatim}
 
+\subsection{Kodowanie Huffmana}
 
+\begin{itemize}
+    \item Digitalizacja analogowego dźwięku, próbkujemy np $44.1$KHz, czyli 44 tysiące próbek na sekundę.
+    \item $\Gamma$ - alfabet, na który zmapujemy próbki. $\Gamma=\{A,B,C,D\}$
+    \item Zmapuj elementy alfabetu na ciągi bitowe.
+\end{itemize}
+$50 \cdot 60 \cdot 44100 \cdot 2 \implies 260$ milionów bitów.
+
+Jeśli częstotliwości znaków $A=70m, B=3m, C=20m, D=37m$, to ustawmy kody prefix free: $A=0,D=10,C=110,D=111$, 
+wtedy: $70m \times 1 + 37m \times 2 + 20m \times 3 + 3m \times 3 = 213$ milionów bitów.
+
+Prefix-free code możemy przedstawić za pomocą drzewa binarnego, takiego że
+h
 \end{document}
