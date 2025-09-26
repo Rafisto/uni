@@ -1,0 +1,140 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{geometry}
+
+\geometry{
+  top=2cm,    % top margin
+  bottom=2cm, % bottom margin
+  left=2cm, % left margin
+  right=2cm % right margin
+}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\usepackage{url}
+
+\title{Metody Probabilistyczne i Statystyka}
+\author{Zadanie domowe 1}
+\date{Rafał Włodarczyk 2024-11-05}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Implementacja Symulacji}
+
+Kod symulacji dostępny jest w pliku \texttt{main.py}, dołączonym do tego dokumentu.\\
+Zadaną symulację zaimplementowałem w języku \texttt{python}.
+Do wykonania obliczeń oraz wyświetlenia wyników wykorzystałem biblioteki
+\texttt{numpy}\footnote{\url{https://numpy.org/doc/stable/}} oraz \texttt{matplotlib}\footnote{\url{https://matplotlib.org/stable/contents.html}}.
+Moje środowisko w systemie Linux można odtworzyć przy użyciu następujących poleceń (zakładam zainstalowanego Pythona w wersji 3.12):
+
+\begin{verbatim}
+$ python -m venv venv # tworzę virtual environment
+$ source venv/bin/activate # aktywuję virtual environment
+(venv) $ pip install numpy matplotlib # instaluję biblioteki
+\end{verbatim}
+
+\subsection{Generator liczb pseudolosowych}
+
+Zgodnie z zaleceniami wykorzystałem Mersenne Twister PRNG\footnote{\url{https://numpy.org/doc/stable/reference/random/bit_generators/mt19937.html}} z biblioteki \texttt{numpy}. Funkcja generująca pseudolosowe punkty (fragment klasy Simulation) wygląda wobec tego następująco:
+
+\begin{verbatim}
+    def generate_points(self, n: int) -> List[Point]:
+        """
+        :param n: number of points to be generated
+        :return: a list of n points, with x in the range and y in [0, M]
+        """
+        points = []
+        rng = np.random.Generator(np.random.MT19937())
+        for _ in range(n):
+            x = rng.uniform(self.interval[0], self.interval[1])
+            y = rng.uniform(0, self.M)
+            points.append(Point(x, y))
+        return points
+\end{verbatim}
+
+\section{Obliczenia oraz wykresy}
+
+Dla każdej z zadanych funkcji wykonałem symulację z parametrem $k=5$ oraz $k=50$. Wygenerowałem wykresy, na których zaznaczyłem wartość średnią danej próbki oraz wartość faktyczną, zgodnie z wyliczeniami zamieszczonymi przy odpowiednich wykresach.
+
+\subsection{Obliczenia oraz wykresy dla funkcji \(f_1(x)=\sqrt[3]{x}\)}
+Policzmy zadaną całkę:
+\begin{align}
+\int_{0}^{8} \sqrt[3]{x}\, dx = \left[\frac{3}{4}x^{\frac{4}{3}} \right]_{0}^{8} = \frac{3}{4} \cdot \left(8^{\frac{4}{3}} - 0^{\frac{4}{3}}\right) = 12
+\end{align}
+\\
+Wykresy wygenerowane dla funkcji $f_1$ w \texttt{main.py}:
+\begin{figure}[H]
+    \includegraphics[width=0.49\linewidth]{f1=cuberoot_x_and_k=5.png}
+    \includegraphics[width=0.49\linewidth]{f1=cuberoot_x_and_k=50.png}
+\end{figure}
+
+\subsection{Obliczenia oraz wykresy dla funkcji \(f_2(x)=\sin(x)\)}
+
+Policzmy zadaną całkę:
+
+\begin{align}
+\int_{0}^{\pi} \sin(x) dx = \left[- \cos(x) \right]_{0}^{\pi} = - (\cos(\pi) - \cos(0)) = - (-1 - 1) = 2
+\end{align}
+\\
+Wykresy wygenerowane dla funkcji $f_2$ w \texttt{main.py}:
+\begin{figure}[H]
+    \includegraphics[width=0.49\linewidth]{f2=sin_x_and_k=5.png}
+    \includegraphics[width=0.49\linewidth]{f2=sin_x_and_k=50.png}
+\end{figure}
+ 
+\subsection{Obliczenia oraz wykresy dla funkcji \(f_3(x)=4x(1-x)^3\)}
+
+\begin{align}
+    \int_{0}^{1} 4x(1-x)^3 dx = 4 \cdot \int_{0}^{1} x - 3x^2 + 3x^3 - x^4 dx &=\\
+    = 4\cdot \left(\int_{0}^{1} x dx - \int_{0}^{1} 3x^2 dx + \int_{0}^{1} 3x^3 dx - \int_{0}^{1} x^4 dx \right) &=\\
+    = 4\cdot\left(\frac{1}{2} - 1 + \frac{3}{4} - \frac{1}{5}\right) &= \frac{1}{5}
+\end{align}
+\\
+Wykresy wygenerowane dla funkcji $f_3$ w \texttt{main.py}:
+\begin{figure}[H]
+    \includegraphics[width=0.49\textwidth]{f3=4x1-x3_x_and_k=5.png}
+    \includegraphics[width=0.49\textwidth]{f3=4x1-x3_x_and_k=50.png}
+\end{figure}
+ 
+\section{Wyznaczenie wartości liczby \(\pi\)}
+
+Do wyznaczenia wartości liczby \(\pi\) posłużyłem się funkcją $f_{cw}(x)=\sqrt{1-x^2}$, która na przedziale $[0,1]$ opisuje ćwiartkę okręgu jednostkowego.
+Zauważmy, że:
+
+\begin{align}
+    \int_{0}^{1} 4\cdot f_{cw}(x)\, dx = 4 \cdot \int_{0}^{1}\sqrt{1-x^2}\, dx &=\\
+    = 4 \cdot \int_{0}^{\frac{\pi}{2}} \sqrt{1-\sin^2(x)} \cdot \cos(x) dx &=\\
+    = 4 \cdot \int_{0}^{\frac{\pi}{2}} \cos^2(x) dx &=\\
+    = 4 \cdot \frac{1}{2} \cdot \left[x + \frac{\sin(2x)}{2} \right]_{0}^{\frac{\pi}{2}} &=\\
+    &= \pi
+\end{align}
+
+Wykresy wygenerowane dla funkcji $f_{\pi}$ w \texttt{main.py}:
+
+\begin{figure}[H]
+    \includegraphics[width=0.49\textwidth]{fpi=sqrt1-x2_x_and_k=5.png}
+    \includegraphics[width=0.49\textwidth]{fpi=sqrt1-x2_x_and_k=50.png}
+\end{figure}
+
+\section{Wnioski}
+
+Metoda Monte Carlo sprawda się w przybliżaniu wartości całek zadanych funkcji. Wzrost liczby próbek $n$ w pojedyńczej symulacji umożliwia uzyskanie dokładniejszej esytmacji prawdziwej wartości.
+
+Średnie wyniki uzyskane z $k=50$ powtórzeń są bliższe prawdziwym wartościom, niż wyniki uzyskiwane z $k=5$ powtórzeń - zwięszenie liczby niezależnych symulacji pozwala zmniejszyć wpływ skrajnych wyników. 
+
+Zastosowanie dobrego generatora liczb pseudolosowych pozwala poprawić dokładność wyniku. 
+
+Metoda Monte Carlo nie jest w stanie wyznaczyć dokładnego wyniku, a zebranie satysfakcjonującej ilości próbek jest zadaniem wymagającym sporej ilości zasobów obliczeniowych.
+
+
+
+\end{document}
