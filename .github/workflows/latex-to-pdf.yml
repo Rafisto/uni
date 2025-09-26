@@ -1,0 +1,78 @@
+name: PDFlatex to Github Pages
+
+on:
+  push:
+    branches:
+      - workflow
+      - master
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: danteev/texlive:edge
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build all .tex files
+        run: |
+          mkdir -p output
+          OUTPUT_DIR=$(realpath output)
+
+          # build tex
+          for file in $(find . -name "*.tex"); do
+              jobname=$(echo "${file%.tex}" | sed 's|^\./||; s|/|-|g')
+              dir=$(dirname "$file")
+              base=$(basename "$file")
+              (
+                  cd "$dir" || exit
+                  echo "Compiling $file..."
+                  latexmk -pdf \
+                      -output-directory="$OUTPUT_DIR" \
+                      -jobname="$jobname" \
+                      "$base" > /dev/null 2>&1
+              )
+          done
+
+          # clean aux
+          find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\)$' -delete
+
+          # html index
+          printf "<!DOCTYPE html>\n<html>\n<head><title>rafisto/uni pdf repository</title></head>\n<body>\n" > "$OUTPUT_DIR/index.html"
+          printf "<h2><a href=\"https://github.com/Rafisto/uni\">rafisto/uni</a> PDF index</h2>\n" >> "$OUTPUT_DIR/index.html"
+          printf "<p>Last updated: %s</p>\n" "$(date -u)" >> "$OUTPUT_DIR/index.html"
+          printf "<ul>\n" >> "$OUTPUT_DIR/index.html"
+
+          find "$OUTPUT_DIR" -maxdepth 1 -name "*.pdf" | sort | while read -r pdf_path; do
+              file_name=$(basename "$pdf_path")
+              file_size=$(stat -c %s "$pdf_path" | numfmt --to=iec)
+              page_count=$(pdfinfo "$pdf_path" 2>/dev/null | awk '/Pages:/ {print $2}')
+              printf "<li><a href=\"%s\">%s</a> - pages=%s size=%s</li>\n" "$file_name" "$file_name" "$page_count" "$file_size" >> "$OUTPUT_DIR/index.html"
+          done
+
+          printf "</ul>\n</body>\n</html>\n" >> "$OUTPUT_DIR/index.html"
+
+          echo "Done! index.html generated in $OUTPUT_DIR"
+      - name: Upload build artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: output
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

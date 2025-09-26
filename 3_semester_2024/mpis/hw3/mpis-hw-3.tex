@@ -1,0 +1,214 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{geometry}
+
+\geometry{
+  top=2cm,    % top margin
+  bottom=2cm, % bottom margin
+  left=2cm, % left margin
+  right=2cm % right margin
+}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\usepackage{url}
+
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fakt. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+
+\title{Metody Probabilistyczne i Statystyka}
+\author{Zadanie domowe 3}
+\date{Rafał Włodarczyk 2024-12-30}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Technologie wykorzystane w symulacji}
+
+Do realizacji zadania wykorzystałem język \textit{rust}. Liczby pseudolosowe są generowane za pomocą biblioteki \textit{rand\_mt} (Mersenne Twister). Wykresy stworzyłem za pomocą narzędzia \textit{matplotlib}. 
+
+\subsubsection{Pojedyncza symulacja}
+
+Do uzyskania wyników wszystkich pomiarów, każdorazowo losowany jest urna do której zostanie wrzucona kula. W trakci symulacji mierzone są ilości urn z $0$, $1$ oraz $2$ kulami, oraz $u(n)$ w tysięcznej iteracji. Po jej zakończeniu, czyli po tym, gdy w każdej z urn znajdują się co najmniej dwie kule zliczana jest różnica $d(n)-c(n)$.
+
+\begin{verbatim}
+let mut bins = simulation::create_bins(n);
+let mut metrics = types::Metrics::new();
+let mut count_0: u32 = n; // count occurrences of 0
+let mut count_1: u32 = 0; // count occurrences of 1
+let mut count_2: u32 = 0; // count occurrences of 2
+
+let mut i = 0;
+while count_2 != n || count_1 != n {
+let selected = simulation::randomly_place_ball(&mut bins, n);
+
+match bins[selected] {
+    1 => {
+        count_1 += 1;
+        count_0 -= 1;
+    }
+    2 => count_2 += 1,
+    _ => {}
+}
+
+// [...] all checks
+
+}
+\end{verbatim}
+
+\subsubsection{Grupa symulacji}
+
+Dla każdego $n\in\{1000,2000,...,100000\}$ wykonuje $k=50$ niezależnych powtórzeń a następnie uśredniam wyniki każdej zbieranej wartości. W celu usprawnienia prędkości jej wykonywania użyłem biblioteki \textit{rayon}, która pozwoliła mi wykonywać symulację na wielu rdzeniach CPU.
+
+\begin{verbatim}
+const SAME_SIM_REPS: usize = 50;
+
+// [...]
+
+let metrics_group: Vec<types::Metrics> = (0..SAME_SIM_REPS)
+.into_par_iter()
+.map(|_k| {
+    // [...] single simulation
+})
+.collect();
+\end{verbatim}
+
+\section{Zadanie 1}
+
+\subsection{Wykresy}
+
+\begin{figure}[H]
+    \centering
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex1/results/m_d=1_factor_vs_n.png}
+        \caption{$f_n^{(1)}$}
+    \end{minipage}
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex1/results/m_d=1_factor_over_ln_n_over_ln_ln_n_vs_n.png}
+        \caption{$\frac{f_n^{(1)}}{f_1(n)}$}
+    \end{minipage}
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex1/results/m_d=2_factor_vs_n.png}
+        \caption{$f_n^{(2)}$}
+    \end{minipage}
+    \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex1/results/m_d=2_factor_over_ln_ln_n_over_ln_2_vs_n.png}
+        \caption{$\frac{f_n^{(2)}}{f_2(n)}$}
+    \end{minipage}
+\end{figure}
+
+\subsection{Wyniki}
+
+Na wykresie $f_n^{(1)}$ wartości średnie mieszczą się w zakresie $(7,9)$, natomiast w $f_n^{(2)}$, wartości średnie mieszczą się w zakresie $(3,4)$. Widzimy, że wartości funkcji rosną wraz ze wzrostem parametru $n$ oraz posiadają górny limit. Na wykresach obejmujących ilorazy tych funkcji możemy zaobserwować, że wraz ze wzrostem $n$ oba utrzymują się w podobnych wartościach.
+
+\subsection{Wnioski}
+
+Widzimy, że dodatkowe sprawdzenie ($d=2$) pozwala na bardziej równomierne rozłożenie kul w urnach, w porównaniu z próbą $d=1$, w której urnę wybieramy \textit{stricte} losowo. Jest to zdarzenie oczekiwane. Biorąc pod uwagę wykresy ilorazów tych funkcji możemy wysnuć hipotezę iż zarówno
+$f_n^{(1)} = \Theta(f_1(n))$ oraz $f_n^{(2)} = \Theta(f_2(n))$.
+
+\section{Zadanie 2}
+
+\subsection{Wykresy}
+
+\begin{figure}[H]
+    \centering
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex2/results/cmp_vs_n.png}
+        \caption{$cmp(n)$}
+    \end{minipage}
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex2/results/cmp_n_vs_n.png}
+        \caption{$\frac{cmp(n)}{n}$}
+    \end{minipage}
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex2/results/cmp_n2_vs_n.png}
+        \caption{$\frac{cmp(n)}{n^2}$}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex2/results/s_vs_n.png}
+        \caption{$s(n)$}
+    \end{minipage}
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex2/results/s_n_vs_n.png}
+        \caption{$\frac{s(n)}{n}$}
+    \end{minipage}
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex2/results/s_n2_vs_n.png}
+        \caption{$\frac{s(n)}{n^2}$}
+    \end{minipage}
+\end{figure}
+
+\subsection{Wyniki}
+
+Badane wielkości $cmp(n)$ oraz $s(n)$ zostały przedstawione na wykresach, wraz z pomocnicznymi wykresami obejmującymi ilorazy tych funkcji przez $n$ oraz $n^2$. Obserwujemy wyraźne powiązanie kształtu funkcji $cmp(n)$ z $s(n)$ (kształt paraboli), oraz pokrewnych ilorazów tych funkcji.
+
+
+\subsection{Wnioski}
+
+W insertion sort liczba porównań oraz zmian rośnie z kwadratem długości tabeli, co jest faktem. Z wykresów ilorazów tych funkcji przez $n^2$ możemy wysnuć wyraźną hipotezę, iż: $cmp(n)=\Theta(n^2)$ oraz $s(n)=\Theta(n^2)$. Zauważmy ponadto, że liczba porównań jest ściśle skorelowana z liczbą zamian, które odbywają się po porównaniach. Również jest to prawda, ponieważ to właśnie m.in. porównania wymuszają zamiany w podanym algorytmie.
+
+\section{Zadanie 3}
+
+\subsection{Wykresy}
+
+\begin{figure}[H]
+    \centering
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex3/graphs/rounds_vs_n_p0.5.png}
+        \caption{$T_n \text{ dla } p=0.5$}
+    \end{minipage}
+        \begin{minipage}{0.24\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{ex3/graphs/rounds_vs_n_p0.1.png}
+        \caption{$T_n \text{ dla } p=0.1$}
+    \end{minipage}
+\end{figure}
+
+\subsection{Wyniki}
+
+Oba wykresy posiadają podobną strukturę, wartości średnie tworzą funkcje, których kształt w dziedzinie ciągłości przypomina krzywą logarytmiczną. Dla $p=0.5$ obserwujemy wyraźnie mniejszy zakres $(10,20)$ średnich wartości funkcji $T_n$, a w przypadku $p=0.1$ większy, bo aż $(50,125)$.
+Nie byłem pewien czy kształt $T_n$ bardziej przypomina $\sqrt{n}$ czy $\log(n)$, wobec tego stworzyłem wykres pomocniczy:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{ex3/graphs/rounds_vs_n_div_log_n.png}
+    \caption{Pomocnik asymptotyczny}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsection{Wnioski}
+
+Obserwujemy bardzo rozproszone wyniki względem wyznaczonych wartości średnich, co wskazuje na dużą losowość zadanego modelu. Im większe prawdopodobieństwo odbioru, tym mniej kroków potrzeba do zakończenia symulacji, co jest zdarzeniem zrozumiałym. Ze względu na wyraźny kształt obu wykresów oraz pomocnik asymptotyczny, możemy wysnuć hipotezę $T(n)=O(\log n)$.
+
+
+\end{document}
