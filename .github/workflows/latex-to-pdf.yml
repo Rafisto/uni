@@ -30,7 +30,7 @@ jobs:
               pdflatex -interaction=nonstopmode -halt-on-error \
                   -output-directory output \
                   -jobname="$jobname" \
-                  "$file" >` /dev/null 2>&1
+                  "$file" > /dev/null 2>&1
           done
           find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\)$' -delete
           ls -l output
