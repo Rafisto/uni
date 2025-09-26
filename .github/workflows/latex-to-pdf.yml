@@ -25,10 +25,15 @@ jobs:
         run: |
           mkdir -p output
           for file in $(find . -name "*.tex"); do
-            echo "Compiling $file..."
-            pdflatex -interaction=nonstopmode -output-directory output "$file"
+              echo "Compiling $file..."
+              jobname=$(echo "${file%.tex}" | sed 's|^\./||; s|/|-|g')
+              pdflatex -interaction=nonstopmode -halt-on-error \
+                  -output-directory output \
+                  -jobname="$jobname" \
+                  "$file" >` /dev/null 2>&1
           done
-
+          find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\)$' -delete
+          ls -l output
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
         with:

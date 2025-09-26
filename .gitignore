@@ -7,6 +7,8 @@ mail/
 *.out
 log.txt
 
+build.tex.sh
+
 # latex log and debug files
 *.aux
 *.bbl
@@ -16,3 +18,4 @@ log.txt
 *.fdb_latexmk
 *.fls
 *.toc
+*.pdf
