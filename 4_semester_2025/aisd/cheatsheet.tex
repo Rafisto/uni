@@ -1,5 +1,7 @@
 \documentclass[landscape,a4paper]{article}
-\usepackage[fontsize=2px]{fontsize}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% \usepackage[fontsize=2px]{fontsize}
 \usepackage{amssymb,amsmath,amsthm,amsfonts}
 \usepackage{multicol,multirow}
 \usepackage{calc}
@@ -111,8 +113,14 @@ $
 (dobrze znana rekurencja - $S(n) = O(m\log m))$ - patrz Lecture 2.
 Przejdźmy z powrotem na $T,n$:
 $
-    T(2^m) = S(m)\\
-    T(2^m) = O(m \log m)\\
+    T(2^m) = S(m)
+$
+\\
+$
+    T(2^m) = O(m \log m)
+$
+\\
+$
     T(n) = O(\log n \log \log n)
 $
 
@@ -149,12 +157,15 @@ Algorytm używający tego wzoru - połączony z szybkim potęgowaniem, ma złoż
 \subsection{Mnożenie liczb}
 
 $
-    (a+ib)(c+id) = ac - bd + i(bc + ad)\\
+    (a+ib)(c+id) = ac - bd + i(bc + ad)
+$
+\\
+$
     bc + ad = (a + b)(c + d) - ac - bd
 $
 Zobaczmy, że $ac, bd$ są już policzone wyżej - zamiast 4 mnożeń, mamy 3 mnożenia.
 $
-    x\cdot y = x_L y_L 2^n + \left((x_L + x_R)(y_L + y_R\\ - x_Ly_L - x_Ry_R\right) + x_Ry_R\quad T(n) = \Theta(n^{\log_2 3})
+    x\cdot y = x_L y_L 2^n + \left((x_L + x_R)(y_L + y_R) - x_Ly_L - x_Ry_R\right) + x_Ry_R \quad T(n) = \Theta(n^{\log_2 3})
 $
 
 \begin{verbatim}

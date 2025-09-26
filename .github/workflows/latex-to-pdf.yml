@@ -24,16 +24,24 @@ jobs:
       - name: Build all .tex files
         run: |
           mkdir -p output
+          OUTPUT_DIR=$(realpath output)
+
           for file in $(find . -name "*.tex"); do
-              echo "Compiling $file..."
               jobname=$(echo "${file%.tex}" | sed 's|^\./||; s|/|-|g')
-              pdflatex -interaction=nonstopmode -halt-on-error \
-                  -output-directory output \
-                  -jobname="$jobname" \
-                  "$file" > /dev/null 2>&1
+              dir=$(dirname "$file")
+              base=$(basename "$file")
+              (
+                  cd "$dir" || exit
+                  echo "Compiling $file..."
+                  pdflatex -interaction=nonstopmode -halt-on-error -shell-escape \
+                      -output-directory "$OUTPUT_DIR" \
+                      -jobname="$jobname" \
+                      "$base" > /dev/null 2>&1
+              )
           done
+
           find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\)$' -delete
-          ls -l output
+          ls output
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
         with:

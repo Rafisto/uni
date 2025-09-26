@@ -18,4 +18,9 @@ build.tex.sh
 *.fdb_latexmk
 *.fls
 *.toc
+*.pyg
+*.nav
+*.snm
+
+# PDFs are now CI generated
 *.pdf

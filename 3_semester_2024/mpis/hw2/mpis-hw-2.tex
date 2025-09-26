@@ -21,8 +21,6 @@
 
 \usepackage{url}
 
-\usepackage{minted}
-
 \newenvironment{fact}[1]{%
     \trivlist
     \item[\hskip\labelsep\textbf{Fakt. #1.}]
@@ -50,7 +48,7 @@ Do realizacji zadania wykorzystałem język \textit{rust}. Liczby pseudolosowe s
 
 Do uzyskania wyników wszystkich pomiarów, każdorazowo losowany jest urna do której zostanie wrzucona kula. W trakci symulacji mierzone są ilości urn z $0$, $1$ oraz $2$ kulami, oraz $u(n)$ w tysięcznej iteracji. Po jej zakończeniu, czyli po tym, gdy w każdej z urn znajdują się co najmniej dwie kule zliczana jest różnica $d(n)-c(n)$.
 
-\begin{minted}[fontsize=\small, linenos]{rust}
+\begin{verbatim}
 let mut bins = simulation::create_bins(n);
 let mut metrics = types::Metrics::new();
 let mut count_0: u32 = n; // count occurrences of 0
@@ -73,13 +71,13 @@ match bins[selected] {
 // [...] all checks
 
 }
-\end{minted}
+\end{verbatim}
 
 \subsubsection{Grupa symulacji}
 
 Dla każdego $n\in\{1000,2000,...,100000\}$ wykonuje $k=50$ niezależnych powtórzeń a następnie uśredniam wyniki każdej zbieranej wartości. W celu usprawnienia prędkości jej wykonywania użyłem biblioteki \textit{rayon}, która pozwoliła mi wykonywać symulację na wielu rdzeniach CPU.
 
-\begin{minted}[fontsize=\small, linenos]{rust}
+\begin{verbatim}
 const SAME_SIM_REPS: usize = 50;
 
 // [...]
@@ -90,7 +88,7 @@ let metrics_group: Vec<types::Metrics> = (0..SAME_SIM_REPS)
     // [...] single simulation
 })
 .collect();
-\end{minted}
+\end{verbatim}
 
 \subsection{Wykresy}
 
@@ -100,17 +98,17 @@ let metrics_group: Vec<types::Metrics> = (0..SAME_SIM_REPS)
     \centering
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{b_factor_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/b_factor_vs_n.png}
         \caption{$B(n)$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{b_factor_over_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/b_factor_over_n_vs_n.png}
         \caption{$\frac{b(n)}{n}$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{b_factor_over_sqrt_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/b_factor_over_sqrt_n_vs_n.png}
         \caption{$\frac{b(n)}{\sqrt{n}}$}
     \end{minipage}
 \end{figure}
@@ -122,12 +120,12 @@ let metrics_group: Vec<types::Metrics> = (0..SAME_SIM_REPS)
     \centering
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{u_factor_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/u_factor_vs_n.png}
         \caption{$u(n)$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{u_factor_over_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/u_factor_over_n_vs_n.png}
         \caption{$\frac{u(n)}{n}$}
     \end{minipage}
 \end{figure}
@@ -139,22 +137,22 @@ let metrics_group: Vec<types::Metrics> = (0..SAME_SIM_REPS)
     \centering
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{c_factor_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/c_factor_vs_n.png}
         \caption{$C(n)$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{c_factor_over_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/c_factor_over_n_vs_n.png}
         \caption{$\frac{c(n)}{n}$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{c_factor_over_n_squared_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/c_factor_over_n_squared_vs_n.png}
         \caption{$\frac{c(n)}{n^2}$}
     \end{minipage}
         \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{c_factor_over_n_log_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/c_factor_over_n_log_n_vs_n.png}
         \caption{$\frac{c(n)}{n \log(n)}$}
     \end{minipage}
 \end{figure}
@@ -166,22 +164,22 @@ let metrics_group: Vec<types::Metrics> = (0..SAME_SIM_REPS)
     \centering
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{d_factor_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/d_factor_vs_n.png}
         \caption{$D(n)$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{d_factor_over_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/d_factor_over_n_vs_n.png}
         \caption{$\frac{d(n)}{n}$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{d_factor_over_n_squared_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/d_factor_over_n_squared_vs_n.png}
         \caption{$\frac{d(n)}{n^2}$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{d_factor_over_n_log_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/d_factor_over_n_log_n_vs_n.png}
         \caption{$\frac{d(n)}{n \log(n)}$}
     \end{minipage}
 \end{figure}
@@ -193,22 +191,22 @@ let metrics_group: Vec<types::Metrics> = (0..SAME_SIM_REPS)
     \centering
         \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{r_factor_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/r_factor_vs_n.png}
         \caption{$R(n)=D(n)-C(n)$}
     \end{minipage}
         \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{r_factor_over_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/r_factor_over_n_vs_n.png}
         \caption{$\frac{r(n)}{n}$}
     \end{minipage}
         \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{r_factor_over_n_log_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/r_factor_over_n_log_n_vs_n.png}
         \caption{$\frac{r(n)}{n \log(n)}$}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{r_factor_over_n_log_log_n_vs_n.png}
+        \includegraphics[width=\linewidth]{graphs/r_factor_over_n_log_log_n_vs_n.png}
         \caption{$\frac{r(n)}{n \log(\log(n))}$}
     \end{minipage}
 \end{figure}
