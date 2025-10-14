@@ -42,7 +42,7 @@ jobs:
           done
 
           # clean aux
-          find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\)$' -delete
+          find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\|fls\|fdb_latexmk\|vrb\)$' -delete
 
           # html index
           printf "<!DOCTYPE html>\n<html>\n<head><title>rafisto/uni pdf repository</title></head>\n<body>\n" > "$OUTPUT_DIR/index.html"

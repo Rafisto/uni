@@ -22,6 +22,7 @@ output/
 *.pyg
 *.nav
 *.snm
+*.vrb
 
 # PDFs are now CI generated
 *.pdf
