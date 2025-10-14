@@ -1,0 +1,221 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Kodowanie i Kompresja Danych}  
+\author{Rafał Włodarczyk}
+\date{INA 5, 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Literatura}
+
+\begin{enumerate}
+    \item K. Sayood, Kompresja danych - wprowadzenie - READ ME 2002 (ISBN 83-7243-094-2)
+    \item A. Przelaskowski, Kompresja danych - BTC 2005 (ISBN: 83-60233-05-5)
+    \item J. Adamek, Foundations of Coding - Wiley 1991 (ISBN 0-47-162187-0)
+    \item D. Salomon, G. Motta, Handbook of Data Compression, Springer-Verlag London 2010 (ISBN: 978-1-84882-903-9)
+\end{enumerate}
+
+\section{Wykład I}
+
+\subsection{Kodowanie}
+
+\begin{definition}{Kodowanie}
+    Przyporządkowanie elementom jakiegoś alfabetu ciągów binarnych (lub ciągów nad innym alfabetem).
+\end{definition}
+
+\begin{information}{Początki ASCII}
+    ASCII ma 127 znaków, ponieważ w dawnych czasach przesłanie ośmiu bitów.
+    wiązało się z co najmniej jednym błędem - jeden bit został pozostawiony na parzystość.
+\end{information}
+
+\subsection{Kompresja}
+
+\begin{definition}{Kompresja Stratna}
+    Algorytm dopuszcza pewien poziom utraty informacji w zamian za lepszy współczynnik kompresji.
+    Przykład - odcięcie małych składowych z kompresji SVD.
+\end{definition}
+
+\begin{definition}{Kompresja Bezstratna}
+    Z postaci skompresowanej zawsze można odtworzyć postać identyczną z oryginałem.
+\end{definition}
+
+\begin{definition}{Kody stałej długości}
+    Kody stałej długości np. kody ASCII o długości 8 bitów. Znamy podział na znaki
+\end{definition}
+
+\begin{definition}{Kody zmiennej długości}
+    Kody o różniej długości - Kody Prefixowe, Morse.\\
+    Kod Prefixowy daje się odczytać tylko od końca.
+\end{definition}
+
+\begin{fact}{Miary jakości kompresji}
+    \begin{enumerate}
+        \item Stosunek liczby bitów danych do bitów po kompresji.
+        \item Procentowy stosunek bitów po kompresji do bitów danych.
+        \item Czas kompresji i dekompresji - w zależności od sposobu użycia może być ważny.
+    \end{enumerate}
+    Pierwsze aparaty cyfrowe robiły dużo drgań. Każda klatka była osobnym JPG-iem, pojawiały się zniekształcenia.
+    Telefony nie kompresują dobrze, ponieważ nie są tak obliczeniowo wydajne, jak komputery.
+\end{fact}
+
+\begin{fact}{Metody kompresji}
+    \begin{itemize}
+        \item Metody różnicowe.
+        \item Statystyczne właściwości danych.
+    \end{itemize}
+    W języku polskim nie możemy zejść poniżej lekko powyżej 5 bitów, w języku angielskim lekko powyżej 4 bitów.
+\end{fact}
+
+\begin{fact}{Granice Kompresji}
+    Kompresja bezstratna jest funkcją różnowartościową, różnych danych długości $n$ jest $2^n$ (ciągi bitów).
+    Różnych ciągów bitowych długości mniejszej niż $n$ jest $2^n -1$, $(\sum_{i=1}^{n-1} 2^i)$
+    \begin{itemize}
+        \item Istnieje ciąg, który nie może być skompresowany.
+        \item Ponad połowa ciągów skróci się o co najwyżej $1$-bit.
+    \end{itemize}
+\end{fact}
+
+\subsection{Miara Informacji}
+
+\begin{definition}{Teoria Informacji}
+    Jeśli $P(A)$ jest prawdopodobieństwem wystąpienia informacji $A$ to miara informacji:
+    \begin{align*}
+        i(A) = \log \frac{1}{P(A)} = -\log P(A)
+    \end{align*}
+    Jeśli $A$ i $B$ są niezależne, to:
+    \begin{align*}
+        i(AB) = \log \frac{1}{P(AB)} = i(A) + i(B)
+    \end{align*}
+\end{definition}
+
+\subsection{Entropia}
+
+\begin{definition}{Entropia}
+    Średnia informacja w zbiorze wiadomości $A_1,\dots A_n$, w którym prawdopodobieństwo wiadomości $A_i$ wynosi $P(A_i)$ jest definiowana poprzez:
+    \begin{align*}
+        H = \sum_{i=1}^{n} P(A_i) i(A_i)
+    \end{align*}
+    Minimalna entropia wynosi $0$, a maksymalna dla $256$ znaków wynosi $8$.
+    Wniosek. Kody jednoznacznie dekodowalne w modelu z niezależnymi wystąpieniami symboli muszą mieć średnią długość co najmniej równą entropii.
+\end{definition}
+
+\begin{fact}{Test na jednoznaczną dekodowalność}
+    Tworzymy listę słów kodowych. Dla każdej pary sprawdzamy
+    czy jedno słowo jest prefiksem drugiego. Jeśli tak to do listy dodajemy sufiks drugiego słowa (chyba,
+    że już dodaliśmy taki sufiks). Powtarzamy powyższą procedurę, aż do momentu kiedy znajdziemy
+    na liście sufiks równy słowu kodowemu (kod nie jest jednoznaczny),
+    albo nie można znaleźć nowych sufiksów (kod jest jednoznaczny)
+\end{fact}
+
+\subsection{Nierówność Krafta-McMillana}
+
+\begin{theorem}{Nierówność Krafta-McMillana}
+    Niech $C$ będzie kodem składającym się z $N$ słów o długościach $l_1,l_2,\dots,l_n$. Jeżeli $C$ jest jednoznacznie dekodowalny, to
+    \begin{align*}
+        K(C) = \sum_{i=1}^{n} \frac{1}{2^{l_i}} \leq 1
+    \end{align*}
+\end{theorem}
+
+\subsection{Kodowanie Shannon-Fano}
+
+\begin{definition}{Kodowanie Shannon-Fano}
+    Algorytm kodowania, który przypisuje krótsze kody częściej występującym symbolom, a dłuższe rzadziej występującym. Działa poprzez:
+    \begin{enumerate}
+        \item Posortowanie symboli według malejącego prawdopodobieństwa.
+        \item Podział listy na dwie części o możliwie równych sumach prawdopodobieństw.
+        \item Przypisanie każdej części odpowiednio bitu 0 lub 1.
+        \item Powtarzanie procesu rekurencyjnie dla każdej części, aż do uzyskania jednoznacznych kodów dla wszystkich symboli.
+    \end{enumerate}
+    Kody Shannon-Fano są zawsze jednoznacznie dekodowalne, ale nie zawsze optymalne.
+\end{definition}
+
+\section{Wykład II}
+
+\subsection{Kodowanie Huffmana}
+
+Kody Huffmana to metody historycznie najstarsze, oraz często wykorzystywane na końcu procesu kompresji.
+
+\begin{information}{Obserwacje Huffmana}
+    Huffman wpadł na następujące pomysły:
+    \begin{itemize}
+        \item Dwa najrzadziej występujące symbole powinny mieć te samą długość,
+        ponieważ w przeciwnym przypadku dłuższy miałby redundantny bit.
+        \item Częstsze symbole powinny mięć krótsze słowa kodowe.
+    \end{itemize}
+\end{information}
+
+\begin{definition}{Kody Huffmana}
+    Kody możemy dostać różne, ale średnia długość kodu dla zadanych danych jest stała. Długości kodów mogą być różne.
+    Algorytm jest optymalny, jeśli średnia długość kodu jest najmniejsza. 
+\end{definition}
+Aby szybko wyznaczyć średnią długość kodu
+można dodać wszystkie prawdopodobieństwa węzłów środkowych.
+\subsection{Kodowanie dynamiczne}
+
+\end{document}
