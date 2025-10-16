@@ -32,9 +32,9 @@ przy czym $r$ = $s$ oznacza identyczność języków opisywanych przez $r$ i $s$
 
 \begin{align}
     &x\in (r+s)+t \equiv&\\
-    &\equiv \left(\exists y\right)\left(y\in r \lor y\in s\right) \lor \left(\exists y\right)\left(y \in t\right) \equiv\\
-    &\equiv \left(\exists y\right)\left(y\in r \lor y\in s \lor y\in t\right) \equiv\\
-    &\equiv \left(\exists y\right)\left(y\in r\right) \lor \left(\exists y\right)\left(y \in s \lor y \in t\right) \equiv\\
+    &\equiv x\in (r+s) \lor x \in t \equiv\\
+    &\equiv x\in r \lor x \in s \lor x \in t \equiv\\
+    &\equiv x\in r \lor x \in (s+t) \equiv\\
     &\equiv x\in r+(s+t)_{\qed}
 \end{align}
 
@@ -42,9 +42,9 @@ przy czym $r$ = $s$ oznacza identyczność języków opisywanych przez $r$ i $s$
 
 \begin{align}
     &x\in (rs)t \equiv&\\
-    &\equiv \left(\exists a,b \right)\left(x=ab \land a\in(rs) \land b\in t\right) \equiv\\
+    &\equiv \left(\exists a,b \right)\left(x=ab \land a\in rs \land b\in t\right) \equiv\\
     &\equiv \left(\exists b,c,d \right)\left(x=cdb \land c\in r \land d\in s \land b\in t\right) \equiv\\
-    &\equiv \left(\exists c,e \right)\left(x=ce \land c\in r \land e\in(st)\right) \equiv\\
+    &\equiv \left(\exists c,e \right)\left(x=ce \land c\in r \land e\in st\right) \equiv\\
     &\equiv x\in r(st)_{\qed}
 \end{align}
 
@@ -54,7 +54,7 @@ przy czym $r$ = $s$ oznacza identyczność języków opisywanych przez $r$ i $s$
     &x\in r(s+t) \equiv&\\
     &\equiv \left(\exists y,z \right)\left(x=yz \land y\in r \land z\in (s+t)\right) \equiv\\
     &\equiv \left(\exists y,z \right)\left(x=yz \land y\in r \land \left(z\in s \lor z\in t\right)\right) \equiv\\
-    &\equiv \left(\exists y,z \right)\left(\left(x=yz \land y\in r \land z\in s\right) \lor \left(x=yz \land y\in r \land z\in t\right)\right) \equiv\\
+    &\equiv \left(\exists y,z \right)\left(x=yz \land \left(\left(y\in r \land z\in s\right) \lor \left(y\in r \land z\in t\right)\right)\right) \equiv\\
     &\equiv rs + rt_{\qed}
 \end{align}
 
@@ -64,8 +64,8 @@ przy czym $r$ = $s$ oznacza identyczność języków opisywanych przez $r$ i $s$
     &x\in (r+s)t \equiv&\\
     &\equiv \left(\exists y,z \right)\left(x=yz \land y\in (r+s) \land z\in t\right) \equiv\\
     &\equiv \left(\exists y,z \right)\left(x=yz \land \left(y\in r \lor y\in s\right) \land z\in t\right) \equiv\\
-    &\equiv \left(\exists y,z \right)\left(\left(y\in r \land z\in t\right) \lor \left(y\in s \land z\in t\right)\right) \equiv\\
-    &\equiv rt + st_{\qed}
+    &\equiv \left(\exists y,z \right)\left(x=yz \land \left(\left(y\in r \land z\in t\right) \lor \left(y\in s \land z\in t\right)\right)\right) \equiv\\
+    &\equiv x\in rt + st_{\qed}
 \end{align}
 
 \subsubsection{$\emptyset^{*} = \varepsilon$}
@@ -76,9 +76,8 @@ Wiemy również, że dla dowolnego języka $L$, w szczególności $L=\emptyset$ 
 \begin{align}
     &x\in \emptyset^{*} \equiv
     x\in \bigcup_{i=0}^{\infty} \emptyset^{i} \equiv
-    x\in \{\emptyset^{0} + \emptyset^{1} + \emptyset^{2} + \dots\} \equiv\\
-    &\equiv x \in \{\varepsilon + \varepsilon\emptyset + \varepsilon\emptyset\emptyset + \dots\} \equiv\\
-    &\equiv x \in \{\varepsilon\} \equiv\\
+    x\in (\emptyset^{0} + \emptyset^{1} + \emptyset^{2} + \dots) \equiv\\
+    &\equiv x \in (\varepsilon + \varepsilon\emptyset + \varepsilon\emptyset\emptyset + \dots) \equiv\\
     &\equiv x \in \varepsilon_{\qed}
 \end{align}
 
@@ -87,16 +86,17 @@ Wiemy również, że dla dowolnego języka $L$, w szczególności $L=\emptyset$ 
 Pokażmy, że domknięcie Kleene'ego jest idempotentne. Wyraźmy definicję za pomocą kwantyfikatorów:
 
 \begin{align}
-    x\in r^{*} \equiv x\in \bigcup_{i=0}^{\infty} r^i \equiv \left(\exists n\right) x=x_1\dots x_n \land \left(\forall_{i\in \{1\dots n\}}\right) x_i \in r.
+    x\in r^{*} \equiv x\in \bigcup_{i=0}^{\infty} r^i \equiv \left(\exists_n\right) 
+    \left(x=x_1\dots x_n \land \left(\forall_{i\in \{1\dots n\}}\right) x_i \in r\right)
 \end{align}
 
 \noindent
 Skorzystajmy następnie dwukrotnie z tej definicji, aby rozwinąć lewą stronę:
 
 \begin{align}
-    &x\in (r^{*})^{*} \equiv \left(\exists n\right)\left(x=x_1\dots x_n \land \left(\forall_{i\in \{1\dots n\}}\right) x_i \in r^{*}\right) \equiv\\
-    &\equiv \left(\exists n\right)\left[x=x_1...x_n \land \left(\forall_{i\in \{1\dots n\}}\right) \left(\exists_{m_i}\right) \left(x_i = x_{i_1}\dots x_{im_i} \land \left(\forall_{j\in \{1\dots m_i\}}\right) x_{ij} \in r\right)\right] \equiv\\
-    &\equiv \left(\exists_n\right)\left(\forall_i\right)\left(\exists_{m_i}\right) x=x_{11}+\dots+x_{1m_i}+\dots+x_{n1} + \dots + x_{nm_i} \land x_{ij} \in r \equiv\\
+    &x\in (r^{*})^{*} \equiv \left(\exists_n\right)\left(x=x_1\dots x_n \land \left(\forall_{i\in \{1\dots n\}}\right) x_i \in r^{*}\right) \equiv\\
+    &\equiv \left(\exists_n\right)\left[x=x_1\dots x_n \land \left(\forall_{i\in \{1\dots n\}}\right) \left(\exists_{m_i}\right) \left(x_i = x_{i_1}\dots x_{im_i} \land \left(\forall_{j\in \{1\dots m_i\}}\right) x_{ij} \in r\right)\right] \equiv\\
+    &\equiv \left(\exists_n\right)\left(\forall_{i\in \{1\dots n\}}\right)\left(\exists_{m_i}\right)\left(\forall_{j\in \{1\dots m_i\}}\right) x=x_{11}\dots x_{1m_1}\dots x_{n1}\dots x_{nm_n} \land x_{ij} \in r \equiv\\
     &\equiv x\in r^{*}_{\qed}
 \end{align}
 
@@ -104,7 +104,7 @@ Skorzystajmy następnie dwukrotnie z tej definicji, aby rozwinąć lewą stronę
 
 Zawieranie ($\subseteq$):\\
 \noindent
-Jeśli $y\in r^{*}$, to na pewno $y\in (r+s)^{*}$, ponieważ $r \subseteq r+s$. Analogicznie $y\in s^{*} \implies y\in (r+s)^{*}$.
+Jeśli $y\in r^{*}$, to na pewno $y\in (r+s)^{*}$, ponieważ $r \subseteq r+s$.\\ Analogicznie $y\in s^{*} \implies y\in (r+s)^{*}$.
 \begin{align}
     &x\in (r^{*}s^{*})^{*} \implies x\in ((r+s)^{*}(r+s)^{*})^{*} = ((r+s)^{*})^{*} = (r+s)^{*}
 \end{align}
