@@ -96,7 +96,8 @@ Skorzystajmy następnie dwukrotnie z tej definicji, aby rozwinąć lewą stronę
 \begin{align}
     &x\in (r^{*})^{*} \equiv \left(\exists_n\right)\left(x=x_1\dots x_n \land \left(\forall_{i\in \{1\dots n\}}\right) x_i \in r^{*}\right) \equiv\\
     &\equiv \left(\exists_n\right)\left(x=x_1\dots x_n \land \left(\forall_{i\in \{1\dots n\}}\right) \left(\exists_{m_i}\right) \left(x_i = x_{i_1}\dots x_{im_i} \land \left(\forall_{j\in \{1\dots m_i\}}\right) x_{ij} \in r\right)\right) \equiv\\
-    &\equiv \left(\exists_n\right)\left(\forall_{i\in \{1\dots n\}}\right)\left(\exists_{m_i}\right)\left(\forall_{j\in \{1\dots m_i\}}\right) x=x_{11}\dots x_{1m_1}\dots x_{n1}\dots x_{nm_n} \land x_{ij} \in r \equiv\\
+    &\equiv \left(\exists_n\right)\left(\forall_{i\in \{1\dots n\}}\right)\left(\exists_{m_i}\right)\left(\forall_{j\in \{1\dots m_i\}}\right)\left(x=x_{11}\dots x_{1m_1}\dots x_{n1}\dots x_{nm_n} \land x_{ij} \in r\right) \equiv\\
+    &\equiv \left(\exists_k\right)\left(x=x_1\dots x_k \land \left(\forall_{i\in \{1\dots k\}}\right)\left(x_i \in r\right)\right)\equiv \\
     &\equiv x\in r^{*}_{\qed}
 \end{align}
 
