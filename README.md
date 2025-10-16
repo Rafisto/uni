@@ -13,42 +13,44 @@ I hereby present a treasure trove of resources covering various topics in mathem
 
 Table of Contents
 
-| **IV Semester**                    | | | |
-| -------------------------------------- | --------------------------------------- | ------------------------------------------- | -------------------------------------------------------- |
-| Course                                 | Description                             | Notes                                       | Exercises                                                |
-| 📚 **Algorithms and Data Structures** 📚 | Basic algorithms and data structures    | [Notes](./4_semester_2025/aisd/lecture.pdf) | [Exercises](./4_semester_2025/aisd/lab/)                 |
-| 🧑‍💻 **Functional Programming** 🧑‍💻         | Functional programming in Haskell       | [Notes](./4_semester_2025/func/lecture.pdf) | [Exercises](./4_semester_2025/func/lab/)                 |
-| 🌐 **Computer Networks** 🌐              | Basics of computer networks             | [Notes](./4_semester_2025/net/lecture.pdf)  | [Exercises](./4_semester_2025/net/lab/)                  |
-| 🖥️ **Parallel Programming** 🖥️           | Go and Ada parallel programming         | -                                           | [Exercises](./4_semester_2025/parallel/lab/)                   |
-| **III Semester**                     |
-| Course                                 | Description                             | Notes                                       | Exercises                                                |
-| 🧠 **Operating Systems** 🧠              | UNIX and xv6 + x86 Assembly             | -                                           | [See below](#-operating-systems-)                        |
-| ✉️ **Databases** ✉️                      | SQL and MariaDB                         | -                                           |                                                          |
-| 😖 **Probability** 😖                    | Probability and Statistics              | -                                           |                                                          |
-| 💻 **Programming Course** 💻             | Java                                    | -                                           |                                                          |
-| **II Semester**                      |
-| Course                                 | Description                             | Notes                                       | Exercises                                                |
-| 🤔 **Abstract Algebra** 🤔               | Group theory, intro to Cryptography     | -                                           | [See below](#-algebra-)                                  |
-| 📊 **Mathematical Analysis II** 📊       | Vector Calculus, Differential Equations | -                                           | [See below](#-calculus-i-and-calculus-ii-)               |
-| 💻 **Object-Oriented Programming** 💻    | C++ and Java                            | -                                           | [See below](#-object-oriented-programming-lab-55---max-) |
-| 🤭 **Discrete Mathematics** 🤭           | Combinatorics                           | -                                           | [See below](#-discrete-mathematics-)                     |
-| 🌌 **Physics I** 🌌                      | Classical Mechanics and Relativity      | -                                           | [See below](#-physics-i-)                                |
-| **I Semester**                       |
-| Course                                 | Description                             | Notes                                       | Exercises                                                |
-| 🤔 **Algebra I** 🤔                      | Group theory, linear algebra            | -                                           | [See below](#-algebra-)                                  |
-| 📊 **Mathematical Analysis I** 📊        | Limits and Derivatives                  | -                                           | [See below](#-calculus-i-and-calculus-ii-)               |
-| 📚 **Logic and Formal Structures** 📚    | Introduction to Mathematics             | -                                           | [See below](#-logic-and-formaltructures-)                |
-| 💻 **Introduction to Programming** 💻    | C                                       | -                                           | [See below](#procedural-programming-lab-50---max)        |
+| **IV Semester**                          |                                         |                                                                                                  |                                                          |
+| ---------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| Course                                   | Description                             | Notes                                                                                            | Exercises                                                |
+| 📚 **Algorithms and Data Structures** 📚 | Basic algorithms and data structures    | [Notes](./4_semester_2025/aisd/lecture.pdf)                                                      | [Exercises](./4_semester_2025/aisd/lab/)                 |
+| 🧑‍💻 **Functional Programming** 🧑‍💻         | Functional programming in Haskell       | [Notes](./4_semester_2025/func/lecture.pdf)                                                      | [Exercises](./4_semester_2025/func/lab/)                 |
+| 🌐 **Computer Networks** 🌐              | Basics of computer networks             | [Notes](./4_semester_2025/net/lecture.pdf)                                                       | [Exercises](./4_semester_2025/net/lab/)                  |
+| 🖥️ **Parallel Programming** 🖥️           | Go and Ada parallel programming         | -                                                                                                | [Exercises](./4_semester_2025/parallel/lab/)             |
+| **III Semester**                         |
+| Course                                   | Description                             | Notes                                                                                            | Exercises                                                |
+| 🧠 **Operating Systems** 🧠              | UNIX and xv6 + x86 Assembly             | -                                                                                                | [See below](#-operating-systems-)                        |
+| ✉️ **Databases** ✉️                      | SQL and MariaDB                         | -                                                                                                |                                                          |
+| 😖 **Probability** 😖                    | Probability and Statistics              | -                                                                                                |                                                          |
+| 💻 **Programming Course** 💻             | Java                                    | -                                                                                                |                                                          |
+| **II Semester**                          |
+| Course                                   | Description                             | Notes                                                                                            | Exercises                                                |
+| 🤔 **Abstract Algebra** 🤔               | Group theory, intro to Cryptography     | [Exam Notes](https://rafisto.github.io/uni/2_semester_2024-algebra_2-lecture.pdf)                | [See below](#-algebra-)                                  |
+| 📊 **Mathematical Analysis II** 📊       | Vector Calculus, Differential Equations | [Lecture](https://rafisto.github.io/uni/2_semester_2024-calculus_2-lecture.pdf)                  | [See below](#-calculus-i-and-calculus-ii-)               |
+| 💻 **Object-Oriented Programming** 💻    | C++ and Java                            | -                                                                                                | [See below](#-object-oriented-programming-lab-55---max-) |
+| 🤭 **Discrete Mathematics** 🤭           | Combinatorics                           | [Cheat sheet](https://rafisto.github.io/uni/2_semester_2024-discrete_mathematics-cheatsheet.pdf) | [See below](#-discrete-mathematics-)                     |
+| 🌌 **Physics I** 🌌                      | Classical Mechanics and Relativity      | [Notes](https://rafisto.github.io/uni/2_semester_2024-physics_1-lecture.pdf)                     | [See below](#-physics-i-)                                |
+| **I Semester**                           |
+| Course                                   | Description                             | Notes                                                                                            | Exercises                                                |
+| 🤔 **Algebra I** 🤔                      | Group theory, linear algebra            | [Lecture](https://rafisto.github.io/uni/1_semester_2023-algebra_1-lecture.pdf)                   | [See below](#-algebra-)                                  |
+| 📊 **Mathematical Analysis I** 📊        | Limits and Derivatives                  | [Lecture](https://rafisto.github.io/uni/1_semester_2023-calculus_1-lecture.pdf)                  | [See below](#-calculus-i-and-calculus-ii-)               |
+| 📚 **Logic and Formal Structures** 📚    | Introduction to Mathematics             | [Lecture](https://rafisto.github.io/uni/1_semester_2023-logic_and_formal_structures-lecture.pdf) | [See below](#-logic-and-formaltructures-)                |
+| 💻 **Introduction to Programming** 💻    | C                                       | -                                                                                                | [See below](#procedural-programming-lab-50---max)        |
 
 ## 📊 **Calculus I and Calculus II** 📊
 
-✨***Full semester course notes***✨ purely in `LaTeX` is a must-have for any aspiring computer-scientist. 
+✨**_Full semester course notes_**✨ purely in `LaTeX` is a must-have for any aspiring computer-scientist.
+
 - See [calculus1.pdf (polish)](https://github.com/Rafisto/uni/raw/master/1_semester_2023/calculus_1/calculus.pdf)
 - See [calculus2.pdf (polish)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/calculus_2/calculus2.pdf)
 
 ## 🤭 **Discrete Mathematics** 🤭
 
-✨***Long Cheatsheet***✨
+✨**_Long Cheatsheet_**✨
+
 - See [notes.pdf (english)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/discrete_mathematics/notes.pdf)
 - See [derivation for the Stirling Formula (polish)](https://github.com/Rafisto/uni/raw/master/2_semester_2024/discrete_mathematics/wzor-stirlinga.pdf)
 
@@ -57,14 +59,15 @@ Table of Contents
 - [Exercise Lists](https://github.com/Rafisto/uni/tree/master/3_semester_2024/akiso/cw) - Numerical operations for the architecture of computers.
 - [Lab List 1](./3_semester_2024/akiso/lab/lista1/REAMDME.md): [💡 A simple bootloader](./3_semester_2024/akiso/lab/lista1#Bootloader), [💡 Archlinux installation](./3_semester_2024/akiso/lab/lista1#zadanie-1-2-3), [Install XFCE on FreeBSD](./3_semester_2024/akiso/lab/lista1#zadanie-5), [About using jails](./3_semester_2024/akiso/lab/lista1#jails-1), [Debug xv6 kernel with gdb](./3_semester_2024/akiso/lab/lista1#zadanie-4)
 - [Lab List 2](./3_semester_2024/akiso/lab/lista2): [How to use jobs in Bash](./3_semester_2024/akiso/lab/lista2/README.md#exercise-4---jobs-fg-bg-kill), [💡 Redirect file descriptors of a running process with ptrace](./3_semester_2024/akiso/lab/lista2/README.md#exercise-9---ptrace-redirector)
-- [Lab List 3](./3_semester_2024/akiso/lab/lista3): [ps clone (written in bash) using /proc/pid/stat](./3_semester_2024/akiso/lab/lista3/README.md#exercise-1), [expr and ANSI interpreter for xv6](./3_semester_2024/akiso/lab/lista3/README.md#exercise-4-and-exercise-5), 
-[💡 Bash Labirynth Game (Generated with DFS)](./3_semester_2024/akiso/lab/lista3/README.md#exercise-6)
+- [Lab List 3](./3_semester_2024/akiso/lab/lista3): [ps clone (written in bash) using /proc/pid/stat](./3_semester_2024/akiso/lab/lista3/README.md#exercise-1), [expr and ANSI interpreter for xv6](./3_semester_2024/akiso/lab/lista3/README.md#exercise-4-and-exercise-5),
+  [💡 Bash Labirynth Game (Generated with DFS)](./3_semester_2024/akiso/lab/lista3/README.md#exercise-6)
 - [Lab List 4](./3_semester_2024/akiso/lab/lista4): [💡 create own SHELL](./3_semester_2024/akiso/lab/lista4/ex3-5), [write a syscall for xv6](./3_semester_2024/akiso/lab/lista4/README.md#exercise-6)
 - [Lab List 5](./3_semester_2024/akiso/lab/lista5): [Hex Converter (x86 NASM)](./3_semester_2024/akiso/lab/lista5/ex3), [Prime Number Sieve (x86 NASM)](./3_semester_2024/akiso/lab/lista5/ex4), [💡 Mode 13 Bare Metal mandelbrot Set Display (x86 NASM)](./3_semester_2024/akiso/lab/lista5/ex5) ([Showcase Screenshot](./3_semester_2024/akiso/lab/lista5/mandelbrot-qemu.png))
 
 ## 😖 **Probability and Statistics** 😖
 
-✨***Long Cheatsheet***✨
+✨**_Long Cheatsheet_**✨
+
 - See [notes.pdf (polish)](./3_semester_2024/mpis/notes.pdf)
 - See [various exercises](./3_semester_2024/mpis/cw/)
 
@@ -94,7 +97,7 @@ Algebra-related programs:
 
 - See [Physics 1 notes (polish)](https://github.com/Rafisto/uni/blob/master/2_semester_2024/physics_1/physics.pdf)
 
-##  **Procedural Programming (lab 5.0 - max)** in `C`
+## **Procedural Programming (lab 5.0 - max)** in `C`
 
 - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/1_semester_2023/introduction_to_computer_science/lab1/)
 - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/1_semester_2023/introduction_to_computer_science/lab2/)
@@ -104,14 +107,15 @@ Algebra-related programs:
 ## 💻 **Object-Oriented Programming (lab 5.5 - max)** 💻
 
 Mastering the art of object-oriented programming in `C++` and `Java` (~~help me~~). Exercises:
+
 - [Exercise List 1](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab1/) - Prime Number Generator
 - [Exercise List 2](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab2/) - Pascal Triangle Row Generator
 - [Exercise List 3](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab3/) - Figure Generator
 - [Exercise List 4](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab4/) - Java Simple GUI
 - [Exercise List 5](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab5/) - Java Figure "Paint"
 - [Exercise List 6](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab6/) - Java Threaded Tiles (Concurrent programming)
-- [Exercise List 7](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab7/) - CLI for Binary Tree Search in Java and C++ 
-  
+- [Exercise List 7](https://github.com/Rafisto/uni/tree/master/2_semester_2024/oop/lab7/) - CLI for Binary Tree Search in Java and C++
+
 ## 📚 **Logic and Formaltructures** 📚
 
 - [XOR Cipher](https://github.com/Rafisto/uni/blob/master/1_semester_2023/logic_and_formal_structures/programy/xorcipher.py) - One time pad encryption, decryption, key generation and key swap.

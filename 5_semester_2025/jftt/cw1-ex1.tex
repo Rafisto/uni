@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\title{Języki Formalne i Techniki Translacji}
+\author{Rafał Włodarczyk}
+\date{2025-10-16}
+
+\begin{document}
+
+\maketitle
+
+\section{Lista 1}
+
+\setcounter{subsection}{4}
+\subsection{Zadanie 5}
+
+Udowodnić następujące tożsamości dla wyrażeń regularnych $r$, $s$ i $t$, 
+przy czym $r$ = $s$ oznacza identyczność języków opisywanych przez $r$ i $s$.
+
+\subsubsection{$(r+s)+t=r+(s+t)$}
+
+\begin{align}
+    &x\in (r+s)+t \equiv&\\
+    &\equiv \left(\exists y\right)\left(y\in r \lor y\in s\right) \lor \left(\exists y\right)\left(y \in t\right) \equiv\\
+    &\equiv \left(\exists y\right)\left(y\in r \lor y\in s \lor y\in t\right) \equiv\\
+    &\equiv \left(\exists y\right)\left(y\in r\right) \lor \left(\exists y\right)\left(y \in s \lor y \in t\right) \equiv\\
+    &\equiv x\in r+(s+t)_{\qed}
+\end{align}
+
+\subsubsection{$(rs)t=r(st)$}
+
+\begin{align}
+    &x\in (rs)t \equiv&\\
+    &\equiv \left(\exists a,b \right)\left(x=ab \land a\in(rs) \land b\in t\right) \equiv\\
+    &\equiv \left(\exists b,c,d \right)\left(x=cdb \land c\in r \land d\in s \land b\in t\right) \equiv\\
+    &\equiv \left(\exists c,e \right)\left(x=ce \land c\in r \land e\in(st)\right) \equiv\\
+    &\equiv x\in r(st)_{\qed}
+\end{align}
+
+\subsubsection{$r(s+t)=rs+rt$}
+
+\begin{align}
+    &x\in r(s+t) \equiv&\\
+    &\equiv \left(\exists y,z \right)\left(x=yz \land y\in r \land z\in (s+t)\right) \equiv\\
+    &\equiv \left(\exists y,z \right)\left(x=yz \land y\in r \land \left(z\in s \lor z\in t\right)\right) \equiv\\
+    &\equiv \left(\exists y,z \right)\left(\left(x=yz \land y\in r \land z\in s\right) \lor \left(x=yz \land y\in r \land z\in t\right)\right) \equiv\\
+    &\equiv rs + rt_{\qed}
+\end{align}
+
+\subsubsection{$(r+s)t = rt + st$}
+
+\begin{align}
+    &x\in (r+s)t \equiv&\\
+    &\equiv \left(\exists y,z \right)\left(x=yz \land y\in (r+s) \land z\in t\right) \equiv\\
+    &\equiv \left(\exists y,z \right)\left(x=yz \land \left(y\in r \lor y\in s\right) \land z\in t\right) \equiv\\
+    &\equiv \left(\exists y,z \right)\left(\left(y\in r \land z\in t\right) \lor \left(y\in s \land z\in t\right)\right) \equiv\\
+    &\equiv rt + st_{\qed}
+\end{align}
+
+\subsubsection{$\emptyset^{*} = \varepsilon$}
+
+\begin{align}
+    &x\in \emptyset^{*} \equiv
+    x\in \bigcup_{i=0}^{\infty} \emptyset^{i} \equiv
+    x\in \{\emptyset^{0} + \emptyset^{1} + \emptyset^{2} + \dots\} \equiv\\
+    &\equiv x \in \{\varepsilon + \varepsilon\emptyset + \varepsilon\emptyset\emptyset + \dots\} \equiv\\
+    &\equiv x \in \{\varepsilon\} \equiv\\
+    &\equiv x \in \varepsilon_{\qed}
+\end{align}
+
+\subsubsection{$(r^{*})^{*} = r^{*}$}
+
+\subsubsection{$(r^{*}s^{*})^{*} = (r+s)^{*}$}
+
+\end{document}
