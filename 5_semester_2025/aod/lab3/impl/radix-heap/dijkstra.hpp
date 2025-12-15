@@ -27,10 +27,10 @@ public:
         predecessors[source] = source;
 
         RadixHeap pq;
-        pq.push(0, source);
+        pq.insert(0, source);
 
         while (!pq.empty()) {
-            auto [currentDistance, u] = pq.top();
+            auto [currentDistance, u] = pq.extract_min();
             pq.pop();
 
             if (currentDistance > distances[u])
@@ -45,7 +45,7 @@ public:
                 if (nd < distances[v]) {
                     distances[v] = nd;
                     predecessors[v] = u;
-                    pq.push(nd, v);
+                    pq.insert(nd, v);
                 }
             }
         }

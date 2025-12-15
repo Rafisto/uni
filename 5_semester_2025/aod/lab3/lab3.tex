@@ -44,6 +44,8 @@ jest najmniejsza. Definiujemy odległość $d(u,v)$ jako wagę najkrótszej ści
     \end{cases}
 \end{align*}
 
+Dla uproszczenia zapisu $V$ w rozważaniach złożności oznacza $|V|$, a $E$ oznacza $|E|$.
+
 \section{Algorytm Dijkstry}
 
 Chcemy wyznaczyć długości najkrótszych ścieżek z każdego źródła $s \in S$ do wszystkich wierzchołków $V\setminus \{s\}$.
@@ -51,10 +53,7 @@ Rozpoczynamy od jednego ze źródeł $s \in S$, następnie przechodzimy po wszys
 aktualizujac odległości do sąsiadów $v$ jako $d(s,v) = w(s,v)$. O kolejności wyboru następnego wierzchołka do odwiedzenia
 decyduje minimalna odległość od źródła spośród jeszcze nieodwiedzonych wierzchołków - możemy ją efektywnie przechowywać 
 za pomocą struktury implementujacej funkcję \texttt{extract-min} - np. kopiec binarny. Po wybraniu wierzchołka $u$ do odwiedzenia, 
-przechodzimy po wszystkich jego sąsiadach $v$ i sprawdzamy, czy odległość do nich może zostać zmniejszona, gdybyśmy przeszli przez $u$:
-\begin{align*}
-    \text{jeśli } d(s,v) > d(s,u) + w(u,v) \text{ wtedy } d(s,v) = d(s,u) + w(u,v)
-\end{align*}
+przechodzimy po wszystkich jego sąsiadach $v$ i sprawdzamy, czy odległość do nich może zostać zmniejszona, gdybyśmy przeszli przez $u$.
 Proces powtarzamy aż do przejścia wszystkich wierzchołków osiągalnych z $s$. Dla grafu spójnego będą to wszystkie wierzchołki i wszystkie krawędzie.
 
 \subsection{Implementacja Algorytmu Dijkstry}
@@ -88,15 +87,111 @@ dominate the running time}. Oznacza to, że badane grafy będą rzadkie, zatem w
 
 \subsection{Złożność Obliczeniowa Algorytmu Dijkstry}
 
-Na podstawie analizy implementacji algorytmu możemy stwierdzić, że jego złożność wynosi
+Na podstawie analizy implementacji algorytmu możemy stwierdzić, że jego złożoność wynosi.
 \begin{align*}
-    O((V + E)\log V)
+    O((E + V)\log V)
 \end{align*}
 
 \section{Alogrytm Diala}
 
 Algorytm Diala to modyfikacja algorytmu Dijkstry, w której wykorzystujemy fakt, że wagi krawędzi są ograniczone do przedziału $[0, C]$,
-wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka z etykietami $d(i)\neq \infty$. Etykiety $d(i)$ na pewno są 
+wobec czego możemy usprawnić wybór następnego wierzchołka z etykietami tymczasowymi. W $i$-tym kroku algorytmu długości ścieżek
+znajdą się w przedziale $[0, iC]$. Możemy zatem wykorzystać cykliczną listę kubełków, gdzie $j$-ty kubełek przechowuje wierzchołki z etykietami tymczasowymi
+$j, j+(C+1), j+2(C+1), \dots$. Skoro za każdym razem opróżniamy kubełek, to etykiety nie będą na siebie nachodzić.
+
+\subsection{Implementacja Algorytmu Diala}
+
+\begin{algorithm}[H]
+\caption{Algorytm Diala dla problemu SSSP}
+\begin{algorithmic}
+\State $\text{buckets} \gets \text{cyclic list}(C+1)$
+\State $\text{buckets}[0] \gets \{s\}$
+\State $\text{distances}[s] \gets 0$
+\State $\text{current} \gets 0$
+\While{\text{true}}
+    \While{\text{buckets[current]} \text{ is empty}}
+        \State $\text{current} \gets (\text{current} + 1) \bmod (C+1)$ 
+        \Comment{Szukamy niepustego kubełka}
+    \EndWhile
+
+    \While{\text{buckets[current]} \text{ is not empty}}
+        \Comment{Opróżniamy bieżący kubełek}
+        \State $u \gets \text{buckets[current]}$
+        \State $\text{remove } u \text{ from } \text{buckets[current]}$
+        \ForAll{$(v, \text{w}) \in \text{graph}[u]$}
+        \Comment{Patrzmy na sąsiadów $u$}
+        \State $\text{newDist} \gets \text{distances}[u] + \text{w}$
+            \If{\text{newDist} < \text{distances}[v]}
+                \Comment{Krótsza ścieżka znaleziona}
+                \State $\text{remove } v \text{ from } \text{buckets}[\text{distances}[v] \bmod C+1]$
+                \State $\text{distances}[v] \gets \text{newDist}$
+                \State $\text{add } v \text{ to } \text{buckets}[\text{newDist} \bmod C+1]$
+            \EndIf
+        \EndFor
+    \EndWhile
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Złożność Obliczeniowa Algorytmu Diala}
+
+Zobaczmy, że tak samo jak w algorytmie Dijkstry, rozpatrujemy każdą krawędź dokładnie raz, a każdy wierzchołek zostanie
+przejrzany maksymalnie $VC$ razy. Zatem złożoność algorytmu Diala wynosi:
+\begin{align*}
+    O(E + VC)
+\end{align*}
+
+\noindent
+Widzimy, że algorytm jest pseudowielomianowy, dla dużych $C$ będzie znacznie mniej wydajny niż algorytm Dijkstry.
+
+\section{Algorytm Radix Heap}
+
+Algorytm Radix Heap to modyfikacja algorytmu Dijkstry, w której ponownie zakładamy wagi z przedziału $[0, C]$, wykorzystujemy 
+za to inny sposób przetrzymywania etykiet tymczasowych.
+Delegujemy przechowywanie etykiet do struktury Radix Heap, która pozwala na wykonywanie operacji \texttt{insert} oraz \texttt{extract-min}.
+Szerokości kolejnych kubełków są kolejnymi potęgami $2$, zatem potrzeba jedynie $O(\log VC)$ kubełków, aby pokryć cały przedział wag krawędzi.
+Uproszczenie podobne do algorytmu Diala pozwala zredukować liczbę kubełków do $O(\log C)$.
+Rozdzielamy zawartość opróżnianego kubełka do wszystkich kubełków mniejszych szerokości.
+W przypadku Diala robiliśmy tak tylko do poprzedniego kubełka, tutaj musimy rozdzielić do wszystkich mniejszych, ponieważ szerokości kubełków
+nie są równe. 
+
+\subsection{Złożność Obliczeniowa Algorytmu Radix Heap}
+
+Ponieważ struktura Radix Heap posiada złożoność operacji \texttt{insert} w czasie $O(1)$ oraz \texttt{extract-min} w czasie
+$O(\log(VC))$, to złożoność całego algorytmu Radix Heap wynosi:
+\begin{align*}
+    O(E + V\log(VC))
+\end{align*}
+
+\noindent
+Wykładowe uproszczenie pozwala zredukować złożoność do:
+\begin{align*}
+    O(E + V\log C)
+\end{align*}
+
+\noindent
+Zauważmy natomiast, że dla małych wartości $C$ możemy zbliżać się do złożoności liniowej od wielkości grafu. 
+Jeśli działamy na \texttt{64}-bitowych liczbach nieujemnych, to $\log(C) \leq 64$, zatem możemy uprościć złożoność do:
+\begin{align*}
+    O(E + V)
+\end{align*}
+
+\noindent
+
+\section{Wykresy dla eksperymentów SSSP}
+
+Eksperymenty zostaną przeprowadzone dla następujących rodzin grafów:
+\begin{itemize}
+    \item Long 4C, Long 4N
+    \item Random 4C, Random 4N
+    \item Square C, Square N
+    \item USA-Road-d (distances)
+\end{itemize}
+
+Dla każdej rodziny liczymy SSSP od wierzchołka z najmniejszym indeksem, oraz średnią dla pięciu losowo wybranych wierzchołków startowych.
+Na wykresach kolorem czerwonym oraz pokrewnymi oznaczam algorytm Dijkstry, niebieskim algorytm Diala, a zielonym algorytm Radix Heap. 
+
+\subsection{Long C}
 
 \begin{figure}[H]
   \centering
@@ -108,19 +203,21 @@ wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka 
   \end{minipage}\hfill
   \begin{minipage}[t]{0.49\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{plot/longn_plot.png}
-    \captionof{figure}{longn\_plot.png}
-    \label{fig:longn_plot}
-  \end{minipage}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \begin{minipage}[t]{0.49\linewidth}
-    \centering
     \includegraphics[width=\linewidth]{plot/longc_plot_zoomed.png}
     \captionof{figure}{longc\_plot\_zoomed.png}
     \label{fig:longc_plot_zoomed}
+  \end{minipage}
+\end{figure}
+
+\subsection{Long N}
+
+\begin{figure}[H]
+  \centering
+\begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/longn_plot.png}
+    \captionof{figure}{longn\_plot.png}
+    \label{fig:longn_plot}
   \end{minipage}\hfill
   \begin{minipage}[t]{0.49\linewidth}
     \centering
@@ -129,6 +226,8 @@ wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka 
     \label{fig:longn_plot_zoomed}
   \end{minipage}
 \end{figure}
+
+\subsection{Random 4C}
 
 \begin{figure}[H]
   \centering
@@ -140,19 +239,21 @@ wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka 
   \end{minipage}\hfill
   \begin{minipage}[t]{0.49\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{plot/random4n_plot.png}
-    \captionof{figure}{random4n\_plot.png}
-    \label{fig:random4n_plot}
-  \end{minipage}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \begin{minipage}[t]{0.49\linewidth}
-    \centering
     \includegraphics[width=\linewidth]{plot/random4c_plot_zoomed.png}
     \captionof{figure}{random4c\_plot\_zoomed.png}
     \label{fig:random4c_plot_zoomed}
+  \end{minipage}
+\end{figure}
+
+\subsection{Random 4N}
+
+\begin{figure}[H]
+  \centering
+    \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/random4n_plot.png}
+    \captionof{figure}{random4n\_plot.png}
+    \label{fig:random4n_plot}
   \end{minipage}\hfill
   \begin{minipage}[t]{0.49\linewidth}
     \centering
@@ -161,6 +262,8 @@ wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka 
     \label{fig:random4n_plot_zoomed}
   \end{minipage}
 \end{figure}
+
+\subsection{Square C}
 
 \begin{figure}[H]
   \centering
@@ -172,19 +275,22 @@ wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka 
   \end{minipage}\hfill
   \begin{minipage}[t]{0.49\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{plot/squaren_plot.png}
-    \captionof{figure}{squaren\_plot.png}
-    \label{fig:squaren_plot}
-  \end{minipage}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \begin{minipage}[t]{0.49\linewidth}
-    \centering
     \includegraphics[width=\linewidth]{plot/squarec_plot_zoomed.png}
     \captionof{figure}{squarec\_plot\_zoomed.png}
     \label{fig:squarec_plot_zoomed}
+  \end{minipage}
+\end{figure}
+
+\subsection{Square N}
+
+\begin{figure}[H]
+  \centering
+  \hfill
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/squaren_plot.png}
+    \captionof{figure}{squaren\_plot.png}
+    \label{fig:squaren_plot}
   \end{minipage}\hfill
   \begin{minipage}[t]{0.49\linewidth}
     \centering
@@ -194,6 +300,8 @@ wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka 
   \end{minipage}
 \end{figure}
 
+\subsection{USA}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{plot/usa_bar_chart.png}
@@ -201,5 +309,116 @@ wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka 
     \label{fig:usa_bar_chart}
 \end{figure}
 
+\subsection{Obserwacje SSSP}
+
+Algorytm Dijkstry prezentuje stabilne wyniki dla wszystkich rodzin grafów, zbliżone do teoretycznej złożoności $O((V+E)\log V)$.
+Widzimy, że dla rodzin grafów LongC, Random4C oraz SquareC zwiększająca się maksymalna waga krawędzi $C$ nie wpływa na czas działania algorytmu Dijkstry, 
+co jest zgodne z teoretyczną analizą złożoności. Widzimy również, jak w rodzinach LongN, Random4N oraz SquareN, czas
+działania algorytmu Dijkstry rośnie wraz z liczbą wierzchołków $N$, co również jest zgodne z teoretyczną analizą złożoności.
+
+Zauważmy, że algorytm Diala, ze względu na czynnik $C$ bardzo źle radzi sobie dla rodzin grafów LongC, Random4C oraz SquareC, 
+gdzie maksymalna waga krawędzi jest bardzo duża, z tego również powodu wykonywanie dalszych obliczeń $i>10$ dla zadanych rodzin grafów
+jest niepraktycznie i bezcelowe. Osiągnięta asymptotyka wyraźnie pokazuje oczekiwane zjawisko, a teoretyczny model zostaje potwierdzony.
+Ciekawe jest natomiast to, iż dla małych wielkości $C$, algorytm Diala radzi sobie porównywalnie, lub nawet nieznacznie lepiej niż pozostałe algorytmy.
+Najbardziej wymagającą rodziną dla algorytmu Diala okazuje się rodzina LongC, gdzie czas działania staje się ogromny już dla $C=7$.
+
+Usprawnienie wnoszone przez algorytm Radix Heap jest widoczne w prawie wszystkich rodzinach grafów, gdzie algorytm radzi sobie lepiej niż dwa pozostałe.
+Dla rodziny Random4N widzimy niewiele gorsze zachowanie niż algorytm Dijkstry.
+
+\section{Tabela wyników dla eksperymentów P2P}
+
+Eksperyment P2P polega na zmierzeniu odległości i czasu między wierzchołkiem o najmniejszym indeksie, a wierzchołkiem o największym indeksie,
+ponadto mierzymy średni czas dla czterech innych losowo wybranych par wierzchołków.
+
+Jako przedstawicieli wybieramy największe grafy z każdej rodziny, które udało się przetworzyć w rozsądnym czasie.
+W przypadku algorytmu Diala pomijam przypadki, gdzie $C$ jest zbyt duże i algorytm nie radzi sobie z przetworzeniem grafu. 
+Usprawnienie $VC+1$ do $C+1$ liczby kubełków eliminuje błędy OOM (Out Of Memory) w przypadku dużych $i$, ale wciąż pozostaje 
+problem absurdalnego czasu działania.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l r r r r}
+\hline
+Rodzina - Algorytm & Start & Koniec & Odległość & Czas (ms) \\ \hline
+Long-C - dijkstra        & 1 & 1048576 & 1308259008765 & 21.6291 \\
+Long-C - dial            & brak (timeout) \\
+Long-C - radix\_heap     & 1 & 1048576 & 1308259008765 & 21.7272 \\
+
+Long-n - dijkstra        & 1 & 2097152 & 31336751771   & 277.804 \\
+Long-n - dial            & 1 & 2097152 & 31336751771   & 3456.40 \\
+Long-n - radix\_heap     & 1 & 2097152 & 31336751771   & 253.764 \\
+
+Random4-C - dijkstra     & 1 & 1048576 & 3471241820    & 126.504 \\
+Random4-C - dial         & 1 & 1048576 & 3471241820    & 683.072 \\
+Random4-C - radix\_heap  & 1 & 1048576 & 3471241820    & 96.2762 \\
+
+Random4-n - radix\_heap  & 1 & 2097152 & 9051281       & 314.371 \\
+Random4-n - dial         & 1 & 2097152 & 9051281       & 1400.29 \\
+Random4-n - dijkstra     & 1 & 2097152 & 9051281       & 513.474 \\
+
+Square-C - dijkstra      & 1 & 1048576 & 122219500320  & 117.732 \\
+Square-C - dial          & brak (timeout) \\
+Square-C - radix\_heap   & 1 & 1048576 & 122219500320  & 82.4341 \\
+
+Square-n - dijkstra      & 1 & 2096704 & 714640488     & 258.535 \\
+Square-n - dial          & 1 & 2096704 & 714640488     & 1043.21 \\
+Square-n - radix\_heap   & 1 & 2096704 & 714640488     & 192.932 \\
+
+USA-road-d - dijkstra    & 1 & 23947347 & 23228284     & 3215.28 \\
+USA-road-d - dial        & 1 & 23947347 & 23228284     & 4722.40 \\
+USA-road-d - radix\_heap & 1 & 23947347 & 23228284     & 2351.68 \\
+\hline
+\end{tabular}
+\caption{Wyniki eksperymentów P2P dla różnych rodzin grafów i algorytmów}
+\end{table}
+
+Zobaczmy następnie średnie czasy przeszukiwania losowych par wierzchołków:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l r}
+\hline
+Rodzina - Algorytm & Czas (ms) \\ \hline
+Long-C       - dijkstra    & 117.798 \\
+Long-C       - dial        & brak (timeout) \\
+Long-C       - radix\_heap & 84.2331 \\
+Long-n       - dijkstra    & 101.535 \\
+Long-n       - dial        & 2432.8 \\
+Long-n       - radix\_heap & 139.14 \\
+Random4-C    - dijkstra    & 248.834 \\
+Random4-C    - dial        & 645.152 \\
+Random4-C    - radix\_heap & 213.556 \\
+Random4-n    - dijkstra    & 300.834 \\
+Random4-n    - dial        & 1402.4 \\
+Random4-n    - radix\_heap & 355.472 \\
+Square-C     - dijkstra    & 192.187 \\
+Square-C     - dial        & brak (timeout) \\
+Square-C     - radix\_heap & 86.0959 \\
+Square-n     - dijkstra    & 435.333 \\
+Square-n     - dial        & 1134.6 \\
+Square-n     - radix\_heap & 330.171 \\
+USA-road-d   - dijkstra    & 60.7381 \\
+USA-road-d   - dial        & 4427.67 \\
+USA-road-d   - radix\_heap & 43.624 \\
+\hline
+\end{tabular}
+\caption{Uśrednione czasy wykonania dla różnych rodzin grafów i algorytmów}
+\end{table}
+
+\subsection{Obserwacje P2P}
+
+Zobaczmy, że algorytm Diala ponownie źle radzi sobie z dużymi wartościami $C$, co jest zgodne z wcześniejszymi obserwacjami.
+Dla rodziny LongN notujemy absurdalny czas działania.
+Alogrytm Radix Heap oraz algorytm Dijkstry radzą sobie porównywalnie, ciężko ocenić który z nich jest lepszy, ponieważ w niektórych przypadkach
+Radix Heap jest szybszy, a w innych Dijkstra. Warto zauważyć, że dla rodziny USA-road-d Radix Heap radzi sobie zauważalnie lepiej, a algorytm
+Diala nie działa aż tak źle. 
+
+\section{Wnioski}
+
+Wykresy potwierdzają teoretyczne złożoności algorytmów Dijkstry, Diala oraz Radix Heap. Wybór standardowego algorytmu Dijkstry jest 
+wskazany, gdy nie mamy ograniczeń na maksymalną wagę krawędzi $C$, lub gdy $C$ jest duże. W przypadku małych wartości $C$, algorytm Diala może być
+konkurencyjny, jednakże jego złożoność pseudowielomianowa czyni go mniej uniwersalnym. Algorytm Radix Heap wydaje się być najlepszym wyborem w przypadku
+gdy posiadamy solidną implementację, oraz gdy ograniczamy $C$ do rozmiaru 64-bitowej liczby całkowitej. 
+Wtedy jego złożoność zbliża się do liniowej względem rozmiaru grafu, co jest bardzo korzystne.
 
 \end{document}
