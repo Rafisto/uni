@@ -21,8 +21,9 @@ print_uint8 = lambda char: chr(char) if 32 <= char <= 126 else '?'
 
 ## -- basic probability --
 
-counter = dict(Counter(file))
-for k in counter.keys():
+base_counter = dict(Counter(file))
+counter : dict = defaultdict(float)
+for k in base_counter.keys():
     counter[k] = counter[k]/file_len
 
 for k, v in sorted(counter.items(), key=lambda item: item[1], reverse=True):
@@ -34,8 +35,8 @@ for k, v in sorted(counter.items(), key=lambda item: item[1], reverse=True):
 ## first   - x
 ## second  - y
 
-pair_counter = defaultdict(int)
-total_counter = defaultdict(int)
+pair_counter : dict = defaultdict(int)
+total_counter : dict = defaultdict(int)
 
 for i in range(len(file) - 1):
     first = file[i]
@@ -53,7 +54,7 @@ for (condition, value), count in pair_counter.items():
 ## wikipedia = https://en.wikipedia.org/wiki/Entropy_(information_theory)
 ## -- calculate H(X) = -sum_{x in X} p(x) log p(x)
 
-H_X = 0
+H_X = 0.0
 for v in counter.values(): 
     H_X += v * -math.log2(v)
 

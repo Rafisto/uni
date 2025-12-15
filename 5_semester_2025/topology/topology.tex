@@ -1,0 +1,1179 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definicja. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{example}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Przykład. #1.}]%
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fakt. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Twierdzenie. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{conclusion}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Wniosek. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Informacja. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Topologia i Teoria Miary}  
+\author{Rafał Włodarczyk}
+\date{INA 5, 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{I - Przestrzenie Metryczne i Topologiczne}
+
+\subsection{Przestrzeń Metryczna}
+
+\begin{definition}{Przestrzeń Metryczna} 
+    Para $(X,d)$ jest przestrzenią metryczną wtedy i tylko wtedy, 
+    gdy $d: X\times X \rightarrow \mathbb{R}^{\geq 0}+$ oraz zachodzą następujące własności:
+    \begin{enumerate}
+        \item $d(x,y)\geq 0$
+        \item $d(x,y)=0 \equiv x=y$
+        \item $d(x,y)=d(y,x)$
+        \item $d(x,z) \leq d(x,y)+d(y,z)$
+    \end{enumerate}
+    Ostatnia własność jest znana jako nierówność trójkąta.
+\end{definition}
+
+\begin{information}{Czasoprzestrzeń}
+    Podania definicja metryki nie nadaje się do modelowania czasoprzestrzeni, w której dystans może być ujemny.
+\end{information}
+
+\begin{example}{}
+    Przykładowe Metryki
+    \begin{enumerate}
+        \item $(\mathbb{R}^n, d_2) \quad d_2(x,y)=\sqrt(\sum_{i=1}^{n} (x_i-y_i)^2)$
+        \item $(\mathbb{R}^n, d_1) \quad d_1(x,y)=|x-y|$
+        \item $(\mathbb{R}^n, d_{\infty}) \quad \max\{|x_i-y_i| : i=1\dots\}$
+        \item $(\mathbb{R}^n, d_p) \quad \left(\sum_{i=1}^{n} |x_i-y_i|^p\right)^{\frac{1}{p}}$
+    \end{enumerate}
+    Możemy zatem zauważyć, że $\lim_{n\rightarrow\infty} d_p(x,y) = d_{\infty}(x,y)$. 
+    Ta klasa metryk jest często wykorzystywana w AI oraz Big Data.
+\end{example}
+
+\begin{example}{Trywialna przestrzeń metryczna}
+    Para $(\emptyset,\emptyset)$ jest metryką.
+\end{example}
+
+\begin{example}{Metryka dyskretna}
+    Para $(X,d)$, w którym funkcję odległości $d$ definiujemy jako:
+    \begin{align*}
+        d(x,y) = \begin{cases}
+            0 \quad \text{if} \quad x=y\\
+            1 \quad \text{if} \quad x\neq y
+        \end{cases}    
+    \end{align*}
+\end{example}
+
+\begin{example}{Metryka Grafowa}
+    $(V,E)$ - graf spójny prosty, $u,v\in V$
+    \begin{align*}
+        d_g(u,v) = \text{ długość najkrótszej ścieżki z u do v.}
+    \end{align*}
+\end{example}
+
+\begin{example}{Prosty Jeż}
+    $X=\mathbb{R}^2$, funkcja TODO: spisać def 1.4. z listy zadań.
+
+    Każdą przestrzeń topologiczną możemy zawrzeć w jeżu. 
+\end{example}
+
+\subsection{Kula B(a,r)}
+
+\begin{definition}{Kula topologiczna}
+    Kula o średnicy $a$ i odległości $r$.
+    \begin{align*}
+        B(a,r)=\{x\in X : d(x,a) < r\}
+    \end{align*}
+\end{definition}
+
+\begin{example}{Przykłady w różnych metrykach}
+    \begin{enumerate}
+        \item $(\mathbb{R}^1,d) \quad B(a,r) = (a-r,a+r)$
+        \item $(\mathbb{R}^2,d_e) \quad B(a,r) = \text{koło otwarte}$
+        \item $(\mathbb{R}^2,d_1) \quad B(a,r) = \text{kwadrat 45}$
+    \end{enumerate}
+\end{example}
+
+\begin{definition}{Zbiór otwarty}
+    Zbiór $U\subseteq X$ jest otwarty, jeśli:
+    \begin{align*}
+        \left(\forall x\in U\right)\left(\exists \varepsilon > 0\right)\left(B(x,\varepsilon) \subseteq U\right)
+    \end{align*}
+\end{definition}
+
+\begin{example}{Przykład I}
+    $(\mathbb{R},d_e), r=\min\{|x-0|,|1-x|\} \quad B(x,r)=(x-r,x+r) \subseteq (0,1)$
+\end{example}
+
+\begin{example}{Przykład II}
+    $\mathbb{R}^2$ - kula bez brzegu, prostokąt bez brzegu.
+\end{example}
+
+\begin{fact}{}
+    Kula $B(a,r)$ jest otwarta.
+    \vspace{0.5cm}
+    Dowód. Weźmy $x\in B(a,r)$, wtedy $d(a,x)<r$. Niech $\rho=d(a,x)$
+    \begin{align*}
+        \text{claim: } B(x,r-\rho) \subseteq B(a,r)\\
+        y \in B(x,r-\rho) \equiv d(y,x) < r - \rho\\
+        d(y,a) \leq d(a,x) + d(x,y)\\
+        d(y,a) < \rho + r - \rho\\
+        d(y,a) < r
+    \end{align*}
+\end{fact}
+
+\begin{fact}{}
+    $U,V\in\text{OPEN}_X \rightarrow U\cap V\in\text{OPEN}_X$.
+    \vspace{0.5cm}
+    \begin{align*}
+        x\in U\cap V \rightarrow x\in U \land x\in V
+    \end{align*}
+    Weźmy takie $r_1,r_2 > 0$
+    \begin{align*}
+        B(x,r_1) \subseteq U \land B(x,r_2) \subseteq V
+    \end{align*}
+    Niech $r=\min{r_1,r_2} > 0$
+    \begin{align*}
+        B(x,r) \subseteq U \land B(x,r) \subseteq V \implies
+        B(x,r) \subseteq U \cap V
+    \end{align*}
+    Powyższy fakt działa dla skończonej liczby zbiorów. Pokażmy, że dla ich nieskończonej liczby tak nie jest.
+    \begin{align*}
+        U_n=\left(-\frac{1}{n},\frac{1}{n}\right)\\
+        \bigcap_n U_n = \{0\}
+    \end{align*}
+    Co ewidentnie nie jest zbiorem otwartym.
+\end{fact}
+
+\begin{fact}{}
+    \begin{align*}
+        \mathcal{A}\subseteq\text{OPEN}_X \implies 
+        \bigcup \mathcal{A} \in \text{OPEN}_X
+    \end{align*}
+    Dowód. Niech $x\in \bigcup\mathcal{A} \implies
+     \exists U\in\mathcal{A} \quad \text{t.ż.} x\in U$. \\
+     Jest taki $\varepsilon > 0$, że $B(x,\varepsilon) \subseteq U \subseteq \mathcal{A}$
+\end{fact}
+
+Wniosek
+\begin{enumerate}
+    \item Dwa zbiory trywialne: $\emptyset\in\text{OPEN}_X$, $X\in\text{OPEN}_X$
+    \item $U,V\in\text{OPEN}_X \implies U\cap V\in\text{OPEN}_X$
+    \item $\mathcal{A} \subseteq \text{OPEN}_X \rightarrow \bigcup \mathcal{A} \in\text{OPEN}_X$
+\end{enumerate}
+
+\subsection{Przestrzeń Topologiczna}
+
+\begin{definition}{}
+    Przestrzenią topologiczną nazywamy parę $(X,\mathcal{O}_X)$,
+    taką że $\mathcal{O}_X \subseteq P(x)$ oraz zachodzą następujące własności
+    \begin{enumerate}
+        \item $\emptyset, X\in\mathcal{O}_X$
+        \item $U,V\in\mathcal{O}_X \implies U\cap V\in\mathcal{O}_X$
+        \item $\mathcal{A} \subseteq \mathcal{O}_X \rightarrow \bigcup \mathcal{A}\in\mathcal{O}_X$
+    \end{enumerate}
+    W oczywisty sposób $(X,\text{OPEN}_X)$ jest przestrzenią topologiczną.
+\end{definition}
+
+\begin{example}{}
+    Weźmy zbiór $X\neq\emptyset$.
+    \begin{itemize}
+        \item $(X,\{\emptyset, X\})$ - minimalna topologia na $X$
+        \item $(X,P(X))$ - maksymalna topologia na $X$    
+        \item $B(x,\frac{1}{2}) = \{x\}$ - topologia dyskretna z metryką $d_d$
+    \end{itemize}
+\end{example}
+
+\subsection{Własność T2 (Przestrzeń Hausdorffa)}
+
+\begin{definition}{}
+    Przestrzeń topologiczna $(X,\mathcal{O})$ jest przestrzenią Hausdorffa (spełnia własność $T_2$), jeśli:
+    \begin{align*}
+        \left(\forall x,y\in X\right)\left(x\neq y \implies (\exists U,V \in \mathcal{O})\right)
+        \left(x\in X ^ y\in V \land U \cap V = \neq\right)
+    \end{align*}
+    Intuicja: potrafię rozdzielić punkty zbiorami otwartymi.
+\end{definition}
+
+\begin{fact}{}
+    Przestrzeń metryczna spełnia $T_2$. Pokażmy, że $\frac{d_e(x,y)}{2}$ konstruuje dwie kule otwarte, a zatem spełnia własność $T_2$.
+\end{fact}
+
+\subsection{Metryzowalność}
+
+$|X|\geq 2$: $(X,\{\emptyset, X\})$ - przestrzeń trywialna - nie jest metryzowalna.
+\vspace{0.5cm}
+Intuicja: przestrzeń metryczna - odległość ($d$), topologiczna - przynależność.
+
+\begin{definition}{}
+    Niech $(X,\mathcal{O})$ - przestrzeń topologiczna.
+    Zbiór $A\subseteq X$ jest domknięty, wtedy i tylko wtedy gdy $A^C=X\_A$ jest otwarty.
+\end{definition}
+
+\begin{example}{}
+    $[0,1] = ((\infty,0)\cup(1,\infty))^C$
+\end{example}
+
+\begin{theorem}{}
+    Niech $CLO_X=\{A\subseteq X : A^C \in \text{OPEN}_X\}$.
+    \begin{enumerate}
+        \item $\emptyset, X\in\text{CLO}_X$
+        \item $A,B\in \text{CLO}_X \implies A\cup B\in\text{CLO}_X$
+        \item $\mathcal{A} \subseteq \text{CLO}_X \rightarrow \bigcap \mathcal{A}\in\text{CLO}_X$
+    \end{enumerate}
+
+    Dla nieskończonej liczby zbiorów weźmy przykład $I_n=[\frac{1}{n},1]$, wtedy $\bigcup_n I_n=[0,1]$.
+\end{theorem}
+
+\subsection{Wnętrze i domknięcie}
+
+\begin{definition}{}
+    $(X,\mathcal{O})$ - ustalony porządek topologiczny $A\subseteq X$.
+    \begin{enumerate}
+        \item Wnętrze (interior) $\quad\text{int}(A) = \bigcup \{U \in \mathcal{O} : U \subseteq A\}$
+        \item Domknięcie (closure) $\quad\text{cl}(A) = \bigcap \{C \in \text{CLO} : A\in C\}$
+    \end{enumerate} 
+\end{definition}
+Postawmy następującą hipotezę:
+\begin{align*}
+    \begin{cases}
+        \text{int}(\mathbb{Q}) = \emptyset\\
+        \text{cl}(\mathbb{Q}) = \mathbb{R}
+    \end{cases}
+\end{align*}
+Zapoznajmy się z kilkoma faktami, aby całość stała się oczywista.
+
+\begin{fact}{}
+    $(X,d)$ - przestrzeń metryczna. 
+    \begin{align*}
+        x \in \text{int}(A) &\equiv \left(\exists U \in \mathcal{O}\right)\\
+        (U\subseteq A \land x\in U)&\equiv(\exists U \in \mathcal{O})(\exists \varepsilon > 0)\\
+        (B(x,\varepsilon) \subseteq U \subseteq A) &\iff (\exists U \in \mathcal{O})(\exists \varepsilon > 0)\\
+        (B(x,\varepsilon) \subseteq A) &\equiv (\exists \varepsilon > 0)(B(x,\varepsilon) \subseteq A)
+    \end{align*}
+    Wniosek
+    \begin{align*}
+        x \in \text{int}(A) \equiv (\exists \varepsilon > 0)(B(x,\varepsilon) \subseteq A)
+    \end{align*}
+\end{fact}
+Nie ma odcinka, w którym nie zawiera się liczba niewymierna.
+\begin{align*}
+    \lim_n a_n = g &\equiv (\forall \varepsilon > 0)(\exists N)(\forall n > N)(|a_n - g| < \varepsilon)
+    &\equiv (\forall \varepsilon > 0)(\exists N)(\forall n > N)(a_N \in B(g,\varepsilon))
+\end{align*}
+Jest definicją granicy ciągu w dowolnej przestrzeni metrycznej.
+\begin{fact}{}
+    \begin{align*}
+        g \in cl(A) \equiv (\exists (a_n)_{n\in\mathbb{N}})(\forall n)(a_n\in A \land \lim_{n\rightarrow \infty} a_n=g)
+    \end{align*}
+    $cl((0,1))=[0,1]$
+    $cl(\mathbb{Q})=\mathbb{R}$
+\end{fact}
+Każda liczba rzeczywista jest granicą ciągu liczb wymiernych.
+\begin{align*}
+    g\in\mathbb{R} \quad a_n=\frac{\lfloor 10^n \cdot g\rfloor}{10^n} \quad \lim_{n\rightarrow A} a_n=g
+\end{align*}
+
+\subsection{Własności wnętrza i domknięcia}
+
+\begin{enumerate}
+    \item $\text{int}(A)=A \equiv A\in\text{OPEN}$
+    \item $A\subseteq B \implies \text{int}(A)\subseteq \text{int}(B)$
+    \item $\text{int}(A\cap B) = \text{int}(A) \cap \text{int}(B)$
+    \item $\text{int}(A) \cup \text{int}{B} \subseteq \text{int}(A\cup B)$
+    \item $\text{int}(\text{int}(A)) = \text{int}(A)$
+\end{enumerate}
+
+\begin{fact}{}
+    \begin{itemize}
+        \item $cl(A) = X\_int(X\_A)$
+        \item $int(A) = X\_cl(X\_A)$
+    \end{itemize}
+\end{fact}
+
+
+\subsection{Zbiór gęsty}
+Zbiór gęsty to zbiór którego domknięcie obejmuje całą przestrzeń.
+
+\section{II - Przestrzenie Metryczne cd.}
+
+\textit{Ten wykład został zanotowany przez @michalwrpo <3}
+    
+\begin{information}{}
+    $cl(A) = \bar{A}$
+\end{information}
+
+\begin{example}{domknięcie}
+    \begin{enumerate}
+        \item $\overline\emptyset = \emptyset$
+        \item $\overline A \subseteq A$
+        \item $A \subseteq B \rightarrow \overline A \subseteq \overline B$
+        \item $\overline{A \cup B} = \overline A \cup \overline B$
+        \item $\overline{\overline A} = \overline A$
+        \item $A$ jest domknięte $\equiv \overline A = A$
+    \end{enumerate}
+\end{example}
+
+\begin{conclusion}{}
+    \begin{enumerate}
+        \item $\overline X = X$
+        \item $\overline{A \cap B} \subseteq \overline A \cap \overline B$
+        \item $\overline{A \cap B} \subseteq \overline A $
+    \end{enumerate}
+\end{conclusion}
+
+\begin{example}{}
+    W przestrzeniach metrycznych: \\
+    \[x \in \overline A \equiv (\exists (a_n)_{n \in \mathbb{N}})(\forall n)(a_n \in A \land \lim_n a_n = x) \equiv (\forall \epsilon > 0)(B(x, \epsilon) \cap A \neq \emptyset)\]
+    \[ \equiv (\forall U \in \mathcal{O})(x \in U \rightarrow U \cap A \neq \emptyset) \equiv (\forall U \in \Tilde{\mathcal{B}}(x))(U \cap A \neq \emptyset)\]
+
+    oraz
+    
+    \[ x \in int(A) \equiv (\exists \epsilon > 0)(B(x, \epsilon) \subseteq A) \equiv (\exists U \in \mathcal{O})(x \in U \land U \in A \equiv (\exists U \in \Tilde{\mathcal{B}}(x))(U = A)\]
+
+    gdzie $\Tilde{\mathcal{B}}(x) = \{U \in \mathcal{O}: x \in U\}$
+\end{example}
+
+
+\begin{fact}
+    Załóżmy, że mamy operacje $o : \mathcal{P}(X) \rightarrow \mathcal{P}(X)$, która spełnia własności:
+    \begin{enumerate}
+        \item $o(\emptyset) = \emptyset$
+        \item $o(A) \subseteq A$
+        \item $A \subseteq B \rightarrow o(A) \subseteq o(B)$
+        \item $o(A \cup B) = o(A) \cup o(B)$
+        \item $o(o(A)) = o(A)$
+    \end{enumerate}
+    Niech $CL = \{ A \subseteq X: o(A) = A \}$, $OP = \{ A \subseteq X: X \backslash A \in CL \}$. Wtedy $(X, OP)$ jest przestrzenią topologiczną taką, że $cl_{(X, OP)} = CL$.
+\end{fact}
+
+\subsection{Brzeg zbior}
+
+\noindent
+\begin{definition}{Brzeg zbioru}
+    Brzegiem zbioru $A$ nazywamy zbiór
+    \[ \partial A = \overline A \cap \overline{(X \backslash A)}\]
+\end{definition}
+
+\subsection{Punkt Skupienia zbioru}
+
+\begin{definition}{Punkt skupienia zbioru}
+    Punkt $x$ jest punktem skupienia zbioru $A$, jeśli $(\forall U \in \Tilde{\mathcal{B}}(x))(U \cap (A \backslash\{x\}) \neq \emptyset)$
+\end{definition}
+
+\begin{information}{}
+    $A^d =$ zbiór punktów skupienia
+\end{information}
+
+\subsection{Logika Zdań}
+
+\begin{enumerate}
+    \item $P_0, P_1, P_2, ...$ - zmienne logiczne
+    \item $\land, \lor, \neg, \rightarrow, \iff$ - spójniki
+    \item (,) - nawiasy
+    \item $\pi : \{ p_i: i \in \mathbb{N} \} \rightarrow \{ \mathbb{0}, \mathbb{1}\}$ - waluacja
+\end{enumerate}
+
+$\pi(\varphi \land \psi) = \pi(\phi) \land \pi(\varphi)$
+
+\noindent
+Ustalmy $\lambda \neq \emptyset$.
+\begin{itemize}
+    \item $\pi: \{ p_i: i \in \mathbb{N}\} \rightarrow \mathcal{P}(X)$
+    \item $\pi(\varphi \land \psi) = \pi(\varphi) \cap \pi(\psi)$
+    \item $\pi(\neg \varphi) = X \backslash \pi(\varphi)$
+    \item $(\models \varphi) \equiv (\forall\pi)(\pi(\varphi) = X)$
+\end{itemize}
+
+\subsection{Logika Modalna S4}
+
+\begin{itemize}
+    \item Zmienna zdaniowe $(p_n)_{n \in \mathbb{N}}$
+    \item Spójniki logiczne: $\land, \lor, \neg, \rightarrow, \iff, \square, \diamond$
+    \begin{itemize}
+        \item $\square$ - "z pewnością"
+        \item $\diamond$ - "być może"
+    \end{itemize}
+\end{itemize}
+
+\noindent
+Niech $X = [0,1]^2$ \\
+Waluacja: $\pi: \{ p_n: n \in \mathbb{N}\} \rightarrow \mathcal{P}(X)$ \\
+Rozszerzamy $\pi$ na język:
+\begin{itemize}
+    \item $\pi(\varphi \land / \lor \psi) = \pi (\varphi) \cap / \cup \pi (\psi)$
+    \item $\pi(\neg \varphi) = X \backslash \pi(\varphi)$
+    \item $\pi(\square \varphi) = int (\pi(\varphi))$
+    \item $\pi(\diamond \varphi) = \overline{\pi(\varphi)}$
+\end{itemize}
+
+\begin{definition}{}
+    $\models \varphi \equiv (\forall \pi) (\pi (\varphi) = X)$
+\end{definition}
+
+\begin{example}{}
+    $\pi(\square \square \varphi) = \pi(\square \varphi)$
+\end{example}
+
+\[\models (\square \varphi \iff \square \square \varphi)\]
+
+\begin{example}{}
+    $\pi((\square \varphi) \land (\square \psi)) = \pi(\square \varphi) \cap \pi(\square \psi) = int(\pi(\varphi)) \cap int(\pi(\psi)) = int (\pi(\varphi) \cap \pi (\psi)) = \pi (\square(\varphi \land \psi))$
+\end{example}
+
+\[\models (\square(p \land q ) \iff (\square p \land \square q))\]
+
+\begin{itemize}
+    \item $\models (\diamond \diamond p \iff \diamond p)$
+    \item $\models (\neg (\diamond p ) \iff (\square(\neg p)))$
+    \item $\models (\neg(\square p) \iff (\diamond (\neg p)))$
+\end{itemize}
+
+LTL - Linear Time Logic
+
+\subsection{Logika Intuicjonistyczna}
+
+\begin{itemize}
+    \item spójniki klasyczne: $\land, \lor, \neg$
+    \item $\pi(\neg \varphi) = int(X \backslash \pi (\varphi))$
+\end{itemize}
+
+\[ \pi(\varphi) = [0, \frac{1}{2}) \times [0, 1], \pi(\neg\varphi) = (\frac{1}{2}, 1] \times [0, 1]\]
+\[ \pi(\varphi) \cup \pi(\neg \varphi) = [0,1]^2 \backslash \left(\left\{\frac{1}{2}\right\} \times [0, 1] \right)\]
+
+\begin{definition}{Zbiór gęsty}
+    $A$ jest gęsty $\equiv (\overline A = \lambda)$
+\end{definition}
+
+\begin{definition}{Zbiór ośrodokowy}
+    $(X, \mathcal{O})$ jest ośrodkowy $\equiv (\exists A \subseteq \lambda)(|A| \leq \aleph_0 \land A = X)$.
+    Jeśli ma w sobie zbiór gęsty.
+\end{definition}
+
+\begin{definition}
+    Podprzestrzeń \\
+    $(X, d)$ - przestrzeń metryczna, $Y \subseteq X$ \\
+    $(Y, \Tilde{d}, \Tilde{d} = d\upharpoonright (Y \times Y)$ - prz. metr.
+\end{definition}
+
+Niech $x \in Y$
+\[ y \in B_Y(x, r) \equiv \Tilde{d}(x, y) < r \land y \in Y \equiv d(x, y) < r \land y \in Y \equiv y \in B_X(x ,r)\cap Y\]
+
+\begin{conclusion}{}
+    $B_Y(x, r) = B_X(x, r) \cap Y$
+\end{conclusion}
+
+$Y \subseteq X$, $d$ - metryka na $X$, $U \in OPEN_Y$, więc 
+\[ U = \bigcup_{x\in U} B_Y(x, \epsilon_x) = \bigcup_{x \in U} (B_X(x, \epsilon_x) \cap Y) = \left(\bigcup_{x \in U} B(x, \epsilon_X) \right) \cap Y = \Tilde{U} \cap Y \]
+gdzie $\Tilde{U} \in OPEN_X$
+
+\[  OPEN_Y = \{ U \cap Y: U \in OPEN_X \}\]
+
+\subsection{Produkt Przestrzeni}
+
+$(X, d_1), (Y, d_2)$ - przestrzenie metryczne
+$(X \times Y, \rho)$, potencjalne $\rho$:
+
+\begin{itemize}
+    \item $\rho_1((x_1, y_1), (x_2, y_2)) = d_1(x_1, y_1) + d_2(x_2, y_2)$
+    \item $\rho_2((x_1, y_1), (x_2, y_2)) = \sqrt{d_1^2(x_1, y_1) + d_2^2(x_2, y_2)}$
+    \item $\rho_{\infty}((x_1, y_1), (x_2, y_2)) = \max(d_1(x_1, y_1), d_2(x_2, y_2))$
+\end{itemize}
+
+\[\sum_{i=1}^n |x_i - y_i| = \sum_{i=1}^n |x_i - y_i| \cdot 1 \leq \sqrt{\sum_{i=1}^n |x_i - y_i|^2} \sqrt{\sum_{i=1}^n1} = \sqrt{\sum_{i=1}^n (x_i - y_i)^2} \sqrt{n}  \]
+
+\[ (\forall j \in \{1,...,n\}) (|x_i - y_i| \leq \max_{1\leq i \leq n} (|x_i - y_i|) \]
+\[ \sum_{i=1}^n (x_i - y_i)^2 \leq n (\max_{1\leq i \leq n} |x_i - y_i|)^2\]
+\[ \sqrt{\sum_{i=1}^n (x_i - y_i)^2} \leq \sqrt{n} \max_{1\leq i \leq n} (|x_i - y_i|)\]
+\[ \sum_{i=1}^n (x_i - y_i) \leq \sqrt{n} \sqrt{\sum_{i=1}^n (x_i - y_i)^2} \leq n \max_{1\leq i \leq n}(|x_i - y_i|) \leq n \sum_{i=1}^n |x_i - y_i| \]
+
+\[(x,y) \in B_2\left((0, 0), \frac{1}{\sqrt{2}} \right) \equiv \sqrt{x^2 + y^2} \leq \frac{1}{\sqrt{2}}\]
+
+\[ |x| + |y| \leq \sqrt{2} \sqrt{x^2 + y^2} \leq 1\]
+
+\section{III - Zbieżność w metrykach}
+
+\begin{align}
+    |x|+|y| \leq \sqrt{2}\sqrt{x^2+y^2}\\
+    \sqrt{x^2+y^2} \leq \sqrt{2}\max(|x|,|y|)\\
+    \max(|x|,|y|) \leq |x|+|y|
+\end{align}
+
+$(X,d_1), (Y, a_2)$ - przestrzeń metryczna. $\rho_2$ - a'la euklidesowa - niezmienniczość na obroty\\
+\begin{align}
+    \rho_1((x_1,y_1),(x_2,y_2)) = d_1(x_1,x_2) + d_2(y_1,y_2)\\
+    \rho_2((x_1,y_1),(x_2,y_2)) = \sqrt{d_1(x_1,x_2)^2 + d_2(y_1,y_2)^2}\\
+    \rho_{\infty}((x_1,y_1),(x_2,y_2))  = \max(d_1(x_1,x_2), d_2(y_1,y_2))
+\end{align}
+
+$P,Q \in X\times Y$. Zbieżność w metryce $P_1$ implikuje zbieżność w $P_{\infty}$
+\begin{align}
+    \rho_1(P,Q) &= d_1(P_1,Q_1) + d_2(P_2,Q_2)\\
+    (P_n)_n, Q\in X\times Y
+    \lim_n &\rho_1(P_n,Q) = 0 \equiv \lim_n (d_1((P_n)_1,Q_1)) + d_2((P_n)_2,Q_2) = 0 \\
+    \implies &\lim_n \rho_{\infty} ((P_n), Q) = 0\\
+    \implies &\lim_n \rho_{2} ((P_n), Q) = 0\\
+    \implies &\lim_n \rho_{1} ((P_n), Q) = 0
+\end{align}
+Domknięcie zbioru liczymy za pomocą granic - wyznaczam wszystkie możliwe granice punktów ze zbioru.
+Wniosek. Metryki $\rho_1,\rho_2,\rho_{\infty}$ są równoważne - wyznaczają te same zbiory otwarte.
+
+\subsection{Baza przestrzeni metrycznej}
+
+\begin{definition}{Baza}
+    Rodzina $\mathcal{B} \subseteq \mathcal{O}$ jest bazą $(X,\mathcal{O})$, jeśli:
+    \begin{align}
+        (\forall \mathcal{U}\in \mathcal{O})(\exists S \subseteq \mathcal{B})(\mathcal{U}=\bigcup S)
+    \end{align}
+\end{definition}
+
+\begin{example}{Baza $\mathbb{R}$ - standardowej metryki}
+    Liczby rzeczywiste mają następujące przykładowe bazy
+    \begin{itemize}
+        \item $\mathcal{B}_1 = \{(a,b), a\leq b\}$ - baza $\mathbb{R}$
+        \item $\mathcal{B}_2 = \{(a,b), a \leq b \land a,b \in \mathbb{Q}\}$ - baza przeliczalna $\mathbb{R}$
+    \end{itemize}
+\end{example}
+
+\subsection{Drugi Aksjomat Przeliczalności}
+
+\begin{definition}{Drugi Aksjomat Przeliczalności}
+    $(X,\mathcal{O})$ spełnia drugi aksjomat przeliczalności $\equiv (X,\mathcal{O})$ ma przeliczaną bazę.\\
+    $(X,d)$ - przestrzeń ośrodkowa $\implies$ $(X,d)$ spełnia II. aksjomat przeliczalności.
+\end{definition}
+
+\begin{fact}{Rodzina zbiorów a baza}
+    Rodzina zbiorów $\{U\times V: U\in \mathcal{O}_1 \land v\in \mathcal{O}_2\}$ jest bazą $(X,d_1) \times (Y,d_2)$.
+\end{fact}
+
+\begin{example}{}
+    Niech $U\in\mathcal{O}_1 \land V\in\mathcal{O}_2$. Chcemy pokazać, że $U\times V \in \mathcal{O}_{(X,d_1),(X,d_2)}$
+    Weźmy $(a,b)\in U\times V$, czyli $a\in U, \quad b\in V$. Zatem istnieją $\varepsilon_1, \varepsilon_2$, takie że:
+    \begin{align}
+        B_{d_1}(a,\varepsilon_1) \subseteq U, \quad B_{d_2}(b,\varepsilon_2) \subseteq V
+    \end{align}
+    Weźmy $\varepsilon = \min(\varepsilon_1,\varepsilon_2)$, wtedy:
+    \begin{align}
+        B_{d_1}(a,\varepsilon) \times B_{d_2}(b,\varepsilon) = B_{\infty}((a,b),\varepsilon) \subseteq U\times V
+    \end{align}
+    A zatem $U\times V$ jest otwarty.
+\end{example}
+
+\subsection{Produkt przestrzeni topologicznych}
+
+\begin{definition}{Produkt przestrzeni topologicznych}
+    Produktem przestrzeni topologicznych $(X,\mathcal{O}_1), (Y, \mathcal{O}_2)$ nazywamy przestrzeń:
+    \begin{align}
+        (X\times Y, \mathcal{O})
+    \end{align}
+    gdzie $\mathcal{O}$ jest topologią generowaną przez
+    \begin{align}
+        \{U\times V : U\in\mathcal{O}_1\land V\in \mathcal{O}_2\}
+    \end{align}
+\end{definition}
+
+\subsection{Ciągłość w przestrzeniach}
+
+\begin{definition}{Ciągłość w punkcie dla przestrzeni metrycznych}
+    Niech $(X,d_1),(Y,d_2)$ - przestrzenie metryczne. $f: X\rightarrow Y$
+    Dla $a\in X$ Mówimy, że $f$ jest ciagła w punkcie $a$, jeśli:\\
+
+    \noindent
+    $(*)$ - tak byłoby w analizie.
+    \begin{align}
+        (\forall \varepsilon>0)(\exists \delta > 0)(\forall x\in X)(d_1(x,a)<\delta \implies d_2(f(x),f(a)) < \varepsilon)
+    \end{align}
+    A teraz bardziej topologicznie:
+    \begin{align}
+        &(\forall \varepsilon>0)(\exists \delta > 0)(\forall x\in X)(x\in B_1(a,\delta) \implies f(x)\in B_2(f(a),\varepsilon))\\
+        &(\forall \varepsilon>0)(\exists \delta > 0)(f[B(a,\delta)] \subseteq B(f(a),\varepsilon))\\
+        &(\forall U\in \text{OPEN})(f(a)\in U \implies (\exists \delta>0)(f[B(a,\delta)]\in U))\\
+        &(\forall U\in \text{OPEN})(f(a)\in U \implies (\exists V\in \text{OPEN})(a\in V \land f[V]\subseteq U))
+    \end{align}
+
+    Ostatnią definicję możemy sformułować dla dowolnej przestrzeni topologicznej.    
+\end{definition}
+
+\begin{definition}{Ciagłość w punkcie dla przestrzeni topologicznych}
+    Niech $(X,\mathcal{O}_1),(Y,\mathcal{O}_2)$ - przestrzenie topologiczne,
+    $f: X\rightarrow Y$ i $a\in X$. Funkcję $f$ nazywamy ciągłą w punkcie $a$, jeśli:
+
+    \begin{align}
+        (\forall V\in \mathcal{O}_2)(f(a)\in V \implies (\exists U\in \mathcal{O}_1)(a\in U \land f[U]\subseteq V))
+    \end{align}
+\end{definition}
+
+\begin{definition}{Funkcja ciągła}
+    Funkcja $f$ jest ciągła $\equiv$ funkcja $f$ jest ciągła w każdym punkcie.
+\end{definition}
+
+\begin{theorem}{Ciągłość, a przeciwobraz zbioru otwartego}
+    $f$ jest ciągła, wtedy i tylko wtedy, gdy przeciwobraz każdego otwartego zbioru jest otwarty.
+    \begin{align}
+        (\forall U\in\mathcal{O}_2)(f^{-1}[U]\in \mathcal{O}_1)
+    \end{align}
+    Dowód. ($\Rightarrow$). Weźmy $a\in X$, $V\in\mathcal{O}_2, f(a)\in V$. Wtedy:
+    \begin{align}
+        f^{-1}[V]\in\mathcal{O}_1 \text{ oraz } a\in U = f^{-1}[V] \land f[U] \subseteq V 
+    \end{align}
+    Dowód. ($\Leftarrow$). $V\in\mathcal{O}_2$. Niech $U = f^{-1}[V]$. Możemy założyć, że $U\neq \emptyset$.
+    Niech $a \in U = f^{-1}[V]$. Wtedy $f(a) \in V$. Wtedy $f(a) \in V$. Jeśli $U_1\in\mathcal{O}_1$ takie że $a\in U_1$
+    i $f[U_1]\subseteq V$, wtedy $U_1\subseteq U$. Zatem $U$ jest zbiorem otwartym.
+\end{theorem}
+
+\begin{theorem}{Ciągłość w zbiorach domkniętych}
+    Zabawa:\\
+    $f$ jest ciagła $\equiv (\forall U\in\mathcal{O}_2)(f^{-1}[U]\in \mathcal{O}_1)$ \\
+    $f$ jest ciągła $\equiv (\forall C\in\text{CLO}_2)(f^{-1}[C]\in \text{CLO}_1)$ \\
+\end{theorem}
+
+\begin{definition}{Spójność przestrzeni topologicznej}
+    Przestrzeń topologiczna jest spójna, jeśli:
+    \begin{align}
+        \text{OPEN} \cap \text{CLO} = \{\emptyset, X\}
+    \end{align}
+\end{definition}
+
+\begin{fact}{$\mathbb{R}$ jest spójna}
+    Dowód. \\
+    Załóżmy, że nie. Mamy zbiór $A\subseteq \mathbb{R}$, taki że $A\neq \emptyset, A\neq \mathbb{R}$ $A$-otwarty, $A$-domknięty.
+    Niech $B=\mathbb{R}/A$. Wtedy $B$-otwarty, $B\neq \emptyset$. Niech $a\in A$, $b\in B$. Bez straty ogólności $a<b$.
+    Niech $X=\{x \geq a : [a,x] \subseteq A\}$. Na pewno $b\notin X$, zatem $X$ jest ograniczony z góry przez $b$.
+    Niech $t=\sup(X)$.
+    \begin{enumerate}
+        \item $t\in A$ wtedy istnieje $\varepsilon>0$, taki że $(t-\varepsilon,t+\varepsilon)\subseteq A$. Wtedy dowolna liczba większa od $t$ byłaby supremum. Sprzeczność.
+        \item $t\in B$, ale $B$ jest otwarty, zatem $(t-\varepsilon, t+\varepsilon)\subseteq B$ - skoro $t$ jest supremum to dowolnie blisko istnieje element $a$. Sprzeczność.
+    \end{enumerate}
+\end{fact}
+
+\begin{example}{Przestrzeń niespójna}
+    $X=[0,1]\cup [2,3]$ - przestrzeń nie jest spójna.
+\end{example}
+
+\begin{example}{Spójność liczb wymiernych}
+    $X=\mathbb{Q}$, niech $r\in \mathbb{R}/\mathbb{Q}$.
+    \begin{itemize}
+        \item $A=(-\infty, r) \cap \mathbb{Q}$ 
+        \item $B=(r,\infty) \cap \mathbb{Q}$
+        \item $A\cup B = \mathbb{Q}$
+    \end{itemize}
+    Zbiór $\mathbb{Q}$ jest niespójny. Generalnie zbiory dziurawe są niespójne.
+\end{example}
+
+\begin{definition}{Własność Darboux}
+    Załóżmy, że $(X,\mathcal{O})$ jest spójna, $f: X\rightarrow \mathbb{R}$ jest ciągła 
+    oraz są $a,b\in X$ takie, że $f(a)<0$ i $f(b)>0$. Jest wtedy $c\in X$ takie, że $f(x)=0$\\
+    Dowód.\\
+    Załóżmy, że $(\forall c\in X)(f(c)\neq 0)$. Niech $U=f^{-1}[(0,\infty)]$ i $V=f^{-1}[(-\infty,0)]$. Wtedy:
+    \begin{enumerate}
+        \item $U,V$ - otwarte
+        \item $U,V \neq \emptyset$
+        \item $U\cup V = X$ - sprzeczność.
+    \end{enumerate}
+\end{definition}
+
+\section{IV - Spójność i homeomorfizm}
+    
+\begin{align}
+    \text{CLOPEN}_x
+\end{align}
+
+\subsection{Spójność}
+
+\begin{theorem}{}
+    Załóżmy, że $(X,\mathcal{O})$ jest spójna oraz $f: X\rightarrow Y$ jest ciągła. Wtedy:
+    \begin{align}
+        \vec{f}[x] \text{ jest spójny}
+    \end{align}
+    Intuicja: Jak mogę odseparować zbiory, to nie mogę ich połączyć - nie są spójne.\\
+    Dowód: Załóżmy, zę $U,V$ - otwarte w $J$, takie że $U\cap V = \emptyset, U\neq \emptyset, V\neq \emptyset,
+    U\cup V = f[x]$. Patrzymy na $f^{-1}[U], f^{-1}[V]$.
+\end{theorem}
+
+\subsection{Spójność Łukowa}
+
+\begin{definition}{}
+    $X=(X,\mathcal{O})$ jest łukowo spójna, jeśli:
+    \begin{align}
+        \left(\forall a,b\in X\right)
+        \left(\exists \phi [0,1]\rightarrow X\right)
+        \left(\phi(0)=a \land \phi(1)=b\right)
+    \end{align}
+    Intuicja: Jak nie mogę przejść z punktu $a$ do $b$ po ścieżce, to zbiór nie jest on łukowo spójny.
+\end{definition}
+
+
+\begin{fact}{Spójność łukowa}
+    $X$ - łukowo spójna $\implies X$ - spójna.
+\end{fact}
+
+\begin{example}{}
+    Zdefiniujmy zbiór sinusa topologicznego - jest spójny, ale nie jest łukowo spójny.
+    \begin{align}
+        A = \{(x,\sin(\frac{1}{x})): x\neq 0\} \cup \left(\{0\} \times [-1,1]\right)
+    \end{align}
+    Intuicja: przejście od punktu do po dwóch stronach osi X nie jest możliwe. Łukowo spójna jest tylko jedna połówka. 
+\end{example}
+
+\subsection{Homeomorfizm}
+
+\begin{definition}
+    Niech $\mathcal{X} = (X,\mathcal{O}_1)$, $\mathcal{Y} = (Y,\mathcal{O}_2)$ - przestrzenie topologiczne.
+    Mówimy, że $\mathcal{X},\mathcal{Y}$ są homeomorficzne, jeśli bijekcja $f: X\rightarrow Y$ taka że:
+    \begin{enumerate}
+        \item $f$ jest ciągła
+        \item $f^{-1}$ jest ciągła
+    \end{enumerate}
+    Intuicja: jest to topologiczny odpowiednik algebraicznego izomorfizmu.
+\end{definition} 
+
+\begin{example}{}
+    Weźmy $X=\left(\frac{pi}{2},\frac{pi}{2}\right) \approxeq_{hom} \mathbb{R}$.\\
+    Wystarczy wziąć $f(x)=\tan(x)$\\
+    Podobnie $(0,1) \approxeq_{hom} \mathbb{R}$.\\
+    Wniosek. Homeomorfizm spełnia własności relacji równoważności.
+\end{example}
+
+\begin{example}{}
+    Weźmy $\varphi(t) = (\cos t, \sin t)$ na $t\in[0,2\pi]$
+    $\varphi$ jest ciągłą bijekcją, ale $\varphi^{-1}$ nie jest ciągła.
+\end{example}
+
+\begin{example}
+    Wrzućmy $(-1,1)$ w $\mathbb{R}$
+    \begin{align}
+        (-1,1) \approxeq_{hom} \mathbb{R}
+    \end{align}
+    Chcemy zbudować homeomorfizm, pokazać $\varphi \subseteq \tilde{\varphi}$
+    Weźmy dwa punkty $+\infty, -\infty$.
+    Niech $\tilde{\varphi}(-1) = -\infty$ oraz $\tilde{\varphi}(1) = \infty$.
+    $\mathbb{R}^{*} = \mathbb{R} \cup \{-\infty, +\infty\}$\\
+    $U \subseteq \mathbb{R}^{*}$ jest otwarty wtedy i tylko wtedy, gdy:
+    \begin{enumerate}
+        \item $\left(\forall x\in U \right)\left(
+            x\in\mathbb{R} \rightarrow (\exists \alpha, \beta)(\alpha < x < \beta \land (\alpha,\beta)\subseteq U\
+            )\right)$
+        \item $\land (x=+\infty)\implies(\exists \alpha)((\alpha,\infty) \subseteq U)$
+        \item $\land (x=-\infty)\implies(\exists \alpha)((\-\infty,\alpha) \subseteq U)$ 
+    \end{enumerate}
+\end{example}
+
+\begin{example}{}
+    Chciałbym pokazać, że kółko jest kwadratem:
+    \begin{align}
+        \varphi : \{(x,y) : x^2 + y^2 \leq 1\} \rightarrow [-1,1]^2 = B
+    \end{align}
+    \begin{align}
+        P_{(x,y)} = \left(\frac{x}{\sqrt{x^2+y^2}}, \frac{y}{\sqrt{x^2+y^2}}\right)
+    \end{align}
+    I weźmy jeszcze punkt $Q$ - rzut z punktu okręgu $P$ na kwadrat $[-1,1]^2$.
+    Wydłużam każdy taki odcinek $(0,0)\rightarrow P$ na $(0,0)\rightarrow Q$.
+    \begin{align}
+        \varphi(x,y) = (x,y) \cdot \frac{d}{OP_{xy}}
+    \end{align}
+\end{example}
+
+\begin{example}{Przecięcie prostej ze sferą}
+    \begin{align*}
+        S &= \{(x,y,z) : x^2 + z^2 + (z-1)^2 = 1\}, P=(0,0,2), Q_X - \text{ przecięcie } (x,y,0) \text{ ze sferą.}
+    \end{align*}
+    \begin{align}
+        \varphi(t) &= X + t(P - X), t\in[0,1]\\
+        \varphi(0) &= X\\
+        \varphi(1) &= P
+    \end{align}
+    Z tego natychmiast widać, że $\mathbb{R}^2 \approxeq_{hom} \left(S / \{P\} \right)$.
+    \textbf{Liczby zespolone to sfera bez tego punktu}, jeśli do liczb zespolonych dodamy jeszcze jeden punkt, to otrzymamy 
+    liczby zespolone z jedną nieskończonością.
+    \textbf{Geometria rzutowa} - dla każdej prostej przechodzącej przez 0 dodajemy $+\infty,-\infty$ i łączymy je ze sobą. 
+\end{example}
+
+\begin{fact}{Zasadnicze twierdzenie Algebry}
+    $\mathbb{R}^2$ nie jest homeomorficzny z $\mathbb{R}^2/\{(0,0)\}$.\\
+    Niech $w(z) \in \mathbb[C][z], w(z) \neq 0$ Poparzmy na funkcję $\frac{1}{w(z)} = f(z)$.
+\end{fact}
+
+\begin{fact}{}
+    Weźmy dwie przestrzenie topologiczne $(X,\mathcal{O}_1), (Y,\mathcal{O}_2)$. Niech $b\in Y$:
+    \begin{align}
+        \varphi&: X \rightarrow X \times Y\\
+        \varphi&(x) = (x,b)
+    \end{align}
+    Funkcja $\varphi$ jest różnowartościowa. Niech $A=X\times\{b\}$
+    \begin{align}
+        \varphi: X\rightarrow A
+    \end{align}
+    Jest funkcją "na" i jest różnowartościowa. $\varphi$ jest ciągła.
+    $U \subseteq A$, $U$-otwarty. Weźmy $\tilde{U} \in \text{OPEN}_{X\times Y} : U=\tilde{U} \cap A$
+    \begin{align}
+        \tilde{U} = \bigcup_{i\in I} (V_i \times U_i) U_i \in \mathcal{O}_1, V_i \in \mathcal{O}_2
+    \end{align}
+    Policzmy
+    \begin{align}
+        \varphi^{-1}[U]
+        &= \varphi^{-1}[\tilde{U}]\\
+        &= \varphi^{-1}[\bigcup_{i\in I} (V_i \times U_i)]\\
+        &= \bigcup_{i\in I} \varphi^{-1} (V_i \times U_i)\\
+        &= \bigcup \{U_i: i\in I land b\in V_i\} = \text{OPEN}_X
+    \end{align}
+    Wniosek. $X \approxeq_{hom} X \times \{b\}$
+\end{fact}
+
+\subsection{Spójność produktu przestrzeni}
+
+\begin{theorem}{Spójność produktu przestrzeni}
+    $X,Y$ - spójne przestrzenie topologiczne $\implies$ $X\times Y$ jest spójna.\\
+    Dowód. Załóżmy, że $X\times Y = U \cup V$, $U,V\neq\emptyset, U,V\in \text{OPEN}$, $U\cap V = \emptyset$.
+    Weźmy dwa punkty $(a,b)\in U, (c,d)\in V$. Niech $L = \{a\} \times Y$, $L\cap V$ - ślady zbioru, zatem open.
+    Wiemy, że $(L\cap U) \cap (L\cap V) = \emptyset$, $(a,b)\in L \cap U$, więc $(L\cap U) \cup (L\cap V) = L$.
+    Ale wiemy, że $L \approxeq_{hom} Y$. Wniosek. cała podprzestrzeń $\{a\} \times Y \subseteq U$. 
+    Teraz zobaczmy $(a,b)\in L\cap U$, $\{a\} \times Y \subseteq U$, zatem tak samo będzie:
+    $X\times \{b\} \subseteq U$ - w $U$ zawiera się pionowa i pozioma kreska.
+    $\{c\} \times Y \subseteq V$ oraz $X\times \{d\} \subseteq V$, Wynika z tego, że $(a,d),(c,b)\in U\cap V$
+\end{theorem}
+
+\subsection{Własności metryk}
+
+\begin{theorem}{Metryka jest funkcją ciągłą}
+    $d: X\times X \rightarrow \mathbb{R}$. $d$ jest ciągła.
+    Weźmy dwa punkt $(a,b) \in X\times X, (x,y) \in X\times Y$ 
+    Jeżeli para $(x,y)$ zbliża się do $(a,b)$ to odległości zbliżają się do siebie.
+    Wykorzystajmy dwukrotnie nierówność trójkąta prowadząc odległość $d(a,b)$:
+    \begin{align}
+        d(a,b) &\leq d(a,x) + d(x,y) + d(y,b)\\
+        d(a,b) - d(x,y) &\leq d(a,x) + d(y,b)\\
+        d(x,y) &\leq d(x,a) + d(a,b) + d(b,y)\\
+        d(x,y) - d(a,b) &\leq d(x,a) + d(b,y)
+    \end{align}
+    Mamy oszacowanie:
+    \begin{align}
+        |d(x,y)-d(a,b)| \leq d(x,a) + d(y,b)
+    \end{align}
+    Jeśli:
+    \begin{align}
+        f(x,y) = |x-y|, \text{ jest ciągła na } f:\mathbb{R}^2\rightarrow\mathbb{R}
+    \end{align}
+\end{theorem}
+
+\subsection{Odległość}
+
+\begin{definition}{Odległość}
+    Jeśli $A\subseteq X$, to:
+    \begin{align}
+        d(x,\emptyset) = 0\\
+        d(x,A) = \inf f{d(x,a) : a \in A}\\
+        d(x,A) = 0 \equiv x\in \bar{A}\\
+        x\in A \rightarrow d(x,A) = 0
+    \end{align}
+    $\bar{A} = \{x \in X : d(x,A) = 0\}$
+\end{definition}
+
+\begin{theorem}{}
+    Jeśli $A\neq \emptyset$ to funkcja $f(x) = d(x,A)$ jest ciągła.\\
+    Dowód. Ustalmy punkty $x,y\in X. z\in A$, zobaczmy nierówność:
+    \begin{align}
+        d(x,z) \leq d(x,y) + d(y,z)\\
+        \inf_{z\in A} d(x,z) \leq \inf_{z\in A} d(x,y) + d(y,z)\\
+        d(x,A) \leq d(x,y) + d(y,A)\\
+        d(x,A) - d(y,A) \leq d(x,y) \\
+        d(y,A) - d(x,A) \leq d(x,y)
+    \end{align}
+    Mamy $|d(x,A)-d(y,A)| \leq d(x,y)$, to załatwia ciągłość.
+\end{theorem}
+
+\begin{example}{Normalność przestrzeni metrycznej}
+    \textit{Teraz to można, w zasadzie takie czary mary}
+    Ustalmy $A,B\subseteq X, \bar{A} = A, \bar{B} = B, A\cap B=\emptyset$. Niech:
+    \begin{align}
+        f(x) =\frac{d(x,A)}{d(x,A)+d(x,B)}
+    \end{align}
+    \begin{enumerate}
+        \item $0 \leq f(x) \leq 1$
+        \item $x\in A \implies \rightarrow f(x) = 0$
+        \item $x\in B \implies \rightarrow f(x) = 1$
+    \end{enumerate}
+    Jest to funkcja ciągła. $U=f^{-1}\left[-\infty, \frac{1}{2}\right]$ - zbiór otwarty, zawiera zbiór $A$.
+    Bierzemy $V=f^{-1}\left[\frac{1}{2},+\infty\right]$ - zbiór otwarty, zawiera zbiór $B$.
+    Znaleźliśmy dwa zbiory otwarte $U,V$ które oddzielają $A\subseteq U ,B\subseteq V, U,V$-rozłączne.
+    Intuicja: Potrafimy oddzielić zbiór domknięty od domkniętego.
+\end{example}
+
+\section{V - }
+
+\begin{fact}{Ciągłość Metryki}
+    Funkcja $f(x)=d(x,A)(=\inf\{d(x,a): a\in A\})$ jest ciągła.
+\end{fact}
+
+\begin{fact}{}
+    Jeśli $\overline{A}=A$, to istnieje rodzina $(U_n)_{n\in\mathbb{N}}$ zbiorów, taka że:
+    \begin{align}
+        A = \bigcap_n U_n
+    \end{align}
+    \begin{align}
+        A=[0,1]\\
+        A=\bigcap_n \left(-\frac{1}{n}, 1+\frac{1}{n}\right)
+    \end{align}
+    D-d. Niech 
+    \begin{align}
+        U_n\{x\in X: f(x)=d(x,A) < \frac{1}{n}\} = f^{-1}\left[\left(\infty,\frac{1}{n}\right)\right]\\
+        x\in \bigcap_n U_n \equiv \left(\forall n\right)\left(d(x,A) < \frac{1}{n}\right) \equiv (d(x,A)=0) \equiv x\in\overline{A} \equiv x\in A\\
+    \end{align}
+\end{fact}
+
+\begin{definition}{Sumy}
+    Zbiory:
+    \begin{enumerate}
+        \item $G_\delta$ - przekrój przeliczalnej liczby zbiorów otwartych
+        \item $F_\sigma$ - suma przeliczalnych rodzin zbiorów domkniętych
+    \end{enumerate}
+
+    $U$-otwarty $\rightarrow$ $U\in F_\delta$, to działa w przestrzeniach metrycznych, nie topologicznych.\\
+    D-d. $U\in\text{OPEN}; U^C\in\text{CLO}; U^C = \bigcap_n V_n$ $V_n$-open.
+    $\rightarrow U=(\bigcap_n V_n)^C = \bigcap_n V_n^C$ - domknięty.
+\end{definition}
+
+\begin{example}{Przykład}
+    \begin{align*}
+        (0,1) = \bigcup_{n\geq 2} \left[\frac{1}{n}, 1-\frac{1}{n}\right]
+    \end{align*}
+    Strzałki oznaczają inkluzję:
+    \begin{align}
+        G \rightarrow F_{\sigma} \rightarrow G_{\delta\sigma}\\
+        F \rightarrow G_{\delta} \rightarrow F_{\sigma\delta}
+    \end{align}
+\end{example}
+
+\subsection{Zupełność}
+
+Weźmy $(X,d)$ - przestrzeń metryczna, $(x_n)_{n\in\mathbb{N}} \in X^{\mathbb{N}}$
+$(x_n)_n$ jest ciągiem podstawowym (Cauchy'ego), jeśli zachodzi:
+\begin{align}
+    \left(\forall \varepsilon > 0\right)\left(\exists N\right)\left(\forall n,m \geq N\right)\left(d(x_n,x_m) \leq \varepsilon\right)
+\end{align}
+$(X,d)$ jest zupełna $\equiv$ każdy ciąg podstawowy ma granicę.
+
+\begin{fact}{Zbieżność ciągu}
+    Jeśli $(x_n)$ jest zbieżny, to jest ciągiem podstawowym.\\
+    D-d. Niech $g=\lim_n x_n$. Jeśli $N$, taki że:
+    \begin{align*}
+        n\geq N \rightarrow d(x_n,g) \leq \frac{\varepsilon}{2}
+    \end{align*}
+    Weźmy $n,m\geq N$:
+    \begin{align*}
+        d(x_n,x_m) \leq d(x_n,g) + d(g,x_m) \leq \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+    \end{align*}
+\end{fact}
+
+\begin{example}{Liczby wybierne z normalną odległością}
+    Weźmy $(\mathbb{Q},d)\quad d(x,y) = |x-y|$ oraz takie ciągi:
+    \begin{align*}
+        x\in \in\mathbb{Q} : \lim_{n\rightarrow \infty} a_n = \sqrt{2}\in\mathbb{R}
+    \end{align*}
+    Zatem $x_n$ jest podstawowym w $\mathbb{R}$, dziedziczymy funkcję odległości, zatem $x_n$ też jest podstawą w $\mathbb{Q}$.\\
+    Ale $x_n$ nie jest zbieżny w $\mathbb{Q}$, czyli przestrzeń $(\mathbb{Q},d)$ nie jest przestrzenią zupełną.\\
+    Intuicja: przestrzenie zupełne to przestrzenie bez dziur.
+\end{example}
+
+\begin{fact}{Zupełność R}
+    Liczby rzeczywiste $\mathbb{R}$ są zupełne
+\end{fact}
+
+\begin{example}{d}
+    $((0,1),d) d(x,y)=|x-y$ nie jest zupełna - $\frac{1}{n}$ nie jest zbieżny w $(0,1)$ 
+\end{example}
+
+\begin{fact}{Zupełność}
+    Załóżmy, że $(X,d)$ jest zupełna oraz rozważmy $A\subseteq X$. Wtedy następujące dwa zdania są prawdziwe:
+    \begin{enumerate}
+        \item $(A,d\upharpoonright_A)$ - jest zupełna
+        \item $\overline{A}=A$
+    \end{enumerate}
+    D-d $(1\rightarrow 2)$. Załóżmy, że $A\subsetneq \overline{A}$
+    Niech $g\in\overline{A}$ jest $(x_n)_{n\geq 1}$ taki że:
+    \begin{enumerate}
+        \item $x_n \in A$
+        \item $\lim_n x_n = g$
+    \end{enumerate}
+    Weźmy $(x_n)$ - zbieżny $\rightarrow$ $x_n$ - podstawowy w $(X,d)$\\
+    oraz $x_n$ podstawowy w $(A,d)$, ale $x_n$ nie jest zbieżny w $(A,d)$\\
+    D.d $(2\rightarrow 1)$. Zakładamy, że $\overline{A} = A$. Weźmy $x_n$ - ciag podstawowy w $(A,d)$.
+    $(x_n)$ - ciąg podstawowy w $(X,d)$. Wobec tego jest takie $g\in X$ t.ż $\lim_n x_n = g$.
+    Granica $g$ musi być w $\overline{A}=A$, zatem ciąg $x_n$ jest zbieżny w $(A,d)$. 
+\end{fact}
+
+\begin{example}{Dwie przestrzenie zupełne}
+    $(X,d),(Y,\rho)$ - zupełne. Teza: produkt przestrzeni 
+    $(X\times Y, h)\quad h((x_1,y_1),(x_2,y_2)) = \max(d(x_1,x_2),\rho(y_1,y_2))$
+    Twierdzimy, że ta przestrzeń też jest zupełna.\\
+    D-d. $p_n = (x_n, y_n)$ - $p_n$ jest podstawowy w $h$.
+    Patrzymy na $x_n$ - jest podstawowy, bo $d(x_n,x_m) \leq h$, tak samo $y_n$. Mamy zbieżność na obu osiach.
+    Niech $g_1 = \lim_n x_n, g_2 = \lim_n y_n \rightarrow \lim_n p_n = (g_1,g_2)$.
+    Wniosek $\mathbb{R}^n$ jest przestrzenią zupełną.
+\end{example}
+
+\begin{example}{Przykład}
+    $C([0,1], \mathbb{R})$ - ciągłe funkcje.
+    \begin{align}
+        d(f,g) = \int_{0}^{1} |f(x)-g(x)| dx
+    \end{align}
+    Nie jest to przestrzeń zupełna.
+\end{example}
+Uwaga. Pojęcie zupełności jest pojęciem metrycznym, a nie topologicznym. 
+Przykład $(-1,1)$, $(X,d)$ nie jest zupełna, ale $(-1,1) \approxeq_{\text{hom}} \mathbb{R}$,
+więc możemy zdefiniować metrykę $\rho(x,y) = |\varphi(x)-\varphi(y)|$, topologicznie to samo, ale zmieniliśmy metrykę,
+aktualna przestrzeń $(R,\rho)$ jest już zupełna.
+
+$(X,d)$-przestrzeń metryczna. Niech:
+\begin{align}
+    \text{bC}(X) = \{f: X\rightarrow \mathbb{R} : f-\text{ciągła}\quad\land\quad f-\text{ograniczona}\}\\
+    d(f,g) = \sup_{x\in X} |f(x) - g(x)|
+\end{align}
+
+\begin{theorem}{Przestrzeń zupełna}
+    $(\text{bC}(X),d_{\sup})$ - jest przestrzenią zupełną.\\
+    D-d. Niech $(f_n)\in \text{bC}$ będzie ciągiem podstawowym. Ustalmy $x_\in X$
+    \begin{align}
+        (f_n(x_0))_{n \geq 0} - \text{ ciąg z } \mathbb{R}\\
+        |f_n(x_0) - f_m(x_0)| \leq d_{\sup}(f_n,f_m)\\
+        (f_n(x_0)) - \text{ podstawowy w } \mathbb{R}
+    \end{align}
+    Niech $f(x_0) = \lim_{n\rightarrow \infty} f_n(x_0), f:X\rightarrow \mathbb{R}$\\
+    Ograniczoność: Niech $\varepsilon = 1$. Jest $N$, takie,że $n,m \geq N$, to wtedy
+    $d_{\sup} (f_n,f_m) < 1$ Ustalmy $n$ oraz $x\in X$
+    \begin{align}
+        |f_n(x)-f_m(x)| \leq 1\\
+        m=\infty\\
+        |f_n(x)-f(x)| \leq 1
+    \end{align}
+    CLAIM: $f$ jest ciągła (w każdym punkcie). Weźmy $\varepsilon > 0$. Jest $n$ takie, że: 
+    $d_{\sup}(f_n,f) \leq \frac{\varepsilon}{3}$ Jest $\delta > 0$:
+    \begin{align}
+        d(x,A) < \delta \rightarrow |f_n(x)-f_n(a)| \leq \frac{\varepsilon}{3}
+    \end{align}
+    Zobaczmy jak zmienia się funkcja $f$. Weźmy $d(x,a) < \delta$
+    \begin{align}
+        |f(x)-f(a)| \leq |f(x)-f_n(x)| + |f_n(x)-f_n(a)| + |f_n(a) - f(a)| < 3\cdot \frac{\varepsilon}{3} = \varepsilon
+    \end{align}
+\end{theorem}
+CEL: Chcemy zanurzyć izometrycznie $(X,d)$ w $\text{bC}(X)$.
+Pomysł: Biorę $a\in X$. Definiuję $f_a(x) = d(x,a)$ - LIPA.\\
+Modyfikujemy pomysł $p\in X$. Definiujemy $f_a(x) = d(x,a) - d(x,p)$
+\begin{align}
+    d(x,a) \leq d(x,p) + d(p,a)\\
+    d(x,a) - d(x,p) \leq d(p,a)\\
+    d(x,p) \leq d(x,a) + d(p,a)\\
+    d(x,p) - d(x,a) \leq d(p,a)\\
+\end{align}
+Wniosek $d(p,a) = d(x,p) - d(x,a), |f_a(x)| \leq d(p,a)$ - to jest funkcja ograniczona.
+Rozważamy funkcję $F: X \rightarrow \text{bC}(X)$ zadaną wzorem:
+\begin{align}
+    F(a) = f_a\\
+    f_a(x) - f_b(x) = (d(x,a) - d(x,p)) - (d(x,b) - d(x,p)) = d(x,a)-d(x,b)\\
+    x \leftarrow a : |f_a(a) - f_b(a)| = d(a,b)\\
+    d_{\sup} (f_a,f_b) \geq d(a,b)\\
+    d(x,a) \leq d(x,b) + d(b,a)\\
+    d(x,a) - d(x,b) \leq d(a,b)\\
+    d(x,b) \leq d(x,a) + d(a,b)\\
+    d(x,b) - d(x,a) \leq d(a,b)\\
+    |d(x,a) - d(x,b)| \leq d(a,b) \left(\forall x\in X\right)
+\end{align}
+Wniosek $d_{\sup}(F(a),F(b)) = d(a,b)$, zatem: $F: (X,d) \rightarrow_{izome} \text{bC}(X)$
+\begin{align}
+    X\approxeq FX\\
+    X^{\*} = \overline{F[X]}
+\end{align}
+\begin{enumerate}
+    \item $X^{\*}$ jest zupełny.
+    \item $\overline{X} = X^{\*}$ : X jest gęsty w $X^{\*}$
+\end{enumerate}
+Każdą przestrzeń $X$ potrafię rozszerzyć do przestrzeni zupełnej $FX$, tak że $X$ jest gęsta w $FX$.
+\begin{example}{Example}
+    Musimy dołożyć dwa patyki, punkt $(0,0)$ nie podziała.
+    $X = \mathbb{R}^2 - (\{0\} \times (-1,1))$, $P_n=\left(-\frac{1}{n},0\right), n\geq 1$
+\end{example}
+
+\subsection{Produkty przestrzeni metrycznych}
+
+Wszystkie metryki zlepiamy w jedną metrykę.
+
+\begin{align}
+    \mathcal{X} = (X_n, d_n), n\geq 0 \quad d_n \leq 1\\
+    \prod_n \mathcal{X}_n = (\prod X_n, d)\\
+    d(f,g) = \sum_{n\geq 0} \frac{d_n(f(n),g(n))}{2^n}\\
+    d(f,g) = \dots \leq \sum_{n\geq 0} \frac{1}{2^n} = 2
+\end{align}
+Zbieżność w $\prod_n \mathcal{X}_n$:
+\begin{enumerate}
+    \item $f_n \rightarrow g$ w $\prod_n \mathcal{X}_n$
+    \begin{align}
+        d(f_n,g) = \sum_{i=0}^{\infty} \frac{d_n(f_n(i), g(i))}{2^i} \geq \frac{d_k(f_n(k),g(k))}{2^k}
+    \end{align}
+    Ustalmy $k\in \mathbb{N}$, ustalmy $\varepsilon > 0$. Jest $N$, takie że $d(f_n,g) < \frac{\varepsilon}{2^k}$
+    \begin{align}
+        \frac{d_k(f_n(k),g(k))}{2^k} \leq d(f_n,g) < \frac{\varepsilon}{2^k}\\
+        d_k(f_n(k),f(k)) < \varepsilon
+    \end{align}
+\end{enumerate}
+
+\end{document}

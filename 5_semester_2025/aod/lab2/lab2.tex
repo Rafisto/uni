@@ -1,0 +1,703 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\makeatletter
+\@addtoreset{equation}{subsubsection} 
+\makeatother
+
+\title{Alogrytmy Optymalizacji Dyskretnej\\
+    \large Lista 2}
+\author{Rafał Włodarczyk 279762}
+\date{2025-11-05}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Zadanie 1}
+
+\subsection{Opis problemu}
+
+Definiujemy $S$ - zbiór dostawców, z którego każdy dostawca może sprzedać maksymalnie $s_i$ paliwa,
+oraz $A$ - zbiór odbiorców, do którego należy dostarczyć co najmniej $a_j$ paliwa. Definiujemy
+macierz kosztu, gdzie $c_{ij}$ oznacza koszt galonu paliwa transportowanego od dostawcy $i$ do lotniska $j$.
+
+\subsection{Definicje zmiennych decyzyjnych}
+
+Zdefiniujmy następującą zmienną decyzyjną:
+
+\begin{enumerate}
+    \item $x_{i,j}$ - paliwo dostarczane z $i$-tego dostawcy do $j$-tego lotniska.
+\end{enumerate}icje zmiennych decyzyjnych (opis, jednostki),
+(b) ograniczenia (nie umieszczaj ´zródeł modelu),
+(c) funkcja celu,
+2. krótki opis rozwi ˛az
+
+\subsection{Ograniczenia}
+
+Zdefiniujmy następujące ograniczenia:
+
+\begin{enumerate}
+    \item $s_i \geq 0$ - każdy dostawca dostarcza paliwo
+    \item $a_j \geq 0$ - każde lotnisko potrzebuje paliwa
+    \item $c_{ij} \geq 0$ - koszt paliwa i transportu jest zawsze większy od zera.
+    \item $\sum_j x_{ij} \leq s_i$ - od każdego dostawcy dostarczyć możemy maksymalnie $s_i$ paliwa.
+    \item $\sum_i x_{ij} \geq a_j$ - do każdego lotniska dostarczyć musimy co najmniej $a_j$ paliwa.
+\end{enumerate}
+
+\subsection{Funkcja Celu}
+
+Zdefiniujmy następującą funkcje celu:
+
+\begin{align*}
+    \text{minimize } \sum_{i\in S, j\in A} c_{ij} \cdot x_{ij}
+\end{align*}
+
+\subsection{Egzemplarz problemu}
+
+Egzemplarz problemu definiują następujące parametry - trzech dostawców i cztery lotniska:
+\begin{align*}
+    S &= \{s_1, s_2, s_3\} \\
+    A &= \{a_1, a_2, a_3, a_4\}
+\end{align*}
+Następujące dostępności $s_i$:
+\begin{align*}
+    s_1 = 275{,}000 \quad
+    s_2 = 550{,}000 \quad
+    s_3 = 660{,}000
+\end{align*}
+Następujące zapotrzebowania $a_j$:
+\begin{align*}
+    a_1 = 110{,}000 \quad
+    a_2 = 220{,}000 \quad
+    a_3 = 330{,}000 \quad
+    a_4 = 440{,}000
+\end{align*}
+Oraz następującą macierz kosztu $c_{ij}$:
+\begin{align*}
+    \text{cost} &: 
+    \begin{pmatrix}
+        & s_1 & s_2 & s_3 \\
+        a_1 & 10 & 7 & 8 \\
+        a_2 & 10 & 11 & 14 \\
+        a_3 & 9 & 12 & 4 \\
+        a_4 & 11 & 13 & 9
+    \end{pmatrix}
+\end{align*}
+
+\subsection{Uzyskane Wyniki}
+
+Model dla zadanego egzemplarza prezentuje następujące wyniki:
+
+\begin{verbatim}
+$ glpsol --model fuel.mod --data fuel.data  
+Time used:   0.0 secs
+Memory used: 0.1 Mb (128314 bytes)
+
+Optimal shipment quantities:
+x[s1,a1] =     0.00
+x[s1,a2] = 165000.00
+x[s1,a3] =     0.00
+x[s1,a4] = 110000.00
+x[s2,a1] = 110000.00
+x[s2,a2] = 55000.00
+x[s2,a3] =     0.00
+x[s2,a4] =     0.00
+x[s3,a1] =     0.00
+x[s3,a2] =     0.00
+x[s3,a3] = 330000.00
+x[s3,a4] = 330000.00
+
+Total shipped per supplier:
+s1: 275000.00
+s2: 165000.00
+s3: 660000.00
+
+Total cost: 8525000
+Model has been successfully processed
+\end{verbatim}
+
+\subsection{Interpretacja Wyników}
+
+Łączny koszt dostaw wyniósł $8{,}525{,}000$ dolarów. Dostawcy dostarczyli następującą ilość galonów paliwa:
+$x_{s_1}=275{,}000; x_{s_2} = 165{,}000; x_{s_3} = 660{,}000$. Wszystkie lotniska uzyskały wystarczającą ilość paliwa do swojej działalności.
+Na tej podstawie można odpowiedzieć na pytania postawione w poleceniu:
+
+\begin{enumerate}
+    \item Minimalny łączny koszt dostaw wynosi $8{,}525{,}000$ dolarów.
+    \item Tak, wszystkie firmy dostarczają paliwo.
+    \item Możliwości dostaw paliwa są wyczerpane u pierwszego i trzeciego dostawcy. 
+        Drugi dostawca może jeszcze dostarczyć $385{,}000$ galonów.
+\end{enumerate}
+
+\section{Zadanie 2}
+
+\subsection{Opis problemu}
+
+Mamy maszyny $M$ i produkty $P$. Każdy produkt musi przejść przez określoną liczbę minut na każdej maszynie.
+Maszyny nie mogą pracować dłużej niż $T$ godzin każda. Każda maszyna ma koszt stały $c_m$ na godzinę pracy.
+Każdy produkt ma cene materiałową $C_p$ i cenę sprzedaży $R_p$. Maksymalny popyt na produkt $p$ to $D_p$.
+Definiujemy macierz produkcji $\text{prod}_{p,m}$ jako liczbę minut, które produkt $p$ musi spędzić na maszynie $m$.
+
+\subsection{Definicje zmiennych decyzyjnych}
+
+Zdefiniujmy następujące zmienne decyzyjne:
+\begin{enumerate}
+    \item $x_p$ - ilość wyprodukowanych jednostek produktu $p$ w kilogramach.
+\end{enumerate}
+
+\subsection{Ograniczenia}
+
+Zdefiniujmy następujące ograniczenia:
+\begin{enumerate}
+    \item $\left(\forall m\in M\right)\left(\sum_{p \in P} \text{prod}_{p,m} \cdot x_p \leq T \cdot 60\right)$ - maksymalny czas pracy każdej maszyny.
+    \item $x_p \leq D_p$ - maksymalna produkcja każdego produktu.
+\end{enumerate}
+
+\subsection{Funkcja Celu}
+
+Zdefiniujmy następującą funkcję celu:
+\begin{align*}
+    \text{maximize } \sum_{p \in P} (R_p - C_p) \cdot x_p - \sum_{m \in M} c_m \cdot \frac{1}{60} \left( \sum_{p \in P} \text{prod}_{p,m} \cdot x_p \right)
+\end{align*}
+Po stronie zysków mamy sumę $R_p\cdot x_p$, czyli zysk jednostkowy razy liczba wyprodukowanych produktów. 
+Po stronie kosztów mamy sumę $C_p\cdot x_p$, czyli koszt jednostkowy razy liczba wyprodukowanych produktów oraz
+koszt zmienny pracy każdej z maszyn, biorąc pod uwagę produkcje, które na nich wykonaliśmy. 
+
+\subsection{Egzemplarz problemu}
+
+Egzemplarz problemu definiują następujące parametry:
+\begin{align*}
+M=\{m_1, m_2, m_3\} \quad P=\{p_1, p_2, p_3, p_4\}
+\end{align*}
+
+\begin{align*}
+D_p &= \{ 400, 100, 150, 500 \} \quad
+\text{T} = 60 \text{ godzin} \\
+c_m &= 2, 2, 3 \quad
+C_p = 4, 1, 1, 1 \quad
+R_p = 9, 7, 6, 5\\
+\text{prod}_{p,m}&=
+\begin{pmatrix}
+    & m_1 & m_2 & m_3 \\
+    p_1 & 5 & 10 & 6 \\
+    p_2 & 3 & 6 & 4 \\
+    p_3 & 4 & 5 & 3 \\
+    p_4 & 4 & 2 & 1
+\end{pmatrix}
+\end{align*}
+
+\subsection{Uzyskane Wyniki}
+
+Model dla zadanego egzemplarza prezentuje następujące wyniki:
+\begin{verbatim}
+glpsol --model prod.mod --data prod.data  
+Time used:   0.0 secs
+Memory used: 0.1 Mb (134445 bytes)
+
+Optimal production quantities:
+Product p1:   125.00
+Product p2:   100.00
+Product p3:   150.00
+Product p4:   500.00
+
+Production cost per product:
+Product p1:   500.00
+Product p2:   100.00
+Product p3:   150.00
+Product p4:   500.00
+
+Machine usage and cost:
+Machine m1:  3525.00 minutes, cost:   117.50
+Machine m2:  3600.00 minutes, cost:   120.00
+Machine m3:  2100.00 minutes, cost:   105.00
+
+Total profit: 3632.5
+Model has been successfully processed
+\end{verbatim}
+
+\subsection{Interpretacja Wyników}
+
+Wyniki interpretuję następująco:
+Maksymalny popyt został wypełniony dla drugiego, trzeciego i czwartego produktu. Pierwszy produkt,
+ze względu na wysoki koszt produkcji i ograniczony czas pracy maszyn nie został wyprodukowany w maksymalnej ilości.
+
+\noindent
+Łączny zysk z produkcji wyniósł $3{,}632.50$ dolarów.
+
+
+\section{Zadanie 3}
+
+\subsection{Opis Problemu}
+
+Wytwarzamy maksymalnie $C$ jednostek w każdym z $K$ następujących po sobie okresów. W każdym okresie
+koszt produkcji wynosi $c_j, j\in\{1,\dots,K\}$. Żeby sprostać wymaganiom rynku dodajemy dodatkową
+produkcje $a_j$, przy koszcie jednostkowym $o_j$. Wymaganie rynku (demand) określamy jako $d_j$. Możemy
+przechować do $S$ jednostek w magazynie na kolejny okres, płacąc jednak $T$ za każdą jednostkę. 
+$S_0\geq 0$ to początkowy stan magazynowy.
+
+\subsection{Definicje zmiennych decyzyjnych}
+
+Zdefiniujmy następujące zmienne decyzyjne:
+\begin{enumerate}
+    \item $I_j$ - stan magazynowy w okresie $j$.
+    \item $P_j$ - produkcja w okresie $j$.
+    \item $A_j$ - dodatkowa produkcja w okresie $j$.
+\end{enumerate}
+
+\subsection{Ograniczenia}
+
+Zdefiniujmy następujące ograniczenia dla magazynu, definiuje go poprzedni stan magazynu, produkcja i zapotrzebowanie.
+\begin{enumerate}
+    \item $I_j \leq S$. Nie przekraczamy pojemności magazynu.
+    \item $I_1 = S_0 + P_1 + A_1 - d_1$. W pierwszym okresie uwzględniamy stan początkowy magazynu.
+    \item $I_j = I_{j-1} + P_{j} + A_{j} - d_j$, $j>1$. Następnie uwzględniamy poprzedni stan magazynu.
+\end{enumerate}
+Zdefiniujmy następujące ograniczenia dla produkcji:
+\begin{enumerate}
+    \item $P_j \leq C$, zawsze produkujemy bazowo maks $C$ produktów.
+    \item $A_j \leq a_j$, produkujemy dodatkowo maks $a_j$ produktów.
+\end{enumerate}
+
+\subsection{Funkcja Celu}
+
+Zdefiniujmy następującą funkcję celu:
+\begin{align*}
+    \text{minimize } \sum_{j\in 1..K} c_j\cdot P_j + o_j \cdot A_j + \cdot T \cdot I_j 
+\end{align*}
+Minimalizujemy koszt produkcji standardowej, dodatkowej oraz cene przechowywania w magazynie, po każdym z okresów $K$.
+
+\subsection{Egzemplarz problemu}
+
+Egzemplarz problemu definiują następujące parametry:
+\begin{align*}
+    K&=1,2,3,4, C=100, S=70, S_0=15, T=1500 \\
+    c_j&=(6000,4000,8000,9000)\\
+    a_j&=(60,65,70,60)\\
+    o_j&=(8000,6000,10000,11000)\\
+    d_j&=(130,80,125,195)\\
+\end{align*}
+
+\subsection{Uzyskane Wyniki}
+
+Model dla zadanego egzemplarza prezentuje następujące wyniki:
+\begin{verbatim}
+glpsol --model prod.mod --data prod.data
+Time used:   0.0 secs
+Memory used: 0.1 Mb (126561 bytes)
+Display statement at line 73
+production[1].val = 100
+production[2].val = 100
+production[3].val = 100
+production[4].val = 100
+additional_production[1].val = 15
+additional_production[2].val = 50
+additional_production[3].val = 0
+additional_production[4].val = 50
+inventory[1].val = 0
+inventory[2].val = 70
+inventory[3].val = 45
+inventory[4].val = 0
+total_cost.val = 3842500
+Model has been successfully processed
+\end{verbatim}
+
+\subsection{Interpretacja Wyników}
+
+Najniższy koszt wyniósł $3{,}842{,}500$ dolarów. Każdorazowo produkcja standardowa wynosiła
+$100$ - czyli ustalony przez nas limit produkcji standardowej. Następnie aby sprostać wymaganiu
+$d_3,d_4$ przechowaliśmy w okresach $2,3$ odpowiednio $70$ i $45$ produktów. Zgada się to z 
+intuicją, ponieważ w okresie $2$ obserwujemy najniższy koszt produkcji jednostkowej. Możemy
+udzielić odpowiedzi na pytania:
+\begin{enumerate}
+    \item Minimalny łączny koszt produkci i magazynowania wynosi $3{,}842{,}500$ dolarów.
+    \item W okresach $1,2,4$ firma musi zaplanować produkcje ponadwymiarową w ilościach $15,50,50$.
+    \item W okresie $2$ możliwości magazynowania towaru są wyczerpane.
+\end{enumerate}
+
+\section{Zadanie 4}
+
+\subsection{Opis Problemu}
+
+Weźmy sieć połączeń za pomocą skierowanego grafu $G=(N,A)$, $N$-miasta, $A$-połaczenia między miastami.
+Dane są $c_{ij}$ - koszt przejazdu z $i$ do $j$, $i,j\in N$ oraz czas przejazdu $t_{ij}$.
+Mamy również dwa miasta $s$, $e$ - miasto startowe oraz miasto końcowe. Celem jest znalezienie
+najtańszej ściezki z $s$ do $e$, której sumaryczny czas przejścia nie przekracza $T$.
+
+\subsection{Definicje zmiennych decyzyjnych}
+
+Zdefiniujmy następujące zmienne decyzyjne:
+\begin{enumerate}
+    \item $R_{ij}$ - macierz krawędzi ($1$-bierzemy krawędź do ścieżki, $0$-w.p.p.)
+\end{enumerate}
+
+\subsection{Ograniczenia}
+
+Zdefiniujmy następujące ograniczenia:
+\begin{enumerate}
+    \item $\sum_{j} R_{sj} = 1$ - wychodzimy raz z miasta startowego.
+    \item $\sum_{j} R_{je} = 1$ - wchodzimy raz do miasta końcowego.
+    \item $\left(\forall k\in N-\{s,e\}\right)\left(\sum_{i} R_{ik} = \sum_{j} R_{kj}\right)$ - dla każdego pozostałego miasta suma wejść jest równa sumie wyjść.
+    \item $\sum_{ij} t_{ij} \cdot R_{ij} \leq T$ - wybrana ścieżka nie przekracza $T$.
+\end{enumerate}
+
+\subsection{Funkcja Celu}
+
+Zdefiniujmy następujące funkcje celu:
+\begin{align*}
+    \text{minimize } \sum_{i,j \in N} c_{ij} \cdot R_{ij}
+\end{align*}
+
+\subsection{Podpunkt a}
+
+\subsubsection{Egzemplarz problemu}
+
+Egzemplarz problemu definiują następujące parametry:
+\begin{align*}
+N &= \{1, 2, 3, 4, 5, 6, 7, 8, 9, 10\}, s = 1, e = 10, T = 15\\
+(i,j, c_{ij}, t_{ij}) = \{
+&(1, 2, 3, 4),  (1, 3, 4, 9),  (1, 4, 7, 10), (1, 5, 8, 12),\\
+&(2, 3, 2, 3),  (3, 4, 4, 6),  (3, 5, 2, 2), (3, 10, 6, 11),\\
+&(4, 5, 1, 1),  (4, 7, 3, 5),  (5, 6, 5, 6), (5, 7, 3, 3),\\
+&(5, 10, 5, 8), (6, 1, 5, 8),  (6, 7, 2, 2), (6, 10, 7, 11),\\
+&(7, 3, 4, 6),  (7, 8, 3, 5),  (7, 9, 1, 1), (8, 9, 1, 2),\\
+&(9, 10, 2, 2) \}
+\end{align*}
+
+\subsubsection{Uzyskane Wyniki}
+
+Model dla zadanego egzemplarza prezentuje następujące wyniki:
+\begin{verbatim}
+glpsol --data graph.data --model graph.mod
+Time used:   0.0 secs
+Memory used: 0.2 Mb (244155 bytes)
+1 -> 2
+2 -> 3
+3 -> 5
+5 -> 7
+7 -> 9
+9 -> 10
+Total cost: 13
+Total time: 15
+Model has been successfully processed
+\end{verbatim}
+
+\subsubsection{Interpretacja Wyników}
+
+W zadanym grafie znaleźliśmy ścieżkę o koszcie $c=13$ i czasie $t=15$: $1\rightarrow 2\rightarrow 3\rightarrow 5\rightarrow 7\rightarrow 9\rightarrow 10$.
+Jest długa pod względem liczby krawędzi (ignorując koszty można z $1\rightarrow 10$ dojść w dwóch krawędziach), 
+ale jest najlepsza z możliwych opcji, biorąc również pod uwagę ograniczenie czasowe.
+
+\subsection{Podpunkt b}
+
+\subsubsection{Egzemplarz problemu}
+
+Wymyśliłem następujący graf - opis krawędzi $(\text{cost},\text{time})$, $s=1, e=10$
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{graph4b.png}
+        \caption{Graf dla podpunktu b}
+        \label{fig:graph4b}
+    \end{minipage}
+\end{figure}
+
+\subsubsection{Uzyskane Wyniki}
+
+\begin{verbatim}
+max_time = 25
+
+Time used:   0.0 secs
+Memory used: 0.2 Mb (240874 bytes)
+1 -> 3
+3 -> 5
+5 -> 9
+9 -> 10
+Total cost: 60
+Total time: 20
+Model has been successfully processed
+
+max_time = 30
+
+Time used:   0.0 secs
+Memory used: 0.2 Mb (240874 bytes)
+1 -> 2
+2 -> 6
+6 -> 10
+Total cost: 30
+Total time: 30
+Model has been successfully processed
+\end{verbatim}
+
+\subsubsection{Interpretacja Wyników}
+
+Ścieżka o najniższym koszcie dla czasu maksymalnego $T=25$ i zadanego grafu to
+$1\rightarrow3\rightarrow5\rightarrow9\rightarrow10$
+  Podnosząc $T=30$ widzimy nową, krótszą ścieżkę
+$1\rightarrow 2\rightarrow 6\rightarrow 10$, której koszt jest jednak większy od $25$, co
+oznacza że dla mniejszego $T$ jest ona zbyt długa czasowo.
+
+\subsection{Podpunkt c}
+
+Zakładamy niecałkowitoliczbowość w wartościach macierzy decyzyjnej $R_{ij}$. Spróbujmy rozwiązać
+następujący przykład $T=3$, $s=1,e=3$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{graph4c.png}
+    \caption{Graf dla podpunktu c}
+    \label{fig:graph4c}
+\end{figure}
+
+\begin{verbatim}
+glpsol --model float.mod --data float.data
+Time used:   0.0 secs
+Memory used: 0.1 Mb (126442 bytes)
+    0.50 1 -> 2
+    0.50 1 -> 3
+    0.50 2 -> 3
+Total cost: 4
+Total time: 3
+
+glpsol --model graph.mod --data float.data
+Time used:   0.0 secs
+Memory used: 0.1 Mb (147075 bytes)
+1 -> 3
+Total cost: 6
+Total time: 2
+\end{verbatim}
+
+Model niecałkowitoliczbowy zwraca ścieżkę o niższym koszcie $4$, biorąc z dwóch możliwych ścieżek obie, w równych wagach.
+Model całkowitoliczbowy zwraca ścieżkę o koszcie $6$. Skoro minimalizujemy koszt i rozwiązanie optymalnie nie posiada
+wartości całkowitych, to pokazaliśmy, że ograniczenie na całkowitoliczbowość jest potrzebne. W przeciwnym wypadku otrzymujemy
+inny problem z potencjalnie wieloma ścieżkami. 
+
+\subsection{Podpunkt d}
+
+Usuńmy ograniczenie $T$ oraz rozważmy poniższy przykład, $s=1,e=4$. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{graph4d.png}
+    \caption{Graf dla podpunktu d}
+    \label{fig:graph4d}
+\end{figure}
+
+Rozwiązanie tego egzemplarza może obejmować przejście
+ $R_1\left(1\rightarrow2\rightarrow4\right), R_2\left(1\rightarrow3\rightarrow4\right)$ dla $R_1+R_2=1$
+Ale taka sytuacja nastąpi jedynie, gdy podścieżki mają sumarycznie ten sam koszt, co w zasadzie pozwala
+zredukować dwie ścieżki, do jednej - pomimo że technicznie poprawny jest wybór dowolnego $R_1\in[0,1]$ solver
+preferuje zwrócić liczbę całkowitą.
+
+\begin{verbatim}
+glpsol --model float.mod --data d.data
+Time used:   0.0 secs
+Memory used: 0.1 Mb (127711 bytes)
+    1.00 1 -> 2
+    1.00 2 -> 4
+Total cost: 3
+Total time: 6
+\end{verbatim}
+Zatem otrzymane połączenie, po ewentualnej korekcie wag, będzie akceptowalnym rozwiązaniem.
+
+\section{Zadanie 5}
+
+\subsection{Opis Problemu}
+
+Mamy komendę policji która chce rozdysponować radiowozy po zmianach i dzielnicach.
+Szukamy takiej macierzy $R_{zd}$ gdzie $z\in Z$-zmiana $d\in D$-dzielnica, przy czym nie możemy przekroczyć
+limitów radiowozów na zmianę w dzielnicy $max_{zd}$, oraz musimy utrzymać minimalne ilości radiowozów
+na zmianę w dzielnicy $min_{zd}$, na zmianę sumarycznie $S_z$ oraz na dzielnice sumarycznie $S_d$
+
+\subsection{Definicje zmiennych decyzyjnych}
+
+Zdefiniujmy następujące zmienne decyzyjne:
+\begin{enumerate}
+    \item $R_{zd}$ - radiowozy na zmianie $z$ w dzielnicy $d$.
+\end{enumerate}
+
+\subsection{Ograniczenia}
+
+Zdefiniujmy następujące ograniczenia:
+\begin{enumerate}
+    \item $\left(\forall z\in Z \right)\left(\forall d\in D \right) R_{zd} \geq min_{zd}$ - minimalna liczba radiowozów w komórce
+    \item $\left(\forall z\in Z \right)\left(\forall d\in D \right) R_{zd} \leq max_{zd}$ - maksymalna liczba radiowozów w komórce
+    \item $\left(\forall z\in Z \right) \sum_{z\in Z} R_{zd} \geq S_z$ - sumarycznie więcej niż $S_z$ na zmianę
+    \item $\left(\forall d\in D \right) \sum_{d\in D} R_{zd} \geq S_d$ - sumarycznie więcej niż $S_d$ na dzielnicę
+\end{enumerate}
+
+\subsection{Funkcja Celu}
+
+Zdefiniujmy następujące funkcje celu:
+\begin{align*}
+    \text{minimize } & \sum_{z\in Z, d\in D} R_{zd}
+\end{align*}
+Efektywnie minimalizujemy liczbę pojazdów na drodze.
+
+\subsection{Egzemplarz problemu}
+
+Egzemplarz problemu definiują następujące parametry:
+\begin{align*}
+    \text{Z} &= \{1, 2, 3\}, \quad \text{D} = \{1, 2, 3\} \\
+    S_z &= \{10, 20, 18\}, \quad S_d = \{10, 14, 13\}\\
+    min_{zd} &=
+    \begin{pmatrix}
+        & 1 & 2 & 3 \\
+        1 & 2 & 4 & 3 \\
+        2 & 3 & 6 & 5 \\
+        3 & 5 & 7 & 6
+    \end{pmatrix}, \quad
+    max_{zd} =
+    \begin{pmatrix}
+        & 1 & 2 & 3 \\
+        1 & 3 & 7 & 5 \\
+        2 & 5 & 7 & 10 \\
+        3 & 8 & 12 & 10
+    \end{pmatrix}
+\end{align*}
+
+\subsection{Uzyskane Wyniki}
+
+Model dla zadanego egzemplarza prezentuje następujące wyniki:
+\begin{verbatim}
+$ glpsol --model police.mod --data police.data 
+Time used:   0.0 secs
+Memory used: 0.1 Mb (126583 bytes)
+Occupancy Matrix:
+3 4 3 
+5 7 8 
+5 7 6 
+Display statement at line 58
+48
+Model has been successfully processed
+\end{verbatim}
+
+\subsection{Interpretacja Wyników}
+
+W zasadzie robimy absolutne minimum, z warunku $S_z$ widzimy, że nie możemy zejść poniżej $48$ radiowozów 
+i szczęśliwie takie rozstawienie udaje się znaleźć. Jesteśmy niewiele ponad minimalne wymagania $min_{zd}$ w każdej
+komórce, a jednak dla każdej zmiany i dzielnicy pokrywamy zadane wymagania.
+
+\section{Zadanie 6}
+
+\subsection{Opis Problemu}
+
+Mamy działkę podzieloną na siatkę $m\times n$, w której to trzymamy kontenery, wyrażone
+za pomocą macierzy $K_{ij}$, $i\in M, j\in N$ - zero gdy nie ma kontenera, jeden gdy jest.
+Chcemy aby chociaż jedna kamera ze minimalnego zbioru kamer $C_{ij}$ patrzyła na każdy kontener,
+przy czym kamera widzi $k$ pól do góry, w dól, w prawo i w lewo, i nie może stać w polu, na
+którym jest kontener.
+
+\subsection{Definicje zmiennych decyzyjnych}
+
+Zdefiniujmy następujące zmienne decyzyjne:
+\begin{enumerate}
+    \item $C_{ij}$ - ustawienie kamer; $C_{ij} = 0$ - nie ma kamery, $C_{ij} = 1$ - jest kamera.
+\end{enumerate}
+
+\subsection{Ograniczenia}
+
+Zdefiniujmy następujące ograniczenia:
+\begin{enumerate}
+    \item Kamery nie mogą być ustawione na polach z kontenerami.
+        \begin{align*}
+            \forall i \in \{1, \dots, m\}, \forall j \in \{1, \dots, n\}, \text{jeśli } K_{ij} = 1, \text{ to } C_{ij} = 0
+        \end{align*}
+    \item Co najmniej jedna kamera patrzy na kontener.
+        \begin{align*}
+            (\forall i,j : K_{ij}=1, d_i,d_j\in\{-k,...-1,1,...,k\}) \sum_{i:K_{i+di,j}=0} C_{i+di,j} +  \sum_{j:K_{i,j+dj}=0} C_{i,j+dj}\ \geq 1
+        \end{align*} 
+\end{enumerate}
+
+\subsection{Funkcja Celu}
+
+Zdefiniujmy następujące funkcje celu:
+\begin{align*}
+    \text{minimize } \sum_{(i,j)\in M\times N} C_{ij}
+\end{align*}
+
+\subsection{Egzemplarz problemu}
+
+Egzemplarz problemu definiują następujące parametry:
+\begin{align*}
+m &= 5, \quad n = 5, \quad k_1 = 1 \\
+K_{ij} &=
+\begin{pmatrix}
+    0 & 1 & 0 & 0 & 1 \\
+    0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 1 \\
+    1 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\end{align*}
+Oraz drugi egzemplarz, w którym $k_2 = 5$, $m,n,K_{ij}$ bez zmian.
+
+\subsection{Uzyskane Wyniki}
+
+Model dla zadanych egzemplarzy prezentuje następujące wyniki:
+\begin{verbatim}
+k = 1
+
+Time used:   0.0 secs
+Memory used: 0.1 Mb (148720 bytes)
+Display statement at line 37
+total_cameras.val = 4
+
+* x . * x 
+. . . . . 
+. . . . . 
+. . . * x 
+x * . . . 
+
+Legend:
+x - container
+* - camera
+. - empty space
+Model has been successfully processed
+
+k = 5
+
+Time used:   0.0 secs
+Memory used: 0.2 Mb (161455 bytes)
+Display statement at line 37
+total_cameras.val = 2
+
+. x * . x 
+. . . . . 
+. . . . . 
+. . . . x 
+x . . . * 
+
+Legend:
+x - container
+* - camera
+. - empty space
+Model has been successfully processed
+\end{verbatim}
+
+\subsection{Interpretacja Wyników}
+
+W przypadku $k=1$ potrzebujemy 4 kamery na 4 kontenery, 
+a w przypadku $k=5$ na te same kontenery potrzebujemy już tylko dwie kamery. 
+Widzimy, że wraz ze wzrostem $k$ pokrycie naszego pola staje się łatwiejsze,
+ponieważ pojedyńcza kamera widzi więcej pól. 
+
+
+
+\end{document}

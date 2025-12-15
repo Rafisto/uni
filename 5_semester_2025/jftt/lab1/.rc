@@ -1,0 +1,2 @@
+alias FA="./lab1/finite-automata/a.out"
+alias KMP="./lab1/knuth-morris-pratt/a.out"

@@ -1,0 +1,24 @@
+# Rafal Wlodarczyk 279762
+# Exercise 1 - Instance
+
+# -- Instance Parameters --
+
+set SUPPLIERS := s1 s2 s3;
+set AIRPORTS  := a1 a2 a3 a4;
+
+param supply :=
+  s1 275000
+  s2 550000
+  s3 660000;
+
+param demand :=
+  a1 110000
+  a2 220000
+  a3 330000
+  a4 440000;
+
+param cost :
+          a1   a2   a3   a4 :=
+  s1      10   10    9   11
+  s2       7   11   12   13
+  s3       8   14    4    9;

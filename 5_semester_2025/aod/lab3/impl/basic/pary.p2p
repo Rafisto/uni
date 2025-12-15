@@ -1,0 +1,10 @@
+c Przyklad pliku pary.p2p (point-to-point), w ktorym zadane sa
+c pary wierzchołkow, miedzy ktorymi nalezy wyznaczyc
+c najkrotsze sciezki.
+c
+p aux sp p2p 3
+c tu np. podane sa 3 pary (1, 5), (5, 1) i (1, 2)
+c
+q 1 5
+q 5 1
+q 1 2

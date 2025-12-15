@@ -1,0 +1,39 @@
+# Rafal Wlodarczyk 279762
+# Zadanie 2 - Instance
+
+# -- Instance Parameters --
+
+set Machines := m1 m2 m3;
+set Products := p1 p2 p3 p4;
+
+param max_production := 
+    p1 400
+    p2 100
+    p3 150
+    p4 500;
+
+param prod : m1 m2 m3 :=
+    p1 5  10 6
+    p2 3   6 4
+    p3 4   5 3
+    p4 4   2 1;
+
+param max_machine_time := 60;    
+
+param machine_cost :=
+    m1 2
+    m2 2
+    m3 3;
+
+param cost :=
+    p1 4
+    p2 1
+    p3 1
+    p4 1;
+
+param revenue :=
+    p1 9
+    p2 7
+    p3 6
+    p4 5;
+

@@ -1,0 +1,205 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}  
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\makeatletter
+\@addtoreset{equation}{subsubsection} 
+\makeatother
+
+\title{Alogrytmy Optymalizacji Dyskretnej\\
+    \large Lista 3 - Najkrótsze Ścieżki w Grafach}
+\author{Rafał Włodarczyk 279762}
+\date{2025-11-05}
+
+\begin{document}
+
+\maketitle
+
+\section{Model SSSP}
+
+Problem SSSP (Single Source Shortest Path) w grafie skierowanym $G = (V, E)$ polega na znalezieniu najtkrótszych ścieżek 
+ze źródła $s\in S$ do wszystkich innych wierzchołków $V\setminus \{s\}$ z wagami krawędzi $w: E \to \mathbb{R}_{\geq 0}$.
+Najkrótszą ścieżkę $p=(v_0,v_1,\dots,v_k)$, z wierzchołka $v_0$ do $v_k$ definiujemy jako taką ścieżkę, dla której sumaryczna waga:
+\begin{align*}
+    w(p) = \sum_{i=0}^{k-1} w(v_i, v_{i+1})
+\end{align*}
+jest najmniejsza. Definiujemy odległość $d(u,v)$ jako wagę najkrótszej ścieżki z $u$ do $v$:
+\begin{align*}
+    d(u,v) = \begin{cases}
+        \min\{w(p): u\to v\} & \text{jeśli istnieje ścieżka z } u \text{ do } v\\
+        \infty & \text{w przeciwnym wypadku}
+    \end{cases}
+\end{align*}
+
+\section{Algorytm Dijkstry}
+
+Chcemy wyznaczyć długości najkrótszych ścieżek z każdego źródła $s \in S$ do wszystkich wierzchołków $V\setminus \{s\}$.
+Rozpoczynamy od jednego ze źródeł $s \in S$, następnie przechodzimy po wszystkich połączeniach wychodzących z $s$,
+aktualizujac odległości do sąsiadów $v$ jako $d(s,v) = w(s,v)$. O kolejności wyboru następnego wierzchołka do odwiedzenia
+decyduje minimalna odległość od źródła spośród jeszcze nieodwiedzonych wierzchołków - możemy ją efektywnie przechowywać 
+za pomocą struktury implementujacej funkcję \texttt{extract-min} - np. kopiec binarny. Po wybraniu wierzchołka $u$ do odwiedzenia, 
+przechodzimy po wszystkich jego sąsiadach $v$ i sprawdzamy, czy odległość do nich może zostać zmniejszona, gdybyśmy przeszli przez $u$:
+\begin{align*}
+    \text{jeśli } d(s,v) > d(s,u) + w(u,v) \text{ wtedy } d(s,v) = d(s,u) + w(u,v)
+\end{align*}
+Proces powtarzamy aż do przejścia wszystkich wierzchołków osiągalnych z $s$. Dla grafu spójnego będą to wszystkie wierzchołki i wszystkie krawędzie.
+
+\subsection{Implementacja Algorytmu Dijkstry}
+
+Z dokumentacji \texttt{std::priority\_queue}\footnote{\url{https://en.cppreference.com/w/cpp/container/priority_queue.html}} wynika, że
+operacje insert oraz extract-min mają złożność $O(\log n)$, gdzie $n$ to liczba elementów w kolejce, a inicjalizacja kolejki to $O(1)$.
+
+\begin{algorithm}[H]
+\caption{Algorytm Dijkstry dla problemu SSSP}
+\begin{algorithmic}
+    \ForAll{$v \in V$}\\
+        $d[v] \gets \infty$, $\pi[v] \gets \text{none}$ \Comment{$O(V)$}
+    \EndFor\\
+    $d[s] \gets 0$, $Q \gets \text{priority queue with } (d[s], s)$
+    \While{$Q \neq \emptyset$} \Comment{$O(V+E)$} \\ 
+        \quad\quad $(d[u], u) \gets Q.\text{extract-min}()$ \Comment{$O(\log V)$}
+        \ForAll{$(u, v) \in E$}
+            \If{$d[v] > d[u] + w(u, v)$}\\
+                \quad\quad\quad\quad $d[v] \gets d[u] + w(u, v)$\\
+                \quad\quad\quad\quad $\pi[v] \gets u$\\
+                \quad\quad\quad\quad $Q.\text{insert}(d[v], v)$ \Comment{$O(\log V)$}
+            \EndIf
+        \EndFor
+    \EndWhile\\
+    \Return $d, \pi$ \Comment{Lista odległości i poprzedników}
+\end{algorithmic}   
+\end{algorithm}
+
+Cytując \texttt{families.pdf}\footnote{\url{http://www.dis.uniroma1.it/challenge9}} z załącznika do laboratorium \textit{only sparse graphs are of interest, as for other graphs arc scans
+dominate the running time}. Oznacza to, że badane grafy będą rzadkie, zatem wybieram listę sąsiedztwa jako wewnętrzną reprezentację grafu.
+
+\subsection{Złożność Obliczeniowa Algorytmu Dijkstry}
+
+Na podstawie analizy implementacji algorytmu możemy stwierdzić, że jego złożność wynosi
+\begin{align*}
+    O((V + E)\log V)
+\end{align*}
+
+\section{Alogrytm Diala}
+
+Algorytm Diala to modyfikacja algorytmu Dijkstry, w której wykorzystujemy fakt, że wagi krawędzi są ograniczone do przedziału $[0, C]$,
+wobec czego możemy w pewien sposób usprawnić wybór następnego wierzchołka z etykietami $d(i)\neq \infty$. Etykiety $d(i)$ na pewno są 
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/longc_plot.png}
+    \captionof{figure}{longc\_plot.png}
+    \label{fig:longc_plot}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/longn_plot.png}
+    \captionof{figure}{longn\_plot.png}
+    \label{fig:longn_plot}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/longc_plot_zoomed.png}
+    \captionof{figure}{longc\_plot\_zoomed.png}
+    \label{fig:longc_plot_zoomed}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/longn_plot_zoomed.png}
+    \captionof{figure}{longn\_plot\_zoomed.png}
+    \label{fig:longn_plot_zoomed}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/random4c_plot.png}
+    \captionof{figure}{random4c\_plot.png}
+    \label{fig:random4c_plot}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/random4n_plot.png}
+    \captionof{figure}{random4n\_plot.png}
+    \label{fig:random4n_plot}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/random4c_plot_zoomed.png}
+    \captionof{figure}{random4c\_plot\_zoomed.png}
+    \label{fig:random4c_plot_zoomed}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/random4n_plot_zoomed.png}
+    \captionof{figure}{random4n\_plot\_zoomed.png}
+    \label{fig:random4n_plot_zoomed}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/squarec_plot.png}
+    \captionof{figure}{squarec\_plot.png}
+    \label{fig:squarec_plot}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/squaren_plot.png}
+    \captionof{figure}{squaren\_plot.png}
+    \label{fig:squaren_plot}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/squarec_plot_zoomed.png}
+    \captionof{figure}{squarec\_plot\_zoomed.png}
+    \label{fig:squarec_plot_zoomed}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{plot/squaren_plot_zoomed.png}
+    \captionof{figure}{squaren\_plot\_zoomed.png}
+    \label{fig:squaren_plot_zoomed}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{plot/usa_bar_chart.png}
+    \captionof{figure}{usa\_bar\_chart.png}
+    \label{fig:usa_bar_chart}
+\end{figure}
+
+
+\end{document}

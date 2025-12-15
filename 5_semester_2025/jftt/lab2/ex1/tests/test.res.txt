@@ -1,0 +1,11 @@
+1st 2nd 3rd 4th
+x
+x
+x
+x
+9th 10th
+x x x x x
+16th
+---
+Words=16
+Lines=8

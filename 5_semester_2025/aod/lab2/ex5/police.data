@@ -1,0 +1,27 @@
+# Rafal Wlodarczyk 279762
+# Exercise 5 - Instance
+
+set time := 1 2 3;
+set region := 1 2 3;
+
+param min_radiowozy:
+    1   2   3   :=
+1   2   4   3
+2   3   6   5
+3   5   7   6;
+
+param max_radiowozy:
+    1   2   3   :=
+1   3   7   5
+2   5   7   10
+3   8   12  10;
+
+param min_radiowozy_time :=
+    1 10
+    2 20
+    3 18;
+
+param min_radiowozy_region := 
+    1 10
+    2 14
+    3 13;

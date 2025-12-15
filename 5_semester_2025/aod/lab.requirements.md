@@ -1,0 +1,5 @@
+- sensowne przedstawienie wyników.
+- narysować graf
+- mierzyć czas
+- krótkie opracowanie (mini-sprawozdanie)
+- nigdzie nie wysyłamy

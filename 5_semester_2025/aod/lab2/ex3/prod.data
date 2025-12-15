@@ -1,0 +1,17 @@
+# Rafal Wlodarczyk 279762
+# Exercise 3 - Instance
+
+set Times := 1 2 3 4;
+
+param cost := 1 6000 2 4000 3 8000 4 9000;
+
+param production_cap := 100;
+param additional_production_cap := 1 60 2 65 3 70 4 60;
+param additional_cost := 1 8000 2 6000 3 10000 4 11000;
+param demand := 1 130 2 80 3 125 4 195;
+
+param storage_capacity := 70;
+param additional_storage_cost := 1500;
+param initial_inventory := 15;
+
+end;

@@ -1,0 +1,24 @@
+# Rafal Wlodarczyk 279762
+# Exercise 4 - Instance for Float Model D
+
+set Cities := 1 2 3 4;
+
+param start_city := 1;
+param end_city := 4;
+param max_time := 1000;
+
+param cost:
+    1   2   3   4 :=
+1   .   1   1   .
+2   .   .   .   2 
+3   .   .   .   2
+4   .   .   .   . ;
+
+param time:
+    1   2   3   4 :=
+1   .   2   2   .
+2   .   .   .   4 
+3   .   .   .   4
+4   .   .   .   . ;
+
+end;

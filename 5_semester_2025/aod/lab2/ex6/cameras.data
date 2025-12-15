@@ -1,0 +1,13 @@
+# Rafal Wlodarczyk 279762
+# Exercise 6 - Instance
+
+param m := 5;
+param n := 5;
+param range := 5;
+
+param containers: 1 2 3 4 5 :=
+1   0 1 0 0 1
+2   0 0 0 0 0
+3   0 0 0 0 0
+4   0 0 0 0 1
+5   1 0 0 0 0;

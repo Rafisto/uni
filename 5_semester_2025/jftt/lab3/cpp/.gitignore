@@ -1,0 +1,4 @@
+lex.yy.cpp
+*.tab.cc
+*.tab.hh
+calc
