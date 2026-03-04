@@ -1,0 +1,180 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Wybrane Zagadnienia Algebry}  
+\author{Rafał Włodarczyk}
+\date{INA 6, 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Lecture I}
+
+\subsection{Grupa}
+
+Magmą nazywamy parę $(X,+)$, gdzie $+: X\times X \to X$.
+\begin{itemize}
+    \item Magma + łączność $=$ półgrupa
+    \item Półgrupa + el. neutralny $0$ $=$ monoid
+    \item Monoid + elementy odwrotne $=$ grupa
+    \item Grupa + przemienność $=$ grupa abelowa
+\end{itemize}
+
+\subsection{Pierścień}
+
+Pierścieniem nazywamy $R=(X,+,\cdot,0)$, gdy:
+\begin{itemize}
+    \item $(X,+,0)$ jest grupą abelową
+    \item $(X,\cdot)$ jest półgrupą
+    \item $(\forall a,b,c\in X) \quad a\cdot(b+c) = a\cdot b + a\cdot c$
+    \item $(\forall a,b,c\in X) \quad (a+b)\cdot c = a\cdot c + b\cdot c$
+\end{itemize}
+Jeśli $(X,\cdot)$ jest przemienne, to pierścień $R$ nazywamy przemiennym.\\
+Jeśli $1\in X : (X,\cdot,1)$ jest monoidem, to $R$ nazywamy pierścieniem z jedynką.\\\\
+\textbf{Operacje na pierścieniach}
+$R=(X,+,\cdot,0)$ - pierścień, $\alpha,\beta \in X$ to:
+\begin{align*}
+    \alpha A + \beta B = \{\alpha \cdot a + \beta \cdot b : a\in A, b \in B\}
+\end{align*}
+Przykład $(2\mathbb{Z},+,\cdot,0)$ - pierścień przemienny bez 1.\\
+Przykład $(M_{2 \times 2}, +,\cdot,0,1_2)$ - pierścień macierzy rzeczywistych $2\times 2$ odwracalne - pierścień z jedynką, ale nie przemienny.\\
+
+\subsection{Ciało}
+
+\noindent
+Jeśli $(X-\{0\},\cdot, 1)$ jest grupą abelową to nazywamy to \textbf{ciałem}.
+
+\noindent
+Jeśli $p$-pierwsza to $(\mathbb{Z}_p, +_p, \cdot_p,0,1)$ jest ciałem.
+
+\noindent
+Jeśli $R=(X,+,\cdot,0)$ oraz $A$ niepusty taki, że $A\cap X = \emptyset$. Określamy rozszerzenie $R$ o $A$:
+\begin{align*}
+    R[A] \text{ - najmniejszy pierścień który zawiera } R\cup A
+\end{align*}
+Jeśli $|A|=n\in \mathbb{N}$ to dla $A=\{a_1,a_2,\dots, a_n\}$:
+\begin{align*}
+    R[A] = R[a_1,a_2,\dots,a_n]
+\end{align*}
+Pierścień Gaussa $(\mathbb{Z}[i], +,\cdot,0,1)$, $\mathbb{Z}[i] = \{a+bi : a,b \in \mathbb{Z}\}$\\
+Liczby Dualne $\mathbb{R}[\varepsilon] = (D, +,\cdot,0,1)$, $D=\{a+b\varepsilon : a,b\in\mathbb{R}\}, \varepsilon \notin \mathbb{R}, \varepsilon^2=0$\\ 
+Liczby Podwójne $(P,+,\cdot, 0,1), P=\{a+bj : a,b\in\mathbb{R}\}, j\notin\mathbb{R}, j^2=1$\\
+Liczby Zespolone $\mathbf{C} = \mathbf{R}[i] = (\mathbf{C}, +, \cdot, 0,1)$\\
+Pierścień wielomianów o zm. x : $x\notin K$, $K[x] = \{\sum_{i=0}^{n} a_i x^i : n\in\mathbb{N} \left(\forall i=0,1\dots n\right), a_i \in K\}$\\
+Pierścień wielomianów w zm. zm. x, y $K[x,y] = \{\sum_{i=0}^{n}\sum_{j=0}^{m} a_{ij} x^i y^j : a_{ij} \in K\}$\\\\
+
+Def. $R=(X,+,\cdot)$ - pierścień. $A\subseteq X$. Określamy ideał:
+\begin{align*}
+    \left\langle  A\right\rangle = \{\sum_{i=1}^{n\in \mathbb{N}} r_i \cdot a_i : r_i \in X, a_i \in A\}
+\end{align*}
+$A$ - może być nieskończony. Jeśli $A = \{a_1,\dots a_k\}$ to $\langle A \rangle = \{\sum_{i=1}^{k} r_i \cdot a_i : r_i \in X\}$\\
+$\langle 2 \rangle$ w $\mathbb{Z}$ : $\langle 2 \rangle = 2\mathbb{Z}$\\
+$\langle x - 1 \rangle$ w $\mathbb{R}[x]$ : $\langle x - 1 \rangle = \{(x-1)w(x) : w(x) \in \mathbb{R}[x]\}$\\
+$R = (X,+,\cdot,0)$ - pierścień. $d|a \equiv \left(\exists b \in X\right) d\cdot b = a$\\
+$d \in \text{NWD}(a,b) \equiv (d | a \land d | b) \land \left(\forall x\right) \left((x | a \land x | b) \implies x | d\right)$\\
+$d \in \text{NWW}(a,b)$ ćwiczenia\\
+$a,b\in \mathbb{Z}[i] \langle a,b \rangle = \langle c \rangle \equiv c \in \text{NWD}(a,b)$\\
+$\langle a \rangle \cap \langle b \rangle = \langle c \rangle \equiv c \in \text{NWW}(a,b)$
+
+\subsection{Ideał}
+
+$R = (X,+,\cdot, 0)$ - pierścień przemienny. $\emptyset \neq I \subseteq X$. $I$ nazywamy ideałem w $R$, gdy:
+\begin{enumerate}
+    \item $\left(\forall a,b\in I \right)$ $a-b \in I$
+    \item $\left(\forall r \in X \right)\left(\forall a \in I\right) r\cdot a \in I$
+\end{enumerate}
+$I=\{0\}$ - ideał trywialny, $I=X$ - ideał niewłaściwy.\\
+$\langle A\rangle$ - najmniejszy ideał w $R$ zawierający $A$.\\
+
+\subsection{Relacja Równoważności}
+
+Niech $R$ - pierścień, a $I \in \text{ID}(R)$, $a,b\in R$
+\begin{align*}
+    a \equiv b \iff (a-b) \in I
+\end{align*}
+Gdzie $\equiv$ jest relacją równoważności.
+
+\subsection{Pierścień Ilorazowy}
+
+$R/_{\equiv}$ nazywamy pierścieniem ilorazowym z działaniami i el neutralnym określonymi naturalnie.
+
+\subsection{Dziedzina Całkowitości}
+
+Pierścień $R$ to dziedzina całkowitości gdy $\left(\forall u,v \in R \right) u\cdot v = 0 \implies (u=0 \lor v=0)$\\
+$\mathbb{Z}_7[x] \implies w(x) = x^7-x$ (MTF) $\left(\forall x \in \mathbb{Z}_7\right) w(x) = 0$
+
+\subsection{Dziedzina Euklidesowa}
+
+Nazywamy dziedzinę całkowitości $(X,+,\cdot, 0)$, że $\exists N : X\to \mathbb{N}$ takie, że 
+\begin{enumerate}
+    \item $\left(\forall a,b\in X\right)(b\neq 0) \implies [(\exists q,r \in X) a = q\cdot b + r \land (r=0 \lor N(b) < N(a))]$
+    \item $\left(\forall a,b \in X\right)(b \neq 0) \implies N(a) \leq N(a\cdot b)$
+\end{enumerate}
+Uwaga. Jeśli istnieje $n$ które spełnia $1$ to istnieje $\tilde{N}$, które spełnia 1,2.\\
+Uwaga. N, $N$ które spełnia 1, 2 nazywamy normą dziedziny euklidesowej $R\in \text{EUCL}$
+
+\end{document}
