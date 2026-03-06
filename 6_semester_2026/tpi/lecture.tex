@@ -197,5 +197,16 @@ Każda $k$-taśmowa TM $M$ która na $x$ pracuje w czasie $f(|x|)$ można zastą
     \item $M'(x)$ wykona co najwyżej $O(f(|x|)^2)$ kroków.
 \end{enumerate}
 
+\section{Niedeterminizm}
+
+\begin{align*}
+    \delta : Q \times \left(\sum \cup \{\smile\}\right) \to
+    2^{(Q\cup\{\text{tak, nie, h}\}) \times (\Sigma \cup \{\smile\}) \times \{\to,\leftarrow,-\}}
+\end{align*}
+NTM $M$ akceptuje $x$ jeśli istnieje obliczenie $M(x)$ kończące się w stanie \textit{tak},
+odrzuca jeśli każde obliczenie kończy się w stanie \textit{nie}.
+
+
+
 
 \end{document}
