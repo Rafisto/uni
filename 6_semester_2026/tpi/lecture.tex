@@ -1,0 +1,201 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Teoretyczne Podstawy Informatyki}  
+\author{Rafał Włodarczyk}
+\date{INA 6, 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\vspace{1cm}
+
+\noindent
+Uniwersalne pojęcie \textbf{obliczenia} nie istnieje. Musimy wpierw wybrać model - Maszyny Turinga, Rachunku Lambda.
+
+\section{Maszyna Turinga}
+
+Maszyna Turinga to $(Q,q_0,\Sigma,\delta)$:
+\begin{enumerate}
+    \item $Q$ - skończony zbiór stanów
+    \item $q_0 \in Q$ - stan początkowy
+    \item $\Sigma$ - skończony alfabet (oraz $\smile$ (brak) dla pustych komórek)
+    \item $\delta : Q \times (\Sigma \cup \{\smile\}) \to (Q \cup \{\text{tak},\text{nie},\text{h}\}) \times (\Sigma \cup \{\smile\}) \times \{\to, \leftarrow, -\}$
+\end{enumerate}
+oraz mamy nieskończoną taśmę.
+
+\subsection{Palindrom nad Alfabetem}
+
+Przykład. Palindrom nad Alfabetem $\{0,1\}$\\
+\begin{tabular}{|c|ccc|}
+\hline
+stan & 0 & 1 & $\smile$ \\
+\hline
+$p$ & $(q_0,\smile,\to)$ & $(q_1,\smile,\to)$ & $\{\text{tak}\}$ \\
+$q_0$ & $(q_0, 0, \to)$ & $(q_0, 1, \to)$ & $(q_2, \smile, \leftarrow)$ \\
+$q_1$ & $(q_0, 0, \to)$ & $(q_1, 1, \to)$ & $(q_3, \smile, \leftarrow)$ \\
+$q_2$ & $(r,\smile, \leftarrow)$ & $\{\text{nie}\}$ & $\{\text{tak}\}$ \\ 
+$q_3$ & $\{\text{nie}\}$ & $(r,\smile,\leftarrow)$ & $\{\text{tak}\}$ \\ 
+$r$ & $(r,0,\leftarrow)$ & $(r, 1, \leftarrow)$ & $(p,\smile,\to)$ \\
+\hline
+\end{tabular}
+\\\\
+Uproszczenie zapisu: $\{\text{tak}\}\ \equiv (\text{tak}, \smile, -)$. Czas rozpoznania palindromu: $\mathcal{O}(n^2)$
+
+\subsection{Wynik działania Maszyny Turinga}
+
+Dla TM $M$ i ciągu wejściowego $X$ przez $M(X)$ oznaczamy wynik działania $M$ na $x$.
+\begin{itemize}
+    \item $M(x) = \text{tak}$ - mówimy, że $M$ akceptuje $x$
+    \item $M(x) = \text{nie}$ - mówimy, że $M$ odrzuca $x$
+    \item $M(x) = \text{y}$ - mówimy, że $M$ zatrzymała się na $h$ i na taśmie jest $y$ (bez zbędnych $\smile$ z lewej i prawej strony). 
+    Mówimy, że $M(x)$ obliczyło $y$.
+    \item $M(x) = \nearrow$ - jeśli $M$ na $x$ nie kończy nigdy pracy (zapętla się).
+\end{itemize}
+
+\subsection{Dodawanie Binarne i napisy nad 0,1}
+
+Przykład. Dodawanie binarne.\\
+\begin{tabular}{|c|ccc|}
+\hline
+stan & 0 & 1 & $\smile$ \\
+\hline
+$q_0$ & $(q_0, 0, \to)$ & $(q_0,1,\to)$ & $(q_1,\smile, \leftarrow)$ \\
+$q_1$ & $(q_2, 1, \leftarrow)$ & $(q_1, 0, \leftarrow)$ & $(h, 1, -)$ \\ 
+$q_2$ & $(q_2, 0, \leftarrow)$ & $(q_2, 1, \leftarrow)$ & $(h, \smile, \to)$ \\
+\hline
+\end{tabular}
+\\\\
+Dla maszyny $M$ zachodzi $M(101)=110$. Jeśli zmienie $h$ na $q_0$ to zapętlamy dodawanie.
+\\\\
+Przykład. Generujemy napisy nad $\{0,1\}$\\
+\begin{tabular}{|c|ccc|}
+\hline
+stan & 0 & 1 & $\smile$ \\
+\hline
+$q_0$ & $(q_0, 0, \to)$ & $(q_0,1,\to)$ & $(q_1,\smile, \leftarrow)$ \\
+$q_1$ & $(q_2, 1, \leftarrow)$ & $(q_1, 0, \leftarrow)$ & $(h, \color{red}{0}\color{black}, -)$ \\ 
+$q_2$ & $(q_2, 0, \leftarrow)$ & $(q_2, 1, \leftarrow)$ & $(h, \smile, \to)$ \\
+\hline
+\end{tabular}
+\\\\
+$M$: $0,1,00,01,10,11,000,\dots$
+
+\subsection{Konfiguracja Maszyny Turinga}
+
+Konfiguracją TM $M$ nazywamy trójkę $(q,\alpha, \beta)$, taką że:
+\begin{itemize}
+    \item $q$ jest aktualnym stanem
+    \item $\alpha$ jest zawartością taśmy przed głowicą
+    \item $\beta$ jest zawartością tasmy po głowicy
+    \item $\vdash_M$ oznacza relację przejścia w jednym kroku przez maszynę $M$ między konfiguracjami
+\end{itemize}
+Analogicznie $\vdash_M^i$ to wyprowadzenie w $i$-krokach, $\vdash_M^{*}$ w dowolnej ilości kroków.
+\begin{align*}
+    x = 010& \\
+    (p,\varepsilon, 010) &\vdash \\
+    (q_0, \varepsilon, 10) &\vdash \\
+    (q_0, 1, 0) &\vdash \\
+    (q_0, 10, \varepsilon) &\vdash \\
+    (q_2, 1, 0) &\vdash \\
+    (r, \varepsilon, 1) &\vdash \dots
+\end{align*}
+$M(x) = \text{tak} \iff (q_0,\varepsilon, x) \vdash_M^{*} (\text{tak}, *, *)$\\
+$M(x) = y \iff (q_0, \varepsilon, x) \vdash_M^{*} (h, \alpha, \beta) \land y=\alpha\beta$
+
+\section{k-Taśmowa Maszyna Turinga}
+
+Zmienia się $\delta$ na:
+\begin{align*}
+    \delta : Q \times \left(\sum \cup \{\smile\}\right)^k 
+    \to
+    \left(Q\sum \{\text{tak, nie, h}\}\right) \times
+    \left(\left(\sum \cup \{\smile\}\right) 
+    \times \{\to,\leftarrow, -\}\right)^k
+\end{align*}
+Przykład. Palindrom nad alfabetem $\{0,1\}$\\
+\begin{tabular}{cccccccccc}
+\hline
+\text{stan} & 00 & 01 & 0$\smile$ & 10 & 11 \\
+$q_0$ & & & $q_0,\to^0,\to^0$ & & & $q_0,\to^1,\to^1$ \\
+$q_1$ & $q_1, \leftarrow^0, -^0$ & $\leftarrow^0 -^1$ & & $q_1, \leftarrow^1 -^0$ & $q_1, \leftarrow^1 -^1$ \\
+$q_2$ & $q_2, \to^{\{\smile\}}, \leftarrow^{\{\smile\}}$ & nie & - & nie &  $q_2, \to^{\{\smile\}}\leftarrow^{\{\smile\}}$ \\
+\hline
+\text{stan} & 1$\smile$ & $\smile$0 & $\smile$1 & $\smile\smile$ \\
+$q_0$ & $q_0,\leftarrow^{\{\smile\}},\leftarrow^{\{\smile\}}$\\ 
+$q_1$ & $q_2, \to^{\{\smile\}}, -^0$ &  $q_2, \to^{\{\smile\}}, -^1$ & tak \\
+$q_2$ & - & - & - & tak
+\end{tabular}
+
+\subsection{Zastąpienie k-Taśmowej przez jednotaśmową}
+
+Każda $k$-taśmowa TM $M$ która na $x$ pracuje w czasie $f(|x|)$ można zastąpić $1$-taśmową TM $M'$ taką, że:
+\begin{enumerate}
+    \item $\forall x M(x) = M'(x)$
+    \item $M'(x)$ wykona co najwyżej $O(f(|x|)^2)$ kroków.
+\end{enumerate}
+
+
+\end{document}
