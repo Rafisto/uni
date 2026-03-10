@@ -1,0 +1,210 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=-5cm, right=2cm, bottom=2cm, includeheadfoot, headheight=130pt, a4paper]{geometry}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{longtable}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\title{Algorytmy Metaheurystyczne\\Lista 0 - TSP}
+\author{Rafał Włodarczyk}
+\date{10.03.2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Źródło dla danych}
+
+Dane do programu są wzięte ze strony internetowej:
+\begin{center}
+\texttt{https://www.math.uwaterloo.ca/tsp/world/countries.html}
+\end{center}
+oraz są dostępne do pobrania w formacie \texttt{.tsp} za pomocą skryptu \texttt{get\_data.sh}.
+
+\section{Zadanie 1 - Metoda Losowa}
+
+Zdefiniujmy odległość Euklidesową jako:
+\begin{align*}
+    d((x_1, y_1), (x_2, y_2)) = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+\end{align*}
+W zadaniu użyłem \texttt{std::shuffle} do losowania permutacji wierzchołków.
+
+\noindent
+W pliku \texttt{task1.cpp} zapisany został kod źródłowy programu 
+wczytującego z dane grafów oraz wyznaczającego statystyki 1000 permutacji,
+które prezentują się następująco:
+
+\begin{longtable}{|l|rrr|}
+\hline
+\textbf{Graf} & \textbf{Min} & \textbf{Min10Avg} & \textbf{Min50Avg} \\ \hline
+western\_sahara.tsp & 77764 & 91586 & 82601 \\ 
+djibouti.tsp & 20884 & 23528 & 21335 \\ 
+qatar.tsp & 81614 & 86907 & 81237 \\ 
+uruguay.tsp & 1555856 & 1581006 & 1495132 \\
+zimbabwe.tsp & 2243300 & 2283067 & 2160078 \\ \hline
+\end{longtable}
+\noindent
+Wartości zostały wyznaczane w precyzji \texttt{double} zaokrąglone do najbliższej liczby całkowitej.
+Wyjaśnienie kolumn (wynik w jednostce wagi krawędzi - odległości w płaszczyźnie euklidesowej):
+\begin{itemize}
+    \item \textbf{Min} oznacza najmniejszą całkowitą wagę spośród 1000 permutacji
+    \item \textbf{Min10Avg} średnia z liczb - najmniejsza całkowita waga w kolejnych 10 losowaniach.
+    \item \textbf{Min50Avg} średnia z liczb - najmniejsza całkowita waga w kolejnych 50 losowaniach. 
+\end{itemize}
+
+\section{Zadanie 2 - Wykresy}
+
+Rozwiązanie graficzne obejmuje stworzenie wykresu w płaszczyźnie Euklidesowej, w której
+poszczególne punkty reprezentują wierzchołki grafu, a linie łączące te punkty reprezentują krawędzie,
+łączymy krawędzie w kolejności permutacji uzyskanej w zadaniu 1, tworząc w ten sposób trasę.\\\\
+
+\noindent
+Przedstawiam wykresy dla każdego z grafów, które zostały wygenerowane w pliku \texttt{task2.cpp}:
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/best_randomized_western_sahara.tsp.png}
+        \caption{Trasa dla grafu western\_sahara.tsp}
+        \label{fig:western_sahara}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/best_randomized_djibouti.tsp.png}
+        \caption{Trasa dla grafu djibouti.tsp}
+        \label{fig:djibouti}
+    \end{minipage}
+    \vspace{1cm}
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/best_randomized_qatar.tsp.png}
+        \caption{Trasa dla grafu qatar.tsp}
+        \label{fig:qatar}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/best_randomized_uruguay.tsp.png}
+        \caption{Trasa dla grafu uruguay.tsp}
+        \label{fig:uruguay}
+    \end{minipage}
+    \vspace{1cm}
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/best_randomized_zimbabwe.tsp.png}
+        \caption{Trasa dla grafu zimbabwe.tsp}
+        \label{fig:zimbabwe}
+    \end{minipage}
+\end{figure}
+
+\subsection{Wniosek}
+
+\section{Zadanie 3 - MST}
+
+Do wykonania zadanie posłużyłem się algorytmem Kruskala, który był szerzej omawiany na przedmiocie
+Algorytmy i Struktury Danych. W pliku \texttt{task3.cpp} znajduje się kod źródłowy programu, 
+który wczytuje dane grafów, wyznacza minimalne drzewa rozpinające (MST) oraz oblicza wagi tych drzew.\\\\
+
+\noindent
+Wyniki prezentują się następująco:
+\begin{longtable}{|l|r|r|}
+\hline
+\textbf{Graf} & \textbf{Liczba wierzchołków (n)} & \textbf{Waga MST} \\ \hline
+western\_sahara.tsp & 29 & 21751 \\ 
+djibouti.tsp & 38 & 5831 \\ 
+qatar.tsp & 194 & 8028 \\ 
+uruguay.tsp & 734 & 69876 \\ 
+zimbabwe.tsp & 929 & 82873 \\ \hline
+\end{longtable}
+
+\section{Zadanie 4 - MST do TSP z Wykresami}
+
+Możemy wykonać DFS na MST, aby uzyskać trasę rozwiązującą TSP,
+uzyskując w ten sposób 2-aproksymację rozwiązania. W pliku \texttt{task4.cpp} znajduje się kod źródłowy programu.\\\\
+
+\noindent
+Cykl komiwojażera powstaje w wyniku wypisania wierzchołków w kolejności odwiedzania podczas przeszukiwania w głąb.
+To znaczy że wykorzystujemy MST do stworzenia grafu, po którym następnie wykonujemy DFS, a kolejność odwiedzania wierzchołków podczas DFS tworzy trasę TSP.\\\\
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/kruskal_western_sahara.tsp.png}
+        \caption{Trasa dla grafu western\_sahara.tsp}
+        \label{fig:mst-western_sahara}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/kruskal_djibouti.tsp.png}
+        \caption{Trasa dla grafu djibouti.tsp}
+        \label{fig:mst-djibouti}
+    \end{minipage}
+    \vspace{1cm}
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/kruskal_qatar.tsp.png}
+        \caption{Trasa dla grafu qatar.tsp}
+        \label{fig:mst-qatar}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/kruskal_uruguay.tsp.png}
+        \caption{Trasa dla grafu uruguay.tsp}
+        \label{fig:mst-uruguay}
+    \end{minipage}
+    \vspace{1cm}
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{output/kruskal_zimbabwe.tsp.png}
+        \caption{Trasa dla grafu zimbabwe.tsp}
+        \label{fig:mst-zimbabwe}
+    \end{minipage}
+\end{figure}
+
+\section{Porównanie wyników}
+
+Porównanie następuje pomiędzy metodą \textbf{Random} (zadanie 1), \textbf{MST 2-approx} (zadanie 4), \textbf{OPT} - informacje na stronie internetowej.
+
+\begin{longtable}{|l|r|r|r|}
+\hline
+\textbf{Graf} & \textbf{Random} & \textbf{MST 2-approx} & \textbf{OPT} \\ \hline
+western\_sahara.tsp & 77764 & 35009 & 27603 \\ 
+djibouti.tsp & 20884 & 8739 & 6656 \\ 
+qatar.tsp & 81614 & 12510 & 9352 \\ 
+uruguay.tsp & 1555856 & 107340 & 79114 \\ 
+zimbabwe.tsp & 2243300 & 131828 & 95345 \\ \hline
+\end{longtable}
+\noindent
+
+Porównanie wyników pokazuje, że metoda MST 2-aproksymacji daje wyniki znacznie bliższe wartościom optymalnym (OPT) w porównaniu do metody losowej.
+Widzimy również doświadczalnie, że dla każdego przypadku metody \textbf{MST 2-approx} wynik nie przekracza dwu-krotności wartości optymalnej,
+co jest zgodne z teoretyczną gwarancją tej aproksymacji.
+
+\end{document}
