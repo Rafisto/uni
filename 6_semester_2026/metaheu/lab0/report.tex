@@ -35,6 +35,12 @@
 
 \tableofcontents
 
+\section{Model}
+
+Model TSP zakłada graf pełny $G=(V,E)$ z wagami. Wiemy, że $G$ ma $H=(n-1)!$ cykli Hamiltona, 
+ponieważ mamy $n!$ możliwych permutacji wierzchołków, po których chodzimy - a każdy cykl możemy
+zacząć z dowolnego z nich - zatem ostatecznie mamy $H=\frac{n!}{n}=(n-1)!$ cykli Hamiltona.
+
 \section{Źródło dla danych}
 
 Dane do programu są wzięte ze strony internetowej:
@@ -123,10 +129,34 @@ Przedstawiam wykresy dla każdego z grafów, które zostały wygenerowane w plik
 
 \subsection{Wniosek}
 
+Zobaczmy, że jeżeli bierzemy wierzchołki losowo to pomijamy trywialny fakt, iż
+para krzyżujących się krawędzi może zostać zastąpiona przez parę nie krzyżującą się,
+o mniejszej całkowitej wadze.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{crossing.png}
+    \caption{Przykład ścieżki}
+\end{figure}
+
+Najprościej można to uzasadnić z nierówności trójkąta - ścieżka $(a,c),(c,b)$ przechodząca przez dodatkowy
+wierzchołek na pewno będzie większy niż bezpośrednie przejście $(a,b)$.
+
 \section{Zadanie 3 - MST}
 
 Do wykonania zadanie posłużyłem się algorytmem Kruskala, który był szerzej omawiany na przedmiocie
-Algorytmy i Struktury Danych. W pliku \texttt{task3.cpp} znajduje się kod źródłowy programu, 
+Algorytmy i Struktury Danych. Algorytm Kruskala działa w złożoności $\mathcal{O}(E \cdot \log V)$, oraz jest opisywany w następujących krokach:
+
+\begin{enumerate}
+    \item Utwórz $L$ - docelowa struktura MST, oraz ustal każdy wierzchołek jako osobne drzewo.
+    \item Utwórz zbiór $S$ zawierający wszystkie krawędzie grafu $G$.
+    \item Dopóki $S$ nie jest pusty oraz $L$ nie jest MST
+        \item Wybierz i usuń z $S$ krawędź o minimalnej wadze.
+        \item Jeżeli krawędź łączyła dwa różne drzewa to dodają ją do lasu $L$, aby połączyła dwa poddrzewa w jedno.
+        \item W przeciwnym przypadku odrzuć, wróć do punktu 3-go.
+\end{enumerate}
+
+W pliku \texttt{task3.cpp} znajduje się kod źródłowy programu, 
 który wczytuje dane grafów, wyznacza minimalne drzewa rozpinające (MST) oraz oblicza wagi tych drzew.\\\\
 
 \noindent
