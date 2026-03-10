@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <limits>
 #include <string>
 #include <fstream>
@@ -97,6 +98,7 @@ int main() {
         double mean50 = sum50 / min50.size();
 
         std::println("({}) min={}, mean_min10={}, mean_min50={}", filename, min_dist, mean10, mean50);
+        std::println(stderr, "({}) min={}, mean_min10={}, mean_min50={}", filename, min_dist, mean10, mean50);
         for (std::size_t v : best_effort) {
             std::println("{};{};{}", v,points[v].first,points[v].second);
         }

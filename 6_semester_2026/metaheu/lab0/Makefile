@@ -1,13 +1,13 @@
 CC=clang++
 CFLAGS=-std=c++23
 
-INPUT=task1.cpp
-OUTPUT=task1.out
+INPUT=$(wildcard *.cpp)
+OUTPUT=$(INPUT:.cpp=.out)
 
-all: main
+all: $(OUTPUT)
 
-main: $(INPUT)
-	$(CC) $(CFLAGS) -o $(OUTPUT) $(INPUT)
+%.out: %.cpp
+	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
 	rm -rf $(OUTPUT)
