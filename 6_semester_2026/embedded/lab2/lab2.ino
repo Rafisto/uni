@@ -3,44 +3,23 @@
 Wheels w;
 volatile char cmd;
 
+// (int pRF, int pRB, int pRS, int pLF, int pLB, int pLS)
+// 7 8 5 12 11 10
+
+// white - EN A - SPEED R - PIN 5
+// gray - IN1 - PIN 11
+// purple - IN2 - PIN 12
+// blue - IN3 - PIN 8
+// green - IN4 - PIN 7
+// yellow - EN B - SPEED L - PIN 10
+
 void setup() {
   w.attach(7,8,5,12,11,10);
-  
-  Serial.begin(9600);
-  Serial.println("Forward: WAD");
-  Serial.println("Back: ZXC");
-  Serial.println("Stop: S");
-
 }
 
 void loop() {
-  while(Serial.available())
-  {
-    cmd = Serial.read();
-    switch(cmd)
-    {
-      case 'f': {
-        int cm = (int)Serial.parseInt();
-        if (cm > 0) w.goForward(cm);
-        break;
-      }
-      case 'b': {
-        int cm = (int)Serial.parseInt();
-        if (cm > 0) w.goBack(cm);
-        break;
-      }
-      case 'w': w.forward(); break;
-      case 'x': w.back(); break;
-      case 'a': w.forwardLeft(); break;
-      case 'd': w.forwardRight(); break;
-      case 'z': w.backLeft(); break;
-      case 'c': w.backRight(); break;
-      case 's': w.stop(); break;
-      case '1': w.setSpeedLeft(75); break;
-      case '2': w.setSpeedLeft(200); break;
-      case '9': w.setSpeedRight(75); break;
-      case '0': w.setSpeedRight(200); break;
-      case '5': w.setSpeed(100); break;
-    }
-  }
+  w.goForward(10);
+  delay(2000);
+  w.goBack(10);
+  delay(2000);
 }
