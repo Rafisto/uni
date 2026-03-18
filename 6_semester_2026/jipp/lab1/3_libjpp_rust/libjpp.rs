@@ -1,19 +1,19 @@
-pub fn gcd(mut x: u64, mut y: u64) -> u64 {
-    if y == 0 {
-        return x;
-    }
-    if x == 0 {
-        return y;
-    }
-    if x == y {
-        return x;
-    }
-    if x < y {
-        return gcd(y, x);
-    }
+#[repr(C)]
+pub struct DiophantineResult {
+    pub x: u64,
+    pub y: u64,
+    pub err: bool,
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn gcd(mut x: u64, mut y: u64) -> u64 {
+    if y == 0 { return x; }
+    if x == 0 { return y; }
+    if x == y { return x; }
+    if x < y { return gcd(y, x); }
 
     while y != 0 {
-        let t: u64 = y;
+        let t = y;
         y = x % y;
         x = t;
     }
@@ -21,73 +21,63 @@ pub fn gcd(mut x: u64, mut y: u64) -> u64 {
     x
 }
 
-pub fn first_prime_div(n: u64) -> u64 {
-    if n <= 1 {
-        return 0;
-    }
+#[unsafe(no_mangle)]
+pub extern "C" fn first_prime_div(n: u64) -> u64 {
+    if n <= 1 { return 0; }
 
-    for i in 2..=((n as f64).sqrt() as u64) {
+    let mut i = 2;
+    while i * i <= n {
         if n % i == 0 {
             return i;
         }
+        i += 1;
     }
-
     n
 }
 
-pub fn phi(n: u64) -> u64 {
+#[unsafe(no_mangle)]
+pub extern "C" fn phi(n: u64) -> u64 {
     let mut res = 0;
     for i in 1..=n {
         if gcd(i, n) == 1 {
             res += 1;
         }
     }
-
     res
 }
 
-struct pair64 {
-    x: i64,
-    y: i64,
-}
+#[unsafe(no_mangle)]
+pub extern "C" fn diophantine(mut a: u64, mut b: u64, c: u64) -> DiophantineResult {
+    if c % gcd(a, b) != 0 {
+        return DiophantineResult { x: 0, y: 0, err: true };
+    }
 
-pub fn diophantine(a: i64, b: i64, c: i64) -> pair64 {
-    let mut x: i64 = 1;
-    let mut y: i64 = 0;
-    let mut r: i64 = b;
-    let mut s: i64 = a - 1;
-    let mut a = a;
-    let mut b = b;
+    let mut x = 1;
+    let mut y = 0;
+    let mut r = b;
+    let mut s = a - 1;
 
     while b > 0 {
-        let remainder = a % b;
         let quotient = a / b;
+        let remainder = a % b;
         a = b;
         b = remainder;
 
         let rr = r;
-        let tmp = quotient * r;
-        if x < tmp {
-            r = b * quotient;
-        } else {
-            r = 0;
-        }
-        r = r + x;
-        r = r - tmp;
+        let tmp_r = quotient.wrapping_mul(r);
+        r = if x < tmp_r { 0 } else { x }.wrapping_add(r.wrapping_mul(b)).wrapping_sub(tmp_r);
 
         let ss = s;
-        let tmp = quotient * s;
-        if y < tmp {
-            s = a * quotient;
-        } else {
-            s = 0;
-        }
-        s = s + y;
-        s = s - tmp;
+        let tmp_s = quotient.wrapping_mul(s);
+        s = if y < tmp_s { 0 } else { y }.wrapping_add(s.wrapping_mul(a)).wrapping_sub(tmp_s);
 
         x = rr;
         y = ss;
     }
 
-    pair64 { x: x * c, y: y * c }
+    DiophantineResult {
+        x: x.wrapping_mul(c),
+        y: y.wrapping_mul(c),
+        err: false,
+    }
 }
