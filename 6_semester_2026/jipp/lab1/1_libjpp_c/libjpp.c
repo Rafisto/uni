@@ -39,47 +39,42 @@ uint64_t phi(uint64_t n) {
   return res;
 }
 
-diophantine_result64_t diophantine(uint64_t a, uint64_t b, uint64_t c) {
-  uint64_t x = 1, y = 0;
-  uint64_t r = b, s = a - 1;
-  uint64_t rr, ss, tmp, remainder, quotient;
-
-  if (c % gcd(a, b) != 0) {
-    diophantine_result64_t result = {.x = 0, .y = 0, .err = true};
-    return result;
-  }
+// ax - by = c
+diophantine_result64_t diophantine(uint64_t m, uint64_t n, uint64_t z) {
+  diophantine_result64_t result = {.x = 0, .y = 0, .err = true};
+  if (gcd(m, n) != z) return result;
+  uint64_t a = m, b = n, x = 1, y = 0, r = n, s = m - 1;
+  uint64_t rr, ss, rem, quot, tmp;
 
   while (b > 0) {
-    remainder = a % b;
-    quotient = a / b;
+    uint64_t rem = a % b;
+    uint64_t quot = a / b;
     a = b;
-    b = remainder;
-
+    b = rem;
     rr = r;
-    tmp = quotient * r;
-    if (x < tmp) {
-      r = b * quotient;
-    } else {
+    tmp = quot * r;
+    if (x < tmp)
+      r = n * quot;
+    else
       r = 0;
-    }
+
     r = r + x;
     r = r - tmp;
-
     ss = s;
-    tmp = quotient * s;
-    if (y < tmp) {
-      s = a * quotient;
-    } else {
+    tmp = quot * s;
+    if (y < tmp)
+      s = m * quot;
+    else
       s = 0;
-    }
     s = s + y;
     s = s - tmp;
-
     x = rr;
     y = ss;
   }
+  z = a;
 
-  diophantine_result64_t result = {.x = x * c, .y = y * c, .err = false};
-
+  result.x = x;
+  result.y = y;
+  result.err = false;
   return result;
 }
