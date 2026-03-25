@@ -167,11 +167,13 @@ void doBeep() {
 }
 
 void loop() {
-  w.goForward(50);
-  delay(2000);
+  w.forwardRight();
+  w.backLeft();
+  w.setSpeed(255);
+  delay(465);
   fn_display_isr();
-  w.goBack(50);
-  delay(2000);
+  w.stop();
+  delay(465);
 }
 
 ISR(PCINT1_vect) {
