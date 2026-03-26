@@ -47,8 +47,8 @@ diophantine_result64_t diophantine(uint64_t m, uint64_t n, uint64_t z) {
   uint64_t rr, ss, rem, quot, tmp;
 
   while (b > 0) {
-    uint64_t rem = a % b;
-    uint64_t quot = a / b;
+    rem = a % b;
+    quot = a / b;
     a = b;
     b = rem;
     rr = r;
@@ -71,8 +71,7 @@ diophantine_result64_t diophantine(uint64_t m, uint64_t n, uint64_t z) {
     x = rr;
     y = ss;
   }
-  z = a;
-
+  
   result.x = x;
   result.y = y;
   result.err = false;

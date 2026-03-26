@@ -38,27 +38,50 @@ package body Libjpp is
       return Res;
    end Phi;
 
-   function Diophantine (A, B, C : Unsigned_64) return Diophantine_Result is
-      UA : Unsigned_64 := A;
-      UB : Unsigned_64 := B;
+   function Diophantine (m, n, z : Unsigned_64) return Diophantine_Result is
+      A : Unsigned_64 := m;
+      B : Unsigned_64 := n;
       X : Unsigned_64 := 1;
       Y : Unsigned_64 := 0;
-      R : Unsigned_64 := B;
-      S : Unsigned_64 := A - 1;
+      R : Unsigned_64 := b;
+      S : Unsigned_64 := a - 1;
       
-      RR, SS, Tmp, Q : Unsigned_64;
+      RR, SS, REMA, QUOT, TMP : Unsigned_64;
    begin
-      if C mod GCD(A, B) /= 0 then
+      if GCD(A, B) /= z then
          return (X => 0, Y => 0, Err => True);
       end if;
 
-      while UB > 0 loop
-         Q := UA / UB;
-         UA := UA mod UB;
-         exit; 
+      while b > 0 loop
+         REMA := A mod B;
+         QUOT := A / B;
+         A := B;
+         B := REMA;
+         RR := R;
+         TMP := QUOT * R;
+         if X < TMP then
+            R := n * QUOT;
+         else
+            R := 0;
+         end if;
+
+         R := R + X;
+         R := R - TMP;
+         SS := S;
+         TMP := QUOT * S;
+         if Y < TMP then
+            S := m * QUOT;
+         else
+            S := 0;
+         end if;
+
+         S := S + Y;
+         S := S - TMP;
+         X := RR;
+         Y := SS;        
       end loop;
 
-      return (X => X * C, Y => Y * C, Err => False);
+      return (X => X, Y => Y, Err => False);
    end Diophantine;
 
 end Libjpp;

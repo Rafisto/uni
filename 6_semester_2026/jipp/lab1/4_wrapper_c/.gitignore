@@ -1,0 +1,5 @@
+c_library
+rust_dynamic
+rust_static
+ada_static
+ada_dynamic
