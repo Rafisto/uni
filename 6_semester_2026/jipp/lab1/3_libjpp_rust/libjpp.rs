@@ -13,9 +13,7 @@ pub extern "C" fn gcd(mut x: u64, mut y: u64) -> u64 {
     if x < y { return gcd(y, x); }
 
     while y != 0 {
-        let t = y;
-        y = x % y;
-        x = t;
+        (x,y) = (y, x % y);
     }
 
     x
@@ -58,7 +56,7 @@ pub extern "C" fn diophantine(m: u64, n: u64, z: u64) -> DiophantineResult {
     let mut y: u64 = 0;
     let mut r: u64 = n;
     let mut s: u64 = m - 1;
-    let (mut rr, mut ss, mut rem, mut quot, mut tmp) : (u64,u64,u64,u64,u64);
+    let (mut rr, mut ss, mut rem, mut quot, mut tmp);
 
     while b > 0 {
         rem = a % b;
