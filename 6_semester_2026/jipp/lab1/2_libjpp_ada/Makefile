@@ -1,6 +1,6 @@
 CC = gnatmake
 CFLAGS = -O2 -fPIC
-ADAFLAGS = -cargs $(CFLAGS)
+AFLAGS = -cargs $(CFLAGS)
 
 LIB_NAME = libjpp
 LIB_STATIC = $(LIB_NAME).a
@@ -21,7 +21,7 @@ $(LIB_DYNAMIC): $(OBJ)
 	gnatgcc -shared -o $@ $^
 
 $(OBJ): $(SRC)
-	$(CC) -c $(SRC) $(ADAFLAGS)
+	$(CC) -c $(SRC) $(AFLAGS)
 
 clean:
 	rm -f *.o *.ali $(LIB_STATIC) $(LIB_DYNAMIC)
