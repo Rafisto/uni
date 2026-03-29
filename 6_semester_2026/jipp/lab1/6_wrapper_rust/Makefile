@@ -20,7 +20,7 @@ rust_library:
 	JPP_LINK_MODE=rust_library cargo build --release
 	cp target/release/rust_bin ./rust_library
 
-test: all
+test:
 	./c_static
 	./c_dynamic
 	./ada_static
