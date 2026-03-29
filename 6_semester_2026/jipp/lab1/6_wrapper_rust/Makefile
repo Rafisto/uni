@@ -28,5 +28,5 @@ test: all
 	./rust_library
 
 clean:
-	rm -f c_static c_dynamic ada_static ada_dynamic rust_bin *.o *.a *.so
+	rm -f c_static c_dynamic ada_static ada_dynamic rust_library
 	cargo clean

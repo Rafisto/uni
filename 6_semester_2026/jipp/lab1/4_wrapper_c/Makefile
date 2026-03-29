@@ -34,4 +34,4 @@ test:
 	./ada_dynamic
 
 clean:
-	rm -f rust_static rust_dynamic ada_static c_library
+	rm -f rust_static rust_dynamic ada_static ada_dynamic c_library
