@@ -23,12 +23,10 @@ pub extern "C" fn gcd(mut x: u64, mut y: u64) -> u64 {
 pub extern "C" fn first_prime_div(n: u64) -> u64 {
     if n <= 1 { return 0; }
 
-    let mut i = 2;
-    while i * i <= n {
+    for i in 2..n {
         if n % i == 0 {
             return i;
         }
-        i += 1;
     }
     n
 }

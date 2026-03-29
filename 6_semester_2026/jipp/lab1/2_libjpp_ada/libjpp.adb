@@ -18,11 +18,11 @@ package body Libjpp is
    begin
       if N <= 1 then return 0; end if;
       
-      while I * I <= N loop
+      for I in 2 .. Unsigned_64'Last loop
+         exit when I * I > N;
          if N mod I = 0 then
-            return I;
+         return I;
          end if;
-         I := I + 1;
       end loop;
       return N;
    end First_Prime_Div;
