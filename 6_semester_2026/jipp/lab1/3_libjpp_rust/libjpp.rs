@@ -46,6 +46,21 @@ pub extern "C" fn phi(n: u64) -> u64 {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn diophantine(m: u64, n: u64, z: u64) -> DiophantineResult {
+    if m == 0 && n == 0 {
+        return DiophantineResult { x: 0, y: 0, err: z != 0 };
+    }
+
+    if n == 0 {
+        if z % m != 0 {
+            return DiophantineResult { x: 0, y: 0, err: true };
+        }
+        return DiophantineResult { x: z / m, y: 0, err: false };
+    }
+
+    if m == 0 {
+        return DiophantineResult { x: 0, y: 0, err: true };
+    }
+    
     if gcd(m, n) != z {
         return DiophantineResult { x: 0, y: 0, err: true };
     }

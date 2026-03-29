@@ -48,6 +48,21 @@ package body Libjpp is
       
       RR, SS, REMA, QUOT, TMP : Unsigned_64;
    begin
+      if m = 0 and n = 0 then
+         return (X => 0, Y => 0, Err => z /= 0);
+      end if;
+
+      if n = 0 then
+         if z mod m /= 0 then
+            return (X => 0, Y => 0, Err => True);
+         end if;
+         return (X => z / m, Y => 0, Err => False);
+      end if;
+
+      if m = 0 then
+         return (X => 0, Y => 0, Err => True);
+      end if;
+
       if GCD(A, B) /= z then
          return (X => 0, Y => 0, Err => True);
       end if;

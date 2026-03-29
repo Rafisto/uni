@@ -39,9 +39,29 @@ uint64_t phi(uint64_t n) {
   return res;
 }
 
-// ax - by = c
+// mx - ny = c
 diophantine_result64_t diophantine(uint64_t m, uint64_t n, uint64_t z) {
   diophantine_result64_t result = {.x = 0, .y = 0, .err = true};
+  // no solution satisfies if z is not zero
+  if (m == 0 && n == 0) {
+    result.err = (z != 0);
+    return result;
+  }
+
+  // if no y term, we find mx = z
+  if (n == 0) {
+    if (z % m != 0) return result;
+    result.x = z / m;
+    result.err = false;
+    return result;
+  }
+ 
+  // if no x term, we cannot satisfy -ny = z over non-negative integers
+  if (m == 0) {
+    result.err = true;
+    return result;
+  }
+
   if (gcd(m, n) != z) return result;
   uint64_t a = m, b = n, x = 1, y = 0, r = n, s = m - 1;
   uint64_t rr, ss, rem, quot, tmp;
