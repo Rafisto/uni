@@ -8,17 +8,19 @@
 #include <algorithm>
 #include <random>
 #include <print>
+#include "graph.hpp"
+#include "kruskal.hpp"
 
 constexpr const char* folder = "data/";
 constexpr const char* match = "NODE_COORD_SECTION";
 constexpr const char* files[] = {
-    // lab 0
+    // lab0
     "western_sahara.tsp",
     "djibouti.tsp",
     "qatar.tsp",
     "uruguay.tsp",
     "zimbabwe.tsp",
-    // lab 1
+    // lab1
     "oman.tsp",
     "canada.tsp",
     "tanzania.tsp",
@@ -83,6 +85,7 @@ inline uint64_t local_search(const point_list points, permutation &perm, uint64_
 
 int main() {
     for(std::string_view filename : files) {
+        std::vector<std::size_t> node_ids;
         permutation perm = {};
         point_list points;
         points.resize(10000);
@@ -102,23 +105,42 @@ int main() {
             std::size_t idx;
             double x,y;
             iss >> idx >> x >> y;
-
             perm.push_back(idx);
+            node_ids.push_back(idx);
             points[idx] = std::make_pair(x,y);
         }
         points.shrink_to_fit();
 
+        size_t n = node_ids.size();
+        Graph full_graph(n);
+
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = i + 1; j < n; ++j) {
+                double d = euclidean(points[node_ids[i]], points[node_ids[j]]);
+                full_graph.adjacency_matrix[i][j] = d;
+                full_graph.adjacency_matrix[j][i] = d;
+            }
+        }
+
+        auto [mst, mst_weight] = kruskal(full_graph);
+
         std::random_device rd;
         std::mt19937 g(rd());
+
         permutation best_perm = perm;
         std::vector<uint64_t> distances = {};
         std::vector<size_t> step_counts = {};
         uint64_t best_distance = permutation_distance(points, perm);
+        // 1. dfs from random vertex
+        
         std::println("File: {}", filename);
+        std::println("MST weight: {}", mst_weight);
         for (std::size_t i = 0; i < perm.size(); ++i) {
-            std::shuffle(perm.begin(), perm.end(), g);
-            uint64_t dist, new_dist;
-            uint64_t step_count = 0;
+            uint64_t starting = g() % n;
+            std::vector<size_t> tour_indices = mst.get_dfs_tour(starting);
+            std::size_t dist = permutation_distance(points, tour_indices);
+            size_t step_count = 0;
+            
             while(local_search(points, perm, dist)) {
                 ++step_count;
                 dist = permutation_distance(points, perm);

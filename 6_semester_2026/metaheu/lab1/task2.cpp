@@ -56,29 +56,42 @@ inline uint64_t partial_permutation_distance(const point_list pm, const permutat
     return (euclidean(a, c) + euclidean(b, d)) - (euclidean(a, b) + euclidean(c, d));
 }
 
-inline uint64_t local_search(const point_list points, permutation &perm, uint64_t distance) {
+inline bool local_search_randomized(const point_list points, permutation &perm, uint64_t distance) {
     size_t n = perm.size();
     bool improved = false;
 
+    std::vector<std::pair<size_t, size_t>> pairs;
     for (size_t i = 1; i < n - 1; ++i) {
         for (size_t j = i + 1; j < n; ++j) {
-            size_t a_idx = perm[i - 1];
-            size_t b_idx = perm[i];
-            size_t c_idx = perm[j];
-            size_t d_idx = perm[(j + 1) % n];
-
-            int64_t current_edges = euclidean(points[a_idx], points[b_idx]) + euclidean(points[c_idx], points[d_idx]);
-            int64_t new_edges = euclidean(points[a_idx], points[c_idx]) + euclidean(points[b_idx], points[d_idx]);
-
-            if (new_edges < current_edges) {
-                std::reverse(perm.begin() + i, perm.begin() + j + 1);
-                distance -= (current_edges - new_edges);
-                improved = true;
-                return true; 
-            }
+            pairs.emplace_back(i, j);
         }
     }
-    return false;
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(pairs.begin(), pairs.end(), g);
+
+    std::vector<std::pair<size_t, size_t>> selected_pairs(pairs.begin(), pairs.begin() + std::min(n, pairs.size()));
+
+    for (auto p : selected_pairs) {
+        size_t i = p.first;
+        size_t j = p.second;
+        size_t a_idx = perm[i - 1];
+        size_t b_idx = perm[i];
+        size_t c_idx = perm[j];
+        size_t d_idx = perm[(j + 1) % n];
+
+        int64_t current_edges = euclidean(points[a_idx], points[b_idx]) + euclidean(points[c_idx], points[d_idx]);
+        int64_t new_edges = euclidean(points[a_idx], points[c_idx]) + euclidean(points[b_idx], points[d_idx]);
+
+        if (new_edges < current_edges) {
+            std::reverse(perm.begin() + i, perm.begin() + j + 1);
+            distance -= (current_edges - new_edges);
+            improved = true;
+        }
+    }
+
+    return improved;
 }
 
 int main() {
@@ -119,7 +132,7 @@ int main() {
             std::shuffle(perm.begin(), perm.end(), g);
             uint64_t dist, new_dist;
             uint64_t step_count = 0;
-            while(local_search(points, perm, dist)) {
+            while(local_search_randomized(points, perm, dist)) {
                 ++step_count;
                 dist = permutation_distance(points, perm);
             }
