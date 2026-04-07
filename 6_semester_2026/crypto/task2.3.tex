@@ -1,0 +1,192 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Kryptografia - Zadanie 2.3}  
+\author{Rafał Włodarczyk}
+\date{INA 6, 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Wprowadzenie}
+
+Obliczenia prowadzone są w grupie cyklicznej $G=\langle g \rangle$, 
+gdzie $g$ jest generatorem grupy, a $q=\text{ord}(G)$ jest rzędem grupy. 
+Osoba podpisująca posiada parę $(a, A)$ - $a$ jest kluczem prywatnym, 
+$g^a=A$ jest kluczem publicznym. Zakładamy, że logarytm dyskretny w grupie $G$ jest trudny do obliczenia,
+tj. nie istnieje efektywny algorytm który przy danych $G,g,A$ wyznacza $a : g^a=A$.
+Wszystkie działania skalarne są wykonywane w obrębie grupy $\mathbb{Z}_q$.
+
+\section{Zadanie 2.3}
+
+W tym zadaniu funkcja skrótu oznaczona jest wzorem $h=mR$, gdzie $m$ - wiadomość oraz $R \in G$.
+Mamy do czynienia z następującym schematem podpisu:
+\begin{enumerate}
+    \item Podpisujący losuje skalar $r\in \mathbb{Z}_q$ i oblicza $R=g^r$.
+    \item Podpisujący wyznacza $h=mR$.
+    \item Podpisujący oblicza $s = [r + ah] \mod q$ i zwraca $\sigma=(R,s)$ - podpis wiadomości $m$.
+    \item Weryfikator wyznacza $h=mR$, a następnie weryfikuje podpis za pomocą warunku:
+    \begin{align*}
+        g^s = RA^h
+    \end{align*}
+\end{enumerate}
+
+
+\section{Podpunkt 1}
+
+\subsection{Polecenie}
+
+Wyjaśnij, w jakiej domenie iloczyn $m\cdot R$ miałby być liczony.
+
+\subsection{Rozwiązanie}
+
+Wiemy, że $R$ jest elementem grupy $G$, a $m_{\text{original}}$ jest wiadomością o nieokreślonej długości. 
+Wynikiem działania $h=m\cdot R$ musi być element grupy $\mathbb{Z}_q$ - ponieważ $h$ jest elementem wykładnika (w weryfikacji $g^s=RA^h$). 
+Naturalnym przedstawieniem $mR$ w $\mathbb{Z}_q$ jest reprezentacja wiadomości $m$ przez liczbę całkowitą oraz $R$ rzutowanego na liczbę całkowitą poprzez funkcję $f: G \to \mathbb{Z}_q$.
+i następnie zredukowanie tej liczby modulo $q$:
+
+\begin{align*}
+    h = (m_{\text{original}} \text{ mod } q) \cdot (f(R) \text{ mod } q) \mod q
+\end{align*}
+
+\section{Podpunkt 2}
+
+\subsection{Polecenie}
+
+Sprawdź, czy takie związanie wiadomości z $R$ daje odporność na fałszerstwo, czy tylko pozór związania.
+
+\subsection{Rozwiązanie}
+
+Związanie $h=mR$ nie daje odporności na fałszerstwo, a jedynie pozór związania.
+
+\noindent
+Przyjmujemy, że fałszerstwo to zdolność do znalezienia dowolnej wiadomości $m$ dla której istnieje sposób wyznaczenia $(R,s)$ przechodzący weryfikację, a uzyskany bez znajomości klucza prywatnego $a$.
+Niech $R\in G$ jest przedstawiony następująco: 
+\begin{align*}
+    R=g^x A^y \text{ dla pewnych } x,y \in \mathbb{Z}_q
+\end{align*}
+Zobaczmy warunek weryfikacji:
+\begin{align*}
+    g^s = RA^h = g^x A^y A^h = g^x A^{y+h}
+\end{align*}
+Chcemy wyzerować wykładnik $A$ do postaci $A^0=1 (\text{mod } q)$, aby nie musieć używać klucza prywatnego.
+\begin{align*}
+    y+h \equiv 0 \mod q \\
+    y \equiv -h \mod q \\
+    y \equiv -mR \mod q \\
+    m \equiv -yR^{-1} \mod q
+\end{align*}
+Wyznaczenie odwrotności $R^{-1}$ jest łatwe i możliwe na mocy rozszerzonego Algorytmu Euklidesa.
+Wtedy $s$ jest dany jako $s \equiv x \mod q$.\\
+
+\noindent
+Zobaczmy, że dla tak spreparowanej trójki $(m,R,s)=(-yR^{-1},g^xA^y,x)$ warunek weryfikacji jest spełniony:
+\begin{align*}
+    P &= RA^h  \\
+      &= g^xA^y \cdot A^{-mR} \\
+      &= g^x A^{y+((-yR^{-1})\cdot R)} \\
+      &= g^x A^{y+(-y\cdot(R^{-1}R))} \\
+      &= g^x A^{y-y} \\
+      &= g^x A^0 \\
+      &= g^x \\
+      &= g^s = L_{\square}
+\end{align*}
+
+\noindent
+Związanie wiadomości z $R$ poprzez funkcję $h=mR$ daje pozór związania, ponieważ $h$ jest w istocie funkcją liniową od $R$.
+Zaburza to jedną z kluczowych własności funkcji skrótu $h$, która powinna być trudna do odwrócenia.
+
+\section{Podpunkt 3}
+
+\subsection{Polecenie}
+
+Zbadaj, czy można dobrać podpis dla wybranej wiadomości bez znajomości sekretu $a$.
+
+\subsection{Rozwiązanie}
+
+Universal Forgery Attack jest w tym wypadku niemożliwy.\\
+
+\noindent
+Pomimo braku odporności na fałszerstwo, nie można w prosty sposób dobrać podpisu dla wybranej wiadomości bez znajomości sekretu $a$.
+Zobaczmy, że jeśli $m$ jest już wybrane to po stronie weryfikatora ustalona jest zależność $h=mR$, a zatem weryfikacja:
+\begin{align*}
+    g^s = RA^h = Rg^{amR} = g^{r + amR}
+\end{align*} 
+W celu znalezienia $s$ musimy rozwiązać równanie:
+\begin{align*}
+    s \equiv r + amR \mod q
+\end{align*}
+Bez znajomości $a$ jest to równoznaczne próbie znalezienia $r$ takiego, że $g^r$ jest równe $R$, co jest problemem logarytmu dyskretnego, który w grupie $G$ jest trudny.\\
+
+\section{Podpunkt 4}
+
+\subsection{Polecenie}
+
+Porównaj ten schemat z zadaniem 2: czy problem jest zasadniczo ten sam, czy inny?
+
+\subsection{Rozwiązanie}
+
+W zadaniu drugim prezentowany schemat to $h=m + R$ zamiast $h=mR$.
+Oba schematy są błędne ze względu na niepoprawne własności funkcji skrótu $h$ - w obu przypadkach $h$ jest funkcją liniową od $R$, co umożliwia fałszerstwo.
+
+\end{document}
