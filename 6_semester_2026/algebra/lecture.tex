@@ -355,4 +355,62 @@ P. $V(\{x^2+y^2-2,x^2-y\})
  = V(\langle x^2-1, x^2-y^2 \rangle) 
  = V(\langle x^2-1 \rangle) \cap V(\langle x^2-y^2 \rangle)
  = [V(\langle x-1 \rangle) \cup V(\langle x+2)] \cap [V(\langle x-y \rangle) \cup V(\langle x+y \rangle)]$
- \end{document}
+
+\section{Wykład IV}
+
+\textbf{Rozmaitością algebraiczną} rodziny $\mathcal{F} \subseteq \mathcal{K}[x_1,\dots,x_n]$
+to zbiór:
+
+\begin{align}
+    V(\mathcal{F}) = \{(a_1,a_2,\dots,a_n) \in \mathcal{K}^n : \left(\forall f\in\mathcal{F}\right) f(\bar{a})=0\}
+\end{align}
+P. $V(\{0\}) = \mathcal{K}^n$\\
+P. $V(F) \cup V(G) = V(\{fg : f\in F, g \in G\})$\\
+P. $V(F) \cap V(G) = V(F\cup G)$\\
+P. $V(x^2+y^2-1)$
+\begin{align*}
+    x(t) &= \frac{1-t^2}{1+t^2} \land y(t) = \frac{2t}{1+t^2}\\
+    x(1+t^2) + t^2 - 1 &= 0 \land y(1+t^2) - 2t = 0
+\end{align*}
+P. $V(x(1+t^2)+t^2-1, y(1+t^2)-2t)$\\
+P. $V(x^2-y^2-9, (u-x)^2+(v-y)^2-1)$ - Równanie ramienia robota, gdzie pierwszy segment ma długość $3$, a następny $1$. Ale super!!
+Ruch kamery przymocowanej do drona itd.
+
+\begin{definition}{Ideał Generowany}
+    Niech $A\subseteq \mathcal{K}^n$. Wtedy:
+    \begin{align*}
+        I(A) = \{f \in K[x_1,\dots,x_k] : \left(\forall \bar{a} in A\right) f(\bar{a}) = 0\}
+    \end{align*}
+    Fakt. $I(A)$ - ideał
+    Fakt. $I\subseteq I(V(I))$ - rozmaitość na ideale to ideał.
+\end{definition}
+
+Przykład $V(\langle x^2, y^2 \rangle) = \{(0,0)\}$, $I(V(\langle x^2, y^2 \rangle)) = \{\alpha(x,y) x + \beta(x,y) y : a,b \in K[x,y]\} = \langle x,y \rangle$
+
+Def. Dobry porządek $\leq$ na $\mathbb{N}^n$ (obcinamy do długości $n$) nazywamy porządkiem jednomianowym (Monomial Order), jeśli 
+$\left(\forall \alpha, \beta, \gamma \in \mathbb{N}^n\right) \alpha < \beta \to \alpha + \gamma < \beta + \gamma$,
+gdzie $a < b \iff (a\leq b \land a \neq b)$. P $\leq_\text{lex}$ na $\mathbb{N}^n$ jest MO.
+
+Def. Przy pomocy porządku MO można wprowadzić dobry porządek na jednomianach $\mathbb{K}[x_1,\dots,x_n]$ następująco:
+\begin{align*}
+    \bar{x}^\alpha \leq \bar{x}^\beta \iff \alpha \leq \beta
+\end{align*}
+
+P. Dla $\leq_{\text{lex}}$ na $\mathbb{N}^2$, $y<x$
+\begin{align*}
+    1 < y < y^2 < \dots < x < xy < xy^2 < \dots < x^2 < x^2y < \dots
+\end{align*}
+
+Def \textbf{Graded Lex.} na $\mathbb{N}^n$
+\begin{align*}
+    \alpha \leq_{\text{GL}} \beta \to (|\alpha| < |\beta| \lor (|\alpha|=|\beta| ^ \alpha \leq_{\text{lext}} \beta))
+\end{align*}
+
+Polynomial Quotient Reduce $f_1,g_1,g_2,\dots,g_n \in \mathcal{K}[x_1,\dots,x_n]$\\
+$\text{PQR}(f,\{g_1,\dots,g_k\})$ $f(\bar(x))=\sum_{i=1}^{k} g_i(\bar{x}) \cdot q_i(\bar{x}) + r(\bar{x})$\\
+P $\text{PQR}(1,\{x^2,x^2+1\}) = ((0,0),1)$\\
+P $\text{PQR}(1,\{x^2,x^2+1\}) = ((-1,1,0))$\\
+
+
+
+\end{document}
