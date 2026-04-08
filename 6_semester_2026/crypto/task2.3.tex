@@ -1,8 +1,8 @@
 \documentclass{article}
 
-\usepackage[english]{babel}
-\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
 \usepackage{polski}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
  
 \usepackage[margin=1.5in]{geometry} 
@@ -66,8 +66,6 @@
 
 \maketitle
 
-\tableofcontents
-
 \section{Wprowadzenie}
 
 Obliczenia prowadzone są w grupie cyklicznej $G=\langle g \rangle$, 
@@ -91,8 +89,21 @@ Mamy do czynienia z następującym schematem podpisu:
     \end{align*}
 \end{enumerate}
 
-
 \section{Podpunkt 1}
+
+\subsection{Poprawność Algebraiczna}
+
+W nagłówku listy 2 wskazane jest dowiedzenie m.in poprawności algebraicznej u uczciwego podpisującego.
+Zakładamy że posiada on klucz $a$, wybiera $r$, liczy $R=g^r$, wyznacza $h=mR, s = r + ah \mod q$ i zwraca $\sigma=(R,s)$.\\
+
+\noindent
+Pokażmy, że taki podpis przechodzi weryfikację:
+\begin{align*}
+    P = RA^h = g^r \cdot g^{ah} = g^{r + ah} = g^s = L_{\square}
+\end{align*}
+
+\noindent
+Schemat jest algebraicznie poprawny.
 
 \subsection{Polecenie}
 
@@ -102,12 +113,16 @@ Wyjaśnij, w jakiej domenie iloczyn $m\cdot R$ miałby być liczony.
 
 Wiemy, że $R$ jest elementem grupy $G$, a $m_{\text{original}}$ jest wiadomością o nieokreślonej długości. 
 Wynikiem działania $h=m\cdot R$ musi być element grupy $\mathbb{Z}_q$ - ponieważ $h$ jest elementem wykładnika (w weryfikacji $g^s=RA^h$). 
-Naturalnym przedstawieniem $mR$ w $\mathbb{Z}_q$ jest reprezentacja wiadomości $m$ przez liczbę całkowitą oraz $R$ rzutowanego na liczbę całkowitą poprzez funkcję $f: G \to \mathbb{Z}_q$.
-i następnie zredukowanie tej liczby modulo $q$:
-
+Naturalnym przedstawieniem $mR$ w $\mathbb{Z}_q$ jest reprezentacja wiadomości $m$ 
+przez liczbę całkowitą $m_{\text{int}}$ oraz $R$ rzutowanego na element grupy $\mathbb{Z}_q$ poprzez funkcję $f: G \to \mathbb{Z}_q$ (można np. przyjąć
+porządek z generatora $g$), oraz następnie zredukowanie tych wartości modulo $q$:
 \begin{align*}
-    h = (m_{\text{original}} \text{ mod } q) \cdot (f(R) \text{ mod } q) \mod q
+    h = \left((m_{\text{int}}) \cdot (f(R) \bmod q)\right) \mod q
 \end{align*}
+\noindent
+W bezpiecznym schemacie funkcja $h$ brałaby obie wartości $m \in M$ oraz $R\in G$ w taki sposób, że
+$h : M \times G \rightarrow \mathbb{Z}_q$ oraz charakteryzowałaby się cechami bezpiecznej funkcji skrótu,
+np. $h=H(m||R)$, gdzie $H$ jest bezpieczną funkcją skrótu.
 
 \section{Podpunkt 2}
 
@@ -117,10 +132,12 @@ Sprawdź, czy takie związanie wiadomości z $R$ daje odporność na fałszerstw
 
 \subsection{Rozwiązanie}
 
-Związanie $h=mR$ nie daje odporności na fałszerstwo, a jedynie pozór związania.
+Związanie $h=mR$ nie daje odporności na fałszerstwo, a jedynie pozór związania, umożliwiając atak \texttt{Existential Forgery}.\\
 
 \noindent
-Przyjmujemy, że fałszerstwo to zdolność do znalezienia dowolnej wiadomości $m$ dla której istnieje sposób wyznaczenia $(R,s)$ przechodzący weryfikację, a uzyskany bez znajomości klucza prywatnego $a$.
+Przyjmujemy, że fałszerstwo to zdolność do znalezienia \textbf{dowolnej wiadomości} $m$
+dla której istnieje sposób wyznaczenia $(R,s)$ przechodzący weryfikację, 
+a uzyskany \textbf{bez znajomości klucza prywatnego} $a$.
 Niech $R\in G$ jest przedstawiony następująco: 
 \begin{align*}
     R=g^x A^y \text{ dla pewnych } x,y \in \mathbb{Z}_q
@@ -129,15 +146,15 @@ Zobaczmy warunek weryfikacji:
 \begin{align*}
     g^s = RA^h = g^x A^y A^h = g^x A^{y+h}
 \end{align*}
-Chcemy wyzerować wykładnik $A$ do postaci $A^0=1 (\text{mod } q)$, aby nie musieć używać klucza prywatnego.
+Chcemy zredukować wykładnik $A$ do postaci $A^0=1 (\text{mod } q)$, aby pozbyć się części wymagającej klucza prywatnego.
 \begin{align*}
     y+h \equiv 0 \mod q \\
     y \equiv -h \mod q \\
     y \equiv -mR \mod q \\
     m \equiv -yR^{-1} \mod q
 \end{align*}
-Wyznaczenie odwrotności $R^{-1}$ jest łatwe i możliwe na mocy rozszerzonego Algorytmu Euklidesa.
-Wtedy $s$ jest dany jako $s \equiv x \mod q$.\\
+Przyjmujemy, że wyznaczenie odwrotności $R^{-1}$ jest w grupie $G$ łatwe, np. na mocy rozszerzonego Algorytmu Euklidesa.
+Wtedy $s$ jest dany jako $s = x \pmod q$.\\
 
 \noindent
 Zobaczmy, że dla tak spreparowanej trójki $(m,R,s)=(-yR^{-1},g^xA^y,x)$ warunek weryfikacji jest spełniony:
@@ -164,19 +181,21 @@ Zbadaj, czy można dobrać podpis dla wybranej wiadomości bez znajomości sekre
 
 \subsection{Rozwiązanie}
 
-Universal Forgery Attack jest w tym wypadku niemożliwy.\\
+\texttt{Universal Forgery Attack} jest w tym wypadku niemożliwy.\\
 
 \noindent
 Pomimo braku odporności na fałszerstwo, nie można w prosty sposób dobrać podpisu dla wybranej wiadomości bez znajomości sekretu $a$.
-Zobaczmy, że jeśli $m$ jest już wybrane to po stronie weryfikatora ustalona jest zależność $h=mR$, a zatem weryfikacja:
+Zobaczmy, że jeśli $m$ jest już wybrane to po stronie weryfikatora ustalona jest zależność $h=mR$, a zatem musi zajść weryfikacja:
 \begin{align*}
-    g^s = RA^h = Rg^{amR} = g^{r + amR}
+    g^s = RA^h = Rg^{amR}
 \end{align*} 
-W celu znalezienia $s$ musimy rozwiązać równanie:
-\begin{align*}
-    s \equiv r + amR \mod q
-\end{align*}
-Bez znajomości $a$ jest to równoznaczne próbie znalezienia $r$ takiego, że $g^r$ jest równe $R$, co jest problemem logarytmu dyskretnego, który w grupie $G$ jest trudny.\\
+Co jest równoznaczne z $g^s = g^{\log_g(R) + amR}$, a zatem $s = \log_g(R) + amR \pmod q$.\\
+
+\noindent
+Wobec tego musielibyśmy wykorzystać prawdziwą parę $(r,R)$ z relacją $g^r = R$, a to jest niemożliwe z ustalonym $m$ i
+bez znajomości $a$, ponieważ $R$ jest elementem grupy $G$ i jego logarytm dyskretny jest trudny do obliczenia. W 
+podpunkcie drugim udało się dobrać podpis, ponieważ akceptowaliśmy arbitralną z punktu widzenia weryfikatora
+wiadomość $m$. 
 
 \section{Podpunkt 4}
 
@@ -186,7 +205,33 @@ Porównaj ten schemat z zadaniem 2: czy problem jest zasadniczo ten sam, czy inn
 
 \subsection{Rozwiązanie}
 
+Problem jest zasadniczo ten sam.\\
+
+\noindent
 W zadaniu drugim prezentowany schemat to $h=m + R$ zamiast $h=mR$.
-Oba schematy są błędne ze względu na niepoprawne własności funkcji skrótu $h$ - w obu przypadkach $h$ jest funkcją liniową od $R$, co umożliwia fałszerstwo.
+Schematy są błędne ze względu na niepoprawne własności funkcji $h$, która nie jest bezpieczną funkcją skrótu.
+W obu przypadkach funkcja $h$ jest złożona z prostych operacji algebraicznych, przez co jest odwracalna.
+
+\noindent
+Możemy w obu przypadkach wykonać atak \texttt{Existential Forgery} (tj. w podpunkcie 2):
+\begin{itemize}
+    \item Dla $h=m+R$: $m = -y-R \pmod q$
+    \item Dla $h=mR$: $m= -yR^{-1} \pmod q$
+\end{itemize}
+
+\section{Wnioski}
+
+Pomimo że schemat jest algebraicznie poprawny, to jednak jest niebezpieczny \\
+- podatny na atak\\ \texttt{Existential Forgery}, czyli
+dobranie takiej trójki $(m,R,s)$ (bez znajomości klucza prywatnego $a$), która pozytywnie przechodzi weryfikację.\\
+
+\noindent
+Schemat jest podatny na atak, ale nie pozwala na wykradnięcie klucza prywatnego $a$ (poza sytuacją, gdy
+podpisujący powtórzy $R$ dla różnych wiadomości), wobec tego nie jest najgorszym schematem podpisu, wciąż jednak jest niebezpieczny.\\
+
+\noindent
+Kluczowa dla bezpieczeństwa schematu podpisu jest bezpieczna funkcja skrótu charakteryzująca
+się odpornością na kolizję oraz trudnością odwracania - uwydatnione w zadaniu,
+ale również m.in. determinizmem. 
 
 \end{document}
