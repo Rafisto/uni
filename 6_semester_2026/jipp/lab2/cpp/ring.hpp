@@ -3,30 +3,35 @@
 
 #include <cstdint>
 
-template <uint64_t N>
-class Ring {
-    uint64_t value;
+template <uint64_t N> class Ring {
+private:
+  uint64_t value;
 
-    Ring(const uint64_t u) {
-        value = u;
-    }
-    
-    Ring operator+(const Ring &o) {
-        return Ring((value + o) % N);
-    }
+public:
+  Ring(const uint64_t u) { value = u % N; }
 
-    Ring operator-(const Ring &o) {
-        return Ring((value - o) % N);
-    }
+  uint64_t repr() { return value; };
 
-    Ring operator*(const Ring &o) {
-        return Ring((value * o) % N);
-    }
+  // Comparison
+  bool operator==(const Ring &o);
+  bool operator!=(const Ring &o);
+  bool operator<=(const Ring &o);
+  bool operator>=(const Ring &o);
+  bool operator>(const Ring &o);
+  bool operator<(const Ring &o);
 
-    Ring operator/(const Ring &o) {
-        // use value * o^{-1}, because it may not exist
-        return Ring((value / o) % N);
-    }
+  // Arithmetic
+  Ring operator+(const Ring &o);
+  Ring operator-(const Ring &o);
+  Ring operator*(const Ring &o);
+  Ring operator/(const Ring &o) noexcept(false);
+
+  // Substitutions
+  Ring operator=(const Ring &o);
+  Ring operator+=(const Ring &o);
+  Ring operator-=(const Ring &o);
+  Ring operator*=(const Ring &o);
+  Ring operator/=(const Ring &o) noexcept(false);
 };
 
 #endif // RING_HPP
