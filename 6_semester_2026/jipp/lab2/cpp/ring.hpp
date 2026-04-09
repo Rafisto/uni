@@ -23,7 +23,7 @@ private:
   constexpr uint64_t repr() const noexcept(true) { return value; };
 
 public:
-  explicit constexpr Ring(const uint64_t u) { value = u % N; }
+  explicit constexpr Ring(const std::integral auto u) { value = u % N; }
   constexpr Ring(const Ring &o) noexcept(true) { value = o.value; }
 
   constexpr std::ostream &operator<<(std::ostream &stream) const {
