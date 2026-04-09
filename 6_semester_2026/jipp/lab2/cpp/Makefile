@@ -3,7 +3,7 @@ CFLAGS=-Wall -Wextra -std=c++23 -O2
 
 OUTPUT=main
 
-SRCS = main.cpp libjpp.cpp ring.cpp
+SRCS = main.cpp libjpp.cpp
 
 .PHONY: all clean
 
