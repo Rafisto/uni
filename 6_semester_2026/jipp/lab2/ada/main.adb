@@ -102,7 +102,6 @@ procedure Main is
    end Test_Repr;
 
 begin
-   -- Execute all tests
    Test_Op_Add;
    Test_Op_Sub;
    Test_Op_Mul;
