@@ -8,68 +8,68 @@ package body Ring is
       return Value (V mod N);
    end Constructor;
 
-   function repr (X : Value) return Integer is
+   function repr (V : Value) return Integer is
    begin
-      return Integer (X);
+      return Integer (V);
    end repr;
 
-   function To_String (X : Value) return String is
-      Val_Str : constant String := Ada.Strings.Fixed.Trim (Integer'Image (Integer (X)), Ada.Strings.Both);
+   function To_String (V : Value) return String is
+      Val_Str : constant String := Ada.Strings.Fixed.Trim (Integer'Image (Integer (V)), Ada.Strings.Both);
       N_Str   : constant String := Ada.Strings.Fixed.Trim (Integer'Image (N), Ada.Strings.Both);
    begin
       return "Ring<" & N_Str & ">(" & Val_Str & ")";
    end To_String;
 
-   function "+" (X, Y : Value) return Value is
+   function "+" (L, R : Value) return Value is
    begin
-      return Value ((Integer (X) + Integer (Y)) mod N);
+      return Value ((Integer (L) + Integer (R)) mod N);
    end "+";
 
-   function "-" (X, Y : Value) return Value is
+   function "-" (L, R : Value) return Value is
    begin
-      return Value ((Integer (X) - Integer (Y)) mod N);
+      return Value ((Integer (L) - Integer (R)) mod N);
    end "-";
 
-   function "*" (X, Y : Value) return Value is
+   function "*" (L, R : Value) return Value is
    begin
-      return Value ((Integer (X) * Integer (Y)) mod N);
+      return Value ((Integer (L) * Integer (R)) mod N);
    end "*";
 
-   function "/" (X, Y : Value) return Value is
+   function "/" (L, R : Value) return Value is
       Res : Diophantine_Result;
    begin
-      Res := Diophantine (Unsigned_64 (Y), Unsigned_64 (N), 1);
+      Res := Diophantine (Unsigned_64 (R), Unsigned_64 (N), 1);
 
       if Res.Err /= False then
          raise Constraint_Error with "Divisor is not invertible";
       end if;
 
-      return Value ((Integer (X) * Integer (Res.X)) mod N);
+      return Value ((Integer (L) * Integer (Res.X)) mod N);
    end "/";
 
-   function "=" (X, Y : Value) return Boolean is
+   function "=" (L, R : Value) return Boolean is
    begin
-      return Integer (X) = Integer (Y);
+      return Integer (L) = Integer (R);
    end "=";
 
-   function "<=" (X, Y : Value) return Boolean is
+   function "<=" (L, R : Value) return Boolean is
    begin
-      return Integer (X) <= Integer (Y);
+      return Integer (L) <= Integer (R);
    end "<=";
 
-   function ">=" (X, Y : Value) return Boolean is
+   function ">=" (L, R : Value) return Boolean is
    begin
-      return Integer (X) >= Integer (Y);
+      return Integer (L) >= Integer (R);
    end ">=";
 
-   function "<" (X, Y : Value) return Boolean is
+   function "<" (L, R : Value) return Boolean is
    begin
-      return Integer (X) < Integer (Y);
+      return Integer (L) < Integer (R);
    end "<";
 
-   function ">" (X, Y : Value) return Boolean is
+   function ">" (L, R : Value) return Boolean is
    begin
-      return Integer (X) > Integer (Y);
+      return Integer (L) > Integer (R);
    end ">";
 
 end Ring;

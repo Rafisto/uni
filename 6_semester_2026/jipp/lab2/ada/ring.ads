@@ -7,18 +7,18 @@ package Ring is
 
    function Constructor(V : Integer) return Value;
 
-   function repr(X : Value) return Integer;
-   function To_String(X : Value) return String;
+   function repr(V : Value) return Integer;
+   function To_String(V : Value) return String;
 
-   function "+" (X, Y : Value) return Value;
-   function "-" (X, Y : Value) return Value;
-   function "*" (X, Y : Value) return Value; 
-   function "/" (X, Y : Value) return Value;
+   function "+" (L, R : Value) return Value;
+   function "-" (L, R : Value) return Value;
+   function "*" (L, R : Value) return Value; 
+   function "/" (L, R : Value) return Value;
 
-   function "=" (X, Y : Value) return Boolean;
-   function "<=" (X, Y : Value) return Boolean;
-   function ">=" (X, Y : Value) return Boolean;
-   function "<" (X, Y : Value) return Boolean;
-   function ">" (X, Y : Value) return Boolean;
+   function "=" (L, R : Value) return Boolean;
+   function "<=" (L, R : Value) return Boolean;
+   function ">=" (L, R : Value) return Boolean;
+   function "<" (L, R : Value) return Boolean;
+   function ">" (L, R : Value) return Boolean;
 
 end;
