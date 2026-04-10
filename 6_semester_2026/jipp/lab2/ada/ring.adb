@@ -3,10 +3,10 @@ with Interfaces; use Interfaces;
 with Libjpp; use Libjpp;
 
 package body Ring is
-   function Constructor (V : Integer) return Value is
+   function Initialize (V : Integer) return Value is
    begin
       return Value (V mod N);
-   end Constructor;
+   end Initialize;
 
    function repr (V : Value) return Integer is
    begin

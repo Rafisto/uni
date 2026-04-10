@@ -10,61 +10,61 @@ procedure Main is
    use Ring15;
 
    procedure Test_Op_Add is
-      Op1 : Ring17.Value := Ring17.Constructor (8);
-      Op2 : Ring17.Value := Ring17.Constructor (10);
-      Oq1 : Ring15.Value := Ring15.Constructor (4);
-      Oq2 : Ring15.Value := Ring15.Constructor (9);
+      Op1 : Ring17.Value := Ring17.Initialize (8);
+      Op2 : Ring17.Value := Ring17.Initialize (10);
+      Oq1 : Ring15.Value := Ring15.Initialize (4);
+      Oq2 : Ring15.Value := Ring15.Initialize (9);
    begin
-      pragma Assert (Op1 + Op2 = Ring17.Constructor (1));
+      pragma Assert (Op1 + Op2 = Ring17.Initialize (1));
 
-      pragma Assert (Oq1 + Oq2 = Ring15.Constructor (13));
-      pragma Assert (Oq1 + Oq1 + Oq2 = Ring15.Constructor (2));
+      pragma Assert (Oq1 + Oq2 = Ring15.Initialize (13));
+      pragma Assert (Oq1 + Oq1 + Oq2 = Ring15.Initialize (2));
       
       Put_Line ("Test_Op_Add passed");
    end Test_Op_Add;
 
    procedure Test_Op_Sub is
-      Op1 : Ring17.Value := Ring17.Constructor (9);
-      Op2 : Ring17.Value := Ring17.Constructor (13);
-      Oq1 : Ring15.Value := Ring15.Constructor (9);
-      Oq2 : Ring15.Value := Ring15.Constructor (13);
+      Op1 : Ring17.Value := Ring17.Initialize (9);
+      Op2 : Ring17.Value := Ring17.Initialize (13);
+      Oq1 : Ring15.Value := Ring15.Initialize (9);
+      Oq2 : Ring15.Value := Ring15.Initialize (13);
    begin
-      pragma Assert (Op2 - Op1 = Ring17.Constructor (4));
-      pragma Assert (Op1 - Op2 = Ring17.Constructor (13));
+      pragma Assert (Op2 - Op1 = Ring17.Initialize (4));
+      pragma Assert (Op1 - Op2 = Ring17.Initialize (13));
       
-      pragma Assert (Oq2 - Oq1 = Ring15.Constructor (4));
-      pragma Assert (Oq1 - Oq2 = Ring15.Constructor (11));
+      pragma Assert (Oq2 - Oq1 = Ring15.Initialize (4));
+      pragma Assert (Oq1 - Oq2 = Ring15.Initialize (11));
       
       Put_Line ("Test_Op_Sub passed");
    end Test_Op_Sub;
 
    procedure Test_Op_Mul is
-      Op1 : Ring17.Value := Ring17.Constructor (9);
-      Op2 : Ring17.Value := Ring17.Constructor (13);
-      Oq1 : Ring15.Value := Ring15.Constructor (9);
-      Oq2 : Ring15.Value := Ring15.Constructor (13);
+      Op1 : Ring17.Value := Ring17.Initialize (9);
+      Op2 : Ring17.Value := Ring17.Initialize (13);
+      Oq1 : Ring15.Value := Ring15.Initialize (9);
+      Oq2 : Ring15.Value := Ring15.Initialize (13);
    begin
-      pragma Assert (Op1 * Op2 = Ring17.Constructor (15));
-      pragma Assert (Oq1 * Oq2 = Ring15.Constructor (12));
+      pragma Assert (Op1 * Op2 = Ring17.Initialize (15));
+      pragma Assert (Oq1 * Oq2 = Ring15.Initialize (12));
       
       Put_Line ("Test_Op_Mul passed");
    end Test_Op_Mul;
 
    procedure Test_Op_Div_Prime is
-      Op1 : Ring17.Value := Ring17.Constructor (9);
-      Op2 : Ring17.Value := Ring17.Constructor (13);
+      Op1 : Ring17.Value := Ring17.Initialize (9);
+      Op2 : Ring17.Value := Ring17.Initialize (13);
    begin
-      pragma Assert (Op1 / Op2 = Ring17.Constructor (2));
+      pragma Assert (Op1 / Op2 = Ring17.Initialize (2));
       Put_Line ("Test_Op_Div_Prime passed");
    end Test_Op_Div_Prime;
 
    procedure Test_Op_Div_Composite is
-      Oq1 : Ring15.Value := Ring15.Constructor (9);
-      Oq2 : Ring15.Value := Ring15.Constructor (13);
-      Thr : Ring15.Value := Ring15.Constructor (12);
+      Oq1 : Ring15.Value := Ring15.Initialize (9);
+      Oq2 : Ring15.Value := Ring15.Initialize (13);
+      Thr : Ring15.Value := Ring15.Initialize (12);
       Res : Ring15.Value;
    begin
-      pragma Assert (Oq1 / Oq2 = Ring15.Constructor (3));
+      pragma Assert (Oq1 / Oq2 = Ring15.Initialize (3));
       
       begin
          Res := Oq1 / Thr;
@@ -78,10 +78,10 @@ procedure Main is
    end Test_Op_Div_Composite;
 
    procedure Test_Comparisons is
-      A : Ring15.Value := Ring15.Constructor (9);
-      B : Ring15.Value := Ring15.Constructor (13);
-      C : Ring15.Value := Ring15.Constructor (14);
-      D : Ring15.Value := Ring15.Constructor (9);
+      A : Ring15.Value := Ring15.Initialize (9);
+      B : Ring15.Value := Ring15.Initialize (13);
+      C : Ring15.Value := Ring15.Initialize (14);
+      D : Ring15.Value := Ring15.Initialize (9);
    begin
       pragma Assert ((A = B) = False);
       pragma Assert ((A = D) = True);
@@ -95,7 +95,7 @@ procedure Main is
    end Test_Comparisons;
 
    procedure Test_Repr is
-      A : Ring17.Value := Ring17.Constructor (10);
+      A : Ring17.Value := Ring17.Initialize (10);
    begin
       Put_Line ("Repr of A: " & Integer'Image (Ring17.repr (A)));
       Put_Line ("String Repr of A: " & Ring17.To_String (A));

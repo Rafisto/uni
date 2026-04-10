@@ -5,7 +5,7 @@ generic
 package Ring is
    type Value is new Integer range 0 .. N - 1;
 
-   function Constructor(V : Integer) return Value;
+   function Initialize(V : Integer) return Value;
 
    function repr(V : Value) return Integer;
    function To_String(V : Value) return String;
