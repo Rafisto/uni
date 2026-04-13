@@ -1,5 +1,5 @@
 CC=clang++
-CFLAGS=-std=c++23 -O3 -march=native -ftree-vectorize
+CFLAGS=-std=c++23 -O3 -march=native -ftree-vectorize -fopenmp
 
 INPUT=$(wildcard *.cpp)
 OUTPUT=$(INPUT:.cpp=.out)
