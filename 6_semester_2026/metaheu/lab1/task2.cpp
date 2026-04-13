@@ -119,7 +119,6 @@ int total_iterations = n;
     
     #pragma omp for
     for (std::size_t i = 0; i < n; ++i) {
-        // --- YOUR SEARCH LOGIC ---
         permutation local_perm = base_perm;
         std::shuffle(local_perm.begin(), local_perm.end(), thread_gen);
         uint64_t cur_dist = permutation_distance(points, local_perm);
@@ -138,8 +137,6 @@ int total_iterations = n;
                 global_best_perm = local_perm;
             }
         }
-        // --- END SEARCH LOGIC ---
-
         // Progress Bar Update
         int current_val = ++progress;
         if (omp_get_thread_num() == 0 || current_val == total_iterations) {

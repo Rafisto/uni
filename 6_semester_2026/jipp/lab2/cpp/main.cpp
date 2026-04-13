@@ -1,6 +1,7 @@
 #include <cassert>
 #include <exception>
 #include <iostream>
+#include <optional>
 #include <print>
 #include <stdexcept>
 
@@ -19,7 +20,18 @@ void test_subst_mul();
 void test_subst_div();
 void test_streams();
 
+// template <uint64_t N>
+// std::optional<Ring<N>> ring_initializer(uint64_t value) { 
+//   if (value == 7) { return std::nullopt; };
+//   return Ring<N>(7);
+// }
+
 int main(void) {
+  // auto x = ring_initializer<5>(7);
+  // if (not x.has_value()) {
+  //   std::println("Cannot instantiate std::optional");
+  // }
+
   // (+) operator
   test_op_add();
 

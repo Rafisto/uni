@@ -1,5 +1,7 @@
 CC=clang++
-CFLAGS=-std=c++23 -O3 -march=native -ftree-vectorize -fopenmp
+CFLAGS=-std=c++23
+COPT=-O3 -march=native -ftree-vectorize -funroll-loops -ffast-math
+CMULTIPROCESS=-fopenmp 
 
 INPUT=$(wildcard *.cpp)
 OUTPUT=$(INPUT:.cpp=.out)
@@ -7,7 +9,7 @@ OUTPUT=$(INPUT:.cpp=.out)
 all: $(OUTPUT)
 
 %.out: %.cpp
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) $(COPT) $(CMULTIPROCESS) -o $@ $<
 
 clean:
 	rm -rf $(OUTPUT)

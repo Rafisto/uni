@@ -48,12 +48,14 @@ inline uint64_t permutation_distance(const point_list &pm,
 
 bool local_search(const Graph &g, permutation &perm, uint64_t &current_dist) {
   size_t n = perm.size();
+  bool improved = false;
+
   for (size_t i = 1; i < n; ++i) {
     for (size_t j = i + 1; j < n - 1; ++j) {
-      size_t a = perm[i - 1];
+      size_t a = (i > 0) ? perm[i - 1] : perm[perm.size() - 1];
       size_t b = perm[i];
       size_t c = perm[j];
-      size_t d = perm[(j + 1) % n];
+      size_t d = (j < perm.size() - 1) ? perm[j + 1] : perm[0];
 
       double old_edges = g.adjacency_matrix[a][b] + g.adjacency_matrix[c][d];
       double new_edges = g.adjacency_matrix[a][c] + g.adjacency_matrix[b][d];
@@ -61,61 +63,58 @@ bool local_search(const Graph &g, permutation &perm, uint64_t &current_dist) {
       if (new_edges < old_edges) {
         std::reverse(perm.begin() + i, perm.begin() + j + 1);
         current_dist -= static_cast<uint64_t>(old_edges - new_edges);
-        return true;
+        improved = true;
       }
     }
   }
-  return false;
+  return improved;
 }
 
 int main() {
-  for (std::string_view filename : files) {
-    std::vector<std::size_t> node_ids;
-    point_list points(10000);
-    std::ifstream infile(folder + std::string{filename});
-    if (!infile)
-      continue;
+    for (std::string_view filename : files) {
+        point_list points = {};
+        permutation base_perm = {}; // Shared template
+        std::ifstream infile(folder + std::string{filename});
+        std::string line;
+        bool read = false;
 
-    std::string line;
-    bool read = false;
-    while (std::getline(infile, line)) {
-      if (line.starts_with(match)) {
-        read = true;
-        continue;
-      }
-      if (!read || line.empty() || line.starts_with("EOF"))
-        continue;
-      std::istringstream iss(line);
-      std::size_t idx;
-      double x, y;
-      if (iss >> idx >> x >> y) {
-        node_ids.push_back(idx);
-        points[idx] = {x, y};
-      }
-    }
+        while (std::getline(infile, line)) {
+            if (line.starts_with(match)) { read = true; continue; }
+            if (!read || line.empty() || line.starts_with("EOF")) continue;
 
-    size_t n = node_ids.size();
-    if (n == 0)
-      continue;
-    Graph full_graph(n);
+            std::istringstream iss(line);
+            std::size_t dummy_idx;
+            double x, y;
+            if (iss >> dummy_idx >> x >> y) {
+                base_perm.push_back(points.size());
+                points.push_back({x, y});
+            }
+        }
 
-    for (size_t i = 0; i < n; ++i) {
-      for (size_t j = i + 1; j < n; ++j) {
-        double d = euclidean(points[node_ids[i]], points[node_ids[j]]);
-        full_graph.adjacency_matrix[i][j] = d;
-        full_graph.adjacency_matrix[j][i] = d;
-      }
-    }
+        size_t n = points.size();
+        if (n == 0) continue;
+
+        Graph full_graph(n);
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = i + 1; j < n; ++j) {
+                double d = euclidean(points[i], points[j]);
+                full_graph.adjacency_matrix[i][j] = d;
+                full_graph.adjacency_matrix[j][i] = d;
+            }
+        }
+
+        permutation global_best_perm;
+        uint64_t global_best_distance = std::numeric_limits<uint64_t>::max();
+        std::vector<uint64_t> all_distances;
+        std::vector<size_t> all_step_counts;
+
+
+    std::atomic<int> progress{0};
 
     Graph mst;
     double mst_res;
-    std::tie(mst,mst_res) = kruskal(full_graph);
+    std::tie(mst, mst_res) = kruskal(full_graph);
 
-    permutation global_best_perm;
-    uint64_t global_best_distance = std::numeric_limits<uint64_t>::max();
-    std::vector<uint64_t> all_distances;
-    std::vector<size_t> all_step_counts;
-    std::atomic<int> progress{0};
 
     std::println("File: {}", filename);
     std::println("MST weight: {}", mst_res);
@@ -125,22 +124,22 @@ int main() {
       std::mt19937 thread_gen(std::random_device{}() ^ omp_get_thread_num());
 
 #pragma omp for
-      for (int i = 0; i < (int)n; ++i) {
-        uint64_t starting_node = thread_gen() % n;
-        permutation local_perm = mst.get_dfs_tour(starting_node);
-        uint64_t dist = permutation_distance(points, local_perm);
+      for (std::size_t i = 0; i < n; ++i) {
+        permutation local_perm = base_perm;
+        std::shuffle(local_perm.begin(), local_perm.end(), thread_gen);
+        uint64_t cur_dist = permutation_distance(points, local_perm);
         size_t step_count = 0;
 
-        while (local_search(full_graph, local_perm, dist)) {
+        while (local_search(full_graph, local_perm, cur_dist)) {
           ++step_count;
         }
 
 #pragma omp critical
         {
-          all_distances.push_back(dist);
+          all_distances.push_back(cur_dist);
           all_step_counts.push_back(step_count);
-          if (dist < global_best_distance) {
-            global_best_distance = dist;
+          if (cur_dist < global_best_distance) {
+            global_best_distance = cur_dist;
             global_best_perm = local_perm;
           }
         }
@@ -165,6 +164,7 @@ int main() {
         }
       }
     }
+
     std::printf("\n");
 
     double avg_distance =
