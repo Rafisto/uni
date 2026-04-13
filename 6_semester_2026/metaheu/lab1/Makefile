@@ -1,5 +1,5 @@
 CC=clang++
-CFLAGS=-std=c++23
+CFLAGS=-std=c++23 -Wall -Wextra
 COPT=-O3 -march=native -ftree-vectorize -funroll-loops -ffast-math
 CMULTIPROCESS=-fopenmp 
 
