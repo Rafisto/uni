@@ -28,13 +28,13 @@ typedef std::pair<double, double> point;
 typedef std::vector<point> point_list;
 typedef std::vector<std::size_t> permutation;
 
-inline uint64_t euclidean(const point x, const point y) {
+uint64_t euclidean(const point x, const point y) {
   double dx = x.first - y.first;
   double dy = x.second - y.second;
   return static_cast<uint64_t>(std::round(std::sqrt(dx * dx + dy * dy)));
 }
 
-inline uint64_t permutation_distance(const point_list &pm,
+uint64_t permutation_distance(const point_list &pm,
                                      const permutation &perm) {
   if (perm.empty())
     return 0;
@@ -46,7 +46,7 @@ inline uint64_t permutation_distance(const point_list &pm,
   return cumulative_dist;
 }
 
-bool local_search(const Graph &g, permutation &perm, uint64_t &current_dist) {
+bool local_search(const Graph &g, permutation &perm, uint64_t &current_dist, uint64_t &steps) {
   size_t n = perm.size();
   bool improved = false;
 
@@ -66,6 +66,7 @@ bool local_search(const Graph &g, permutation &perm, uint64_t &current_dist) {
         improved = true;
       }
     }
+    ++steps;
   }
   return improved;
 }
@@ -130,9 +131,7 @@ int main() {
         uint64_t cur_dist = permutation_distance(points, local_perm);
         size_t step_count = 0;
 
-        while (local_search(full_graph, local_perm, cur_dist)) {
-          ++step_count;
-        }
+        while (local_search(full_graph, local_perm, cur_dist, step_count)) {}
 
 #pragma omp critical
         {

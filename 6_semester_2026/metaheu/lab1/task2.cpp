@@ -25,13 +25,13 @@ typedef std::pair<double, double> point;
 typedef std::vector<point> point_list;
 typedef std::vector<std::size_t> permutation;
 
-inline uint64_t euclidean(const point x, const point y) {
+uint64_t euclidean(const point x, const point y) {
     double dx = x.first - y.first;
     double dy = x.second - y.second;
     return static_cast<uint64_t>(std::round(std::sqrt(dx * dx + dy * dy)));
 }
 
-inline uint64_t permutation_distance(const point_list &pm, const permutation &perm) {
+uint64_t permutation_distance(const point_list &pm, const permutation &perm) {
     if (perm.empty()) return 0;
     uint64_t cumulative_dist = 0;
     for (std::size_t j = 0; j < perm.size() - 1; ++j) {
@@ -41,9 +41,9 @@ inline uint64_t permutation_distance(const point_list &pm, const permutation &pe
     return cumulative_dist;
 }
 
-inline bool local_search_randomized(const Graph &g, permutation &perm,
+bool local_search_randomized(const Graph &g, permutation &perm,
                                     uint64_t &current_dist, size_t max_tries,
-                                    std::mt19937 &gen) {
+                                    std::mt19937 &gen, uint64_t &steps) {
     bool improved = false;
     std::uniform_int_distribution<size_t> dist_indices(1, perm.size() - 1);
 
@@ -66,6 +66,7 @@ inline bool local_search_randomized(const Graph &g, permutation &perm,
             current_dist -= static_cast<uint64_t>(old_edges - new_edges);
             improved = true;
         }
+        ++steps;
     }
     return improved;
 }
@@ -124,9 +125,7 @@ int total_iterations = n;
         uint64_t cur_dist = permutation_distance(points, local_perm);
         size_t step_count = 0;
 
-        while (local_search_randomized(full_graph, local_perm, cur_dist, n, thread_gen)) {
-            ++step_count;
-        }
+        while (local_search_randomized(full_graph, local_perm, cur_dist, n, thread_gen,step_count)) {}
 
         #pragma omp critical
         {
