@@ -125,7 +125,7 @@ int main() {
       std::mt19937 thread_gen(std::random_device{}() ^ omp_get_thread_num());
 
 #pragma omp for
-      for (std::size_t i = 0; i < n; ++i) {
+      for (std::size_t i = 0; i < sqrt(n); ++i) {
         permutation local_perm = base_perm;
         std::shuffle(local_perm.begin(), local_perm.end(), thread_gen);
         uint64_t cur_dist = permutation_distance(points, local_perm);

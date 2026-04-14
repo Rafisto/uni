@@ -62,11 +62,11 @@ bool local_search_randomized(const Graph &g, permutation &perm,
         double new_edges = g.adjacency_matrix[a][c] + g.adjacency_matrix[b][d];
 
         if (new_edges < old_edges) {
+            ++steps;
             std::reverse(perm.begin() + i, perm.begin() + j + 1);
             current_dist -= static_cast<uint64_t>(old_edges - new_edges);
             improved = true;
         }
-        ++steps;
     }
     return improved;
 }

@@ -5,9 +5,13 @@ import os
 import matplotlib.pyplot as plt
 
 prefix = "task1"
+title = "TSP Solution"
 if len(sys.argv) > 1:
     print(f"Using prefix from command line argument: {sys.argv[1]}")
     prefix = sys.argv[1]
+if len(sys.argv) > 2:
+    print(f"Using title from command line argument: {sys.argv[2]}")
+    title = sys.argv[2]
 
 def find_lines_with_tsp(lines: List[str]) -> List[int]:
     return [i for i, line in enumerate(lines) if 'tsp' in line]
@@ -45,6 +49,6 @@ if not sys.stdin.isatty():
         plt.plot(y_coords + [y_coords[0]], x_coords + [x_coords[0]], 'b-o', markersize=1)
         plt.xlabel('X')
         plt.ylabel('Y')
-        plt.title(f'TSP Randomized Best Effort file="{filename}"')
+        plt.title(f'{title} file="{filename}"')
         plt.grid(True)
         plt.savefig(f"output/{prefix}_{filename}.png")

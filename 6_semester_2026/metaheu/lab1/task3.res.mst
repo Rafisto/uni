@@ -1,4 +1,5 @@
 File: western_sahara.tsp
+MST weight: 21753
 mean_distance;mean_step;best_distance
 31431.80;117.60;29594
 17;26433.3333;13433.3333
@@ -31,6 +32,7 @@ mean_distance;mean_step;best_distance
 24;27233.3333;10450
 25;27233.3333;11783.3333
 File: djibouti.tsp
+MST weight: 5828
 mean_distance;mean_step;best_distance
 7762.67;166.50;7440
 29;12149.4444;42477.5
@@ -72,6 +74,7 @@ mean_distance;mean_step;best_distance
 18;11600;43150
 16;11583.3333;43150
 File: qatar.tsp
+MST weight: 8026
 mean_distance;mean_step;best_distance
 10788.08;1232.23;10246
 9;25103.3333;51521.6667
@@ -269,6 +272,7 @@ mean_distance;mean_step;best_distance
 6;25030.8333;51275.2778
 10;25121.9444;51218.3333
 File: uruguay.tsp
+MST weight: 69873
 mean_distance;mean_step;best_distance
 89964.59;5782.56;87947
 134;31716.6667;55333.3333
@@ -1006,6 +1010,7 @@ mean_distance;mean_step;best_distance
 346;32916.6667;54966.6667
 332;32833.3333;54766.6667
 File: zimbabwe.tsp
+MST weight: 82863
 mean_distance;mean_step;best_distance
 108716.93;7485.87;104581
 573;19716.6667;28800
@@ -1938,6 +1943,7 @@ mean_distance;mean_step;best_distance
 482;19466.6667;29766.6667
 481;19466.6667;29750
 File: oman.tsp
+MST weight: 74109
 mean_distance;mean_step;best_distance
 99123.91;17577.23;95679
 1957;26231.6667;56410
@@ -3920,6 +3926,7 @@ mean_distance;mean_step;best_distance
 1933;26180.5556;56316.9444
 1934;26183.3333;56300
 File: canada.tsp
+MST weight: 1118421
 mean_distance;mean_step;best_distance
 1488226.87;45797.29;1451566
 3589;52516.6667;111916.6667
@@ -8586,6 +8593,7 @@ mean_distance;mean_step;best_distance
 3534;52333.3333;112683.3333
 3515;52266.6667;112733.3333
 File: tanzania.tsp
+MST weight: 348447
 mean_distance;mean_step;best_distance
 454066.83;61003.18;445111
 5453;10000;39650
@@ -14706,6 +14714,7 @@ mean_distance;mean_step;best_distance
 5150;8950;38566.6667
 5140;8933.3333;38516.6667
 File: egypt.tsp
+MST weight: 147514
 mean_distance;mean_step;best_distance
 195387.80;77574.29;190324
 2097;30200.2778;32425
@@ -21855,6 +21864,7 @@ mean_distance;mean_step;best_distance
 4588;30935.2778;31259.1667
 4524;30922.7778;31268.0556
 File: ireland.tsp
+MST weight: 185370
 mean_distance;mean_step;best_distance
 235855.07;93443.33;233043
 2573;52569.4444;9616.1111
