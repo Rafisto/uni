@@ -62,6 +62,7 @@ def generate_latex_table(file_path, opt_values, city_counts, title="TSP Results"
     print(r"\begin{table}[H]")
     print(r"    \centering")
     print(rf"    \caption{{{title}}}")
+    print(r"    \resizebox{\textwidth}{!}{%")
     print(r"    \begin{tabular}{lcccccc}")
     print(r"        \toprule")
     print(r"        Plik & Liczba Miast & Średni dystans & Średnia liczba kroków & Najlepszy dystans & OPT & Błąd Względny \\")
@@ -71,7 +72,8 @@ def generate_latex_table(file_path, opt_values, city_counts, title="TSP Results"
         print(r)
         
     print(r"        \bottomrule")
-    print(r"    \end{tabular}")
+    print(r"    \end{tabular}%")
+    print(r"    }")
     print(r"\end{table}")
 
 if __name__ == "__main__":

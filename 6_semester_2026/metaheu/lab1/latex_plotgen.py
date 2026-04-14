@@ -8,10 +8,10 @@ for e in endings:
     print(f"\\begin{{figure}}[H]")
     print(f"    \\centering")
     for p in prefixes:
-        print(f"    \\begin{{minipage}}{{0.33\\textwidth}}")
+        print(f"    \\begin{{minipage}}{{0.32\\textwidth}}")
         print(f"        \\centering")
         print(f"        \\includegraphics[width=\\textwidth]{{output/{p}_{e}.png}}")
-        print(f"        \\caption{{{p} solution for {e}}}")
+        print(f"        \\caption*{{{p}({e})}}")
         print(f"        \\label{{fig:{p}_{e}}}")
         print(f"    \\end{{minipage}}")
     print(f"\\end{{figure}}")
