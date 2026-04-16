@@ -1,90 +1,54 @@
 #include <Servo.h>
+#include <LiquidCrystal_I2C.h>
+#include <EEPROM.h>
 
 #include "Ticker.h"
 #include "Wheels.h"
-#include <LiquidCrystal_I2C.h>
-#include <Servo.h>
-#include <TimerOne.h>
+
+#include "eepromlib.hpp"
+
+#define SPEED 200
+#define DELAY_BASE 1000
+#define PING_INTERVAL 50
+#define SERVO_MOVE_TIME 800
+#define SWEEP_INTERVAL 200
+#define BACKTRACK_TIME 2000
 
 Wheels w;
-volatile char cmd;
+Servo srv;
+LiquidCrystal_I2C lcd(0x27, 20, 4);
+int e_left = 1;
+int e_right = 1;
+int e_id = 0;
 
-// (int pRF, int pRB, int pRS, int pLF, int pLB, int pLS)
-// 7 8 5 12 11 10
-
-// l289n Pinout
-// white - EN A - SPEED R - PIN 6
-// gray - IN1 - PIN 11
-// purple - IN2 - PIN 12
-// blue - IN3 - PIN 8
-// green - IN4 - PIN 7
-// yellow - EN B - SPEED L - PIN 5
-
-// LiqidCrystal_I2C
-// SDA - A4
-// SCL - A5
-
-// ROW 1 - Distance to Go
-// ROW 2 - Animation
-// - First 2: Motor L (F/B/S)
-// - Last 2 : Motor R (F/B/S)
-
-// HC-SR04
-// ECHO - receives
-// TRIG - sends
-const int echoPin = A2;
-const int trigPin = 4;
-float duration, distance;
-
-// SERVO PIN 2
-const int servoPin = 3;
-
-// INTERRUPTS
-// A0 - LEFT FRONT WHEEL - PCINT8
-// A1 - RIGHT FRONT WHEEL - PCINT9
 #define INTINPUT0 A0
 #define INTINPUT1 A1
 volatile int cnt0, cnt1;
 
-// TIMER BEEP
-// #define REVERSE_PIN 10
-// long int intPeriod = 100000;
+unsigned long lastPingTime = 0;
+unsigned long stateStartTime = 0;
+unsigned long lastSweepTime = 0;
+int sweepIndex = 0;
+int sweepAngles[] = {45, 90, 135, 90};
 
-LiquidCrystal_I2C lcd(0x27, 20, 4);
-
-// enum Direction { FORWARD, BACKWARD, STOP };
-
-// Direction left = STOP;
-// Direction right = STOP;
+float duration, distance;
+float d[] = {0,0,0};
+float dFarLeft, dLeft, dCenter, dRight, dFarRight;
 
 enum State {
   FORWARD,
-  BACKTRACK_LEFT,
-  BACKTRACK_RIGHT,
-  BACKTRACK_BACK,
+  STOPPED,
+  SCAN_FL,
+  SCAN_L,
+  SCAN_C,
+  SCAN_R,
+  SCAN_FR,
+  DECIDE,
+  BACKTRACK
 };
 
-State state = FORWARD;
-
-// #define fn_move_refresh 100
-// #define fn_display_refresh 200
-
-// 255 x 20 = 10cm
-// RATE at 255 = 10cm / 20ms = 1 / 2;
-
-// void fn_move() {
-//   if (current < goal) {
-//     left = FORWARD;
-//     right = FORWARD;
-//     w.forward();
-//     w.setSpeed(255);
-//     current += 5;
-//   } else {
-//     left = STOP;
-//     right = STOP;
-//     w.stop();
-//   }
-// }
+State state;
+int angle;
 
 void fn_display_isr() {
   lcd.clear();
@@ -92,7 +56,7 @@ void fn_display_isr() {
   lcd.print("L");
   lcd.print(cnt0);
 
-  lcd.setCursor(4, 0);
+  lcd.setCursor(8, 0);
   lcd.print("R");
   lcd.print(cnt1);
 
@@ -100,137 +64,269 @@ void fn_display_isr() {
   lcd.print("d=");
   lcd.print(distance);
 
-  lcd.setCursor(14, 1);
+  lcd.setCursor(9,1);
+
   switch (state) {
-  case FORWARD: {
-    lcd.print("F");
-    break;
+    case FORWARD:      lcd.print("FWD"); break;
+    case SCAN_FL:      lcd.print("SFL"); break;
+    case SCAN_L:       lcd.print("SCL 130"); break;
+    case SCAN_C:       lcd.print("SCC 90"); break;
+    case SCAN_R:       lcd.print("SCR 50"); break;
+    case SCAN_FR:      lcd.print("SFR 10"); break;
+    case BACKTRACK:    lcd.print("TRN"); break;
+    default:           lcd.print("---"); break;
   }
-  case BACKTRACK_LEFT: {
-    lcd.print("BL");
-    break;
-  }
-  case BACKTRACK_RIGHT: {
-    lcd.print("BR");
-    break;
-  }
-  case BACKTRACK_BACK: {
-    lcd.print("BB");
-    break;
-  }
-  }
+  
+  lcd.print(" ");
+  lcd.print(angle-90);
 }
 
-// Ticker move(fn_move_refresh, fn_move);
-// Ticker display(fn_display_refresh, fn_display);
+// HC-SR04
+// ECHO (A2) - receives
+// TRIG (4) - sends
+#define ECHO_PIN A2
+#define TRIG_PIN 4
 
-Servo srv;
+void setup_ultrasonic_sensor() {
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(TRIG_PIN, OUTPUT);
+}
 
-void setup() {
-  // HC-SR04
-  // https://projecthub.arduino.cc/Isaac100/getting-started-with-the-hc-sr04-ultrasonic-sensor-7cabe1
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+// l289n Pinout
+#define MOTOR_ENA 6  // white - EN A - SPEED R - PIN 6
+#define MOTOR_ENB 5  // yellow - EN B - SPEED L - PIN 5
+#define MOTOR_IN1 11 // gray - IN1 - PIN 11
+#define MOTOR_IN2 12 // purple - IN2 - PIN 12
+#define MOTOR_IN3 8  // blue - IN3 - PIN 8
+#define MOTOR_IN4 7  // green - IN4 - PIN 7
+void setup_motor() {
+  pinMode(6, MOTOR_ENA);
+  pinMode(5, MOTOR_ENB);
+  w.attach(MOTOR_IN4, MOTOR_IN3, MOTOR_ENB, MOTOR_IN2, MOTOR_IN1, MOTOR_ENA);
+}
 
-  // Servo
-  srv.attach(servoPin);
-  srv.write(90);
-
-  pinMode(6, OUTPUT);
-  pinMode(5, OUTPUT);
-  w.attach(7, 8, 5, 12, 11, 6);
+// LiqidCrystal_I2C 16x2 LCD
+#define SDA_PIN A4
+#define SCL_PIN A5
+void setup_lcd() {
   lcd.init();
   lcd.backlight();
   lcd.setCursor(0, 0);
+}
 
+#define SERVO_PIN 3
+void setup_servo() {
+  srv.attach(SERVO_PIN);
+  angle=90;
+  srv.write(90);
+}
+
+void setup_gap_counters() {
   cnt0 = 0;
   cnt1 = 0;
 
   PCICR = 0x02;
   PCMSK1 = 0x03;
+}
+
+void clear_eeprom() {
+  for (int i = 0; i < EEPROM.length(); i++) {
+    EEPROM.write(i, 0);
+  }
+}
+
+void dump_eeprom() {
+  Serial.begin(115200);
+
+  for (int i = 0; i < EEPROM.length(); i++) {
+    Serial.print(EEPROM.read(i), HEX);
+    Serial.print(" ");
+    if ((i + 1) % 16 == 0) Serial.println();
+  }
+  Serial.println();
+
+  Serial.end();
+}
+
+void setup() {
+  // clear_eeprom();
+  dump_eeprom();
+
+  setup_ultrasonic_sensor();
+  setup_motor();
+  setup_servo();
+  setup_lcd();
+  setup_gap_counters();
 
   state = FORWARD;
 }
 
-void dist() {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+float getDistance() {
+  for(int i = 0; i < 3; ++i ) {
+    digitalWrite(TRIG_PIN, LOW);
+    delayMicroseconds(2);
+    digitalWrite(TRIG_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG_PIN, LOW);
+    long duration = pulseIn(ECHO_PIN, HIGH, 30000);
+    d[i] = duration;
+  }
 
-  duration = pulseIn(echoPin, HIGH);
-  distance = (duration * .0343) / 2;
+  long best;
+  if ((d[0] > d[1]) ^ (d[0] > d[2])) best = d[0];
+  else if((d[1] < d[0]) ^ (d[1] < d[2])) best = d[1];
+  else best = d[2];
+  return (best * 0.0343 / 2);
 }
 
-void select_backtrack() {
-  // rot 30 left measure
-  double l_dist;
-  srv.write(150);
-  delay(1000);
-  dist();
-  l_dist = distance;
+void handleActiveForward() {
+  unsigned long now = millis();
 
-  // rot 30 right measure
-  double r_dist;
-  srv.write(30);
-  delay(1000);
-  dist();
-  r_dist = distance;
+  if (now - lastSweepTime > SWEEP_INTERVAL) {
+    sweepIndex = (sweepIndex + 1) % 4;
+    angle=sweepAngles[sweepIndex];
+    srv.write(sweepAngles[sweepIndex]);
+    lastSweepTime = now;
+  }
 
-  srv.write(90);
-  if (r_dist && l_dist < 30) {
-    state = BACKTRACK_BACK;
-  } else if (r_dist > l_dist) {
-    state = BACKTRACK_LEFT;
-  } else {
-    state = BACKTRACK_RIGHT;
+  if (now - lastPingTime > PING_INTERVAL) {
+    distance = getDistance();
+    lastPingTime = now;
+
+    if (distance > 0 && distance < 25) {
+      w.stop();
+      e_id = ewrite_int(e_id, cnt0);
+      e_id = ewrite_int(e_id, cnt1);
+      cnt1 = 0;
+      cnt0 = 0; 
+      state = STOPPED; 
+    } else {
+      w.forward();
+      e_left = 1;
+      e_right = 1;
+      w.setSpeed(SPEED);
+    }
   }
 }
 
-#define SPEED 150
-#define DELAY_BASE 1000
+void runScanner() {
+  unsigned long now = millis();
 
-void loop() {
-  fn_display_isr();
+  lcd.setCursor(0, 1);
+  lcd.print("d=eval  ");
+
   switch (state) {
-  case FORWARD: {
-    w.forward();
-    w.setSpeed(SPEED);
-    delay(200);
-    dist();
-    if (distance < 30) {
-      w.stop();
-      select_backtrack();
-    }
-  } break;
-  case BACKTRACK_RIGHT: {
-    w.back();
-    delay(DELAY_BASE);
+    case STOPPED:
+      srv.write(170);
+      stateStartTime = now;
+      state = SCAN_FL;
+      break;
+
+    case SCAN_FL:
+      if (now - stateStartTime > SERVO_MOVE_TIME) {
+        dFarLeft = getDistance();
+        angle=130;
+        srv.write(130);
+        stateStartTime = now;
+        state = SCAN_L;
+      }
+      break;
+
+    case SCAN_L:
+      if (now - stateStartTime > SERVO_MOVE_TIME) {
+        dLeft = getDistance();
+        angle=90;
+        srv.write(90);
+        stateStartTime = now;
+        state = SCAN_C;
+      }
+      break;
+
+    case SCAN_C:
+      if (now - stateStartTime > SERVO_MOVE_TIME) {
+        dCenter = getDistance();
+        angle=50;
+        srv.write(50);
+        stateStartTime = now;
+        state = SCAN_R;
+      }
+      break;
+
+    case SCAN_R:
+      if (now - stateStartTime > SERVO_MOVE_TIME) {
+        dRight = getDistance();
+        angle=10;
+        srv.write(10);
+        stateStartTime = now;
+        state = SCAN_FR;
+      }
+      break;
+
+    case SCAN_FR:
+      if (now - stateStartTime > SERVO_MOVE_TIME) {
+        dFarRight = getDistance();
+        state = DECIDE;
+      }
+      break;
+
+    case DECIDE:
+      evaluatePath();
+      stateStartTime = now;
+
+      state = BACKTRACK;
+      angle = 90;
+      break;
+
+    case BACKTRACK:
+      if (now - stateStartTime > BACKTRACK_TIME) {
+        w.stop();
+
+        angle=90;
+        srv.write(90);
+        delay(500);
+
+        stateStartTime = now;
+        state = FORWARD;
+      }
+      break;
+  }
+}
+
+void evaluatePath() {
+  if (dFarRight > 40 && dRight > 30) {
+    e_id = ewrite_int(e_id, 0xF0);
     w.forwardRight();
     w.backLeft();
-    w.setSpeed(SPEED);
-    delay(DELAY_BASE);
-    w.stop();
-    state = FORWARD;
-  } break;
-  case BACKTRACK_LEFT: {
-    w.back();
-    delay(DELAY_BASE);
+  } else if (dFarLeft > 40 && dLeft > 30) {
+    e_id = ewrite_int(e_id, 0xF1);
     w.forwardLeft();
     w.backRight();
-    w.setSpeed(SPEED);
-    delay(DELAY_BASE);
-    w.stop();
-    state = FORWARD;
-  } break;
-  case BACKTRACK_BACK: {
+  } else if (dRight >= dLeft) {
+    e_id = ewrite_int(e_id, 0xF2);
+    w.forwardRight();
+    w.backLeft();
+  } else if (dLeft > dRight) {
+    e_id = ewrite_int(e_id, 0xF3);
+    w.forwardLeft();
+    w.backRight();
+  } else {
+    e_id = ewrite_int(e_id, 0xF4);
     w.back();
-    delay(1000);
-    w.setSpeed(SPEED);
-    w.stop();
-    state = FORWARD;
-  } break;
+  }
+  w.setSpeed(SPEED);
+}
+
+void loop() {
+static unsigned long lastLCD = 0;
+  if (millis() - lastLCD > 200) {
+    fn_display_isr();
+    lastLCD = millis();
+  }
+
+  if (state == FORWARD) {
+    handleActiveForward();
+  } else {
+    runScanner();
   }
 }
 
