@@ -1,6 +1,7 @@
 #ifndef RING_HPP
 #define RING_HPP
 
+#include <concepts>
 #include <cstdint>
 #include <istream>
 #include <ostream>
@@ -31,9 +32,7 @@ public:
     return stream;
   }
 
-  constexpr uint64_t modulus() const noexcept(true) {
-    return N;
-  }
+  constexpr uint64_t modulus() const noexcept(true) { return N; }
 
   constexpr operator uint64_t() const noexcept(true) {
     return repr();
@@ -42,7 +41,8 @@ public:
   constexpr Ring<N> inverse() const {
     diophantine_result64_t res = diophantine(value, N, 1);
     if (res.err)
-      throw std::invalid_argument("Element is not invertible (gcd(value, N) != 1)");
+      throw std::invalid_argument(
+          "Element is not invertible (gcd(value, N) != 1)");
     return Ring<N>(res.x % N);
   }
 
@@ -132,6 +132,18 @@ public:
     uint64_t inv = res.x;
     value = (value * inv) % N;
     return Ring(value);
+  }
+
+  constexpr Ring<N> operator^(uint64_t exp) const noexcept(true) {
+    Ring<N> res(1);
+    Ring<N> base = *this;
+    while (exp > 0) {
+      if (exp % 2 == 1)
+        res *= base;
+      base *= base;
+      exp /= 2;
+    }
+    return res;
   }
 };
 
