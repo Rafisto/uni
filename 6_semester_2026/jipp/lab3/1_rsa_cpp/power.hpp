@@ -8,7 +8,7 @@ template <typename T> T power(T base, T exp, T modulus) {
     if (exp % 2 == 1)
       result = (result * base) % modulus;
     base = (base * base) % modulus;
-    exp >>= 1;
+    exp /= 1;
   }
   return result;
 }
