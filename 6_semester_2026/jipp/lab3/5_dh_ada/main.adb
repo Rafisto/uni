@@ -1,33 +1,43 @@
-with Ada.Text_IO;     use Ada.Text_IO;
-with Ada.Assertions;  use Ada.Assertions;
-with Interfaces;      use Interfaces;
+with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces;  use Interfaces;
 with Ring;
 with DH;
 
 procedure Main is
-   package RingInstance is new Ring (N => 1234567891);
-   package DHInstance is new DH (N_Val => 1234567891, RingInstance => RingInstance);
+   N_Val : constant Unsigned_64 := 1234567891;
+   package InstanceRing is new Ring (N => N_Val);
+   package InstanceDH is new DH (N_Val => N_Val, RingInstance => InstanceRing);
+   
+   use InstanceDH.Setup;
+   use InstanceDH.External_User;
+   use InstanceRing;
 
-   use RingInstance;
-   use DHInstance;
+   Domain : aliased DH_Setup := Initialize;
 
-   Setup : aliased DH_Setup := Initialize;
-   A_SK : User (Setup => Setup'Access) := Create_User (Setup'Access);
-   B_SK   : User (Setup => Setup'Access) := Create_User (Setup'Access);
+   Alice : User := Create_User (Domain'Access);
+   Bob   : User := Create_User (Domain'Access);
 
-   A_PK : T := Get_Public_Key (A_SK);
-   B_PK   : T := Get_Public_Key (B_SK);
+   Alice_Pub : constant InstanceDH.T := Get_Public_Key (Alice);
+   Bob_Pub   : constant InstanceDH.T := Get_Public_Key (Bob);
 
-   Msg      : T := Get_Generator (Setup);
-   Cipher   : T;
-   Decoded  : T;
+   Secret_Msg : constant InstanceDH.T := InstanceRing.Initialize (7);
+   Cipher     : InstanceDH.T;
+   Recovered  : InstanceDH.T;
 begin
-   Set_Key (A_SK, B_PK);
-   Set_Key (B_SK, A_PK);
+   Set_Key (Alice, Bob_Pub);
+   Set_Key (Bob, Alice_Pub);
 
-   Cipher  := Encrypt (A_SK, Msg);
-   Decoded := Decrypt (B_SK, Cipher);
+   Cipher    := Encrypt (Alice, Secret_Msg);
+   Recovered := Decrypt (Bob, Cipher);
 
-   Assert (Decoded = Msg);
-   Put_Line ("DH test passed.");
+   Put_Line ("--- Diffie-Hellman Key Exchange Demo ---");
+   Put_Line ("Original Message:  " & Unsigned_64'Image (InstanceRing.repr (Secret_Msg)));
+   Put_Line ("Encrypted Cipher:  " & Unsigned_64'Image (InstanceRing.repr (Cipher)));
+   Put_Line ("Decrypted Message: " & Unsigned_64'Image (InstanceRing.repr (Recovered)));
+   
+   if Secret_Msg = Recovered then
+      Put_Line ("Success: Messages match!");
+   else
+      Put_Line ("Failure: Messages do not match.");
+   end if;
 end Main;

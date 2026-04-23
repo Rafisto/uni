@@ -10,6 +10,7 @@ package Ring is
 
    function repr(V : Value) return Unsigned_64;
    function To_String(V : Value) return String;
+   function g return Unsigned_64;
 
    function "+" (L, R : Value) return Value;
    function "-" (L, R : Value) return Value;

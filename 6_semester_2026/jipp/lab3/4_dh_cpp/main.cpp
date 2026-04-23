@@ -1,20 +1,29 @@
+#include <iostream>
 #include <cassert>
 
 #include "dh.hpp"
 #include "ring.hpp"
+#include "user.hpp"
 
 int main() {
-  constexpr uint64_t n = 1234567891;
-  using R = Ring<n>;
-  DHSetup<R> dh{};
+    constexpr uint64_t n = 1234567891;
+    using R = Ring<n>;
 
-  uint64_t a = 12345;
-  uint64_t b = 54321;
+    DHSetup<R> dh;
+    User<R> alice(dh);
+    User<R> bob(dh);
+    R pubA = alice.getPublicKey();
+    R pubB = bob.getPublicKey();
+    alice.setKey(pubB);
+    bob.setKey(pubA);
 
-  R A = dh.power(dh.getGenerator(), a);
-  R B = dh.power(dh.getGenerator(), b);
+    R message(12345);
+    
+    R encrypted = alice.encrypt(message);
+    R decrypted = bob.decrypt(encrypted);
+    assert(message == decrypted);
+    
+    std::cout << "DH works" << std::endl;
 
-  assert(dh.power(B, a) == dh.power(A, b));
-
-  return 0;
+    return 0;
 }
