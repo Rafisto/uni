@@ -29,13 +29,12 @@ impl<'a> User<'a> {
     }
 
     pub fn encrypt(&self, m: Ring) -> Ring {
-        // Use expect() to handle the "key not set" error
-        let key = self.shared_key.as_ref().expect("Key not set");
+        let key = self.shared_key.as_ref().expect("key not set");
         m * key.clone()
     }
 
     pub fn decrypt(&self, c: Ring) -> Ring {
-        let key = self.shared_key.as_ref().expect("Key not set");
+        let key = self.shared_key.as_ref().expect("key not set");
         c / key.clone()
     }
 }

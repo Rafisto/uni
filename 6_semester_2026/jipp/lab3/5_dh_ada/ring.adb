@@ -14,11 +14,8 @@ package body Ring is
    end repr;
 
    function To_String (V : Value) return String is
-      Val_Str : constant String :=
-        Ada.Strings.Fixed.Trim
-          (Unsigned_64'Image (Unsigned_64 (V)), Ada.Strings.Both);
-      N_Str   : constant String :=
-        Ada.Strings.Fixed.Trim (Unsigned_64'Image (N), Ada.Strings.Both);
+      Val_Str : constant String := Ada.Strings.Fixed.Trim (Unsigned_64'Image (Unsigned_64 (V)), Ada.Strings.Both);
+      N_Str   : constant String := Ada.Strings.Fixed.Trim (Unsigned_64'Image (N), Ada.Strings.Both);
    begin
       return "Ring<" & N_Str & ">(" & Val_Str & ")";
    end To_String;
@@ -69,7 +66,7 @@ package body Ring is
       Res := Diophantine (Unsigned_64 (R), Unsigned_64 (N), 1);
 
       if Res.Err /= False then
-         raise Constraint_Error with "Divisor is not invertible";
+         raise Constraint_Error with "divisor is not invertible";
       end if;
 
       return Value ((Unsigned_64 (L) * Unsigned_64 (Res.X)) mod N);

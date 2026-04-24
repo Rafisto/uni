@@ -22,6 +22,12 @@ int main() {
     R encrypted = alice.encrypt(message);
     R decrypted = bob.decrypt(encrypted);
     assert(message == decrypted);
+
+    R message2(54321);
+
+    R encrypted2 = alice.encrypt(message2);
+    R decrypted2 = bob.decrypt(encrypted2);
+    assert(message2 == decrypted2);
     
     std::cout << "DH works" << std::endl;
 

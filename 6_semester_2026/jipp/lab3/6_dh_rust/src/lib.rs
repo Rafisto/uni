@@ -26,5 +26,11 @@ mod tests {
         let decrypted = bob.decrypt(encrypted);
 
         assert_eq!(message, decrypted);
+
+        let message2 = Ring::new(54321, n);
+        let encrypted2 = alice.encrypt(message2.clone());
+        let decrypted2 = bob.decrypt(encrypted2);
+
+        assert_eq!(message2, decrypted2);
     }
 }
