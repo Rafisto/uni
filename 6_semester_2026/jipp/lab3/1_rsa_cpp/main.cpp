@@ -19,6 +19,8 @@ int main() {
   // encryption
   R encrypted = rsa.encrypt(message);
   assert(encrypted == power((uint64_t)message, (uint64_t)rsa.getPublicKey(), p * q));
+
+  // rev
   assert(rsa.decrypt(rsa.encrypt(message)) == message);
   
   // decryption

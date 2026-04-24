@@ -15,10 +15,10 @@ public:
   T power(T a, uint64_t b) const {
     T result = T(1);
     while (b > 0) {
-      if (b & 1ULL)
+      if (b % 2 == 1)
         result = result * a;
       a = a * a;
-      b >>= 1ULL;
+      b >>= 1;
     }
     return result;
   }

@@ -28,9 +28,9 @@ impl Ring {
 
         let mut rng = rand::rng();
         let temp_g = loop {
-            let candidate = rng.random_range(2..n);
-            if gcd(candidate ^ (n - 1), n) == 1 {
-                break candidate;
+            let temp_g = rng.random_range(2..n);
+            if gcd(temp_g ^ (n - 1), n) == 1 {
+                break temp_g;
             }
         };
 

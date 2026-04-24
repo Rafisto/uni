@@ -24,7 +24,7 @@ package body Ring is
    end To_String;
 
    function g return Unsigned_64 is
-      Candidate : Unsigned_64 := 2;
+      Temp_G : Unsigned_64 := 2;
       Pow       : Unsigned_64;
       Res       : Diophantine_Result;
    begin
@@ -33,19 +33,19 @@ package body Ring is
       end if;
 
       loop
-         Pow := Unsigned_64 ((Value (Candidate)) ** (N - 1));
+         Pow := Unsigned_64 ((Value (Temp_G)) ** (N - 1));
          Res := Diophantine (Pow, N, 1);
 
          exit when Res.Err = False;
 
-         if Candidate + 1 >= N then
+         if Temp_G + 1 >= N then
             return 2;
          end if;
 
-         Candidate := Candidate + 1;
+         Temp_G := Temp_G + 1;
       end loop;
 
-      return Candidate;
+      return Temp_G;
    end g;
 
    function "+" (L, R : Value) return Value is

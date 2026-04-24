@@ -13,10 +13,10 @@ package body DH is
          R      : Unsigned_64;
          G_Val  : Unsigned_64;
          Result : DH_Setup;
-         Cand   : T;
+         Temp_G   : T;
       begin
          if N_Val <= 2 then
-            raise Program_Error with "N_Val must be > 2";
+            raise Program_Error with "n must be greater than 2";
          end if;
 
          Rand_U64.Reset (Gen);
@@ -24,11 +24,11 @@ package body DH is
          loop
             R := Rand_U64.Random (Gen);
             G_Val := 2 + (R mod (N_Val - 2));
-            Cand := RingInstance.Initialize (G_Val);
-            exit when GCD (Unsigned_64 (RingInstance.repr (Cand ** (N_Val - 1))), N_Val) = 1;
+            Temp_G := RingInstance.Initialize (G_Val);
+            exit when GCD (Unsigned_64 (RingInstance.repr (Temp_G ** (N_Val - 1))), N_Val) = 1;
          end loop;
 
-         Result.Generator := Cand;
+         Result.Generator := Temp_G;
          return Result;
       end Initialize;
 
@@ -44,7 +44,7 @@ package body DH is
       end Power;
    end Setup;
 
-   package body External_User is
+   package body User is
       use Setup; 
 
       function Create_User (Domain : DH_Setup_Access) return User is
@@ -96,6 +96,6 @@ package body DH is
          end if;
          return C / Self.Key;
       end Decrypt;
-   end External_User;
+   end User;
 
 end DH;

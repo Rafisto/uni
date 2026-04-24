@@ -22,7 +22,7 @@ package DH is
       end record;
    end Setup;
 
-   package External_User is
+   package User is
       type User (Domain : Setup.DH_Setup_Access) is tagged private;
 
       function Create_User (Domain : Setup.DH_Setup_Access) return User;
@@ -38,6 +38,6 @@ package DH is
          Key     : T;
          Has_Key : Boolean := False;
       end record;
-   end External_User;
+   end User;
 
 end DH;

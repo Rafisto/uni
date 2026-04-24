@@ -15,9 +15,9 @@ impl RSA {
         let mut rng = rand::rng();
         
         let e = loop {
-            let candidate = rng.random_range(2..phi);
-            if crate::libjpp::gcd(candidate, phi) == 1 {
-                break candidate;
+            let temp_e = rng.random_range(2..phi);
+            if crate::libjpp::gcd(temp_e, phi) == 1 {
+                break temp_e;
             }
         };
 

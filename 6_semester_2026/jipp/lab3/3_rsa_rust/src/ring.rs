@@ -95,7 +95,7 @@ impl ops::BitXor<u64> for Ring {
         let mut base = self.value % self.n;
 
         while exp > 0 {
-            if exp & 1 == 1 {
+            if exp % 2 == 1 {
                 res.value = (res.value * base) % self.n;
             }
             base = (base * base) % self.n;
