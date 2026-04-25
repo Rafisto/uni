@@ -18,6 +18,7 @@ void calc_div();
 void calc_gcd();
 
 int main() {
+  std::println("Main for gauss.hpp");
   calc_norm();
   calc_div();
   calc_gcd();
