@@ -45,8 +45,8 @@ void calc_gcd() {
   Gauss x{a, b};
   Gauss y{c,d};
   Gauss z{e,d};
-  Gauss gcd = x.gcd_list({y,z});
-  Gauss lcm = x.lcm_list({y,z});
+  Gauss gcd = x.gcd_list({x,y,z});
+  Gauss lcm = x.lcm_list({x,y,z});
 
   std::println("Array=({},{},{})", x,y,z);
   std::println("-> GCD = {}", gcd);
