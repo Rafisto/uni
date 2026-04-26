@@ -1,6 +1,7 @@
 #ifndef POLY_HPP
 #define POLY_HPP
 
+#include <cmath>
 #include <cstdint>
 #include <format>
 #include <print>
@@ -111,6 +112,15 @@ public:
       A = B;
       B = r;
     }
+
+    A.tidy();
+    if (!A.is_zero()) {
+      double lead = A.c.back();
+      for (double &coeff : A.c) {
+      coeff /= lead;
+      }
+    }
+
     return A;
   }
 
@@ -141,6 +151,14 @@ public:
       Poly temp_t = t;
       t = old_t - (quotient * s);
       old_t = temp_t;
+    }
+
+    old_r.tidy();
+    if (!old_r.is_zero()) {
+      double lead = old_r.c.back();
+      for (double &coeff : old_r.c) {
+      coeff /= lead;
+      }
     }
 
     return {.gcd = new Poly(old_r), .x = new Poly(old_s), .y = new Poly(old_t)};
@@ -216,6 +234,7 @@ template <> struct std::formatter<Poly> {
       }
 
       double abs_val = std::abs(p.c[i]);
+      abs_val = std::ceil(abs_val * 100.0) / 100.0;
 
       if (abs_val != 1 || i == 0) {
         out = std::format_to(out, "{}", abs_val);

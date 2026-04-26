@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdint>
 #include <format>
+#include <ranges>
 #include <utility>
 #include <vector>
 
@@ -15,7 +16,7 @@ public:
   Gauss(int64_t r, int64_t i) : real(r), imaginary(i) {}
 
   // N(a+bi) = (a+bi)(a-bi) = a^2 + b^2 is the norm
-  int64_t norm() { return real * real + imaginary * imaginary; }
+  int64_t norm() const { return real * real + imaginary * imaginary; }
 
   static int64_t round_div(int64_t n, int64_t d) {
     return std::llround((double)n / d);
@@ -63,6 +64,34 @@ public:
 
     return {Gauss(e, f), Gauss(g, h)};
   };
+
+  std::vector<std::pair<Gauss, Gauss>> div_all_cases(Gauss &Y) {
+    int64_t a = real, b = imaginary;
+    int64_t c = Y.real, d = Y.imaginary;
+    int64_t N = Y.norm();
+
+    // Exact rational parts of X/Y
+    double alpha = static_cast<double>(a * c + b * d) / N;
+    double beta = static_cast<double>(b * c - a * d) / N;
+
+    // The 4 combinations of floor/ceil
+    int64_t choices_e[2] = {(int64_t)std::floor(alpha),
+                            (int64_t)std::ceil(alpha)};
+    int64_t choices_f[2] = {(int64_t)std::floor(beta),
+                            (int64_t)std::ceil(beta)};
+
+    std::vector<std::pair<Gauss, Gauss>> results;
+    auto cartesian = std::views::cartesian_product(choices_e, choices_f);
+
+    for (auto &&[e, f] : cartesian) {
+      int64_t g = a - (e * c - f * d);
+      int64_t h = b - (e * d + f * c);
+
+      results.push_back({Gauss(e, f), Gauss(g, h)});
+    }
+
+    return results;
+  }
 
   // euclidean algorithm
   Gauss gcd(Gauss a, Gauss b) {

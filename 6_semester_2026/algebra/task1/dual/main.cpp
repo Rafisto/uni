@@ -35,10 +35,12 @@ void calc_div() {
   Gauss y{e, f};
   Gauss q;
   Gauss r;
-  std::tie(q, r) = x.div(y);
-  std::println("Div({},{})", x, y);
-  std::println("-> Q = {}", q);
-  std::println("-> R = {}", r);
+  std::println("Div({},{}), N(Y)={}", x, y, y.norm());
+  std::vector<std::pair<Gauss,Gauss>> res = x.div_all_cases(y);
+  for (const auto &[q, r] : res) {
+    std::println("-> Q = {}", q);
+    std::println("-> R = {}, N(R)={}", r, r.norm());
+  }
 }
 
 void calc_gcd() {
@@ -52,4 +54,7 @@ void calc_gcd() {
   std::println("Array=({},{},{})", x,y,z);
   std::println("-> GCD = {}", gcd);
   std::println("-> LCM = {}", lcm);
+
+  std::println("GCD () = {}", x.gcd_list({}));
+  std::println("GCD (x) = {}", x.gcd_list({x}));
 }
