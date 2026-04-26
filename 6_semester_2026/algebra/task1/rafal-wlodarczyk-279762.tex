@@ -179,19 +179,20 @@ for (p in A)
 Musimy sprawdzić każdy element $p$ z $A$. Następnie budujemy zbiór $\text{MIN}$, który będzie zawierał $\leq$-minimalne elementy. 
 Jeśli znajdziemy taki element $p$, że istnieje $q \in \text{MIN}$ taki że $p < q$, to usuwamy $q$ ze zbioru $\text{MIN}$, ponieważ $q$ nie jest już $\leq$-minimalny.
 Jeśli zachodzi $q < p$ to na pewno $p$ nie jest $\leq$-minimalny, więc możemy przejeść dalej.
-Złożoność tego algorytmu zależy od rozmiaru zbioru $\text{MIN}=m$ i wynosi $\mathcal{O}(nm)$. W najgorszym przypadku, gdy wszystkie elementy są $\leq$-minimalne, złożoność będzie $\mathcal{O}(n^2)$,
-ale w praktyce jest znacznie lepsza, ponieważ $|\text{MIN}| \ll |A|$ dla zadanych danych. Szukamy elementów $\leq$-minimalnych w zbiorze
-\begin{itemize}
-    \item $A = \{(x,y)\in \mathbb{N}^2 : (x-a)^2 + (y-b)^2 < 5\}$, gdzie $a=2$ i $b=7$.
-\begin{verbatim}
-Count Min elements of A: 2
-Min elements of A:
-[0, 6], [1, 5]
-\end{verbatim}
-Następnie szukamy elementów $\leq$-minimalnych w zbiorze
-    \item $B = \{(x_1,x_2,x_3,x_4) \in \mathbb{N}^4 : (x_1-c)^2 + (x_2-d)^2 + (x_3-e)^2 + (x_4-f)^2 > 224\}$, gdzie $c=9$, $d=7$, $e=6$ i $f=2$.
-\end{itemize} 
+Złożoność tego algorytmu zależy od rozmiaru zbioru $|\text{MIN}|=m$ i wynosi $\mathcal{O}(nm)$. W najgorszym przypadku, gdy wszystkie elementy są $\leq$-minimalne, złożoność będzie $\mathcal{O}(n^2)$,
+ale w praktyce jest znacznie lepsza, ponieważ $|\text{MIN}| \ll |A|$ dla zadanych danych (szacujemy takim bounding box-em, 
+w granicach rozsądku - kwadratu wokoł okręgu i jego dolnego zarysu).
 
+\begin{itemize}
+    \item  Szukamy elementów $\leq$-minimalnych w zbiorze
+    $A = \{(x,y)\in \mathbb{N}^2 : (x-a)^2 + (y-b)^2 < 5\}$, gdzie $a=2$ i $b=7$.
+\begin{verbatim}
+Count Min elements of A: 3
+Min elements of A:
+[0, 7],[1, 6],[2, 5]
+\end{verbatim}
+    \item Następnie szukamy elementów $\leq$-minimalnych w zbiorze
+    $B = \{(x_1,x_2,x_3,x_4) \in \mathbb{N}^4 : (x_1-c)^2 + (x_2-d)^2 + (x_3-e)^2 + (x_4-f)^2 > 224\}$, gdzie $c=9$, $d=7$, $e=6$ i $f=2$.
 \begin{verbatim}
 Count Min elements of B: 30
 Min elements of B:
@@ -202,5 +203,7 @@ Min elements of B:
 [19, 15, 13, 6], [19, 15, 14, 0], [19, 16, 0, 5], [19, 16, 13, 0], [19, 17, 0, 0]
 [20, 0, 0, 7], [20, 0, 13, 5], [20, 0, 14, 0], [20, 15, 0, 0], [21, 0, 0, 0]   
 \end{verbatim}
+\end{itemize} 
+
 
 \end{document}

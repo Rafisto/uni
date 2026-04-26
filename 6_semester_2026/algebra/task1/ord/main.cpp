@@ -52,16 +52,16 @@ void calc_triple() {
 }
 
 void calc_min_A() {
-  // {(x,y) in N^2 : (x-a)^2 + (y-b)^2 <= 5}
+  // {(x,y) in N^2 : (x-a)^2 + (y-b)^2 < 5}
   std::vector<Prod> prods;
 
-  auto r1 = std::views::iota(0ULL, a + 5);
-  auto r2 = std::views::iota(0ULL, b + 5);
+  auto r1 = std::views::iota(0ULL, a + 6);
+  auto r2 = std::views::iota(0ULL, b + 6);
 
   auto cartesian = std::views::cartesian_product(r1, r2);
 
   for (auto &&[x, y] : cartesian) {
-    if ((x - a) * (x - a) + (y - b) * (y - b) <= 5) {
+    if ((x - a) * (x - a) + (y - b) * (y - b) < 5) {
       prods.push_back({x, y});
     }
   }
