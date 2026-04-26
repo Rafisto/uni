@@ -70,7 +70,7 @@ public:
     return Poly(res);
   }
 
-  bool is_zero() const { return c.size() == 1 && std::abs(c[0]) < 1e-9; }
+  bool is_zero() const { return c.size() == 1 && std::abs(c[0]) < 1e-6; }
 
   // X=QY+R, Q - Quotient, R - Remainder
   // Euclidean Algorithm provided the norm decreases
@@ -107,17 +107,18 @@ public:
 
   // GCD(A,B)
   Poly gcd(Poly A, Poly B) {
-    while (!(B.c.size() == 1 && B.c[0] == 0)) {
-      auto [_, r] = A.div(B);
-      A = B;
-      B = r;
+    while (B.norm() > 0 || (B.norm() == 0 && std::abs(B.c[0]) > 1e-4)) {
+        auto [_, r] = A.div(B);
+        A = B;
+        B = r;
+        if (B.is_zero()) break;
     }
 
     A.tidy();
     if (!A.is_zero()) {
       double lead = A.c.back();
       for (double &coeff : A.c) {
-      coeff /= lead;
+        coeff /= lead;
       }
     }
 
@@ -149,7 +150,7 @@ public:
       old_s = temp_s;
 
       Poly temp_t = t;
-      t = old_t - (quotient * s);
+      t = old_t - (quotient * t);
       old_t = temp_t;
     }
 
@@ -157,7 +158,7 @@ public:
     if (!old_r.is_zero()) {
       double lead = old_r.c.back();
       for (double &coeff : old_r.c) {
-      coeff /= lead;
+        coeff /= lead;
       }
     }
 
@@ -234,7 +235,7 @@ template <> struct std::formatter<Poly> {
       }
 
       double abs_val = std::abs(p.c[i]);
-      abs_val = std::ceil(abs_val * 100.0) / 100.0;
+      // abs_val = std::ceil(abs_val * 100.0) / 100.0;
 
       if (abs_val != 1 || i == 0) {
         out = std::format_to(out, "{}", abs_val);

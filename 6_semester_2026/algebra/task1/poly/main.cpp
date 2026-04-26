@@ -99,6 +99,10 @@ void calc_ee() {
 
   W = V.const_sub_to_gcd(W);
 
+  Poly g = V.gcd(V, W);
+  std::println("GCD({}, {})", V, W);
+  std::println("GCD = {}", g);
+
   Poly p = V.lcm(V,W);
   std::println("LCM({}, {})", V, W);
   std::println("LCM = {}", p);
