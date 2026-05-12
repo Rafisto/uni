@@ -5,6 +5,8 @@
 #include <deque>
 #include <limits>
 #include <vector>
+#include <algorithm>
+#include <random>
 
 struct Move {
     size_t u, v;
@@ -15,7 +17,7 @@ struct Move {
 
 inline std::vector<size_t> tabu_search(const Graph& graph, int max_iterations, size_t tabu_size) {
     const size_t n = graph.n;
-    if (n < 2) return get_random_tour(n);
+    if (n < 4) return get_random_tour(n); 
 
     std::vector<size_t> current_tour = get_random_tour(n);
     double current_cost = calculate_tour_cost(graph, current_tour);
@@ -26,14 +28,25 @@ inline std::vector<size_t> tabu_search(const Graph& graph, int max_iterations, s
     std::deque<Move> tabu_list;
     const auto& matrix = graph.adjacency_matrix;
 
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::vector<size_t> indices(n);
+    std::iota(indices.begin(), indices.end(), 0);
+
     for (int iter = 0; iter < max_iterations; ++iter) {
         double best_delta = std::numeric_limits<double>::max();
         Move best_move = {0, 0};
         bool move_found = false;
 
-        for (size_t i = 0; i < n; ++i) {
-            for (size_t j = i + 1; j < n; ++j) {
+        std::shuffle(indices.begin(), indices.end(), g);
+        size_t subset_size = n / 4;
+
+        for (size_t idx_i = 0; idx_i < subset_size; ++idx_i) {
+            for (size_t idx_j = idx_i + 1; idx_j < subset_size; ++idx_j) {
                 
+                size_t i = indices[idx_i];
+                size_t j = indices[idx_j];
+
                 size_t prev_i = (i == 0) ? n - 1 : i - 1;
                 size_t next_i = (i + 1) % n;
                 size_t prev_j = (j == 0) ? n - 1 : j - 1;
@@ -44,21 +57,18 @@ inline std::vector<size_t> tabu_search(const Graph& graph, int max_iterations, s
                 if (next_i == j) { 
                     delta -= matrix[current_tour[prev_i]][current_tour[i]];
                     delta -= matrix[current_tour[j]][current_tour[next_j]];
-                    
                     delta += matrix[current_tour[prev_i]][current_tour[j]];
                     delta += matrix[current_tour[i]][current_tour[next_j]];
                 } 
                 else if (next_j == i) {
                     delta -= matrix[current_tour[prev_j]][current_tour[j]];
                     delta -= matrix[current_tour[i]][current_tour[next_i]];
-                    
                     delta += matrix[current_tour[prev_j]][current_tour[i]];
                     delta += matrix[current_tour[j]][current_tour[next_i]];
                 }
                 else { 
                     delta -= (matrix[current_tour[prev_i]][current_tour[i]] + matrix[current_tour[i]][current_tour[next_i]]);
                     delta -= (matrix[current_tour[prev_j]][current_tour[j]] + matrix[current_tour[j]][current_tour[next_j]]);
-                    
                     delta += (matrix[current_tour[prev_i]][current_tour[j]] + matrix[current_tour[j]][current_tour[next_i]]);
                     delta += (matrix[current_tour[prev_j]][current_tour[i]] + matrix[current_tour[i]][current_tour[next_j]]);
                 }
@@ -82,7 +92,7 @@ inline std::vector<size_t> tabu_search(const Graph& graph, int max_iterations, s
             }
         }
 
-        if (!move_found) break; 
+        if (!move_found) continue; 
 
         std::swap(current_tour[best_move.u], current_tour[best_move.v]);
         current_cost += best_delta;

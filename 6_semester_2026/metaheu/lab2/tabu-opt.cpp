@@ -9,6 +9,7 @@
 #include "graph.hpp"
 #include "tabu.hpp"
 #include "tsp_utils.hpp"
+
 typedef std::pair<double, double> point;
 
 double euclidean(point x, point y) {
