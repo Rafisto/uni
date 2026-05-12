@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=-5cm, right=2cm, bottom=2cm, includeheadfoot, headheight=130pt, a4paper]{geometry}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{longtable}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\title{Algorytmy Metaheurystyczne\\Lista 2 - TSP Simulated Annealing and Tabu Search}
+\author{Rafał Włodarczyk}
+\date{12.05.2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Model}
+
+Model TSP zakłada graf pełny $G=(V,E)$ z wagami.
+
+\section{Źródło dla danych}
+
+Dane do programu są wzięte ze strony internetowej:
+\begin{center}
+\texttt{https://www.math.uwaterloo.ca/tsp/world/countries.html}
+\end{center}
+oraz są dostępne do pobrania w formacie \texttt{.tsp} za pomocą skryptu \texttt{get\_data.sh}.
+
+\section{Zadanie 1 - Simulated Annealing}
+
+Symulowane wyżarzanie (\textit{Simulated Annealing}) to algorytm metaheurystyczny inspirowany
+fizycznym procesem wyżarzania metali - startujemy z temperaturą $T$, którą następnie w każdym
+kroku (epoch) obniżamy o współczynnik $\alpha$ (0 < $\alpha$ < 1) zgodnie ze wzorem
+\begin{align*}
+    T_{new} = \alpha \cdot T_{old}.
+\end{align*}
+Następnie w każdym kroku ($n$ - liczba kroków)
+przeprowadzamy kilka prób ($k$ - liczba prób w kroku) i wybieramy 
+najlepszą z nich.
+
+\subsection{Wyznaczenie współczynników}
+Wyznaczenie współczynników $T, \alpha, n, k$ zostanie zgodnie z wymaganiami
+wykonane na jednym z mniejszych problemów TSP, a następnie współczynniki te zostaną wykorzystane 
+do policzenia wyników dla reszty zestawów danych.
+
+\noindent
+Zbiór testowy $\text{TEST}=T\times \alpha \times n \times k$ to iloczyn kartezjański następujących zbiorów:
+\begin{enumerate}
+    \item $T=\{10.0, 50.0, 100.0, 250.0, 500.0, 1000.0, 2000.0\}$
+    \item $\alpha=\{0.90, 0.95, 0.97, 0.99, 0.995, 0.997\}$
+    \item $n=\{100, 250, 500, 1000\}$
+    \item $k=\{5, 10, 25, 50\}$
+\end{enumerate}
+Następnie dla każdego egzemplarza $t$ ze zbioru testowego $t\in\text{TEST}$ wyznaczana jest najlepszy wynik
+z $l=10$ prób. Najmniejszy z nich decyduje o najlepszym egzemplarzu.
+
+\begin{verbatim}
+Temperature     : 1000
+Alpha           : 0.995
+Epochs          : 1000
+Tries per epoch : 50
+\end{verbatim}
+
+Widzimy, że wzrost $T,\alpha$ nie zawsze powoduje usprawnienie wyniku. Wzrost $n,k$ zwiększa szanse
+na uzyskanie lepszego wyniku, ale tylko do pewnego momentu - po którym również zmiany nie są na tyle istotne
+aby go poprawić - dla dużego $n$ mamy bardzo małe $T$, więc niewielką szanse na przeskok z minimum lokalnego na globalnie
+niższą wartość.
+
+Wyniki prezentują się następująco:
+
+\input{task1_table.tex}
+
+Warto zauważyć że moglibyśmy dalej optymalizować wybierając dobry przypadek startowy - np. wariant \text{2\-OPT}
+oraz zwiększając $n, k$ w celu uzyskania większej dokładności
+
+\section{Zadanie 2 - Tabu Search}
+
+
+
+\end{document}

@@ -17,10 +17,9 @@
 #define CM_PER_TICK ((2.0 * PI * WHEEL_RADIUS) / TICKS_PER_REV)
 
 #define EQUILIBRIUM_DIST 100.0
-#define SPRING_K 4.5
-#define DAMPING_C 1.5
-#define MIN_PWM 150
-#define DEAD_ZONE 4.0
+#define SPRING_K 2
+#define MIN_PWM 100
+#define DEAD_ZONE 3.0
 
 Wheels w;
 Servo srv;
@@ -52,7 +51,7 @@ void setup_hardware() {
   w.attach(MOTOR_IN4, MOTOR_IN3, MOTOR_ENB, MOTOR_IN2, MOTOR_IN1, MOTOR_ENA);
   
   srv.attach(SERVO_PIN);
-  srv.write(90); 
+  srv.write(92); 
 
   lcd.init();
   lcd.backlight();
@@ -74,7 +73,7 @@ void setup() {
 void loop() {
   unsigned long now = millis();
   
-  if (now - lastLoopTime >= 50) {
+  if (now - lastLoopTime >= 200) {
     float dt = (now - lastLoopTime) / 1000.0; 
     lastLoopTime = now;
 
@@ -104,7 +103,7 @@ void loop() {
 
     float displacement = currentDistance - EQUILIBRIUM_DIST; 
     
-    float force = (SPRING_K * displacement) - (DAMPING_C * speedCmS);
+    float force = (SPRING_K * displacement);
 
     if (abs(displacement) <= DEAD_ZONE) {
       w.stop();
