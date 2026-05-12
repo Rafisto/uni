@@ -63,10 +63,10 @@ int main() {
         double best_overall = std::numeric_limits<double>::max();
         double sum_costs = 0;
 
-        const size_t iter = 1;
+        const size_t iter = 100;
 
         for (size_t i = 0; i < iter; ++i) {
-            auto tour = tabu_search(g, 20, g.n / 4); 
+            auto tour = tabu_search(g, 200, 100); 
             double cost = calculate_tour_cost(g, tour);
             sum_costs += cost;
             if (cost < best_overall) best_overall = cost;

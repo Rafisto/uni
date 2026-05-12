@@ -87,15 +87,76 @@ na uzyskanie lepszego wyniku, ale tylko do pewnego momentu - po którym równie�
 aby go poprawić - dla dużego $n$ mamy bardzo małe $T$, więc niewielką szanse na przeskok z minimum lokalnego na globalnie
 niższą wartość.
 
+\noindent
 Wyniki prezentują się następująco:
 
 \input{task1_table.tex}
 
+\noindent
 Warto zauważyć że moglibyśmy dalej optymalizować wybierając dobry przypadek startowy - np. wariant \text{2\-OPT}
 oraz zwiększając $n, k$ w celu uzyskania większej dokładności
 
 \section{Zadanie 2 - Tabu Search}
 
+Tabu search to algorytm metaheurystyczny, który zakłada stworzenie listy Tabu,
+która zawiera reprezentacje poprzednich rozwiązań - tak aby docelowo nie dało się 
+zostać w minimum lokalnym, a zamiast tego wyjść z niego w poszukiwaniu lepszego rozwiązania.
+
+\noindent
+Kluczowym dla tabu search jest maksymalna długość listy $L$, najlepiej rozumiana jako
+zależna od długości danych wejściowych (liczby miast $n$). Algorytm
+potrzebuje również sposobu wyboru kolejnego rozwiązania oraz dobrego warunku stopu,
+który pozwala ocenić kiedy rozwiązanie jest wystarczające.
+W tym przypadku będzie to maksymalna liczba iteracji $I$,
+
+\noindent
+\noindent
+Zbiór testowy $\text{TEST}=I\times L$ to iloczyn kartezjański następujących zbiorów:
+
+%  ;
+%   std::vector<std::size_t> tabu_size = {g.n / 10, g.n / 4, g.n / 2, g.n * 3 / 4, g.n};
+\begin{enumerate}
+    \item $I=\{10, 20, 50, 100, 200\}$
+    \item $L=\left\{\frac{n}{10},\frac{n}{4},\frac{n}{2},\frac{3n}{4},n\right\}$
+\end{enumerate}
+Następnie dla każdego egzemplarza $t$ ze zbioru testowego $t\in\text{TEST}$ wyznaczana jest najlepszy wynik
+z $l=5$ prób. Najmniejszy z nich decyduje o najlepszym egzemplarzu.
+
+\begin{verbatim}
+Max Iterations     : 200
+Tabu Size           : n/2
+\end{verbatim}
+
+Im większa liczba maksymalnych iteracji $i\in I$ tym dokładniejszy wynik,
+przy czym rozmiar listy tabu jest odpowiedni do $\frac{n}{2}$. Większa lista nie powoduje znalezienia lepszego rozwiązania.
+Mając na względzie że jest to rozmiar bardzo duży należy przemyśleć ekstrapolowanie tej wartości na większe problemy.
+Bezpiecznie założyć będzie istotnie dużą wartość, niebędącą jednak stricte zależną od danych, a raczej od możliwości komputera.
+
+\noindent
+Wyniki prezentują się następująco:
+
+\input{task2_table.tex}
+
+Tabu search wykazuje mniejsze względne zbliżenie do wartości optymalnych, ale zachowuje swoją przewagę
+dla większych egzemplarzy, tam gdzie symulowane wyżarzanie zostaje w minimum lokalnym, tabu search znajduje
+lepsze rozwiązania, choć nadal dalekie od optymalnych.
+
+\section{Wnioski}
+
+Zgodnie z \texttt{No Free Lunch Theorem} nie istnieje uniwersalna metoda, która będzie najlepsza dla wszystkich problemów optymalizacyjnych.
+Wyniki pokazują, że dla mniejszych problemów TSP (do około 100 miast) Symulowanie Wyżarzanie pozwala 
+znaleźć wyniki bliskie wartościom optymalnym, podczas gdy wyniki dla większych miast znacząco odbiegają od optymalnych.
+Wynika to z faktu, iż dostosowanie parametrów algorytmu nie przenosi się dobrze na większe problemy.
+
+\noindent
+Dla dobranych wcześniej parametrów i znanych danych oba algorytmy w oczekiwany sposób dochodzą do rozwiązań,
+która są podobne do tych z poprzedniej listy. Dla większych problemów algorytm symulowanego wyżarzania zostaje w minimum lokalnym,
+podczas gdy tabu search znajduje nieco lepsze rozwiązania. 
+
+\noindent
+Dostrojenie parametrów obu algorytmow nie jest proste, ale dostatecznie szczegółowe powinno pozwolić na osiągnięcie zbliżonych wyników 
+dla obu algorytmów. Wysoką przewagą tych algorytmów nad poprzednimi jest szybki czas wykonania oraz
+możliwość wyskoczenia z minimum lokalnego.
 
 
 \end{document}

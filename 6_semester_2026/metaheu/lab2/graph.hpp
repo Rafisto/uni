@@ -31,9 +31,9 @@ struct Edge
 
 struct Graph
 {
+    std::vector<std::vector<double>> dist;
     size_t n;
     AdjacencyMatrix adjacency_matrix;
-
     Graph() : n(0), adjacency_matrix(0, std::vector<double>(0, 0.0)) {}
     Graph(size_t vertices) : n(vertices), adjacency_matrix(vertices, std::vector<double>(vertices, 0.0))
     {
@@ -50,6 +50,16 @@ struct Graph
                 // AM[i][j] = AM[j][i] ponieważ graf jest nieskierowany.
                 adjacency_matrix[i][j] = weight;
                 adjacency_matrix[j][i] = weight;
+            }
+        }
+    }
+
+    void calculate_distances(const std::vector<std::pair<double, double>>& coords) {
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = 0; j < n; ++j) {
+                double dx = coords[i].first - coords[j].first;
+                double dy = coords[i].second - coords[j].second;
+                dist[i][j] = std::sqrt(dx*dx + dy*dy);
             }
         }
     }
