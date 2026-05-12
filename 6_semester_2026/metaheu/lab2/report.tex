@@ -116,24 +116,26 @@ Zbiór testowy $\text{TEST}=I\times L$ to iloczyn kartezjański następujących 
 %  ;
 %   std::vector<std::size_t> tabu_size = {g.n / 10, g.n / 4, g.n / 2, g.n * 3 / 4, g.n};
 \begin{enumerate}
-    \item $I=\{10, 20, 50, 100, 200\}$
-    \item $L=\left\{\frac{n}{10},\frac{n}{4},\frac{n}{2},\frac{3n}{4},n\right\}$
+    \item $I=\{10, 20, 50, 100, 200, 500, 1000, 2000\}$
+    \item $L=\left\{\frac{n}{20}, \frac{n}{10},\frac{n}{4},\frac{n}{2},\frac{3n}{4},n\right\}$
 \end{enumerate}
 Następnie dla każdego egzemplarza $t$ ze zbioru testowego $t\in\text{TEST}$ wyznaczana jest najlepszy wynik
 z $l=5$ prób. Najmniejszy z nich decyduje o najlepszym egzemplarzu.
 
 \begin{verbatim}
-Max Iterations     : 200
-Tabu Size           : n/2
+Max Iterations : 2000
+Tabu Size      : n/10
 \end{verbatim}
 
 Im większa liczba maksymalnych iteracji $i\in I$ tym dokładniejszy wynik,
-przy czym rozmiar listy tabu jest odpowiedni do $\frac{n}{2}$. Większa lista nie powoduje znalezienia lepszego rozwiązania.
+przy czym rozmiar listy tabu jest odpowiedni do $\frac{n}{10}$. Większa lista nie powoduje znalezienia lepszego rozwiązania.
 Mając na względzie że jest to rozmiar bardzo duży należy przemyśleć ekstrapolowanie tej wartości na większe problemy.
 Bezpiecznie założyć będzie istotnie dużą wartość, niebędącą jednak stricte zależną od danych, a raczej od możliwości komputera.
 
 \noindent
-Wyniki prezentują się następująco:
+Do algorytmu należało dołożyć lepsze wybieranie sąsiada, w celu osiągnięcia zadowalających wyników.
+Sposób wyboru sąsiada opiera się o zamianie 2 krawędzi z najbliższym pod względem dystansu kartezjańskiego miastem w danej turze,
+tak aby \textit{rozplątać} ścieżkę. Wyniki prezentują się następująco:
 
 \input{task2_table.tex}
 

@@ -65,8 +65,8 @@ int main() {
 
   double best_overall = std::numeric_limits<double>::max();
 
-  std::vector<std::size_t> max_iter = {10, 20, 50, 100, 200};
-  std::vector<std::size_t> tabu_size = {g.n / 10, g.n / 4, g.n / 2, g.n * 3 / 4, g.n};
+  std::vector<std::size_t> max_iter = {10, 20, 50, 100, 200, 500, 1000, 2000};
+  std::vector<std::size_t> tabu_size = {g.n / 20, g.n / 10, g.n / 4, g.n / 2, g.n * 3 / 4, g.n};
 
   auto test = std::ranges::views::cartesian_product(max_iter, tabu_size);
   const size_t iter = 5;
