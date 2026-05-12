@@ -66,6 +66,7 @@ inline std::vector<size_t> tabu_search(const Graph& graph, int max_iterations, s
                     delta += matrix[current_tour[prev_j]][current_tour[i]];
                     delta += matrix[current_tour[j]][current_tour[next_i]];
                 }
+                // general case
                 else { 
                     delta -= (matrix[current_tour[prev_i]][current_tour[i]] + matrix[current_tour[i]][current_tour[next_i]]);
                     delta -= (matrix[current_tour[prev_j]][current_tour[j]] + matrix[current_tour[j]][current_tour[next_j]]);
