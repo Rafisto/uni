@@ -9,28 +9,27 @@ import (
 
 const (
 	NUsers         = 5
-	NMessages      = 100
+	NFrames        = 100
 	BaseBackoff    = 2 * time.Millisecond
 	MaxBackoff     = 2000 * time.Millisecond
 	ProcessingTime = 1 * time.Millisecond
 	UserThinkTime  = 20 * time.Millisecond
 )
 
-type Message struct {
+type Frame struct {
 	From int
 	To   int
-	Body string
 	Done chan struct{}
 }
 
 type User struct {
 	sync.Mutex
-	InboxCount int
-	FailCount  int
+	IngressCount int
+	FailCount    int
 }
 
-type Server struct {
-	Inbox chan *Message
+type Switch struct {
+	FrameChannel chan *Frame
 }
 
 func exponentialBackoff(attempt int) time.Duration {
@@ -41,17 +40,16 @@ func exponentialBackoff(attempt int) time.Duration {
 	return rand.N(max)
 }
 
-func userWorker(id int, server *Server, users []*User, wg *sync.WaitGroup) {
+func userTask(id int, Switch *Switch, users []*User, wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	for i := 1; i <= NMessages; i++ {
+	for i := range NFrames {
 		time.Sleep(time.Duration(rand.Float64() * float64(UserThinkTime)))
 
 		targetID := rand.IntN(NUsers) + 1
-		msg := &Message{
+		frame := &Frame{
 			From: id,
 			To:   targetID,
-			Body: fmt.Sprintf("Msg %d from User %d", i, id),
 			Done: make(chan struct{}),
 		}
 
@@ -59,8 +57,8 @@ func userWorker(id int, server *Server, users []*User, wg *sync.WaitGroup) {
 
 		for {
 			select {
-			case server.Inbox <- msg:
-				fmt.Printf("User(id %d) successfully acquired Server Inbox for transfer %d.\n", id, i)
+			case Switch.FrameChannel <- frame:
+				fmt.Printf("User(id %d) successfully acquired Switch Ingress for transfer %d.\n", id, i+1)
 				attempt = 1
 				goto HandoffSuccess
 			default:
@@ -69,76 +67,76 @@ func userWorker(id int, server *Server, users []*User, wg *sync.WaitGroup) {
 				users[id-1].Unlock()
 
 				backoff := exponentialBackoff(attempt)
-				fmt.Printf("User(id %d, transfer %d) found Server busy. Backing off for %v (attempt %d).\n", id, i, backoff, attempt)
+				fmt.Printf("User(id %d, transfer %d) found Switch busy. Backing off for %v (attempt %d).\n", id, i+1, backoff, attempt)
 				time.Sleep(backoff)
 				attempt++
 			}
 		}
 
 	HandoffSuccess:
-		<-msg.Done
+		<-frame.Done
 	}
 
-	fmt.Printf("User(id %d) finished sending all %d messages.\n", id, NMessages)
+	fmt.Printf("User(id %d) finished sending all %d Frames.\n", id, NFrames)
 }
 
-func serverDispatcher(server *Server, users []*User) {
-	for msg := range server.Inbox {
-		recipient := users[msg.To-1]
+func switchTask(Switch *Switch, users []*User) {
+	for frame := range Switch.FrameChannel {
+		recipient := users[frame.To-1]
 
-		fmt.Printf("Server: Received message from User %d destined for User %d. Forwarding...\n", msg.From, msg.To)
+		fmt.Printf("Switch: Received Frame from User %d destined for User %d. Forwarding...\n", frame.From, frame.To)
 
 		recipient.Lock()
 		time.Sleep(ProcessingTime)
-		recipient.InboxCount++
+		recipient.IngressCount++
 		recipient.Unlock()
 
-		fmt.Printf("Server: Successfully delivered message from User %d to User %d.\n", msg.From, msg.To)
+		fmt.Printf("Switch: Successfully delivered Frame from User %d to User %d.\n", frame.From, frame.To)
 
-		close(msg.Done)
+		close(frame.Done)
 	}
 }
 
 func main() {
-	fmt.Println("Star Topology Communication System (No Buffer Server)")
+	fmt.Println("Star topology communication.")
 
 	var wg sync.WaitGroup
 
-	server := &Server{
-		Inbox: make(chan *Message),
+	sw := &Switch{
+		FrameChannel: make(chan *Frame),
 	}
 
 	users := make([]*User, NUsers)
-	for i := 0; i < NUsers; i++ {
+	for i := range NUsers {
 		users[i] = new(User)
 	}
 
-	go serverDispatcher(server, users)
+	go switchTask(sw, users)
 
-	for i := 0; i < NUsers; i++ {
+	for i := range NUsers {
 		wg.Add(1)
-		go userWorker(i+1, server, users, &wg)
+		go userTask(i+1, sw, users, &wg)
 	}
 
 	wg.Wait()
 
-	close(server.Inbox)
+	close(sw.FrameChannel)
 
-	fmt.Println("\n--- Final System Statistics ---")
+	fmt.Println("\nStar topology communication complete.")
 	totalReceived := 0
 	totalFailed := 0
-	for i := 1; i <= NUsers; i++ {
-		users[i-1].Lock()
-		received := users[i-1].InboxCount
-		failCount := users[i-1].FailCount
-		users[i-1].Unlock()
+	for i := range NUsers {
+		users[i].Lock()
+		received := users[i].IngressCount
+		failCount := users[i].FailCount
+		users[i].Unlock()
 
 		totalFailed += failCount
 		totalReceived += received
-		fmt.Printf("User(id %d) received %d messages (%d failed attempts).\n", i, received, failCount)
+		fmt.Printf("User(id %d) received %d Frames (%d failed attempts).\n", i+1, received, failCount)
 	}
 
-	fmt.Printf("\nTotal messages sent across system: %d\n", NUsers*NMessages)
-	fmt.Printf("Total messages verified delivered: %d\n", totalReceived)
+	fmt.Printf("\nTotal Frames sent across system: %d\n", NUsers*NFrames)
+	fmt.Printf("Total Frames verified delivered: %d\n", totalReceived)
 	fmt.Printf("Total failed send attempts across all users: %d\n", totalFailed)
 }

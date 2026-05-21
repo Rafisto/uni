@@ -11,7 +11,7 @@ procedure Main is
    BaseBackoff    : constant Duration := 0.002; -- 2ms
    MaxBackoff     : constant Duration := 2.000; -- 2s
    ProcessingTime : constant Duration := 0.001; -- 1ms
-   ThinkTime  : constant Duration := 0.020; -- 20ms
+   ThinkTime      : constant Duration := 0.020; -- 20ms
 
    protected type User is
       procedure IncrementIngress;
