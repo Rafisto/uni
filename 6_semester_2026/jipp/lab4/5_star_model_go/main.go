@@ -8,23 +8,19 @@ import (
 )
 
 const (
-	NUsers         = 100
+	NUsers         = 5
 	NMessages      = 100
 	BaseBackoff    = 2 * time.Millisecond
 	MaxBackoff     = 2000 * time.Millisecond
 	ProcessingTime = 1 * time.Millisecond
+	UserThinkTime  = 20 * time.Millisecond
 )
-
-type Server struct {
-	sync.Mutex
-	ActiveMessage *Message
-	ForwardDone   chan struct{}
-}
 
 type Message struct {
 	From int
 	To   int
 	Body string
+	Done chan struct{}
 }
 
 type User struct {
@@ -33,13 +29,8 @@ type User struct {
 	FailCount  int
 }
 
-func linearBackoff(attempt int) time.Duration {
-	max := time.Duration(attempt) * BaseBackoff
-	if max > MaxBackoff {
-		max = MaxBackoff
-	}
-
-	return rand.N(max)
+type Server struct {
+	Inbox chan *Message
 }
 
 func exponentialBackoff(attempt int) time.Duration {
@@ -47,78 +38,64 @@ func exponentialBackoff(attempt int) time.Duration {
 	if max > MaxBackoff {
 		max = MaxBackoff
 	}
-
 	return rand.N(max)
 }
 
-func userWorker(id int, server *Server, users []*User, finalReceived []int, wg *sync.WaitGroup) {
+func userWorker(id int, server *Server, users []*User, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for i := 1; i <= NMessages; i++ {
-		thinkTime := time.Duration(rand.Float64() * float64(BaseBackoff))
-		time.Sleep(thinkTime)
+		time.Sleep(time.Duration(rand.Float64() * float64(UserThinkTime)))
 
 		targetID := rand.IntN(NUsers) + 1
 		msg := &Message{
 			From: id,
 			To:   targetID,
 			Body: fmt.Sprintf("Msg %d from User %d", i, id),
+			Done: make(chan struct{}),
 		}
 
 		attempt := 1
 
 		for {
-			if server.TryLock() {
+			select {
+			case server.Inbox <- msg:
 				fmt.Printf("User(id %d) successfully acquired Server Inbox for transfer %d.\n", id, i)
-				break
+				attempt = 1
+				goto HandoffSuccess
+			default:
+				users[id-1].Lock()
+				users[id-1].FailCount++
+				users[id-1].Unlock()
+
+				backoff := exponentialBackoff(attempt)
+				fmt.Printf("User(id %d, transfer %d) found Server busy. Backing off for %v (attempt %d).\n", id, i, backoff, attempt)
+				time.Sleep(backoff)
+				attempt++
 			}
-
-			users[id-1].Lock()
-			users[id-1].FailCount++
-			users[id-1].Unlock()
-
-			backoff := exponentialBackoff(attempt)
-			fmt.Printf("User(id %d, transfer %d) found Server busy. Backing off for %v (attempt %d).\n", id, i, backoff, attempt)
-			time.Sleep(backoff)
-
-			attempt++
 		}
 
-		server.ActiveMessage = msg
-		server.ForwardDone = make(chan struct{})
-
-		<-server.ForwardDone
-
-		server.Unlock()
+	HandoffSuccess:
+		<-msg.Done
 	}
 
 	fmt.Printf("User(id %d) finished sending all %d messages.\n", id, NMessages)
 }
 
-func serverDispatcher(server *Server, users []*User, quit chan struct{}) {
-	for {
-		select {
-		case <-quit:
-			return
-		default:
-			if server.ActiveMessage != nil {
-				msg := server.ActiveMessage
-				recipient := users[msg.To-1]
+func serverDispatcher(server *Server, users []*User) {
+	for msg := range server.Inbox {
+		recipient := users[msg.To-1]
 
-				fmt.Printf("Server: Received message from User %d destined for User %d. Forwarding...\n", msg.From, msg.To)
+		fmt.Printf("Server: Received message from User %d destined for User %d. Forwarding...\n", msg.From, msg.To)
 
-				recipient.Lock()
-				time.Sleep(ProcessingTime)
-				recipient.InboxCount++
-				recipient.Unlock()
+		recipient.Lock()
+		time.Sleep(ProcessingTime)
+		recipient.InboxCount++
+		recipient.Unlock()
 
-				fmt.Printf("Server: Successfully delivered message from User %d to User %d.\n", msg.From, msg.To)
+		fmt.Printf("Server: Successfully delivered message from User %d to User %d.\n", msg.From, msg.To)
 
-				server.ActiveMessage = nil
-				close(server.ForwardDone)
-			}
-			time.Sleep(100 * time.Microsecond)
-		}
+		close(msg.Done)
 	}
 }
 
@@ -126,26 +103,26 @@ func main() {
 	fmt.Println("Star Topology Communication System (No Buffer Server)")
 
 	var wg sync.WaitGroup
-	server := &Server{}
+
+	server := &Server{
+		Inbox: make(chan *Message),
+	}
 
 	users := make([]*User, NUsers)
 	for i := 0; i < NUsers; i++ {
 		users[i] = new(User)
 	}
 
-	finalReceived := make([]int, NUsers)
-
-	quitServer := make(chan struct{})
-	go serverDispatcher(server, users, quitServer)
+	go serverDispatcher(server, users)
 
 	for i := 0; i < NUsers; i++ {
 		wg.Add(1)
-		go userWorker(i+1, server, users, finalReceived, &wg)
+		go userWorker(i+1, server, users, &wg)
 	}
 
 	wg.Wait()
 
-	close(quitServer)
+	close(server.Inbox)
 
 	fmt.Println("\n--- Final System Statistics ---")
 	totalReceived := 0
