@@ -58,7 +58,7 @@ func userTask(id int, Switch *Switch, users []*User, wg *sync.WaitGroup) {
 		for {
 			select {
 			case Switch.FrameChannel <- frame:
-				fmt.Printf("User(id %d) successfully acquired Switch Ingress for transfer %d.\n", id, i+1)
+				fmt.Printf("User(id %d) successfully acquired Switch Lock for transfer %d.\n", id, i+1)
 				attempt = 1
 				goto HandoffSuccess
 			default:

@@ -183,7 +183,7 @@ procedure Main is
                Ada.Text_IO.Put_Line
                  ("User(id"
                   & Integer'Image (Id)
-                  & ") successfully acquired Switch Inbox for transfer"
+                  & ") successfully acquired Switch Lock for transfer"
                   & Integer'Image (I)
                   & ".");
                exit;

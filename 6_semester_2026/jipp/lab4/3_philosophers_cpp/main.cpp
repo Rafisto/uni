@@ -1,7 +1,7 @@
-#include <iostream>
 #include <pthread.h>
 #include <unistd.h>
 #include <random>
+#include <print>
 
 const int N_PHILOSOPHERS = 100;
 const int N_ITERATIONS = 100;
@@ -15,10 +15,20 @@ void random_delay() {
     usleep(static_cast<useconds_t>(sleep_time * 1000000.0));
 }
 
-struct CountFinished {
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-    pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+struct WaitGroup {
+    pthread_mutex_t mutex;
+    pthread_cond_t cond;
     int count = 0;
+
+    WaitGroup() {
+        pthread_mutex_init(&mutex, NULL);
+        pthread_cond_init(&cond, NULL);
+    }
+
+    ~WaitGroup() {
+        pthread_mutex_destroy(&mutex);
+        pthread_cond_destroy(&cond);
+    }
 
     void increment() {
         pthread_mutex_lock(&mutex);
@@ -38,22 +48,19 @@ struct CountFinished {
     }
 };
 
-pthread_mutex_t forks[N_PHILOSOPHERS] = {
-    PTHREAD_MUTEX_INITIALIZER, PTHREAD_MUTEX_INITIALIZER, PTHREAD_MUTEX_INITIALIZER,
-    PTHREAD_MUTEX_INITIALIZER, PTHREAD_MUTEX_INITIALIZER
-};
+pthread_mutex_t forks[N_PHILOSOPHERS];
 
-CountFinished counter;
+WaitGroup counter;
 pthread_mutex_t io_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-struct PhilosopherData {
+struct Philosopher {
     int id;
     int fork_left;
     int fork_right;
 };
 
-void* philosopher_worker(void* arg) {
-    PhilosopherData* data = static_cast<PhilosopherData*>(arg);
+void* philosopher(void* arg) {
+    Philosopher* data = static_cast<Philosopher*>(arg);
     int failures = 0;
 
     std::mt19937 gen(std::random_device{}());
@@ -63,8 +70,7 @@ void* philosopher_worker(void* arg) {
         double think_time = dist(gen);
         
         pthread_mutex_lock(&io_mutex);
-        std::cout << "Philosopher(id " << data->id << ", meal " << i 
-                  << ") thinks for " << think_time << " sec.\n";
+        std::println("Philosopher(id {}, meal {}) thinks for {} sec.", data->id, i, think_time);
         pthread_mutex_unlock(&io_mutex);
 
         random_delay();
@@ -81,8 +87,7 @@ void* philosopher_worker(void* arg) {
             pthread_mutex_unlock(&forks[data->fork_left]);
 
             pthread_mutex_lock(&io_mutex);
-            std::cout << "Philosopher(id " << data->id << ", meal " << i 
-                      << ") failed to pick up forks.\n";
+            std::println("Philosopher(id {}, meal {}) failed to pick up forks.", data->id, i);
             pthread_mutex_unlock(&io_mutex);
 
             failures++;
@@ -91,8 +96,7 @@ void* philosopher_worker(void* arg) {
 
         double eat_time = dist(gen);
         pthread_mutex_lock(&io_mutex);
-        std::cout << "Philosopher(id " << data->id << ", meal " << i 
-                  << ") eats for " << eat_time << " sec.\n";
+        std::println("Philosopher(id {}, meal {}) eats for {} sec.", data->id, i, eat_time);
         pthread_mutex_unlock(&io_mutex);
 
         random_delay();
@@ -104,7 +108,7 @@ void* philosopher_worker(void* arg) {
     counter.increment();
     
     pthread_mutex_lock(&io_mutex);
-    std::cout << "Philosopher(id " << data->id << ") finished with " << failures << " failures.\n";
+    std::println("Philosopher(id {}) finished with {} failures.", data->id, failures);
     pthread_mutex_unlock(&io_mutex);
 
     int* total_failures = new int(failures);
@@ -112,21 +116,25 @@ void* philosopher_worker(void* arg) {
 }
 
 int main() {
-    std::cout << "Dining Philosophers Problem\n";
+    std::println("Dining Philosophers Problem");
 
     pthread_t threads[N_PHILOSOPHERS];
-    PhilosopherData thread_data[N_PHILOSOPHERS];
+    Philosopher thread_data[N_PHILOSOPHERS];
+
+    for (int i = 0; i < N_PHILOSOPHERS; i++) {
+        pthread_mutex_init(&forks[i], NULL);
+    }
 
     for (int i = 0; i < N_PHILOSOPHERS; ++i) {
         thread_data[i].id = i + 1;
         thread_data[i].fork_left = i;
         thread_data[i].fork_right = (i + 1) % N_PHILOSOPHERS;
 
-        pthread_create(&threads[i], nullptr, philosopher_worker, &thread_data[i]);
+        pthread_create(&threads[i], nullptr, philosopher, &thread_data[i]);
     }
 
     counter.wait();
-    std::cout << "Philosophers have concluded the feast.\n";
+    std::println("\nPhilosophers have concluded the feast.\n");
 
     int total_failures = 0;
 
@@ -137,10 +145,15 @@ int main() {
         int* failures = static_cast<int*>(retval);
         total_failures += *failures;
 
-        std::cout << "Philosopher(id " << (i + 1) << ") had " << *failures << " failures.\n";
+        std::println("Philosopher(id {}) had {} failures.", (i + 1), *failures);
         delete failures; 
     }
 
-    std::cout << "Total failures: " << total_failures << "\n";
+    std::println("\nTotal failures: {}.", total_failures);
+
+    for (int i = 0; i < N_PHILOSOPHERS; i++) {
+        pthread_mutex_destroy(&forks[i]);
+    }
+
     return 0;
 }

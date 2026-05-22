@@ -1,8 +1,8 @@
+#include <print>
 #include <pthread.h>
 #include <random>
 #include <unistd.h>
 #include <vector>
-#include <print>
 
 const int NUsers = 5;
 const int NFrames = 100;
@@ -16,25 +16,50 @@ struct Frame {
   int To;
 };
 
-struct Server {
-  pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-  pthread_cond_t cond_msg_ready = PTHREAD_COND_INITIALIZER;
-  pthread_cond_t cond_forward_done = PTHREAD_COND_INITIALIZER;
+class Switch {
+public:
+  pthread_mutex_t mutex;
+  pthread_cond_t cond_frame_ready;
+  pthread_cond_t cond_forward_done;
+
+  Switch() {
+    pthread_mutex_init(&mutex, NULL);
+    pthread_cond_init(&cond_frame_ready, NULL);
+    pthread_cond_init(&cond_forward_done, NULL);
+  }
+
+  ~Switch() {
+    pthread_mutex_destroy(&mutex);
+    pthread_cond_destroy(&cond_frame_ready);
+    pthread_cond_destroy(&cond_forward_done);
+  }
 
   Frame *ActiveFrame = nullptr;
   bool ForwardDone = false;
   bool Quit = false;
 };
 
-struct User {
-  pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-  int InboxCount = 0;
+class User {
+public:
+  pthread_mutex_t mutex;
+
+  User() { pthread_mutex_init(&mutex, NULL); }
+
+  ~User() { pthread_mutex_destroy(&mutex); }
+
+  int IngressCount = 0;
   int FailCount = 0;
 };
 
-Server server;
+Switch sw;
 std::vector<User> users(NUsers);
-pthread_mutex_t io_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t io_mutex;
+
+useconds_t randomThinkTime() {
+  static thread_local std::mt19937 gen(std::random_device{}());
+  std::uniform_int_distribution<useconds_t> dist(0, ThinkTime);
+  return dist(gen);
+}
 
 useconds_t exponentialBackoff(int attempt) {
   static thread_local std::mt19937 gen(std::random_device{}());
@@ -56,26 +81,26 @@ void *userWorker(void *arg) {
   std::uniform_real_distribution<double> think_dist(
       0.0, static_cast<double>(ThinkTime));
 
-  for (int i = 1; i <= NFrames; ++i) {
-    useconds_t thinkTime = static_cast<useconds_t>(think_dist(gen));
-    usleep(thinkTime);
+  for (std::size_t i = 0; i < NFrames; ++i) {
+    usleep(randomThinkTime());
 
     std::uniform_int_distribution<int> user_dist(1, NUsers);
     int targetID = user_dist(gen);
 
-    Frame *msg = new Frame{id, targetID};
+    Frame *frame = new Frame{id, targetID};
     int attempt = 1;
 
     while (true) {
-      pthread_mutex_lock(&server.mutex);
-      if (server.ActiveFrame == nullptr) {
+      pthread_mutex_lock(&sw.mutex);
+      if (sw.ActiveFrame == nullptr) {
         pthread_mutex_lock(&io_mutex);
-        std::println("User(id {}) successfully acquired Server Inbox for transfer {}.",
-                id, i);
+        std::println(
+            "User(id {}) successfully acquired Switch Lock for transfer {}.",
+            id, i);
         pthread_mutex_unlock(&io_mutex);
         break;
       }
-      pthread_mutex_unlock(&server.mutex);
+      pthread_mutex_unlock(&sw.mutex);
 
       pthread_mutex_lock(&users[id - 1].mutex);
       users[id - 1].FailCount++;
@@ -84,24 +109,25 @@ void *userWorker(void *arg) {
       useconds_t backoff = exponentialBackoff(attempt);
 
       pthread_mutex_lock(&io_mutex);
-      std::println("User(id {}, transfer {}) found Server busy. Backing off for {} (attempt {}).",
-              id, i, std::to_string(backoff).c_str(), attempt);
+      std::println("User(id {}, transfer {}) found Switch busy. Backing off "
+                   "for {} (attempt {}).",
+                   id, i, std::to_string(backoff).c_str(), attempt);
       pthread_mutex_unlock(&io_mutex);
 
       usleep(backoff);
       attempt++;
     }
 
-    server.ActiveFrame = msg;
-    server.ForwardDone = false;
+    sw.ActiveFrame = frame;
+    sw.ForwardDone = false;
 
-    pthread_cond_signal(&server.cond_msg_ready);
+    pthread_cond_signal(&sw.cond_frame_ready);
 
-    while (!server.ForwardDone) {
-      pthread_cond_wait(&server.cond_forward_done, &server.mutex);
+    while (!sw.ForwardDone) {
+      pthread_cond_wait(&sw.cond_forward_done, &sw.mutex);
     }
 
-    pthread_mutex_unlock(&server.mutex);
+    pthread_mutex_unlock(&sw.mutex);
   }
 
   pthread_mutex_lock(&io_mutex);
@@ -111,46 +137,48 @@ void *userWorker(void *arg) {
   return nullptr;
 }
 
-void *serverDispatcher(void *_) {
+void *switchTask(void *_) {
   while (true) {
-    pthread_mutex_lock(&server.mutex);
+    pthread_mutex_lock(&sw.mutex);
 
-    while (server.ActiveFrame == nullptr && !server.Quit) {
-      pthread_cond_wait(&server.cond_msg_ready, &server.mutex);
+    while (sw.ActiveFrame == nullptr && !sw.Quit) {
+      pthread_cond_wait(&sw.cond_frame_ready, &sw.mutex);
     }
 
-    if (server.Quit && server.ActiveFrame == nullptr) {
-      pthread_mutex_unlock(&server.mutex);
+    if (sw.Quit && sw.ActiveFrame == nullptr) {
+      pthread_mutex_unlock(&sw.mutex);
       break;
     }
 
-    if (server.ActiveFrame != nullptr) {
-      Frame *msg = server.ActiveFrame;
-      User &recipient = users[msg->To - 1];
+    if (sw.ActiveFrame != nullptr) {
+      Frame *frame = sw.ActiveFrame;
+      User &recipient = users[frame->To - 1];
 
       pthread_mutex_lock(&io_mutex);
-      std::println("Server: Received Frame from User {} destined for User {}. Forwarding...",
-              msg->From, msg->To);
+      std::println("Switch: Received Frame from User {} destined for User {}. "
+                   "Forwarding...",
+                   frame->From, frame->To);
       pthread_mutex_unlock(&io_mutex);
 
       pthread_mutex_lock(&recipient.mutex);
       usleep(ProcessingTime);
-      recipient.InboxCount++;
+      recipient.IngressCount++;
       pthread_mutex_unlock(&recipient.mutex);
 
       pthread_mutex_lock(&io_mutex);
-      std::println("Server: Successfully delivered Frame from User {} to User {}.",
-              msg->From, msg->To);
+      std::println(
+          "Switch: Successfully delivered Frame from User {} to User {}.",
+          frame->From, frame->To);
       pthread_mutex_unlock(&io_mutex);
 
-      delete msg;
-      server.ActiveFrame = nullptr;
-      server.ForwardDone = true;
+      delete frame;
+      sw.ActiveFrame = nullptr;
+      sw.ForwardDone = true;
 
-      pthread_cond_broadcast(&server.cond_forward_done);
+      pthread_cond_broadcast(&sw.cond_forward_done);
     }
 
-    pthread_mutex_unlock(&server.mutex);
+    pthread_mutex_unlock(&sw.mutex);
   }
   return nullptr;
 }
@@ -158,44 +186,49 @@ void *serverDispatcher(void *_) {
 int main() {
   std::println("Starting star topology communication");
 
+  pthread_mutex_init(&io_mutex, NULL);
+
   pthread_t dispatcher_thread;
-  pthread_create(&dispatcher_thread, nullptr, serverDispatcher, nullptr);
+  pthread_create(&dispatcher_thread, nullptr, switchTask, nullptr);
 
   pthread_t worker_threads[NUsers];
-  for (int i = 0; i < NUsers; ++i) {
+  for (std::size_t i = 0; i < NUsers; ++i) {
     int *id_arg = new int(i + 1);
     pthread_create(&worker_threads[i], nullptr, userWorker, id_arg);
   }
 
-  for (int i = 0; i < NUsers; ++i) {
+  for (std::size_t i = 0; i < NUsers; ++i) {
     pthread_join(worker_threads[i], nullptr);
   }
 
-  pthread_mutex_lock(&server.mutex);
-  server.Quit = true;
-  pthread_cond_broadcast(&server.cond_msg_ready);
-  pthread_mutex_unlock(&server.mutex);
+  pthread_mutex_lock(&sw.mutex);
+  sw.Quit = true;
+  pthread_cond_broadcast(&sw.cond_frame_ready);
+  pthread_mutex_unlock(&sw.mutex);
 
   pthread_join(dispatcher_thread, nullptr);
 
   std::println("\nStar topology communication complete.");
-  int totalReceived = 0;
-  int totalFailed = 0;
+  int recv = 0;
+  int fail = 0;
 
-  for (int i = 1; i <= NUsers; ++i) {
-    pthread_mutex_lock(&users[i - 1].mutex);
-    int received = users[i - 1].InboxCount;
-    int failCount = users[i - 1].FailCount;
-    pthread_mutex_unlock(&users[i - 1].mutex);
+  for (std::size_t i = 0; i < NUsers; ++i) {
+    pthread_mutex_lock(&users[i].mutex);
+    int received = users[i].IngressCount;
+    int failCount = users[i].FailCount;
+    pthread_mutex_unlock(&users[i].mutex);
 
-    totalFailed += failCount;
-    totalReceived += received;
-    std::println("User(id {}) received {} Frames ({} failed attempts).",
-            i, received, failCount);
+    recv += received;
+    fail += failCount;
+    std::println("User(id {}) received {} Frames ({} failed attempts).", i + 1,
+                 received, failCount);
   }
 
   std::println("\nTotal Frames sent across system: {}", NUsers * NFrames);
-  std::println("Total Frames verified delivered: {}", totalReceived);
-  std::println("Total failed send attempts across all users: {}", totalFailed);
+  std::println("Total Frames verified delivered: {}", recv);
+  std::println("Total failed send attempts across all users: {}", fail);
+
+  pthread_mutex_destroy(&io_mutex);
+
   return 0;
 }

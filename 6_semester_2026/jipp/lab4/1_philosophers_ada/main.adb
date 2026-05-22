@@ -2,9 +2,10 @@ with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
 with Ada.Text_IO;               use Ada.Text_IO;
 
 procedure Main is
-   NPhilosophers  : constant := 100;
-   NIterations    : constant := 100;
-   MaxEatingTime : constant := 0.010; -- 10 ms
+   NPhilosophers   : constant := 100;
+   NIterations     : constant := 100; 
+   MaxThinkingTime : constant := 0.010; -- 10ms
+   MaxEatingTime   : constant := 0.010; -- 10 ms
 
    protected type WaitGroup is
       procedure Increment;
@@ -66,14 +67,14 @@ procedure Main is
    type PhilosopherAccess is access Philosopher;
 
    task body Philosopher is
-      G             : Generator;
+      G            : Generator;
       RandomTime   : Float;
       RightSuccess : Boolean;
-      Failures      : Integer := 0;
+      Failures     : Integer := 0;
    begin
       Reset (G);
       for i in 1 .. NIterations loop
-         RandomTime := Random (G) * MaxEatingTime;
+         RandomTime := Random (G) * MaxThinkingTime;
          Put_Line
            ("Philosopher(id"
             & Integer'Image (ID)
@@ -134,7 +135,7 @@ procedure Main is
       end GetFailures;
    end Philosopher;
 
-   Philosophers         : array (1 .. NPhilosophers) of PhilosopherAccess;
+   Philosophers        : array (1 .. NPhilosophers) of PhilosopherAccess;
    TotalFailures       : Integer := 0;
    PhilosopherFailures : Integer;
 
