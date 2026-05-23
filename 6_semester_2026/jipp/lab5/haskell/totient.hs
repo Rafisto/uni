@@ -14,10 +14,10 @@ totient n
 totient2 :: Int -> Int
 totient2 n
     | n <= 1 = 1
-    -- | otherwise = foldl (*) 1 (s1 ++ s2) where
+    | otherwise = foldl (*) 1 (s1 ++ s2) where
     -- | otherwise = foldl (*) (foldl (*) 1 s1) s2 where
     -- | otherwise = foldl (*) 1 $ fmap (foldl (*) 1) [s1, s2] where
-    | otherwise = product $ fmap product [s1, s2] where 
+    -- | otherwise = product $ map product [s1, s2] where 
         so = nub pf
         s1 = map (\x -> x - 1) so
         s2 = pf \\ so 
