@@ -1,4 +1,4 @@
-module GCD where
+module GCD (mgcd) where
 
 mgcd :: Int -> Int -> Int
 mgcd a 0 = a
