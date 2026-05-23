@@ -13,7 +13,7 @@ binomial n k
 pascalTriangleRow :: Int -> [Int]
 pascalTriangleRow 0 = [1]
 pascalTriangleRow 1 = [1, 1]
-pascalTriangleRow n = zipWith (+) ((pascal (n-1)) ++ [0]) ([0] ++ (pascal (n-1)))
+pascalTriangleRow n = zipWith (+) ((pascalTriangleRow (n-1)) ++ [0]) ([0] ++ (pascalTriangleRow (n-1)))
 
 -- binomial2 via pascal, evaluate k-th element
 -- should be way worse as it calculates full rows
