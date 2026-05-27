@@ -2,55 +2,56 @@
 #include "Wheels.h"
 
 #define SPEED 200
-#define PING_INTERVAL 50
-#define SERVO_MOVE_TIME 800
-#define SWEEP_INTERVAL 200
-#define BACKTRACK_TIME 2000
+#define BT_INTERVAL 100
+#define SETTLE_DELAY 250  // Small pause (ms) after a turn or straight to eliminate momentum drift
 
-#define ECHO_PIN A2
-#define TRIG_PIN 4
-
-void setup_ultrasonic_sensor() {
-  pinMode(ECHO_PIN, INPUT);
-  pinMode(TRIG_PIN, OUTPUT);
-}
+const long TICKS_STRAIGHT = 5; 
+const long TICKS_90_TURN = 20;   
 
 Wheels w;
 Servo srv;
 
-// Global counters and direction multipliers
-volatile int raw_cnt0 = 0;  // Raw ticks from ISR
+volatile int raw_cnt0 = 0;  
 volatile int raw_cnt1 = 0;
-int last_raw0 = 0, last_raw1 = 0;
-long total_cnt0 = 0, total_cnt1 = 0;  // Processed signed counts
+long total_cnt0 = 0, total_cnt1 = 0;  
 
-int dirL = 0;  // -1, 0, or 1
+int dirL = 0;  
 int dirR = 0;
-
-unsigned long lastPingTime = 0;
-unsigned long stateStartTime = 0;
-unsigned long lastSweepTime = 0;
 unsigned long lastBTTime = 0;
 
-int sweepIndex = 0;
-int sweepAngles[] = { 45, 90, 135, 90 };
-float distance;
-float d[] = { 0, 0, 0 };
-float dFarLeft, dLeft, dCenter, dRight, dFarRight;
+// Step Sequencer Structure
+enum Action { MOVE_FORWARD, ROTATE_LEFT, ROTATE_RIGHT };
 
-enum State { FORWARD,
-             STOPPED,
-             SCAN_FL,
-             SCAN_L,
-             SCAN_C,
-             SCAN_R,
-             SCAN_FR,
-             DECIDE,
-             BACKTRACK };
-State state;
-int angle;
+struct Step {
+  Action action;
+  long targetDelta;
+};
 
-// --- Helper to set motor state and directions ---
+// Complete 14-step layout for a double-loop square figure-8
+const int TOTAL_STEPS = 14;
+Step path[TOTAL_STEPS] = {
+  {MOVE_FORWARD, TICKS_STRAIGHT}, // Left Square: Side 1 (North)
+  {ROTATE_LEFT,  TICKS_90_TURN},
+  {MOVE_FORWARD, TICKS_STRAIGHT}, // Left Square: Side 2 (West)
+  {ROTATE_LEFT,  TICKS_90_TURN},
+  {MOVE_FORWARD, TICKS_STRAIGHT}, // Left Square: Side 3 (South)
+  {ROTATE_LEFT,  TICKS_90_TURN},
+  {MOVE_FORWARD, TICKS_STRAIGHT}, // Left Square: Side 4 (East - Back to center)
+  
+  {MOVE_FORWARD, TICKS_STRAIGHT}, // Right Square: Side 1 (Continuing East)
+  {ROTATE_RIGHT, TICKS_90_TURN},
+  {MOVE_FORWARD, TICKS_STRAIGHT}, // Right Square: Side 2 (South)
+  {ROTATE_RIGHT, TICKS_90_TURN},
+  {MOVE_FORWARD, TICKS_STRAIGHT}, // Right Square: Side 3 (West)
+  {ROTATE_RIGHT, TICKS_90_TURN},
+  {MOVE_FORWARD, TICKS_STRAIGHT}  // Right Square: Side 4 (North - Back to center)
+};
+
+int currentStep = 0;
+long startTickL = 0;
+long startTickR = 0;
+bool stepInitialized = false;
+
 void moveRobot(int l, int r, void (Wheels::*m)()) {
   dirL = l;
   dirR = r;
@@ -58,45 +59,32 @@ void moveRobot(int l, int r, void (Wheels::*m)()) {
   w.setSpeed(SPEED);
 }
 
-// l289n Pinout
-#define MOTOR_ENA 6   // white - EN A - SPEED R - PIN 6
-#define MOTOR_ENB 5   // yellow - EN B - SPEED L - PIN 5
-#define MOTOR_IN1 11  // gray - IN1 - PIN 11
-#define MOTOR_IN2 12  // purple - IN2 - PIN 12
-#define MOTOR_IN3 8   // blue - IN3 - PIN 8
-#define MOTOR_IN4 7   // green - IN4 - PIN 7
+#define MOTOR_ENA 6   
+#define MOTOR_ENB 5   
+#define MOTOR_IN1 11  
+#define MOTOR_IN2 12  
+#define MOTOR_IN3 8   
+#define MOTOR_IN4 7   
 void setup_motor() {
   pinMode(6, MOTOR_ENA);
   pinMode(5, MOTOR_ENB);
   w.attach(MOTOR_IN4, MOTOR_IN3, MOTOR_ENB, MOTOR_IN2, MOTOR_IN1, MOTOR_ENA);
 }
 
-#define SDA_PIN A4
-#define SCL_PIN A5
-// void setup_lcd() {
-//   lcd.init();
-//   lcd.backlight();
-//   lcd.setCursor(0, 0);
-// }
-
-#define SERVO_PIN 3
-void setup_servo() {
-  srv.attach(SERVO_PIN);
-  angle = 90;
-  srv.write(90);
-}
-
 void setup() {
-  setup_ultrasonic_sensor();
   setup_motor();
-  setup_servo();
+  srv.attach(3);
+  srv.write(90); // Lock servo straight
 
   Serial.begin(9600);
+  for (int i = 0; i < 10; ++i) {
+    Serial.println("reset");
+    delay(100);
+  }
 
+  // Encoder Interrupts
   PCICR |= (1 << PCIE1);
   PCMSK1 |= (1 << PCINT8) | (1 << PCINT9);
-
-  state = FORWARD;
 }
 
 void processCounts() {
@@ -112,7 +100,7 @@ void processCounts() {
 }
 
 void sendBTData() {
-  if (millis() - lastBTTime > 100) {
+  if (millis() - lastBTTime > BT_INTERVAL) {
     Serial.print("L:");
     Serial.print(total_cnt0);
     Serial.print(",R:");
@@ -121,154 +109,65 @@ void sendBTData() {
   }
 }
 
-void handleActiveForward() {
-  unsigned long now = millis();
-  if (now - lastSweepTime > SWEEP_INTERVAL) {
-    sweepIndex = (sweepIndex + 1) % 4;
-    angle = sweepAngles[sweepIndex];
-    srv.write(angle);
-    lastSweepTime = now;
+void handleSquareFigure8() {
+  // Loop back to the beginning of the sequence infinitely
+  if (currentStep >= TOTAL_STEPS) {
+    currentStep = 0;
   }
 
-  if (now - lastPingTime > PING_INTERVAL) {
-    distance = getDistance();
-    lastPingTime = now;
-    if (distance > 0 && distance < 25) {
-      moveRobot(0, 0, &Wheels::stop);
-      state = STOPPED;
-    } else {
-      moveRobot(1, 1, &Wheels::forward);
+  Step s = path[currentStep];
+
+  // Initialize the metrics at the start of a new step segment
+  if (!stepInitialized) {
+    startTickL = total_cnt0;
+    startTickR = total_cnt1;
+    stepInitialized = true;
+
+    switch (s.action) {
+      case MOVE_FORWARD:
+        Serial.println("Move Forward");
+        moveRobot(1, 1, &Wheels::forward);
+        break;
+      case ROTATE_LEFT:
+        Serial.println("Move Left");
+        moveRobot(1, 0, &Wheels::forwardLeft); 
+        break;
+      case ROTATE_RIGHT:
+        Serial.println("Move Right");
+        moveRobot(0, 1, &Wheels::forwardRight); 
+        break;
     }
   }
-}
 
-void evaluatePath() {
-  // 2 options
-  if (dRight >= dLeft) {
-    moveRobot(0, 1, &Wheels::forwardRight);
-  } else {
-    moveRobot(1, 0, &Wheels::forwardLeft);
-  }
-  // if (dFarRight > 40 && dRight > 30) {
-  //   moveRobot(1, -1, &Wheels::forwardRight);
-  // } else if (dFarLeft > 40 && dLeft > 30) {
-  //   moveRobot(-1, 1, &Wheels::forwardLeft);
-  // } else if (dRight >= dLeft) {
-  //   moveRobot(1, -1, &Wheels::forwardRight);
-  // } else {
-  //   moveRobot(-1, 1, &Wheels::forwardLeft);
-  // }
-}
+  // Calculate absolute distance traveled during this specific step
+  long deltaL = abs(total_cnt0 - startTickL);
+  long deltaR = abs(total_cnt1 - startTickR);
+  long currentDelta = (deltaL + deltaR) / 2; // Average encoder progress
 
-
-
-float getDistance() {
-  for (int i = 0; i < 3; ++i) {
-    digitalWrite(TRIG_PIN, LOW);
-    delayMicroseconds(2);
-    digitalWrite(TRIG_PIN, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(TRIG_PIN, LOW);
-    long duration = pulseIn(ECHO_PIN, HIGH, 30000);
-    d[i] = duration;
-  }
-
-  long best;
-  if ((d[0] > d[1]) ^ (d[0] > d[2])) best = d[0];
-  else if ((d[1] < d[0]) ^ (d[1] < d[2])) best = d[1];
-  else best = d[2];
-  return (best * 0.0343 / 2);
-}
-
-
-void runScanner() {
-  unsigned long now = millis();
-  switch (state) {
-    case STOPPED:
-      srv.write(170);
-      stateStartTime = now;
-      state = SCAN_FL;
-      break;
-
-    case SCAN_FL:
-      if (now - stateStartTime > SERVO_MOVE_TIME) {
-        dFarLeft = getDistance();
-        angle = 130;
-        srv.write(130);
-        stateStartTime = now;
-        state = SCAN_L;
-      }
-      break;
-
-    case SCAN_L:
-      if (now - stateStartTime > SERVO_MOVE_TIME) {
-        dLeft = getDistance();
-        angle = 90;
-        srv.write(90);
-        stateStartTime = now;
-        state = SCAN_C;
-      }
-      break;
-
-    case SCAN_C:
-      if (now - stateStartTime > SERVO_MOVE_TIME) {
-        dCenter = getDistance();
-        angle = 50;
-        srv.write(50);
-        stateStartTime = now;
-        state = SCAN_R;
-      }
-      break;
-
-    case SCAN_R:
-      if (now - stateStartTime > SERVO_MOVE_TIME) {
-        dRight = getDistance();
-        angle = 10;
-        srv.write(10);
-        stateStartTime = now;
-        state = SCAN_FR;
-      }
-      break;
-
-    case SCAN_FR:
-      if (now - stateStartTime > SERVO_MOVE_TIME) {
-        dFarRight = getDistance();
-        state = DECIDE;
-      }
-      break;
-
-    case DECIDE:
-      evaluatePath();
-      stateStartTime = now;
-      state = BACKTRACK;
-      angle = 90;
-      break;
-
-    case BACKTRACK:
-      if (now - stateStartTime > BACKTRACK_TIME) {
-        moveRobot(0, 0, &Wheels::stop);
-
-        angle = 90;
-        srv.write(90);
-        delay(500);
-
-        stateStartTime = now;
-        state = FORWARD;
-      }
-      break;
+  // Check if step objective has been reached
+  if (currentDelta >= s.targetDelta) {
+    moveRobot(0, 0, &Wheels::stop);
+    delay(SETTLE_DELAY); // Crucial pause to let physics settle for crisp corners
+    
+    stepInitialized = false;
+    currentStep++; // Move to the next step index
   }
 }
-
 
 void loop() {
   processCounts();
-  sendBTData();
-
-  if (state == FORWARD) handleActiveForward();
-  else runScanner();
+  sendBTData();          // Feeds your live Python 2D map tracker
+  handleSquareFigure8(); // Executes path state sequence
 }
 
+volatile uint8_t last_PINC = 0; // Add this global variable at the top
+
 ISR(PCINT1_vect) {
-  if (PINC & (1 << PC0)) raw_cnt0++;
-  if (PINC & (1 << PC1)) raw_cnt1++;
+  uint8_t current_PINC = PINC;
+  uint8_t changed = current_PINC ^ last_PINC; // Identifies which pins actually flipped
+  last_PINC = current_PINC;
+
+  // Only count if the pin changed AND it is currently HIGH (Rising Edge)
+  if ((changed & (1 << PC0)) && (current_PINC & (1 << PC0))) raw_cnt0++;
+  if ((changed & (1 << PC1)) && (current_PINC & (1 << PC1))) raw_cnt1++;
 }

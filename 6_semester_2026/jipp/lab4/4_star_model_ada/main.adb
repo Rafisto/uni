@@ -6,7 +6,7 @@ with Ada.Strings.Unbounded;
 with Frame; use Frame;
 
 procedure Main is
-   NUsers         : constant := 5;
+   NUsers         : constant := 100;
    NFrames        : constant := 100;
    BaseBackoff    : constant Duration := 0.002; -- 2ms
    MaxBackoff     : constant Duration := 2.000; -- 2s
