@@ -1,0 +1,2 @@
+ghcup
+ghc Main.hs

@@ -10,7 +10,7 @@ merge (x:xs) (y:ys)
 mergesort :: Ord a => [a] -> [a]
 mergesort [] = []
 mergesort [x] = [x]
-mergesort xs = merge (take l xs) (drop l xs)
+mergesort xs = merge (mergesort (take l xs)) (mergesort (drop l xs))
     where l = length xs `div` 2
 
 -- mergesort [1,3,5,7,9,2,4,6,8,10]
