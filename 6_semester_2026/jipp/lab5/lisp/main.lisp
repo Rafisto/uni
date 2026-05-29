@@ -1,5 +1,7 @@
 ; binomial
 
+; zerop k === k = 0
+; () evaluates to nil/false so must wrap with t()
 (defun binomial (n k)
   (cond ((zerop k) 1)
         ((> k n) 0)
@@ -9,6 +11,7 @@
 
 ; binomial2
 
+; zip with + + mapcar #'+ 
 (defun ptr (x)
   (cond ((zerop x) '(1))
         ((= x 1) '(1 1))
@@ -25,6 +28,7 @@
 
 ; mergesort
 
+; x:xs === car:cdr
 (defun merge_lists (predicate a b)
   (cond ((null a) b)
         ((null b) a)
@@ -39,6 +43,7 @@
         (let* ((mid (floor len 2))
                (left (subseq xs 0 mid))
                (right (subseq xs mid)))
+          ; pass order <=  
           (merge_lists #'<= (mergesort left) (mergesort right))))))
 
 ; de
@@ -53,8 +58,9 @@
 (defun de (a b)
   (if (zerop b)
       (values 1 0 a)
+      ; tuple destructuring
       (multiple-value-bind (x1 y1 g) (de b (mod a b))
-        (values y1 
+        (values y1
                 (- x1 (* (floor a b) y1)) 
                 g))))
 
@@ -70,14 +76,14 @@
 ; totient
 
 (defun totient (n)
-  (labels ((count-relative-primes (k acc)
+  (labels ((count_relative_primes (k acc)
              (cond ((zerop k) acc)
                    ((= 1 (gcd k n)) 
-                    (count-relative-primes (1- k) (1+ acc)))
-                   (t (count-relative-primes (1- k) acc)))))
+                    (count_relative_primes (1- k) (1+ acc)))
+                   (t (count_relative_primes (1- k) acc)))))
     (if (<= n 0)
         0
-        (count-relative-primes n 0))))
+        (count_relative_primes n 0))))
 
 ; totient 2
 
@@ -91,6 +97,7 @@
              (if (null lst)
                  nil
                  (let ((x (car lst)))
+                   ; cons 1 '(2 3 4) = (1 2 3 4)
                    (cons x (eval_sieve (remove-if (lambda (i) (zerop (mod i x))) (cdr lst))))))))
     (if (<= n 1) nil (eval_sieve (range 2 n)))))
 
@@ -102,6 +109,7 @@
              (s1 (mapcar #'1- so))
              (s2 (let ((temp-pf pf))
                    (dolist (x so temp-pf)
+                     ; remove single occurrence
                      (setf temp-pf (remove x temp-pf :count 1))))))
         (reduce #'* (append s1 s2)))))
 

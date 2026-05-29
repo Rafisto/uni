@@ -122,7 +122,7 @@ let totient2 n =
 let range a b =
   let rec aux i acc = if i < a then acc else aux (i-1) (i::acc) in
   if b < a then [] else aux b []
-  
+
 let primes n =
   if n <= 1 then []
   else

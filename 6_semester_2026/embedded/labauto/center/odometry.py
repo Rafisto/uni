@@ -13,8 +13,10 @@ prev_right = None
 x : float = 0
 y : float = 0
 theta : float = 0
+vx : float = 0
+vy : float = 0
 
-rel_err = lambda x,y: abs(x-y)/abs(x) 
+rel_err = lambda x,y : abs(x-y)/abs(x) 
 rel_err_tolerance = 0.1
 
 x_history : list[float] = []
@@ -24,6 +26,9 @@ fig, ax = plt.subplots(figsize=(8, 6))
 path_line, = ax.plot(x_history, y_history, 'b-o', markersize=3, label="Robot Path")
 start_dot = ax.scatter(x, y, color='green', s=100, zorder=5, label='Start')
 current_dot = ax.scatter(x, y, color='red', s=100, zorder=5, label='Current')
+velocity_arrow = ax.arrow(x, y, vx, vy, head_width=1, head_length=2, fc='orange', ec='orange', label='Velocity')
+left_axle, = ax.plot([x, x], [y, y], 'k-', label='Axle')
+right_axle, = ax.plot([x, x], [y, y], 'k-', label='Axle')
 
 ax.set_title('Differential Drive XY-Tracking')
 ax.set_xlabel('X Position')
@@ -63,8 +68,11 @@ for line in logs:
         dtheta = (dr - dl) / axle_width 
         dpos = (dr + dl) / 2
 
-        x += dpos * math.cos(theta + dtheta/2)
-        y += dpos * math.sin(theta + dtheta/2)
+        vx = dpos * math.cos(theta + dtheta/2)
+        vy = dpos * math.sin(theta + dtheta/2)
+
+        x += vx
+        y += vy
         theta += dtheta
 
         x_history.append(x)
@@ -75,12 +83,18 @@ for line in logs:
         path_line.set_xdata(x_history)
         path_line.set_ydata(y_history)
         current_dot.set_offsets([[x, y]])
+        
+        # velocity_arrow = ax.plot([x, x+vx], [y, y+vy], 'orange', label='Velocity')[0]        
+        # left_axle = ax.plot([x,x+2*math.cos(theta)], [y, y+2*math.sin(theta)], 'k-', linewidth=2, zorder=10)[0]
+        # right_axle = ax.plot([x,x-2*math.cos(theta)], [y, y-2*math.sin(theta)], 'k-', linewidth=2, zorder=10)[0]
+        
         ax.relim()
         ax.autoscale_view()
         plt.ion()
         plt.draw()
-        plt.pause(0.01) 
+        plt.pause(0.001) 
         prev_left, prev_right = left, right
 
+velocity_arrow.remove()
 plt.ioff()
 plt.show()

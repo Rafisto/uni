@@ -2,7 +2,6 @@
 mergesort([], []).
 mergesort([X], [X]).
 mergesort(List, Sorted) :-
-    List = [_, _|_], 
     length(List, N),
     Mid is N // 2,
     split(List, Mid, Left, Right),
@@ -12,20 +11,20 @@ mergesort(List, Sorted) :-
 
 % split(+List, +N, -Left, -Right)
 split(L, 0, [], L).
-split([H|T], N, [H|Left], Right) :-
+split([X|XS], N, [X|Left], Right) :-
     N > 0,
     N1 is N - 1,
-    split(T, N1, Left, Right).
+    split(XS, N1, Left, Right).
 
-% merge_lists(+List1, +List2, -Merged)
+% merge_lists(+ListX, +ListY, -Merged)
 merge_lists([], L, L).
 merge_lists(L, [], L).
-merge_lists([H1|T1], [H2|T2], [H1|Result]) :-
-    H1 =< H2,
-    merge_lists(T1, [H2|T2], Result).
-merge_lists([H1|T1], [H2|T2], [H2|Result]) :-
-    H1 > H2,
-    merge_lists([H1|T1], T2, Result).
+merge_lists([X|XS], [Y|YS], [X|Result]) :-
+    X =< Y,
+    merge_lists(XS, [Y|YS], Result).
+merge_lists([X|XS], [Y|YS], [Y|Result]) :-
+    X > Y,
+    merge_lists([X|XS], YS, Result).
 
 
 % de(+A, +B, -X, -Y, -Z) -> AX + BY = gcd(A, B)
@@ -55,7 +54,7 @@ prime_factors_helper(N, C, Tail) :-
     prime_factors_helper(N, C1, Tail).
 
 
-%totient(+N,-T)
+% totient(+N,-T)
 totient(1, 1) :- !.
 totient(N, T) :-
     N > 1,
@@ -82,16 +81,16 @@ primes(N, PrimeList) :-
     sieve(L, PrimeList).
 
 sieve([], []).
-sieve([H|T], [H|Result]) :-
-    exclude_multiples(H, T, Filtered),
+sieve([X|XS], [X|Result]) :-
+    exclude_multiples(X, XS, Filtered),
     sieve(Filtered, Result).
 
 exclude_multiples(_, [], []).
-exclude_multiples(P, [H|T], Result) :-
-    H mod P =:= 0, !,
-    exclude_multiples(P, T, Result).
-exclude_multiples(P, [H|T], [H|Result]) :-
-    exclude_multiples(P, T, Result).
+exclude_multiples(P, [X|XS], Result) :-
+    X mod P =:= 0, !,
+    exclude_multiples(P, XS, Result).
+exclude_multiples(P, [X|XS], [X|Result]) :-
+    exclude_multiples(P, XS, Result).
 
 main :-
     mergesort([0, 2, 4, 6, 8, 1, 3, 5, 7, 9], Sorted),
