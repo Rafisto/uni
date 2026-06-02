@@ -120,6 +120,43 @@ Wykorzystam bibliotekę OpenMP \texttt{<omp.h>} która pozwala na zrównolegleni
 rozdzielając część pętli na wiele rdzeni. Dzięki ustaleniu generatora liczb losowych per wątek mogę
 uzyskiwać różne wyniki symulując konsekwentne wykonywanie kolejnych iteracji algorytmów.  
 
+Wykorzystane elementy to m.in. zrównoleglenie podziału wysp oraz operacji niezależnych wysp oraz zrównoleglenie wykonania
+algorytmu memetycznego (tabu search).
+
+\subsection{Zrównoleglenie przy wyspach}
+
+\texttt{\#pragma omp parallel for collapse(2)} - zrównoleglamy podwójne zagnieżdżenie pętli.
+
+\begin{verbatim}
+#pragma omp parallel for collapse(2)
+for i in 1..n {
+    for j in 1..m {
+
+    }
+}
+\end{verbatim}
+
+Zostaje ewaluowany do pojedynczego egzemplarza, a następnie wykonuje każdą operacje równolegle
+
+\begin{verbatim}
+for (i,j) in (1..n, 1..m) {
+
+}
+\end{verbatim}
+
+\subsection{Zrównoleglenie Tabu w wariancie Memetycznym}
+
+\begin{verbatim}
+#pragma omp declare reduction(min_move : BestMove : \
+    omp_out = (omp_in.delta < omp_out.delta) ? omp_in : omp_out) \
+    initializer(omp_priv = {std::numeric_limits<int64_t>::max(), 0, 0, false})
+
+#pragma omp parallel for reduction(min\_move\:local\_best) schedule(guided)
+\end{verbatim}
+
+Każdy wątek dostaje kopie zmiennej \texttt{local\_best}, która następnie przy łączeniu wątków
+zostaje poddana operacji redukcji \texttt{min\_move} - która z dwóch lokalnych wartości wybiera mniejszy z nich (lepsze rozwiązanie). 
+
 \section{Zadanie 4 - Algorytm Memetyczny}
 
 Moja realizacja algorytmu memetycznego opiera się o dodanie Tabu Search po mutacji dzieci poprzedniej populacji.
@@ -130,10 +167,21 @@ do kolejnego minimum lokalnego po mutacji - czyli po potencjalnym wyskoczeniu z 
 
 \input{parameters.tex}
 
+Zarówno \texttt{pmx} oraz \texttt{ox} są przy małej liczbie generacji niezbyt interesujące.
+Dodanie przy tej samej liczbie generacji wysp oraz algorytmu memetycznego pozwala osiągnąć lepsze wyniki.
+Algorytm memetyczny w postaci skróconego Tabu Searcha pozwala na uzyskanie wyników optymalnych dla małych problemów,
+i w granicach $10\%-20\%$ od wyniku optymalnego dla większych problemów.
+
+Algorytm Memetyczny w Oparciu o Tabu Search radzi sobie zdecydowanie najlepiej, co jest tożsame z wnioskami z poprzedniej listy - Tabu Search
+oraz jego elementy to dobre algorytmy Metaheurystyczne.
+
 \section{Wykresy najlepszych rozwiązań}
 
 \input{plots.tex}
 
 \section{Finalne zestawienie wszystkich algorytmów}
+
+
+
 
 \end{document}
