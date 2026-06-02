@@ -19,6 +19,7 @@
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{longtable}
+\usepackage{tabularx}
 
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
@@ -167,7 +168,9 @@ do kolejnego minimum lokalnego po mutacji - czyli po potencjalnym wyskoczeniu z 
 
 \input{parameters.tex}
 
-Zarówno \texttt{pmx} oraz \texttt{ox} są przy małej liczbie generacji niezbyt interesujące.
+\input{results.tex}
+
+Zarówno \texttt{pmx} oraz \texttt{ox} są przy małej liczbie generacji niezbyt interesujące, natomiast widać że \texttt{ox} jest lepszy.
 Dodanie przy tej samej liczbie generacji wysp oraz algorytmu memetycznego pozwala osiągnąć lepsze wyniki.
 Algorytm memetyczny w postaci skróconego Tabu Searcha pozwala na uzyskanie wyników optymalnych dla małych problemów,
 i w granicach $10\%-20\%$ od wyniku optymalnego dla większych problemów.

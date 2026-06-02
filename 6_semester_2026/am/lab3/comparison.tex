@@ -1,0 +1,55 @@
+\subsection{Algorytmy zawarte w porównaniu}
+\begin{table}[htbp]
+\centering
+\caption{Opis algorytmów metaheurystycznych}
+\small
+\begin{tabularx}{\textwidth}{l p{5cm} X}
+\toprule
+\textbf{Algorytm} & \textbf{Opis} & \textbf{Zachowanie} \\ \midrule
+\multicolumn{3}{l}{\textbf{Lista 1: Local Search + Rożne Sąsiedztwa}} \\ \midrule
+\textbf{L1: Full Inversion} & Losowy start. Przeszukiwanie całego sąsiedztwa $n^2$ operacją \texttt{invert}. & Dokładna, lecz z wysoką złożonością - niepraktyczna dla dużych problemów. \\ \addlinespace
+\textbf{L1: $n$-Losowych} & Losowy Start. Przeszukiwanie $n$ losowych sąsiadów w każdej iteracji. & Szybciej sprawdzamy mniej inwersji, tracąc dokładność. \\ \addlinespace
+\textbf{L1: MST} & Start z MST + heurystyka 2-OPT. & Znacznie lepszy od $n$ losowych przy wynikach gorszych, lecz zbliżoną do pełnego sąsiedztw. \\ \midrule
+\multicolumn{3}{l}{\textbf{Lista 2: Wychodzenie z minimów lokalnych}} \\ \midrule
+\textbf{L2: Symulowane Wyżarzanie} & Losowy Start. Dostrojony za pomocą $T,\alpha,e,t$ & Pozwala na wypadnięcie z minimum lokalnego, natomiast wraz z kolejnymi iteracjami zmniejszamy szansę na uzyskanie lepszego wyniku \\ \addlinespace
+\textbf{L2: Tabu Search} & Losowy Start. Local Search z listą Tabu & Znacznie lepszy od symulowanego wyżarzania, często wypada z minimum lokalnego uzyskując dobre wyniki \\ \midrule
+\multicolumn{3}{l}{\textbf{Lista 3: Algorytmy Genetyczne i Hybrydowe}} \\ \midrule
+\textbf{L3: Genetyczny PMX} & Start Losowy. Wykorzystanie krzyżowania PMX & Szybki lecz niedokładny, gorszy od OX \\ \addlinespace
+\textbf{L3: Genetyczny OX} & Start Losowy. Wykorzystanie krzyżowania OX & Szybki lecz niedokładny, lepszy od PMX \\ \addlinespace
+\textbf{L3: Memetyczny przez TS} & Start z MST. Opatrzony skróconym Tabu Search & Wyniki zbliżone do optymalnych. \\ \addlinespace
+\textbf{L3: Wyspowy + TS} & Start z MST. Szybszy od memetycznego. Dobry i łatwy do zrównoleglenia dla dużych problemów. & Osiąga bliskie optimum wyniki dla każdego zestawu danych \\ \bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Zestawienie Wyników Numerycznych}
+
+\begin{table}[htbp]
+\centering
+\caption{Porównanie długości tras dla trzech wyróżnionych zestawów}
+\small
+\begin{tabularx}{\textwidth}{X c c c}
+\toprule
+\textbf{Algorytm} & \textbf{Djibouti} ($n=38$) & \textbf{Zimbabwe} ($n=929$) & \textbf{Ireland} ($n=8246$) \\ 
+\textit{OPT} & \textit{6656} & \textit{95345} & \textit{206171} \\ \midrule
+\multicolumn{3}{l}{\textbf{Lista 1: Local Search + Rożne Sąsiedztwa}} \\ \midrule
+\textbf{L1: Full Inversion} & 7535 & 105188 & \textbf{232691} \\
+\textbf{L1: $n$-Losowych} & 8034 & 163424 & 435965 \\
+\textbf{L1: MST} & 5828 & 104581 & 233043 \\ \midrule
+\multicolumn{3}{l}{\textbf{Lista 2: Wychodzenie z minimów lokalnych}} \\ \midrule
+\textbf{L2: Symulowane Wyżarzanie} & 7347 & 457583 & 5320736 \\ 
+\textbf{L2: Tabu Search} & \textbf{6656} & 105303 & 255336 \\ \midrule
+\multicolumn{3}{l}{\textbf{Lista 3: Algorytmy Genetyczne i Hybrydowe}} \\ \midrule
+\textbf{L3: Genetyczny PMX} & 22795 & 2161399 & 13762349 \\
+\textbf{L3: Genetyczny OX} & 21899 & 961195 & 979856 \\
+\textbf{L3: Memetyczny (OX + TS)} & \textbf{6656} & \textbf{100284} & 241624 \\
+\textbf{L3: Wyspowy (OX + TS)}  & \textbf{6656} & 101064 & 240879 \\
+\end{tabularx}
+\end{table}
+
+\section{Główne Wnioski z Ewolucji Algorytmów}
+
+\begin{enumerate}
+    \item \textbf{Wpływ startu} Znaczenie pozycji startowej jest kluczowe do otrzymania dobrego wyniku  
+    \item \textbf{Wychodzenie z minimów lokalnych} Algorytmy powinny próbować wychodzić z minimów lokalnych, aby dążyć do lepszego rozwiązania.
+    \item \textbf{Podejście Genetyczne} Połączenie algorytmów typu Tabu Search z rozwiązaniami populacyjnymi pozwala osiągać zadowalające wyniki.
+\end{enumerate}
