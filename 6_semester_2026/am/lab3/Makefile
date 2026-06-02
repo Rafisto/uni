@@ -1,6 +1,6 @@
 CC=clang++
 CFLAGS=-std=c++23 -Wall -Wextra
-COPT=-O3 -march=native -ftree-vectorize -funroll-loops -ffast-math
+COPT=-O2 -march=native -ftree-vectorize -funroll-loops
 # CEXTRA=-fsanitize=undefined -fsanitize=address -g
 CMULTIPROCESS=-fopenmp 
 
@@ -13,4 +13,4 @@ all: $(OUTPUT)
 	$(CC) $(CFLAGS) $(COPT) $(CEXTRA) $(CMULTIPROCESS) -o build_$@ $<
 
 clean:
-	rm -rf build_$(OUTPUT)
+	rm -rf build_*.out

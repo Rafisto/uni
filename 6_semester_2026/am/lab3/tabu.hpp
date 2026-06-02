@@ -18,7 +18,18 @@ struct TabuStats {
     permutation_t best_permutation;
 };
 
-inline permutation_t tabu_search_step(const Graph &g, const permutation_t& start_perm, size_t tenure, int max_no_improve) {
+struct BestMove {
+    int64_t delta;
+    size_t i;
+    size_t j;
+    bool found;
+};
+
+#pragma omp declare reduction(min_move : BestMove : \
+    omp_out = (omp_in.delta < omp_out.delta) ? omp_in : omp_out) \
+    initializer(omp_priv = {std::numeric_limits<int64_t>::max(), 0, 0, false})
+
+inline permutation_t tabu_search_step(const Graph &g, const permutation_t& start_perm, size_t tenure, int max_no_improve, int max_iter=10) {
     const size_t n = g.n;
     permutation_t current_perm = start_perm;
     uint64_t current_dist = calculate_tour_cost(g, current_perm);
@@ -31,13 +42,12 @@ inline permutation_t tabu_search_step(const Graph &g, const permutation_t& start
     int iter = 0;
     int last_improvement = 0;
 
-    while (iter - last_improvement < max_no_improve) {
+    while ((iter - last_improvement < max_no_improve) && (iter < max_iter)) {
         iter++;
         
-        size_t best_i = 0, best_j = 0;
-        int64_t best_delta = std::numeric_limits<int64_t>::max();
-        bool found_move = false;
+        BestMove local_best = {std::numeric_limits<int64_t>::max(), 0, 0, false};
 
+        #pragma omp parallel for reduction(min_move:local_best) schedule(guided)
         for (size_t i = 0; i < n - 1; ++i) {
             for (size_t j = i + 2; j < n; ++j) {
                 size_t u = current_perm[i];
@@ -50,16 +60,21 @@ inline permutation_t tabu_search_step(const Graph &g, const permutation_t& start
 
                 bool is_tabu = (tabu_matrix[u][v] > iter || tabu_matrix[w][z] > iter);
                 
-                if (delta < best_delta) {
+                if (delta < local_best.delta) {
                     if (!is_tabu || (current_dist + delta < best_so_far_dist)) {
-                        best_delta = delta;
-                        best_i = i;
-                        best_j = j;
-                        found_move = true;
+                        local_best.delta = delta;
+                        local_best.i = i;
+                        local_best.j = j;
+                        local_best.found = true;
                     }
                 }
             }
         }
+
+        bool found_move = local_best.found;
+        size_t best_i = local_best.i;
+        size_t best_j = local_best.j;
+        int64_t best_delta = local_best.delta;
 
         if (found_move) {
             size_t u = current_perm[best_i];

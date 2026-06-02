@@ -53,7 +53,7 @@ def plot_tsp_tour(coords, permutation, title, distance, ax=None):
     return ax
 
 def main():
-    outfile = open('out','r').read().strip().split('\n')
+    outfile = open('out2','r').read().strip().split('\n')
     for l, line in enumerate(outfile):
         if l == 0:
             continue
