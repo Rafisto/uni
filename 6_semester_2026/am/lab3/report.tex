@@ -79,12 +79,27 @@ Wybrałem dwie metody krzyżowania:
 
 \subsection{Metoda PMX}
 
-Wybieramy dwa punkty krzyżowania $x$, $y$ - stanowiące w naszym przypadku indeksy permutacji,
- ...TODO
+Metoda PMX (Partially Mapped Crossover) to algorytm krzyżowania permutacji 
+stworzony z myślą o TSP. Bierzemy dwie permutacje $p_1,p_2$, będziemy tworzyć dziecko $c$. Bierzemy dwa dowolne punkty $0\leq x\leq y \leq n$, następnie dzielimy zbiór na trzy części:
+lewy (indeksy $0\dots x - 1$), środkowy (indeksy $x \dots y$), oraz prawy (indeksy $y+1 \dots n$). 
+\begin{enumerate}
+    \item Segment środkowy $(x,y)$ zostaje powielony z $p_1$ do $c$
+    \item Znajdujemy konflikty - przenosimy elementy z permutacji $p_2$ do $c$, o ile już w $c$ ich nie ma.
+    Musimy znaleźć mapowania elementów $k_1,\dots, k_l$ do $c$ spoza segmentu środkowego. Niech $k=k_i$ (dowolny brakujący element).
+    Szukamy indeksu $i : p_2(i) = k$, znajdujemy wartość $m=p_1(i)$, a następnie szukamy dla jakiego $j$ $p_2(j)=m$.
+    Gdy $j \notin (x,y)$ możemy umieścić element $c(j)=k$.
+    Osiągamy dzięki temu zestaw mapowania, który pozwala nam umieścić $k$ w wolne miejsce $c$.
+\end{enumerate}
 
 \subsection{Metoda OX}
 
-TODO
+Metoda OX (Order Crossover) to algorytm krzyżowania permutacji dla TSP. Bierzemy dwie permutacje $p_1,p_2$, będziemy tworzyć dziecko $c$. Bierzemy dwa dowolne punkty $0\leq x\leq y \leq n$, następnie dzielimy zbiór na trzy części:
+lewy (indeksy $0\dots x - 1$), środkowy (indeksy $x \dots y$), oraz prawy (indeksy $y+1 \dots n$). 
+\begin{enumerate}
+    \item Segment środkowy $(x,y)$ zostaje powielony z $p_1$ do $c$
+    \item Dokonujemy cyklicznego wypełnienia zaczynając od indeksu $i=y+1$, sprawdzamy czy element $p_2(i)$ jest już w $c$,
+    jeśli jest to dodajemy indeks i przechodzimy dalej. Jeśli nie ma to wpisujemy $c(i)=p_2(i)$ i przesuwamy $i$ na następne wolne miejsce.
+\end{enumerate}
 
 \subsection{Wyniki porównania metod PXM i OX}
 
