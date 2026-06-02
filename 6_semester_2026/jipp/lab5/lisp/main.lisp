@@ -29,6 +29,7 @@
 ; mergesort
 
 ; x:xs === car:cdr
+; predicate = order
 (defun merge_lists (predicate a b)
   (cond ((null a) b)
         ((null b) a)

@@ -1,0 +1,124 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=-5cm, right=2cm, bottom=2cm, includeheadfoot, headheight=130pt, a4paper]{geometry}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{longtable}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\title{Algorytmy Metaheurystyczne\\Lista 3 - TSP A Selection of Genetic Algorithms}
+\author{Rafał Włodarczyk}
+\date{02.06.2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Model}
+
+Model TSP zakłada graf pełny $G=(V,E)$ z wagami.
+
+\section{Źródło dla danych}
+
+Dane do programu są wzięte ze strony internetowej:
+\begin{center}
+\texttt{https://www.math.uwaterloo.ca/tsp/world/countries.html}
+\end{center}
+oraz są dostępne do pobrania w formacie \texttt{.tsp} za pomocą skryptu \texttt{get\_data.sh}.
+
+\section{Idea Algorytmu Genetycznego}
+
+Algorytm Genetyczny zgodnie z opisem na liście składa się z pięciu kroków
+\begin{enumerate}
+    \item Populacja Początkowa. Wykorzystałem permutację powstałą za pomocą MST.
+    \item Ewaluacja i Selekcja. Selekcja odbywa się za pomocą przyspieszonej metody turniejowej.
+    Wybierane są dwa dowolne elementy populacji (część losowa), a następnie brany jest większy z nich (część turniejowa).
+    \item Krzyżowanie. Wykorzystane zostaną dwa algorytmy \texttt{PMX Crossover} oraz \texttt{OX Crossover}.
+    \item Mutacja. Odbywa się za pomocą wybrania dwóch indeksów $x,y$, a następnie odwrócenia podpermutacji - 
+    wykonanie inwersji.
+    \item Warunek Końca. Ustalony na sztywną liczbę generacji. Zwracamy najlepszy z wyników
+\end{enumerate}
+
+Ponadto rozwinięty zostanie o dwa dodatkowe elementy
+
+\begin{enumerate}
+    \item Memetyka - Przyspieszenie \textit{dojrzewania} nowych elementów populacji. Zastosowany jest skrócony algorytm Tabu Search,
+    z ustaloną niską maksymalną liczbą iteracji.
+    \item Wyspowość - Podzielenie populacji na mniejsze niezależne podpopulacje, które po ustalonej liczbie generacji wymieniają się informacjami
+    za pomocą specjalnej funkcji.
+\end{enumerate}
+
+\section{Zadanie 1 - Metody krzyżowania}
+
+Wybrałem dwie metody krzyżowania:
+\begin{enumerate}
+    \item PMX (Partially Mapped Crossover) - Goldberg / Lingle, 1985. 
+    \item OX (Order Crossover) - Davis, 1985
+\end{enumerate}
+
+\subsection{Metoda PMX}
+
+Wybieramy dwa punkty krzyżowania $x$, $y$ - stanowiące w naszym przypadku indeksy permutacji,
+ ...TODO
+
+\subsection{Metoda OX}
+
+TODO
+
+\subsection{Wyniki porównania metod PXM i OX}
+
+Dla zadanych danych OX jest lepszy od PMX. Zostanie zatem wykorzystany w zmodyfikowanych algorytmach.
+
+\section{Zadanie 2 - Algorytm Wyspowy}
+
+Algorytm wyspowy otrzymuje dodając dwa dodatkowe parametry
+\begin{enumerate}
+    \item \texttt{icount} - Ilość wysp, na które zostanie podzielony zbiór populacji.
+    \item \texttt{interval} - Ilość iteracji po których zachodzi wymiana informacji pomiędzy wyspami.
+    Niech $I$ to będzie nasz interwał. Wtedy do wymiany informacji dojdzie w iteracjach $k\cdot I, k\in\mathbb{N}_{\geq 0}$
+\end{enumerate}
+
+\section{Zadanie 3 - Wykorzystanie OpenMP w celu przyspieszenia obliczeń}
+
+Wykorzystam bibliotekę OpenMP \texttt{<omp.h>} która pozwala na zrównoleglenie obliczeń - wykorzystuję 
+rozdzielając część pętli na wiele rdzeni. Dzięki ustaleniu generatora liczb losowych per wątek mogę
+uzyskiwać różne wyniki symulując konsekwentne wykonywanie kolejnych iteracji algorytmów.  
+
+\section{Zadanie 4 - Algorytm Memetyczny}
+
+Moja realizacja algorytmu memetycznego opiera się o dodanie Tabu Search po mutacji dzieci poprzedniej populacji.
+Dzięki temu zdecydowanie szybciej (w obrębie jednej generacji) będziemy optymalizować
+do kolejnego minimum lokalnego po mutacji - czyli po potencjalnym wyskoczeniu z minimum lokalnego.
+
+\section{Porównanie Algorytmów z Listy 3}
+
+\input{parameters.tex}
+
+\section{Wykresy najlepszych rozwiązań}
+
+\input{plots.tex}
+
+\section{Finalne zestawienie wszystkich algorytmów}
+
+\end{document}
