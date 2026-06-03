@@ -1,5 +1,7 @@
 ## Pinout
 
+
+
 ```
 DIGITAL
 
@@ -21,6 +23,10 @@ A1     // RIGHT FRONT WHEEL
 A2     // HC-SR04 ECHO
 A4     // LCD I2C SDA
 A5     // LCD I2C SCL
+
+BLUETOOTH 
+
+TX -> (5 -> 3V3 conv) -> RX Bluetooth
 ```
 
 ## IRremote
