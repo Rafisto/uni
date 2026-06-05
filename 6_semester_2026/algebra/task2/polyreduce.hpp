@@ -138,18 +138,22 @@ inline std::tuple<std::vector<poly_t>, poly_t> poly_reduce(const poly_t& f, cons
     poly_t p = f; 
 
     while (!p.empty()) {
+        // LT(f) = aM, LM(f) = M, LC(f) = a
         auto lead_p_it = get_leading_term(p, compare);
         const monomian_t lm_p = lead_p_it->first; 
         int64_t lc_p = lead_p_it->second; 
         
+        // Dla każdego g_i w G
         bool divided = false;
         for (size_t i = 0; i < n; ++i) {
             if (G[i].empty()) continue;
             
+            // Znajdź LT(g_i) = bN, LM(g_i) = N, LC(g_i) = b
             auto lead_g_it = get_leading_term(G[i], compare);
             const auto& lm_g = lead_g_it->first; 
             int64_t lc_g = lead_g_it->second; 
             
+            // Sprawdź czy LM(g_i) dzieli LM(f) (iteruj po wykładnikach)
             bool divisible = true;
             for (size_t j = 0; j < lm_p.size(); ++j) {
                 if (lm_p[j] < lm_g[j]) {

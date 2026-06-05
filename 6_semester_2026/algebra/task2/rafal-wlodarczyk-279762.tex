@@ -1,4 +1,6 @@
-\documentclass[12pt, a4paper]{article}
+\documentclass[10pt, a4paper]{article}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx} 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -15,42 +17,253 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{listings}
 
 \BeforeBeginEnvironment{verbatim}{\small}
+\lstset{language=c++,
+                basicstyle=\ttfamily\small,
+                keywordstyle=\color{blue}\ttfamily\small,
+                stringstyle=\color{red}\ttfamily\small,
+                commentstyle=\color{green}\ttfamily\small,
+                morecomment=[l][\color{magenta}]{\#},
+                extendedchars=true,
+                literate={ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ź}{{\'z}}1 {ż}{{\.z}}1
+                         {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ź}{{\'Z}}1 {Ż}{{\.Z}}1
+}
 
-\title{Wybrane Zagadnienia Algebry - Sprawozdanie 2}
+\title{Wybrane Zagadnienia Algebry\\Sprawozdanie 2}
 \author{Rafał Włodarczyk 279762}
 \date{Czerwiec 2026}
+
+\definecolor{darkyellow}{rgb}{0.8, 0.6, 0.0}
 
 \begin{document}
 
 \maketitle
 
-\setcounter{section}{3}
+\section*{Zadanie 4}
 
-\section{Zadanie 4}
+\subsection*{a) Struktura przechowująca wielomiany wielu zmiennych rzeczywistych}
 
-\subsection{Struktura przechowująca wielomiany wielu zmiennych rzeczywistych}
+Proponowany kontener to mapa \textit{klucz} $\to$ \textit{wartość}, 
+w której kluczem jest wektor wykładników (jednomian bez współczynnika), 
+a wartością jest współczynnik zadanego jednomianu. Nieobecne w strukturze
+klucze (jednomiany) są interpretowane jako mające współczynnik równy zero.
+Przykład. Funkcja $f$ (Ćw. 37.) dana wzorem $f=x^3 - x^2\cdot y - x^2 \cdot z$ będzie reprezentowana jako trzy elementy w mapie:
 
-\subsection{Porządki na wielomianach}
+\begin{align*}
+\{({\color{red}3}, {\color{green}0}, {\color{blue}0}) \to {\color{darkyellow}1}\}  & \quad (\text{odpowiada } {\color{darkyellow}1} \cdot x^{{\color{red}3}}), \\
+\{({\color{red}2}, {\color{green}1}, {\color{blue}0}) \to {\color{darkyellow}-1}\} & \quad (\text{odpowiada } {\color{darkyellow}-1} \cdot x^{{\color{red}2}} \cdot y^{{\color{green}1}}), \\
+\{({\color{red}2}, {\color{green}0}, {\color{blue}1}) \to {\color{darkyellow}-1}\} & \quad (\text{odpowiada } {\color{darkyellow}-1} \cdot x^{{\color{red}2}} \cdot z^{{\color{blue}1}}).
+\end{align*}
 
-\subsubsection{Standard Lex}
+\noindent
+Zalety struktury: W przypadku wielomianów zadanych w tym sprawozdaniu (dla których większość współczynników jest równa zero) implementacja z mapą pozwala
+uniknąć przechowywania wielu zer, jednocześnie zachowując szybkie odwołania do każdego ze współczynników oraz całej listy $\textit{klucz}$ oraz całej listy $\textit{wartość}$.
+Realizacja w C++ wygląda następująco:
 
-\subsubsection{Permutowany Lex}
+\begin{lstlisting}[language=C++]
+using monomian_t = std::vector<int64_t>;
+using poly_t = std::unordered_map<monomian_t, int64_t, container_hash<monomian_t>>;
+\end{lstlisting}
 
-\subsubsection{Graded Lex}
+\noindent
+Wykorzystujemy kontenery \texttt{vector} oraz $\texttt{unordered\_map}$ z STL oraz \texttt{container\_hash} do haszowania wektorów wykładników z Boost.
 
-\subsection{\texttt{PolynomialReduce}}
+\subsection*{b) Porządki na jednomianach}
 
-\subsection{Rozwiązanie ćwiczenia 37 z listy zadań}
+Mając jednomian $aM = a\cdot x_1^{e_1} \cdot x_2^{e_2} \cdots x_n^{e_n}$, gdzie $a$ jest współczynnikiem, a $e_i$ są wykładnikami zmiennych $x_i$, porządki na jednomianach definiują sposób porównywania dwóch jednomianów w celu ustalenia, który z nich jest "większy" lub "mniejszy"
+- zostanie wpierw wykorzystany do porównywania jednomianów w \texttt{PolynomialReduce}.
 
-\subsection{Wpływ porządków na wynik \texttt{Polynomial Reduce}}
+\subsubsection*{ba) Standard Lex}
 
-\section{Zadanie 5}
+Standard Lex porównuje jednomiany zakładając ustaloną kolejność zmiennych (e.g. $x_1 > x_2 > \ldots > x_n$) i porównując wykładniki zmiennych w tej kolejności.
 
-\subsection{Emblemat z Japońskiego Paszportu w oparciu o Quadrifolium}
+\subsubsection*{bb) Permutowany Lex}
 
-\subsection{Rozmaitość Algebraiczna dla pow. struktury}
+Permutowany Lex jest modyfikacją Standard Lex, która dodatkowo przyjmuje permutację $\pi$. Porównuje jednomiany zakładając ustaloną kolejność zmiennych (e.g. $x_{\pi(1)} > x_{\pi(2)} > \ldots > x_{\pi(n)}$) i porównując wykładniki zmiennych w tej permutowanej kolejności.
+
+\subsubsection*{bc) Graded Lex}
+
+Graded Lex jest hybrydą Standard Lex i porządku stopniowego. Najpierw porównuje jednomiany według sumy wykładników (stopnia), a jeśli są równe to porównuje je według Standard Lex.
+
+\subsection*{c) \texttt{PolynomialReduce}}
+
+\texttt{PolynomialReduce} to algorytm pobierający na wejściu wielomian $f$ oraz ciąg wielomianów $\mathcal{G}=(g_1,\dots,g_n)$. 
+Algorytm zwraca ciąg współczynników $(a_1,\dots,a_n)$ oraz wielomian $r$ taki, że:
+
+\begin{align*}
+    f = \sum_{i=1}^{n} \alpha_i \cdot g_i + r
+\end{align*}
+
+\subsubsection*{Idea algorytmu}
+
+Wykorzystując jeden ze wcześniej zdefiniowanych porządków na jednomianach dokonujemy redukcji wielomianu $f$ względem ciągu $\mathcal{G}$
+
+\begin{enumerate}
+    \item Dopóki $f \neq 0$. Znajdź $m=\texttt{LT(f, ord)}$, czyli największy jednomian $m$ w $f$ według porządku \textit{ord}. \\ Ustal $LC(m)=a$ oraz $LM(m)=M$.
+    \item Dla każdego $g_i$ w $\mathcal{G}$ znajdź $m_i=\texttt{LT(g\_i, ord)}$, czyli największy jednomian $m_i$ w $g_i$ według \textit{ord}. \\ Ustal $LC(m_i)=b$ oraz $LM(m_i)=N$.
+    \item Sprawdź czy $LM(m_i)$ dzieli $LM(m)$. Spełniony musi zostać warunek: $\left(\forall j: LM(m)[j] \geq LM(m_i)[j]\right)$.
+    \item Jeśli tak:
+    \begin{enumerate}
+        \item Wykonaj redukcję: $f := f - \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)} \cdot g_i$\
+        \item Zaktualizuj współczynnik $\alpha_i := \alpha_i + \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)}$.
+        \item Wróć do kroku 1.
+    \end{enumerate}
+    \item Jeśli nie, dodaj $LM(m)$ do $r$(eszty) ze współczynnikiem $LC(m)$ i usuń $m$ z $f$. Wróć do kroku 1.
+\end{enumerate}
+
+\subsubsection*{Kod w C++}
+
+\begin{lstlisting}[language=c++]    
+inline std::tuple<std::vector<poly_t>, poly_t> 
+poly_reduce(
+    // Wielomian f
+    const poly_t& f, 
+    // Ciąg wielomianów G = (g_1, ..., g_n) 
+    const std::vector<poly_t>& G, 
+    // ord na jednomianach
+    bool (*compare)(const monomian_t&, const monomian_t&) 
+)
+{
+    size_t n = G.size();
+    std::vector<poly_t> alphas(n); 
+    poly_t r;
+    poly_t p = f; 
+
+    // (1) Dopóki p != 0
+    while (!p.empty()) {
+        // LT(f) = aM, LM(f) = M, LC(f) = a
+        auto lead_p_it = get_leading_term(p, compare);
+        const monomian_t lm_p = lead_p_it->first; 
+        int64_t lc_p = lead_p_it->second; 
+        
+        // Dla każdego g_i w G
+        bool divided = false;
+        for (size_t i = 0; i < n; ++i) {
+            if (G[i].empty()) continue;
+            
+            // (2) Znajdź LT(g_i) = bN, LM(g_i) = N, LC(g_i) = b
+            auto lead_g_it = get_leading_term(G[i], compare);
+            const auto& lm_g = lead_g_it->first; 
+            int64_t lc_g = lead_g_it->second; 
+            
+            // (3) Sprawdz czy LM(g_i) dzieli LM(f) (iteruj po wykładnikach)
+            bool divisible = true;
+            for (size_t j = 0; j < lm_p.size(); ++j) {
+                if (lm_p[j] < lm_g[j]) {
+                    divisible = false;
+                    break;
+                }
+            }
+            
+            // (4) Jeśli tak, wykonaj redukcję 
+            if (divisible) {
+                // Oblicz q = LM(f) / LM(g_i) (iteruj po wykładnikach)
+                monomian_t q_mon;
+                for (size_t j = 0; j < lm_p.size(); ++j) {
+                    q_mon.push_back(lm_p[j] - lm_g[j]);
+                }
+
+                // Oblicz q_coef = LC(f) / LC(g_i)
+                int64_t q_coef = lc_p / lc_g;
+                alphas[i][q_mon] += q_coef;
+                
+                // Zaktualizuj p := p - q_coef * q_mon * g_i
+                for (const auto& [mon_g, coef_g] : G[i]) {
+                    monomian_t new_mon;
+                    for (size_t j = 0; j < mon_g.size(); ++j) {
+                        new_mon.push_back(q_mon[j] + mon_g[j]);
+                    }
+                    p[new_mon] -= coef_g * q_coef;
+                    if (p[new_mon] == 0) p.erase(new_mon);
+                }
+                
+                divided = true;
+                break;
+            }
+        }
+        
+        // (5) Jeśli nie, dodaj LM(f) do r ze współczynnikiem LC(f) i usuń LT(f) z p
+        if (!divided) {
+            r[lm_p] += lc_p;
+            p.erase(lm_p); 
+        }
+    }
+
+    // Zwracamy krotkę ({alpha_1, ... alpha_n}, r)
+    return {alphas, r}; 
+}
+\end{lstlisting}
+
+\subsection*{d) Rozwiązanie ćwiczenia 37 z listy zadań}
+
+Rozważamy porządek \textit{GradedLex} oraz wielomiany $f=x^3-x^2y-x^2z$, $g_1=x^2y-z$, $g_2=xy-1$. Redukujemy przy użyciu funkcji \texttt{PolynomialReduce}:
+
+Kodowanie parametrów
+
+\begin{lstlisting}[language=c++]
+poly_t poly{
+    {{3,0,0},{1}},
+    {{2,1,0},{-1}},
+    {{2,0,1},{-1}}
+};
+
+poly_t g1{
+    {{2,1,0},{1}},
+    {{0,0,1},{-1}},
+};
+
+poly_t g2{
+    {{1,1,0},{1}},
+    {{0,0,0},{-1}},
+};
+\end{lstlisting}
+
+\begin{verbatim}
+r1=[x^3] - [x^2][z] - [z]
+a(g1) = -1
+a(g2) = 0
+r2=[x^3] - [x^2][z] - [x]
+a(g2) = -[x]
+a(g1) = 0
+\end{verbatim}
+
+Interpretacja Wyniku:
+
+\begin{align*}
+    f &= -1 \cdot g_1 + 0 \cdot g_2 + (x^3 - x^2z - z) \\
+    f &= -x \cdot g_2 + 0 \cdot g_1 + (x^3 - x^2z - x)
+\end{align*}
+
+Reszty są różne, ponieważ \texttt{PolynomialReduce} redukuje po pierwszym spełniającym warunek dzielniku. Wynik zależy więc od kolejności wielomianów w ciągu $\mathcal{G}$.
+
+Czy $r_1 - r_2 \in \langle g_1, g_2 \rangle$ Tak ponieważ różnica reszt jest kombinacją liniową $g_1$ i $g_2$.
+\begin{align*}
+    r_1 - r_2 &= -1 \cdot g_1 + 0 \cdot g_2 + (x^3 - x^2z - z) - (-x \cdot g_2 + 0 \cdot g_1 + (x^3 - x^2z - x)) \\
+    &= -1 \cdot g_1 + x \cdot g_2 + (x^3 - x^2z - z - x^3 + x^2z + x) \\
+    &= -1 \cdot g_1 + x \cdot g_2 + (x - z) \in \langle g_1, g_2 \rangle
+\end{align*}
+
+\subsection*{e) Wpływ porządków na wynik \texttt{Polynomial Reduce}}
+
+Weźmy $h$ takie że dla danych $(a,b,c,d,e,f) = (2,7,9,7,6,2)$:
+\begin{align*}
+    h(x,y,z) = x^a y^b - y^c z^d + x^e z^f \in \mathbb{R}[x,y,z] 
+    h(x,y,z) = x^2 y^7 - y^9 z^7 + x^6 z^2
+\end{align*}
+
+Pokażmy, że istnieje taki ciąg wielomianów $\mathcal{G}=(g_1, g_2, g_3)$, że wynik redukcji $h$ względem $\mathcal{G}$ 
+będzie różny dla porządków Standard Lex, Permutowany Lex oraz Graded Lex.
+
+
+
+\section*{Zadanie 5}
+
+\subsection*{Emblemat z Japońskiego Paszportu w oparciu o Quadrifolium}
+
+\subsection*{Rozmaitość Algebraiczna dla pow. struktury}
 
 
 \end{document}
