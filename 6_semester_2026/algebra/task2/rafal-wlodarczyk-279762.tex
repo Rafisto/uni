@@ -19,13 +19,16 @@
 \usepackage{etoolbox}
 \usepackage{xcolor}
 \usepackage{listings}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{hyperref}
 
 \BeforeBeginEnvironment{verbatim}{\small}
 \lstset{language=c++,
-                basicstyle=\ttfamily\small,
-                keywordstyle=\color{blue}\ttfamily\small,
-                stringstyle=\color{red}\ttfamily\small,
-                commentstyle=\color{green}\ttfamily\small,
+                basicstyle=\ttfamily\footnotesize,
+                keywordstyle=\color{blue}\ttfamily\footnotesize,
+                stringstyle=\color{red}\ttfamily\footnotesize,
+                commentstyle=\color{green}\ttfamily\footnotesize,
                 morecomment=[l][\color{magenta}]{\#},
                 extendedchars=true,
                 literate={ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ź}{{\'z}}1 {ż}{{\.z}}1
@@ -42,6 +45,10 @@
 
 \maketitle
 
+\section*{Podsumowanie}
+
+Udało mi się wykonać wszystkie zadania oraz zaproponować dwa sensowne przybliżenia zadanych figur geometrycznych - Kamon Cesarza Japonii oraz figurę z japońskiego paszportu. 
+
 \section*{Zadanie 4}
 
 \subsection*{a) Struktura przechowująca wielomiany wielu zmiennych rzeczywistych}
@@ -51,7 +58,6 @@ w której kluczem jest wektor wykładników (jednomian bez współczynnika),
 a wartością jest współczynnik zadanego jednomianu. Nieobecne w strukturze
 klucze (jednomiany) są interpretowane jako mające współczynnik równy zero.
 Przykład. Funkcja $f$ (Ćw. 37.) dana wzorem $f=x^3 - x^2\cdot y - x^2 \cdot z$ będzie reprezentowana jako trzy elementy w mapie:
-
 \begin{align*}
 \{({\color{red}3}, {\color{green}0}, {\color{blue}0}) \to {\color{darkyellow}1}\}  & \quad (\text{odpowiada } {\color{darkyellow}1} \cdot x^{{\color{red}3}}), \\
 \{({\color{red}2}, {\color{green}1}, {\color{blue}0}) \to {\color{darkyellow}-1}\} & \quad (\text{odpowiada } {\color{darkyellow}-1} \cdot x^{{\color{red}2}} \cdot y^{{\color{green}1}}), \\
@@ -78,15 +84,41 @@ Mając jednomian $aM = a\cdot x_1^{e_1} \cdot x_2^{e_2} \cdots x_n^{e_n}$, gdzie
 
 \subsubsection*{ba) Standard Lex}
 
-Standard Lex porównuje jednomiany zakładając ustaloną kolejność zmiennych (e.g. $x_1 > x_2 > \ldots > x_n$) i porównując wykładniki zmiennych w tej kolejności.
+Standard Lex porównuje jednomiany zakładając ustaloną kolejność zmiennych ($x_1 > x_2 > \ldots > x_n$) i porównując wykładniki zmiennych w tej kolejności.
+\begin{align*}    
+    (M=a\cdot x_1^{e_1}x_2^{e_2}\dots) <_1 (N = b\cdot x_1^{f_1}x_2^{f_2}\dots) \iff
+    \left(
+    \left(\exists i \in \{1, \ldots, n\}\right) 
+    \left(e_i < f_i\right) \land \left(\forall j < i : e_j = f_j\right)
+    \right)
+\end{align*}
 
 \subsubsection*{bb) Permutowany Lex}
 
-Permutowany Lex jest modyfikacją Standard Lex, która dodatkowo przyjmuje permutację $\pi$. Porównuje jednomiany zakładając ustaloną kolejność zmiennych (e.g. $x_{\pi(1)} > x_{\pi(2)} > \ldots > x_{\pi(n)}$) i porównując wykładniki zmiennych w tej permutowanej kolejności.
+Permutowany Lex jest modyfikacją Standard Lex, która dodatkowo przyjmuje permutację $\pi$. Porównuje jednomiany zakładając ustaloną kolejność zmiennych ($x_{\pi(1)} > x_{\pi(2)} > \ldots > x_{\pi(n)}$) i porównując wykładniki zmiennych w tej permutowanej kolejności.
+\begin{align*}    
+    M <_2 N \iff
+    \left(
+    \left(\exists i \in \{1, \ldots, n\}\right) 
+    \left(e_{\pi(i)} < f_{\pi(i)}\right) \land \left(\forall j < i : e_{\pi(j)} = f_{\pi(j)}\right)
+    \right)
+\end{align*}
 
 \subsubsection*{bc) Graded Lex}
 
-Graded Lex jest hybrydą Standard Lex i porządku stopniowego. Najpierw porównuje jednomiany według sumy wykładników (stopnia), a jeśli są równe to porównuje je według Standard Lex.
+Graded Lex jest hybrydą Standard Lex i porządku stopniowego. 
+Najpierw porównuje jednomiany według sumy wykładników (stopnia), 
+a jeśli są równe to porównuje je według Standard Lex.
+\begin{align*}    
+    M <_3 N \iff
+    \left(
+    \sum_{i=1}^{n} e_i < \sum_{i=1}^{n} f_i
+    \right)
+    \quad
+    else
+    \quad
+    M <_1 N
+\end{align*}
 
 \subsection*{c) \texttt{PolynomialReduce}}
 
@@ -102,12 +134,12 @@ Algorytm zwraca ciąg współczynników $(a_1,\dots,a_n)$ oraz wielomian $r$ tak
 Wykorzystując jeden ze wcześniej zdefiniowanych porządków na jednomianach dokonujemy redukcji wielomianu $f$ względem ciągu $\mathcal{G}$
 
 \begin{enumerate}
-    \item Dopóki $f \neq 0$. Znajdź $m=\texttt{LT(f, ord)}$, czyli największy jednomian $m$ w $f$ według porządku \textit{ord}. \\ Ustal $LC(m)=a$ oraz $LM(m)=M$.
+    \item Dopóki $f \neq 0$. Znajdź $m=\texttt{LT(f, ord)}$ - największy jednomian $m$ w $f$ według porządku \textit{ord}. \\ Ustal $LC(m)=a$ oraz $LM(m)=M$. (Leading Coefficient oraz Leading Monomial odpowiednio).
     \item Dla każdego $g_i$ w $\mathcal{G}$ znajdź $m_i=\texttt{LT(g\_i, ord)}$, czyli największy jednomian $m_i$ w $g_i$ według \textit{ord}. \\ Ustal $LC(m_i)=b$ oraz $LM(m_i)=N$.
     \item Sprawdź czy $LM(m_i)$ dzieli $LM(m)$. Spełniony musi zostać warunek: $\left(\forall j: LM(m)[j] \geq LM(m_i)[j]\right)$.
     \item Jeśli tak:
     \begin{enumerate}
-        \item Wykonaj redukcję: $f := f - \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)} \cdot g_i$\
+        \item Wykonaj redukcję: $f := f - \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)} \cdot g_i$
         \item Zaktualizuj współczynnik $\alpha_i := \alpha_i + \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)}$.
         \item Wróć do kroku 1.
     \end{enumerate}
@@ -128,16 +160,16 @@ poly_reduce(
 )
 {
     size_t n = G.size();
-    std::vector<poly_t> alphas(n); 
+    std::vector<poly_t> q(n); 
     poly_t r;
     poly_t p = f; 
 
     // (1) Dopóki p != 0
     while (!p.empty()) {
         // LT(f) = aM, LM(f) = M, LC(f) = a
-        auto lead_p_it = get_leading_term(p, compare);
-        const monomian_t lm_p = lead_p_it->first; 
-        int64_t lc_p = lead_p_it->second; 
+        auto lt_p_it = get_lt(p, compare);
+        const monomian_t lm_p = lt_p_it->first; 
+        int64_t lc_p = lt_p_it->second; 
         
         // Dla każdego g_i w G
         bool divided = false;
@@ -145,9 +177,9 @@ poly_reduce(
             if (G[i].empty()) continue;
             
             // (2) Znajdź LT(g_i) = bN, LM(g_i) = N, LC(g_i) = b
-            auto lead_g_it = get_leading_term(G[i], compare);
-            const auto& lm_g = lead_g_it->first; 
-            int64_t lc_g = lead_g_it->second; 
+            auto lt_g_it = get_lt(G[i], compare);
+            const auto& lm_g = lt_g_it->first; 
+            int64_t lc_g = lt_g_it->second; 
             
             // (3) Sprawdz czy LM(g_i) dzieli LM(f) (iteruj po wykładnikach)
             bool divisible = true;
@@ -168,7 +200,7 @@ poly_reduce(
 
                 // Oblicz q_coef = LC(f) / LC(g_i)
                 int64_t q_coef = lc_p / lc_g;
-                alphas[i][q_mon] += q_coef;
+                q[i][q_mon] += q_coef;
                 
                 // Zaktualizuj p := p - q_coef * q_mon * g_i
                 for (const auto& [mon_g, coef_g] : G[i]) {
@@ -192,78 +224,239 @@ poly_reduce(
         }
     }
 
-    // Zwracamy krotkę ({alpha_1, ... alpha_n}, r)
-    return {alphas, r}; 
+    // Zwracamy krotkę ({q_1, ... q_n}, r)
+    return {q, r}; 
 }
 \end{lstlisting}
 
 \subsection*{d) Rozwiązanie ćwiczenia 37 z listy zadań}
 
-Rozważamy porządek \textit{GradedLex} oraz wielomiany $f=x^3-x^2y-x^2z$, $g_1=x^2y-z$, $g_2=xy-1$. Redukujemy przy użyciu funkcji \texttt{PolynomialReduce}:
+Rozważamy porządek \textit{GradedLex} oraz wielomiany $f=x^3-x^2y-x^2z$, $g_1=x^2y-z$, $g_2=xy-1$. Redukujemy przy użyciu funkcji \texttt{PolynomialReduce}.
+Wprowadzam do programu następujące kodowanie parametrów:
 
-Kodowanie parametrów
-
+\begin{multicols}{3}
 \begin{lstlisting}[language=c++]
 poly_t poly{
     {{3,0,0},{1}},
     {{2,1,0},{-1}},
     {{2,0,1},{-1}}
 };
+\end{lstlisting}
 
+\begin{lstlisting}[language=c++]
 poly_t g1{
     {{2,1,0},{1}},
-    {{0,0,1},{-1}},
-};
-
-poly_t g2{
-    {{1,1,0},{1}},
-    {{0,0,0},{-1}},
+    {{0,0,1},{-1}}
 };
 \end{lstlisting}
 
+\begin{lstlisting}[language=c++]
+poly_t g2{
+    {{1,1,0},{1}},
+    {{0,0,0},{-1}}
+};
+\end{lstlisting}
+\end{multicols}
+
+\noindent
+Wynikiem działania programu są następujące współczynniki oraz reszty:
+
 \begin{verbatim}
-r1=[x^3] - [x^2][z] - [z]
-a(g1) = -1
-a(g2) = 0
-r2=[x^3] - [x^2][z] - [x]
-a(g2) = -[x]
+r1=(x^3) - (x^2)(z) - (z)
+a(g0) = -1
+a(g1) = 0
+r2=(x^3) - (x^2)(z) - (x)
+a(g0) = -(x)
 a(g1) = 0
 \end{verbatim}
+\normalsize
 
-Interpretacja Wyniku:
+\noindent
+Wynik interpretowany (w pierwszym przypadku $g_1 \gets \texttt{g0}$, $g_2 \gets \texttt{g1}$, a w drugim $g_2 \gets \texttt{g0}$, $g_1 \gets \texttt{g1}$):
 
 \begin{align*}
     f &= -1 \cdot g_1 + 0 \cdot g_2 + (x^3 - x^2z - z) \\
     f &= -x \cdot g_2 + 0 \cdot g_1 + (x^3 - x^2z - x)
 \end{align*}
 
-Reszty są różne, ponieważ \texttt{PolynomialReduce} redukuje po pierwszym spełniającym warunek dzielniku. Wynik zależy więc od kolejności wielomianów w ciągu $\mathcal{G}$.
+\noindent
+Reszty są różne, ponieważ \texttt{PolynomialReduce} redukuje po pierwszym spełniającym warunek dzielniku. 
+Wynik zależy więc od kolejności wielomianów w ciągu $\mathcal{G}$.\\
 
-Czy $r_1 - r_2 \in \langle g_1, g_2 \rangle$ Tak ponieważ różnica reszt jest kombinacją liniową $g_1$ i $g_2$.
+\noindent
+Czy $r_1 - r_2 \in \langle g_1, g_2 \rangle$? \textbf{Tak}.\\
+Z definicji ideał $\langle g_1, g_2 \rangle$ to zbiór wszystkich kombinacji liniowych wielomianów $g_1$ i $g_2$, czyli:
 \begin{align*}
-    r_1 - r_2 &= -1 \cdot g_1 + 0 \cdot g_2 + (x^3 - x^2z - z) - (-x \cdot g_2 + 0 \cdot g_1 + (x^3 - x^2z - x)) \\
-    &= -1 \cdot g_1 + x \cdot g_2 + (x^3 - x^2z - z - x^3 + x^2z + x) \\
-    &= -1 \cdot g_1 + x \cdot g_2 + (x - z) \in \langle g_1, g_2 \rangle
+    a \cdot g_1 + b \cdot g_2 \quad \text{dla dowolnych } a, b \in \mathbb{R}[x,y,z]
 \end{align*}
+Zauważmy teraz, że różnica reszt:
+\begin{align*}
+    r_1 - r_2 = (a \cdot g_1 + b \cdot g_2) - (a' \cdot g_1 + b' \cdot g_2) = (a - a') \cdot g_1 + (b - b') \cdot g_2
+\end{align*}
+Skoro $a,a',b,b' \in \mathbb{R}[x,y,z]$, to $a - a'$ oraz $b - b'$ również należą do $\mathbb{R}[x,y,z]$.
+Oznacza to, że $r_1 - r_2$ jest kombinacją liniową $g_1$ i $g_2$, a więc należy do ideału $\langle g_1, g_2 \rangle$.
 
-\subsection*{e) Wpływ porządków na wynik \texttt{Polynomial Reduce}}
+\subsection*{e) Wpływ porządków na wynik \texttt{PolynomialReduce}}
 
 Weźmy $h$ takie że dla danych $(a,b,c,d,e,f) = (2,7,9,7,6,2)$:
 \begin{align*}
-    h(x,y,z) = x^a y^b - y^c z^d + x^e z^f \in \mathbb{R}[x,y,z] 
-    h(x,y,z) = x^2 y^7 - y^9 z^7 + x^6 z^2
+    h(x,y,z) &= x^a y^b - y^c z^d + x^e z^f \in \mathbb{R}[x,y,z]\\
+    h(x,y,z) &= x^2 y^7 - y^9 z^7 + x^6 z^2
 \end{align*}
 
-Pokażmy, że istnieje taki ciąg wielomianów $\mathcal{G}=(g_1, g_2, g_3)$, że wynik redukcji $h$ względem $\mathcal{G}$ 
-będzie różny dla porządków Standard Lex, Permutowany Lex oraz Graded Lex.
+\noindent
+Pokażmy, że istnieje taki ciąg wielomianów $\mathcal{G}$, że wynik redukcji $h$ względem $\mathcal{G}$ 
+będzie różny dla porządków Standard Lex, Permutowany Lex z $\pi_1=(2,1,0)$ oraz Permutowany Lex z $\pi_2=(1,2,0)$ Najprościej wymyślić wielomian $g_1$, taki że każdy z porządków wybierze inny jednomian jako największy.
+
+\noindent
+Weźmy najprościej jednoelementowy ciąg $\mathcal{G}=(g_1)$, gdzie $g_1 = x^5 + y^6 + z^5$. Wtedy:
+\begin{enumerate}
+    \item Porządek Standard Lex ($x>y>z$) wybierze najpierw $x^5$ jako największy jednomian w $g_1$, więc redukcja nastąpi po $x^5$.
+    \item Porządek Permutowany Lex z permutacją $\pi_1=(2,1,0)$ ($z>y>x$) wybierze najpierw $z^5$ jako największy jednomian w $g_1$, więc redukcja nastąpi po $z^5$.
+    \item Porządek Permutowany Lex z permutacją $\pi_2=(1,2,0)$ wybierze najpierw $y^6$ jako największy jednomian w $g_1$ (stopień 6 jest większy niż stopień 5), więc redukcja nastąpi po $y^6$.
+\end{enumerate}
+
+\noindent
+Zobaczmy, że implementacja \texttt{PolynomialReduce} potwierdza tę intuicję. Dla każdego z porządków otrzymujemy inną resztę oraz inny współczynnik przy $g_1$.\\
+
+\noindent
+Wynik Programu:
+
+\begin{verbatim}
+Formatted polynomial: -(y^9)(z^7) + (x^2)(y^7) + (x^6)(z^2)
+g1: (x^5) + (y^6) + (z^5)
+Remainder (lex): (x^2)(y^7) - (x)(y^6)(z^2) - (x)(z^7) - (y^9)(z^7)
+a(g0) = (x)(z^2)                   // (x>y>z) zredukowaliśmy po x^5,
+                                   // nic nie jest większe niż x^5
+Remainder (ordered lex): (x^6)(z^2) + (x^5)(y^9)(z^2) + (x^2)(y^7) + (y^15)(z^2)
+a(g0) = -(y^9)(z^2)                // (z>y>x) pi1 : zredukowaliśmy po z^5
+                                   // więc nic nie jest większe niż z^5
+Remainder (ordered lex): -(x^7)(y) + (x^6)(z^2) + (x^5)(y^3)(z^7) - (x^2)(y)(z^5) + (y^3)(z^12)
+a(g0) = (x^2)(y) - (y^3)(z^7)      // (y>z>x) pi2 : zredukowaliśmy po y^6 
+                                   // więc nic nie jest większe niż y^6
+Remainder (graded lex): -(x^7)(y) + (x^6)(z^2) + (x^5)(y^3)(z^7) - (x^2)(y)(z^5) + (y^3)(z^12)
+a(g0) = (x^2)(y) - (y^3)(z^7)      // powtórzona sytuacja z ordered lex, 
+                                   // dla ciekawostki bo mamy już 3 
+                                   // powyższe lex-y dające różne wyniki
+\end{verbatim}
+
+\noindent
+\normalsize
+Zapis wyników w formie matematycznej. Jak widać wszystkie reszty i wszystkie współczynniki przy $g_1$ są różne.
+\begin{align*}
+    \alpha_{\text{lex}}(g_1) &= x z^2 \\
+    r_{\text{lex}} &= x^2 y^7 - x y^6 z^2 - x z^7 - y^9 z^7 \\
+    \alpha_{\text{ordered\_lex}(\pi_1)}(g_1) &= -y^9 z^2 \\
+    r_{\text{ordered\_lex}(\pi_1)} &= x^6 z^2 + x^5 y^9 z^2 + x^2 y^7 + y^{15} z^2 \\
+    \alpha_{\text{ordered\_lex}(\pi_2)}(g_1) &= x^2 y - y^3 z^7 \\
+    r_{\text{ordered\_lex}(\pi_2)} &= -x^7 y + x^6 z^2 + x^5 y^3 z^7 - x^2 y z^5 + y^3 z^{12}
+\end{align*}
+
+\noindent
+Żeby uniknąć takiej sytuacji możemy spróbować wkorzystać bazę Grobnera zamiast dowolnego ciągu $\mathcal{G}$,
+ponieważ ta baza jest definiowana jako taka, która dla każdego wielomianu $f$ daje jednoznaczną resztę $r$ niezależnie od porządku na jednomianach.
 
 
+\newpage
 
 \section*{Zadanie 5}
 
-\subsection*{Emblemat z Japońskiego Paszportu w oparciu o Quadrifolium}
+\subsection*{Figura z Japońskiego Paszportu w oparciu o Quadrifolium}
 
-\subsection*{Rozmaitość Algebraiczna dla pow. struktury}
+\normalsize
+Weźmy Quadrifolium, czyli krzywą zadaną równaniem $r = \sin(2\theta)$ w układzie biegunowym. $\theta \in [0, 2\pi]$. 
+\begin{align*}
+    r(\theta) &= \sin(2\theta) \quad 
+    \text{ stosujemy powinowactwo prostokątne } r(\theta) \xrightarrow{P(k=\frac{1}{4})} r(4\theta) \\
+    r(\theta) &= \sin(8\theta) \quad
+    \text{ nakładamy wartość bezwzględną } r(\theta) \xrightarrow{|\cdot|} |r(\theta)| \\
+    r(\theta) &= |\sin(8\theta)| \quad
+    \text{ wygładzamy poprzez potęgę} \quad (\cdot)^m \text{ dla } m=\frac{1}{10} \quad r(\theta) \xrightarrow{(\cdot)^m} r(\theta)^{\frac{1}{10}} \\
+    r(\theta) &= |\sin(8\theta)|^{\frac{1}{10}} \quad
+    \text{ dodajemy przestrzeń na wewnętrzny okrąg } r(\theta) \xrightarrow{\vec{v}=[0,0.18]} r(\theta) + 0.18 \\
+    r(\theta) &= 0.18 + |\sin(8\theta)|^{\frac{1}{10}} \quad
+\end{align*}
+Dodajemy okrąg o promieniu 0.18 $\left(x^2+y^2=(0.18)^2\right)$ i umieszczamy te równania w GeoGebrze.
 
+\begin{verbatim}
+1. f(t)=0.18 + (abs(cos(8t)))^(1/10)
+2. Curve(f(t)cos(t),f(t)sin(t),t,0,2pi)
+3. x^2+y^2=(0.18)^2
+\end{verbatim}
+\normalsize
+
+\noindent
+Tworzymy za pomocą GeoGebry wykres XY tej funkcji,
+a następnie dostosowujemy kolory i grubość linii, aby uzyskać efekt zbliżony do emblematu z japońskiego paszportu.
+(niewielkie różnice w kolorach wynikają z wysokiej ziarnistości zdjęcia referencyjnego). Przyjmując pewne tolerancje dla druku
+tak stworzony szablon jest bardzo zbliżony do oryginału.
+
+\subsection*{Paszport Japonii}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{pass-done.png}
+        \caption{Figura stworzona w GeoGebrze - \texttt{geogebra.ggb}}
+    \end{subfigure}
+    \hfill % Wypełnia przestrzeń między kolumnami
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{pass-reference.png}
+        \caption{Japoński Paszport - \href{https://en.wikipedia.org/wiki/Japanese_passport}{źródło Wikipedia}}
+    \end{subfigure}
+\end{figure}
+\textbf{Środowisko \texttt{geogebra.ggb}}. Obok sprawozdania zamieszczam również plik \texttt{geogebra.ggb} z projektem GeoGebry, który można załadować do programu, aby na żywo zobaczyć figurę widoczną poniżej po lewej stronie.
+Po prawej stronie znajduje się referencja - zdjęcie japońskiego paszportu.
+
+\newpage
+\subsection*{Rozmaitość algebraiczna}
+Figurę można przedstawić jako rozmaitość algebraiczną. W tym celu sprowadźmy równanie polarne do postaci kartezjańskiej.
+Wykorzystajmy narzędzie WolframAlpha do przekształcenia $r(\theta) \to f(x,y)$ (pod spodem wykorzystał podaną w \texttt{Curve} parametryzację
+$x=r\cos\theta$, $y=r\sin\theta$):
+\begin{align*}
+\text{\texttt{wolfram>}} \quad r(t)&=\text{\texttt{0.18 + (abs(cos(8t)))}} \texttt{ pow } \text{\texttt{(1/10) to cartesian}} \\
+\sqrt{x^2+y^2} &= 0.18 + \left|\cos\left(8 \tan^{-1}\left(\frac{y}{x}\right)\right)\right|^{\frac{1}{10}}
+\end{align*}
+Na tej podstawie tworzymy rozmaitość algebraiczną $V$ w $\mathbb{R}^2$:
+\begin{align*}
+    V\left(-\sqrt{x^2+y^2} + 0.18 + \left|\cos\left(8 \tan^{-1}\left(\frac{y}{x}\right)\right)\right|^{\frac{1}{10}}\right) \text{ w } \mathbb{R}^2
+\end{align*}
+
+\subsection*{Figura z Japońskiego Godła}
+
+Przy pomocy bardzo podobnych operacji można dojść do Kamonu Cesarza Japonii. W tym przypadku zdecydowałem się pokazać rysunek 
+konturowy. Wykorzystane polecenia:
+
+\begin{verbatim}
+1. f(t) = 0.13 + 17/20 (abs(cos(8t)))^(1/13)
+2. Curve(f(t)cos(t),f(t)sin(t),t,0,2pi)
+3. g(t) = 0.74 + 1/4 (abs(cos(8t + pi/2)))^(1/4)                  // tu dochodzi do rotacji
+4. Curve(g(t) cos(t)(g(t)>0.965),g(t) sin(t)(g(t)>0.965),t,0,2pi) // filtrowanie wartości parametrów
+5. x^2+y^2=(0.13)^2
+\end{verbatim}
+\normalsize
+
+\noindent
+Po lewej stronie wykonany w GeoGebrze wykres XY z siatką polarną. Tym razem bez dostosowania kolorów, aby ukazać efekt konturowy,
+który pokrywa się z oryginałem. Po prawej stronie znajduje się referencja, z której odtworzyłem figurę.
+
+\subsection*{Kamon Cesarza Japonii}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{seal-done.png}
+        \caption{Figura stworzona w GeoGebrze - \texttt{geogebra2.ggb}}
+    \end{subfigure}
+    \hfill % Wypełnia przestrzeń między kolumnami
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{seal-of-japan.png}
+        \caption{Godło Japonii - \href{https://en.wikipedia.org/wiki/Mon_(emblem)}{źródło Wikipedia}}
+    \end{subfigure}
+\end{figure}
 
 \end{document}

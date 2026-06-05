@@ -11,15 +11,11 @@ int main() {
 
     std::print("Formatted polynomial: {}\n", poly_fmt(poly, compare_graded_lex));
 
-    poly_t g1 = {{{3, 0, 0}, 1}, {{0, 0, 1}, 1}};
-    poly_t g2 = {{{0, 0, 3}, 1}, {{1,0, 0}, 1}};
-    poly_t g3 = {{{0, 3, 0}, 1}, {{1, 0, 1}, 1}};
+    poly_t g1 = {{{5, 0, 0}, 1}, {{0, 0, 5}, 1}, {{0, 6, 0}, 1}};
 
     std::print("g1: {}\n", poly_fmt(g1, compare_lex));
-    std::print("g2: {}\n", poly_fmt(g2, compare_lex));
-    std::print("g3: {}\n", poly_fmt(g3, compare_lex));
 
-    std::vector<poly_t> G{g1, g2, g3};
+    std::vector<poly_t> G{g1};
 
     // 1. Lex order
     auto [quotients, remainder] = poly_reduce(poly, G, compare_lex);
@@ -37,7 +33,17 @@ int main() {
         std::print("a(g{}) = {}\n", p, poly_fmt(quotients_ordered[p], compare_lex));
     }
 
-    // 3. Graded lex
+    // 3. Ordered Differently lex
+    std::vector<size_t> pi2{1, 2,0}; 
+    g_pi = pi2;
+    auto [quotients_ordered2, remainder_ordered2] = poly_reduce(poly, G, compare_ordered_wrapper);
+    std::print("Remainder (ordered lex): {}\n", poly_fmt(remainder_ordered2, compare_lex));
+    for (size_t p = 0; p < quotients_ordered2.size(); ++p) {
+        std::print("a(g{}) = {}\n", p, poly_fmt(quotients_ordered2[p], compare_lex));
+    }
+
+
+    // 4. Graded lex
     auto [quotients_graded, remainder_graded] = poly_reduce(poly, G, compare_graded_lex);
     std::print("Remainder (graded lex): {}\n", poly_fmt(remainder_graded, compare_lex));
     for (size_t p = 0; p < quotients_graded.size(); ++p) {

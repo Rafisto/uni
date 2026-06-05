@@ -1,5 +1,5 @@
-#ifndef POLYREDUCE_HPP
-#define POLYREDUCE_HPP
+#ifndef POLY_REDUCE_HPP
+#define POLY_REDUCE_HPP
 
 #include <unordered_map>
 #include <vector>
@@ -61,12 +61,12 @@ inline std::string poly_fmt(const poly_t& poly, bool (*compare)(const monomian_t
             }
             for (size_t i = 0; i < monomian.size(); ++i) {
                 if (monomian[i] > 0) {
-                    result += "[";
+                    result += "(";
                     result += get_var_name(i);
                     if (monomian[i] > 1) {
                         result += "^" + std::to_string(monomian[i]);
                     }
-                    result += "]";
+                    result += ")";
                 }
             }
         }
@@ -117,43 +117,39 @@ inline bool compare_graded_lex(const monomian_t& lhs, const monomian_t& rhs)
     else return compare_lex(lhs, rhs);
 }
 
-inline poly_t::const_iterator get_leading_term(const poly_t& poly, 
+inline poly_t::const_iterator get_lt(const poly_t& poly, 
     bool (*compare)(const monomian_t&, const monomian_t&)) 
 {
-    auto lead_it = poly.begin();
+    auto lt_it = poly.begin();
     for (auto it = std::next(poly.begin()); it != poly.end(); ++it) {
-        if (compare(it->first, lead_it->first)) { 
-            lead_it = it;
+        if (compare(it->first, lt_it->first)) { 
+            lt_it = it;
         }
     }
-    return lead_it;
+    return lt_it;
 }
 
 inline std::tuple<std::vector<poly_t>, poly_t> poly_reduce(const poly_t& f, const std::vector<poly_t>& G, 
     bool (*compare)(const monomian_t&, const monomian_t&))
 {
     size_t n = G.size();
-    std::vector<poly_t> alphas(n); 
+    std::vector<poly_t> q(n); 
     poly_t r;
     poly_t p = f; 
 
     while (!p.empty()) {
-        // LT(f) = aM, LM(f) = M, LC(f) = a
-        auto lead_p_it = get_leading_term(p, compare);
-        const monomian_t lm_p = lead_p_it->first; 
-        int64_t lc_p = lead_p_it->second; 
+        auto lt_p_it = get_lt(p, compare);
+        const monomian_t lm_p = lt_p_it->first; 
+        int64_t lc_p = lt_p_it->second; 
         
-        // Dla każdego g_i w G
         bool divided = false;
         for (size_t i = 0; i < n; ++i) {
             if (G[i].empty()) continue;
             
-            // Znajdź LT(g_i) = bN, LM(g_i) = N, LC(g_i) = b
-            auto lead_g_it = get_leading_term(G[i], compare);
-            const auto& lm_g = lead_g_it->first; 
-            int64_t lc_g = lead_g_it->second; 
+            auto lt_g_it = get_lt(G[i], compare);
+            const auto& lm_g = lt_g_it->first; 
+            int64_t lc_g = lt_g_it->second; 
             
-            // Sprawdź czy LM(g_i) dzieli LM(f) (iteruj po wykładnikach)
             bool divisible = true;
             for (size_t j = 0; j < lm_p.size(); ++j) {
                 if (lm_p[j] < lm_g[j]) {
@@ -169,7 +165,7 @@ inline std::tuple<std::vector<poly_t>, poly_t> poly_reduce(const poly_t& f, cons
                 }
                 
                 int64_t q_coef = lc_p / lc_g;
-                alphas[i][q_mon] += q_coef;
+                q[i][q_mon] += q_coef;
                 
                 for (const auto& [mon_g, coef_g] : G[i]) {
                     monomian_t new_mon;
@@ -191,7 +187,7 @@ inline std::tuple<std::vector<poly_t>, poly_t> poly_reduce(const poly_t& f, cons
         }
     }
 
-    return {alphas, r}; 
+    return {q, r}; 
 }
 
 #endif
