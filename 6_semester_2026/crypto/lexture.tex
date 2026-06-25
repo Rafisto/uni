@@ -1,0 +1,65 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\title{Kryptografia}  
+\author{Rafał Włodarczyk}
+\date{INA 6, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+    \item \href{https://en.wikipedia.org/wiki/BLS_digital_signature}{BLS Signature}
+    \item \href{}{RSA}
+    \item \href{}{Diffie-Hellman KEX}
+    \item \href{https://www.zkdocs.com/docs/zkdocs/protocol-primitives/fiat-shamir/}{Fiat-Shamir Transform}
+    \item \href{https://crypto.stanford.edu/cs355/19sp/lec6.pdf}{Sigma Protocol}
+\end{enumerate}
+
+\begin{enumerate}
+    \item Noninteractive Identification Scheme (Schnorr)
+    \item Signature Scheme (Schnorr, Ring Signature)
+    \item Interactive Schemes (BLS Signature)
+    \item AKE - Authenticated Key Exchange ,- Both parties calculate (1) the same key, (2) the key is secret, (3) both parties prove their identity
+    \item Encryption Ciphersystems (El Gamal), Basic El Gamal is reciphering prone - no CCA2 compliance. 
+    \item Reciphering - Randomized Partial Checking. - Voting Credibility Problem
+    \item Secure Multiparty Computation (Problem Bizantyjskich Generałów - Byzantine Agreement)
+    \item Schematy Progowe - Shamir Secret Sharing
+    \item Prime Decomposition Problem, Discrete Logarithm Problem, Computation, Decisional - Diffie-Hellman Problem
+    \item \href{https://en.wikipedia.org/wiki/Oblivious_transfer}{Oblivious Transfer (OT)}
+    \item \href{https://en.wikipedia.org/wiki/Private_set_intersection}{Private Set Intersection (PSI)}
+    \item \href{https://www.usenix.org/conference/usenixsecurity23/presentation/wu-mingli}{Private Set Intersection Caridinality (PSI-CA)}
+    \item Signcryption - Signing and Encryption at Once.
+\end{enumerate}
+
+Models:
+
+\begin{enumerate}
+    \item Signature Oracle
+    \item Encryption Oracle
+    \item Decryption Oracle
+    \item Random Oracle - Perfect Hashing Function
+    \item CCA, CCA2 - Decryption Oracle after receiving a Challenge. Reszyfracja
+\end{enumerate}
+
+\end{document}

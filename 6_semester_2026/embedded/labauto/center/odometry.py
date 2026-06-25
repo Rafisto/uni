@@ -108,6 +108,7 @@ with open(filename, "r", encoding="utf-8") as file:
             ax.relim()
             ax.autoscale_view()
             
+            plt.pause(0.01)
             prev_left, prev_right = left, right
 
 plt.ioff()
