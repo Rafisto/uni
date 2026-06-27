@@ -62,29 +62,29 @@ inline std::vector<poly_t> buchberger(const std::vector<poly_t> &F, poly_order_t
         // 3. Complete Syzygy (S-Polynomial) over all terms
         poly_t syzygy;
 
-        // Component 1: (LCM / LT(f_i)) * f_i * lc_j
-        for (const auto &[mon, coeff] : fi)
+        // (+) (LCM / LT(f_i)) * f_i * lc_j
+        for (const auto &[m, c] : fi)
         {
-            monomian_t target_mon = lcm;
-            for (size_t k = 0; k < mon.size(); ++k)
+            monomian_t m_new = lcm;
+            for (size_t k = 0; k < m.size(); ++k)
             {
-                target_mon[k] += (mon[k] - lt_i->first[k]);
+                m_new[k] += (m[k] - lt_i->first[k]);
             }
-            syzygy[target_mon] += coeff * lc_j;
+            syzygy[m_new] += c * lc_j;
         }
 
-        // Component 2: Subtract (LCM / LT(f_j)) * f_j * lc_i
-        for (const auto &[mon, coeff] : fj)
+        // (-) Subtract (LCM / LT(f_j)) * f_j * lc_i
+        for (const auto &[m, c] : fj)
         {
-            monomian_t target_mon = lcm;
-            for (size_t k = 0; k < mon.size(); ++k)
+            monomian_t m_new = lcm;
+            for (size_t k = 0; k < m.size(); ++k)
             {
-                target_mon[k] += (mon[k] - lt_j->first[k]);
+                m_new[k] += (m[k] - lt_j->first[k]);
             }
-            syzygy[target_mon] -= coeff * lc_i;
-            if (syzygy[target_mon] == 0)
+            syzygy[m_new] -= c * lc_i;
+            if (syzygy[m_new] == 0)
             {
-                syzygy.erase(target_mon);
+                syzygy.erase(m_new);
             }
         }
 
@@ -106,7 +106,7 @@ inline std::vector<poly_t> buchberger(const std::vector<poly_t> &F, poly_order_t
         }
     }
 
-    // 6. Reduce Grobner Basis
+    // 6. Reduce G
     std::vector<poly_t> reduced_G;
 
     for (size_t i = 0; i < G.size(); ++i)
@@ -132,12 +132,12 @@ inline std::vector<poly_t> buchberger(const std::vector<poly_t> &F, poly_order_t
 
             if (lc != 1)
             {
-                poly_t monic_remainder;
-                for (const auto &[mon, coeff] : remainder)
+                poly_t m_rem;
+                for (const auto &[m, c] : remainder)
                 {
-                    monic_remainder[mon] = coeff / lc;
+                    m_rem[m] = c / lc;
                 }
-                remainder = std::move(monic_remainder);
+                remainder = std::move(m_rem);
             }
 
             if (std::find(reduced_G.begin(), reduced_G.end(), remainder) == reduced_G.end())

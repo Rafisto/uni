@@ -98,8 +98,8 @@ int main()
     // e) 
     std::print("E)\n");
 
-        //      x^2 + y^2 - r^2 = 0
-        // b r^2 + 4bx^2 - r^2 x = 0
+    // x^2 + y^2 - r^2 = 0
+    // b r^2 + 4bx^2 - r^2 x = 0
 
     const poly_t E1 = {
         {{0, 0, 2}, 1}, // 1 * x^2

@@ -68,15 +68,12 @@ potrzebny w przypadku wielomianów jednej zmiennej.
 Algorytm \texttt{PolynomialReduce} jest tożsamy z poprzednim sprawozdaniem. 
 Jest to algorytm pobierający na wejściu wielomian $f$ oraz ciąg wielomianów $\mathcal{G}=(g_1,\dots,g_n)$. 
 Algorytm zwraca ciąg współczynników $(a_1,\dots,a_n)$ oraz wielomian $r$ taki, że:
-
 \begin{align*}
     f = \sum_{i=1}^{n} \alpha_i \cdot g_i + r
 \end{align*}
-
 Wykorzystując jeden ze wcześniej zdefiniowanych porządków na jednomianach dokonujemy redukcji wielomianu $f$ względem ciągu $\mathcal{G}$
-
 \begin{enumerate}
-    \item Dopóki $f \neq 0$. Znajdź $m=\texttt{LT(f, ord)}$ - największy jednomian $m$ w $f$ według porządku \textit{ord}. \\ Ustal $LC(m)=a$ oraz $LM(m)=M$. (Leading Coefficient oraz Leading Monomial odpowiednio).
+    \item Dopóki $f \neq 0$. Znajdź $m=\texttt{LT(f, ord)}$ - największy jednomian $m$ w $f$ według porządku \textit{ord}. \\ Ustal $LC(m)=a$ oraz $LM(m)=M$. (Leading cicient oraz Leading Monomial odpowiednio).
     \item Dla każdego $g_i$ w $\mathcal{G}$ znajdź $m_i=\texttt{LT(g\_i, ord)}$, czyli największy jednomian $m_i$ w $g_i$ według \textit{ord}. \\ Ustal $LC(m_i)=b$ oraz $LM(m_i)=N$.
     \item Sprawdź czy $LM(m_i)$ dzieli $LM(m)$. Spełniony musi zostać warunek: $\left(\forall j: LM(m)[j] \geq LM(m_i)[j]\right)$.
     \item Jeśli tak:
@@ -88,120 +85,152 @@ Wykorzystując jeden ze wcześniej zdefiniowanych porządków na jednomianach do
     \item Jeśli nie, dodaj $LM(m)$ do $r$(eszty) ze współczynnikiem $LC(m)$ i usuń $m$ z $f$. Wróć do kroku 1.
 \end{enumerate}
 
-\begin{lstlisting}
-Input:  Polynomial f, Sequence of polynomials G = (g_1, ..., g_n), Monomial order ord
-Output: Tuple (q, r) where q = (q_1, ..., q_n) and f = sum(q_i * g_i) + r
+\begin{lstlisting}[language=c++]
+inline std::tuple<std::vector<poly_t>, poly_t> 
+poly_reduce(
+    // Wielomian f
+    const poly_t& f, 
+    // Ciąg wielomianów G = (g_1, ..., g_n) 
+    const std::vector<poly_t>& G, 
+    // ord na jednomianach
+    bool (*compare)(const monomian_t&, const monomian_t&) 
+)
+{
+    size_t n = G.size();
+    std::vector<poly_t> q(n); 
+    poly_t r;
+    poly_t p = f; 
 
-procedure PolynomialReduce(f, G, ord):
-    n := len(G)
-    r := empty polynomial
-    p := f
-
-    while p is not empty do:
-        (lm_p, lc_p) := LT(p, ord)
-        divided := false
-
-        for i := 1 to n do:
-            if g_i is empty then continue
-
-            (lm_g, lc_g) := LT(g_i, ord)
+    // (1) Dopóki p != 0
+    while (!p.empty()) {
+        // LT(f) = aM, LM(f) = M, LC(f) = a
+        auto lt_p_it = get_lt(p, compare);
+        const monomian_t lm_p = lt_p_it->first; 
+        int64_t lc_p = lt_p_it->second; 
+        
+        // Dla każdego g_i w G
+        bool divided = false;
+        for (size_t i = 0; i < n; ++i) {
+            if (G[i].empty()) continue;
             
-            divisible := true
-            for j := 1 to len(lm_p) do:
-                if lm_p[j] < lm_g[j] then:
-                    divisible := false
-                    break
-                end if
-            end for
+            // (2) Znajdź LT(g_i) = bN, LM(g_i) = N, LC(g_i) = b
+            auto lt_g_it = get_lt(G[i], compare);
+            const auto& lm_g = lt_g_it->first; 
+            int64_t lc_g = lt_g_it->second; 
+            
+            // (3) Sprawdz czy LM(g_i) dzieli LM(f) (iteruj po wykładnikach)
+            bool divisible = true;
+            for (size_t j = 0; j < lm_p.size(); ++j) {
+                if (lm_p[j] < lm_g[j]) {
+                    divisible = false;
+                    break;
+                }
+            }
+            
+            // (4) Jeśli tak, wykonaj redukcję 
+            if (divisible) {
+                // Oblicz q = LM(f) / LM(g_i) (iteruj po wykładnikach)
+                monomian_t q_mon;
+                for (size_t j = 0; j < lm_p.size(); ++j) {
+                    q_mon.push_back(lm_p[j] - lm_g[j]);
+                }
 
-            if divisible then:
-                q_mon := array of (lm_p[j] - lm_g[j]) for all j
-                q_coef := lc_p / lc_g
+                // Oblicz q_coef = LC(f) / LC(g_i)
+                int64_t q_coef = lc_p / lc_g;
+                q[i][q_mon] += q_coef;
+                
+                // Zaktualizuj p := p - q_coef * q_mon * g_i
+                for (const auto& [mon_g, coef_g] : G[i]) {
+                    monomian_t new_mon;
+                    for (size_t j = 0; j < mon_g.size(); ++j) {
+                        new_mon.push_back(q_mon[j] + mon_g[j]);
+                    }
+                    p[new_mon] -= coef_g * q_coef;
+                    if (p[new_mon] == 0) p.erase(new_mon);
+                }
+                
+                divided = true;
+                break;
+            }
+        }
+        
+        // (5) Jeśli nie, dodaj LM(f) do r ze współczynnikiem LC(f) i usuń LT(f) z p
+        if (!divided) {
+            r[lm_p] += lc_p;
+            p.erase(lm_p); 
+        }
+    }
 
-                q[i][q_mon] := q[i][q_mon] + q_coef
-
-                for each (mon_g, coef_g) in g_i do:
-                    new_mon := array of (q_mon[j] + mon_g[j]) for all j
-                    p[new_mon] := p[new_mon] - (coef_g * q_coef)
-                    
-                    if p[new_mon] == 0 then erase new_mon from p
-                end for
-
-                divided := true
-                break
-            end if
-        end for
-
-        if not divided then:
-            r[lm_p] := r[lm_p] + lc_p
-            erase lm_p from p
-        end if
-    end while
-
-    return (q, r)
+    // Zwracamy krotkę ({q_1, ... q_n}, r)
+    return {q, r}; 
+}
 \end{lstlisting}
 
 \subsection{Syzygium}
 
-Algorytm wyznaczania Syzygium służy do eliminacji wiodących wyrazów pary wielomianów $f_i$ oraz $f_j$. 
-Algorytm przyjmuje na wejściu dwa wielomiany $f_i, f_j$, 
-ich najmniejszą wspólną wielokrotność wiodących jednomianów $\text{LCM}(LM(f_i), LM(f_j))$ 
-oraz porządek jednomianów \textit{ord}. 
+Służy do eliminacji wiodących wyrazów pary wielomianów $f_i$ oraz $f_j$. 
+Na wejściu znajduja się dwa wielomiany $f_i, f_j$, ich $LCM=\text{LCM}(LM(f_i), LM(f_j))$ 
+(najmniejsza wspólna wielokrotność) porządek jednomianów \textit{ord}. 
 Wynikiem działania jest wielomian $S(f_i, f_j)$ zdefiniowany jako:
-
 \begin{align*}
-    S(f_i, f_j) = \frac{\text{LCM}(LM(f_i), LM(f_j))}{LT(f_i)} \cdot f_i \cdot LC(f_j) - \frac{\text{LCM}(LM(f_i), LM(f_j))}{LT(f_j)} \cdot f_j \cdot LC(f_i)
+    S(f_i, f_j) = \frac{LCM}{LT(f_i)} \cdot f_i \cdot LC(f_j) - \frac{LCM}{LT(f_j)} \cdot f_j \cdot LC(f_i)
 \end{align*}
-
 Algorytm działa w następujących krokach:
-
 \begin{enumerate}
-    \item Wyznacz wiodące składniki składnika pierwszego: $LT(f_i) = (lm_i, lc_i)$ oraz składnika drugiego: $LT(f_j) = (lm_j, lc_j)$.
-    \item Dla każdego jednomianu $mon$ ze współczynnikiem $coeff$ w wielomianie $f_i$:
+    \item Wyznacz wiodące składniki $f_i$: $LT(f_i) = (lm_i, lc_i)$ oraz $f_j$: $LT(f_j) = (lm_j, lc_j)$.
+    \item $\forall (m,c)\in f_i$ (para jednomian, współczynnik):
     \begin{enumerate}
-        \item Oblicz nowy jednomian: $target\_mon := lcm + (mon - lm_i)$ poprzez odpowiednie operacje na wykładnikach.
-        \item Dodaj do wynikowego wielomianu wartość $coeff \cdot lc_j$ pod kluczem $target\_mon$.
+        \item Wyznacz $m\_new := lcm + (m - lm_i)$.
+        \item Dodaj do $S(f_i,f_j)$ wartość $c \cdot lc_j$ pod kluczem $m\_new$.
     \end{enumerate}
-    \item Dla każdego jednomianu $mon$ ze współczynnikiem $coeff$ w wielomianie $f_j$:
+    \item $\forall (m,c)\in f_j$:
     \begin{enumerate}
-        \item Oblicz nowy jednomian: $target\_mon := lcm + (mon - lm_j)$ poprzez odpowiednie operacje na wykładnikach.
-        \item Odejmij od wynikowego wielomianu wartość $coeff \cdot lc_i$ pod kluczem $target\_mon$.
-        \item Jeśli współczynnik przy $target\_mon$ wynosi 0, usuń go z wynikowego wielomianu.
+        \item Wyznacz $m\_new := lcm + (m - lm_j)$.
+        \item Odejmij od $S(f_i,f_j)$ wartość $c \cdot lc_i$ pod kluczem $m\_new$.
+        \item Usuń jednomian z $S(f_i,f_j)$ jeśli powyższa operacja ustaliła $c\_new=0$.
     \end{enumerate}
 \end{enumerate}
 
-\begin{lstlisting}
-Input:  Polynomials fi, fj, Monomial lcm, Monomial order ord
-Output: S-polynomial (syzygy)
+\begin{lstlisting}[language=c++]
+poly_t fi = G[i]; poly_t fj = G[j];
+auto lt_i = get_lt(fi, order); auto lt_j = get_lt(fj, order);
+monomian_t lcm = monomial_lcm(lt_i->first, lt_j->first);
+double_t lc_i = lt_i->second; double_t lc_j = lt_j->second;
 
-procedure Syzygy(fi, fj, lcm, ord):
-    syzygy := empty polynomial
-    (lm_i, lc_i) := LT(fi, ord)
-    (lm_j, lc_j) := LT(fj, ord)
+// 3. Syzygy over all terms
+poly_t syzygy;
 
-    // (LCM / LT(fi)) * fi * lc_j
-    for each (mon, coeff) in fi do:
-        target_mon := array of (lcm[k] + mon[k] - lm_i[k]) for all k
-        syzygy[target_mon] := syzygy[target_mon] + (coeff * lc_j)
-    end for
+// (+) (LCM / LT(f_i)) * f_i * lc_j
+for (const auto &[m, c] : fi)
+{
+    monomian_t m_new = lcm;
+    for (size_t k = 0; k < m.size(); ++k)
+    {
+        m_new[k] += (m[k] - lt_i->first[k]);
+    }
+    syzygy[m_new] += c * lc_j;
+}
 
-    // (LCM / LT(fj)) * fj * lc_i
-    for each (mon, coeff) in fj do:
-        target_mon := array of (lcm[k] + mon[k] - lm_j[k]) for all k
-        syzygy[target_mon] := syzygy[target_mon] - (coeff * lc_i)
-        
-        if syzygy[target_mon] == 0 then:
-            erase target_mon from syzygy
-        end if
-    end for
-
-    return syzygy
+// (-) (LCM / LT(f_j)) * f_j * lc_i
+for (const auto &[m, c] : fj)
+{
+    monomian_t m_new = lcm;
+    for (size_t k = 0; k < m.size(); ++k)
+    {
+        m_new[k] += (m[k] - lt_j->first[k]);
+    }
+    syzygy[m_new] -= c * lc_i;
+    if (syzygy[m_new] == 0)
+    {
+        syzygy.erase(m_new);
+    }
+}
 \end{lstlisting}
 
 \subsection{Algorytm Buchbergera}
 
-Służy do wyznaczania zredukowanej bazy Grobnera dla zadanego ideału generowanego przez skończony zbiór wielomianów $F$.
-Algorytm pobiera na wejściu ciąg wielomianów $F$ oraz porządek jednomianów \textit{ord},
+Służy do wyznaczania bazy Grobnera dla ciągu wielomianów $F$ oraz zadanego ideału $\mathcal{G}=\{g_1,\dots,g_n\}$.
+Algorytm pobiera ciąg wielomianow $F$ oraz porządek jednomianów \textit{ord},
  a zwraca zredukowaną bazę Grobnera w postaci ciągu wielomianów $G_{reduced}$.
 
 \begin{enumerate}
@@ -214,73 +243,44 @@ Algorytm pobiera na wejściu ciąg wielomianów $F$ oraz porządek jednomianów 
 \end{enumerate}
 
 \begin{lstlisting}
-Input:  Sequence of polynomials F, Monomial order ord
-Output: Reduced Groebner basis G_reduced
+// 1. G <- F
+std::vector<poly_t> G;
+for (const auto &f : F) if (!f.empty()) G.push_back(f);
 
-procedure Buchberger(F, ord):
-    G := empty sequence
-    for each f in F do:
-        if f is not empty then append f to G
-    end for
+using index_pair_t = std::pair<size_t, size_t>;
+std::queue<index_pair_t> pairs;
+// 2. Dla wszystkich par (i,j) stwórz kolejkę Q
+for (size_t i = 0; i < G.size(); ++i)
+    for (size_t j = i + 1; j < G.size(); ++j)
+        pairs.push({i, j});
 
-    pairs := empty queue
-    n := len(G)
-    for i := 1 to n do:
-        for j := i + 1 to n do:
-            push (i, j) to pairs
-        end for
-    end for
+// Sprawdzaj kolejne pary z kolejki
+while (!pairs.empty())
+{
+    auto [i, j] = pairs.front(); pairs.pop();
+    poly_t fi = G[i]; poly_t fj = G[j];
+    auto lt_i = get_lt(fi, order); auto lt_j = get_lt(fj, order);
+    monomian_t lcm = monomial_lcm(lt_i->first, lt_j->first);
+    double_t lc_i = lt_i->second; double_t lc_j = lt_j->second;
 
-    while pairs is not empty do:
-        (i, j) := pop front from pairs
-        
-        (lm_i, lc_i) := LT(G[i], ord)
-        (lm_j, lc_j) := LT(G[j], ord)
-        lcm := MonomialLCM(lm_i, lm_j)
+    // 3. Wyznacz syzygium f_i, f_j, opisane w poprzednim algorytmie
+    poly_t syzygy = Syzygy... ( see previous )
+    if (syzygy.empty()) continue;
 
-        syzygy := SPolynomial(G[i], G[j], lcm, ord)
+    // 4. Redukuj S(f_i,f-J) po aktualnym G
+    auto [quotients, remainder] = poly_reduce(syzygy, G, order);
 
-        if syzygy is empty then continue
-
-        (quotients, remainder) := PolynomialReduce(syzygy, G, ord)
-
-        if remainder is not empty then:
-            new_index := len(G)
-            for k := 1 to new_index do:
-                push (k, new_index) to pairs
-            end for
-            append remainder to G
-        end if
-    end while
-
-    reduced_G := empty sequence
-    for i := 1 to len(G) do:
-        if G[i] is empty then continue
-
-        others := empty sequence
-        for j := 1 to len(G) do:
-            if i != j and G[j] is not empty then append G[j] to others
-        end for
-
-        (quotients, remainder) := PolynomialReduce(G[i], others, ord)
-
-        if remainder is not empty then:
-            (lm, lc) := LT(remainder, ord)
-            if lc != 1 then:
-                monic_remainder := empty polynomial
-                for each (mon, coeff) in remainder do:
-                    monic_remainder[mon] := coeff / lc
-                end for
-                remainder := monic_remainder
-            end if
-
-            if remainder not in reduced_G then:
-                append remainder to reduced_G
-            end if
-        end if
-    end for
-
-    return reduced_G
+    // 5. Jeśli reszta jest niezerowa dodaj ją do G i nowo stworzone pary do Q
+    if (!remainder.empty())
+    {
+        size_t new_index = G.size();
+        for (size_t k = 0; k < new_index; ++k)
+        {
+            pairs.push({k, new_index});
+        }
+        G.push_back(remainder);
+    }
+}
 \end{lstlisting}
 
 \section{(c) Układy Równań Krzywych Stożkowych}
@@ -548,7 +548,7 @@ Zauważmy, że drugi element bazy składa się tylko z $x,y$. Jest on zatem nasz
     f(x,y) = y^2\cdot x -7y^2 + x^3 - 35x^2 = 0
 \end{align*}
 
-\subsection{Wykresy Trysektrysy}
+\subsection{Wykresy Podanego Równania}
 
 Po lewej stronie narysowałem krzywą w Geogebrze za pomocą wyjściowego równania $r(\theta)$ w układzie biegunowym. Po prawej stronie
 narysowałem te samą krzywą za pomocą równania dwóch zmiennych $f(x,y)=0$
@@ -557,6 +557,5 @@ narysowałem te samą krzywą za pomocą równania dwóch zmiennych $f(x,y)=0$
     \includegraphics[width=0.49\linewidth]{ex-e-rcurve.png}
     \includegraphics[width=0.49\linewidth]{ex-e-poly.png}
 \end{figure}
-
 
 \end{document}
