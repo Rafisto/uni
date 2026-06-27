@@ -36,6 +36,8 @@
                          {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ź}{{\'Z}}1 {Ż}{{\.Z}}1
 }
 
+\definecolor{darkyellow}{rgb}{0.8, 0.6, 0.0}
+
 \title{Wybrane Zagadnienia Algebry\\Sprawozdanie 3}
 \author{Rafał Włodarczyk 279762}
 \date{Czerwiec 2026}
@@ -44,16 +46,249 @@
 
 \maketitle
 
-\section{(a)}
+\section{(a) Pierścień Wielomianów Wielu Zmiennych}
 
-\section{(b)}
+Strukturę danych dla pierścieni wielomianów wielu zmiennych $\mathbb{R}[x_1,\dots,x_n]$ implementuję 
+jako mapę \textit{klucz} $\to$ \textit{wartość}, w której kluczem jest wektor wykładników (jednomian bez współczynnika), 
+a wartością jest współczynnik zadanego jednomianu. Nieobecne w strukturze klucze (jednomiany) są interpretowane jako mające współczynnik równy zero.
+Przykład. Funkcja $f$ (Ćw. 37.) dana wzorem $f=x^3 - x^2\cdot y - x^2 \cdot z$ będzie reprezentowana jako trzy elementy w mapie:
+\begin{align*}
+\{({\color{red}3}, {\color{green}0}, {\color{blue}0}) \to {\color{darkyellow}1}\}  & \quad (\text{odpowiada } {\color{darkyellow}1} \cdot x^{{\color{red}3}}), \\
+\{({\color{red}2}, {\color{green}1}, {\color{blue}0}) \to {\color{darkyellow}-1}\} & \quad (\text{odpowiada } {\color{darkyellow}-1} \cdot x^{{\color{red}2}} \cdot y^{{\color{green}1}}), \\
+\{({\color{red}2}, {\color{green}0}, {\color{blue}1}) \to {\color{darkyellow}-1}\} & \quad (\text{odpowiada } {\color{darkyellow}-1} \cdot x^{{\color{red}2}} \cdot z^{{\color{blue}1}}).
+\end{align*}
+Wielomiany jednej zmiennej można przechowywać w prostszej postaci zwykłej tablicy.
+Operacje pierścieniowe ulegają zmianie - część wymaga porządku na jednomianach, który nie jest
+potrzebny w przypadku wielomianów jednej zmiennej.
 
-\section{(c) Układy Równań}
+\section{(b) PolynomialReduce, Syzygium, algorytm Buchbergera}
+
+\subsection{PolynomialReduce}
+
+Algorytm \texttt{PolynomialReduce} jest tożsamy z poprzednim sprawozdaniem. 
+Jest to algorytm pobierający na wejściu wielomian $f$ oraz ciąg wielomianów $\mathcal{G}=(g_1,\dots,g_n)$. 
+Algorytm zwraca ciąg współczynników $(a_1,\dots,a_n)$ oraz wielomian $r$ taki, że:
+
+\begin{align*}
+    f = \sum_{i=1}^{n} \alpha_i \cdot g_i + r
+\end{align*}
+
+Wykorzystując jeden ze wcześniej zdefiniowanych porządków na jednomianach dokonujemy redukcji wielomianu $f$ względem ciągu $\mathcal{G}$
+
+\begin{enumerate}
+    \item Dopóki $f \neq 0$. Znajdź $m=\texttt{LT(f, ord)}$ - największy jednomian $m$ w $f$ według porządku \textit{ord}. \\ Ustal $LC(m)=a$ oraz $LM(m)=M$. (Leading Coefficient oraz Leading Monomial odpowiednio).
+    \item Dla każdego $g_i$ w $\mathcal{G}$ znajdź $m_i=\texttt{LT(g\_i, ord)}$, czyli największy jednomian $m_i$ w $g_i$ według \textit{ord}. \\ Ustal $LC(m_i)=b$ oraz $LM(m_i)=N$.
+    \item Sprawdź czy $LM(m_i)$ dzieli $LM(m)$. Spełniony musi zostać warunek: $\left(\forall j: LM(m)[j] \geq LM(m_i)[j]\right)$.
+    \item Jeśli tak:
+    \begin{enumerate}
+        \item Wykonaj redukcję: $f := f - \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)} \cdot g_i$
+        \item Zaktualizuj współczynnik $\alpha_i := \alpha_i + \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)}$.
+        \item Wróć do kroku 1.
+    \end{enumerate}
+    \item Jeśli nie, dodaj $LM(m)$ do $r$(eszty) ze współczynnikiem $LC(m)$ i usuń $m$ z $f$. Wróć do kroku 1.
+\end{enumerate}
+
+\begin{lstlisting}
+Input:  Polynomial f, Sequence of polynomials G = (g_1, ..., g_n), Monomial order ord
+Output: Tuple (q, r) where q = (q_1, ..., q_n) and f = sum(q_i * g_i) + r
+
+procedure PolynomialReduce(f, G, ord):
+    n := len(G)
+    r := empty polynomial
+    p := f
+
+    while p is not empty do:
+        (lm_p, lc_p) := LT(p, ord)
+        divided := false
+
+        for i := 1 to n do:
+            if g_i is empty then continue
+
+            (lm_g, lc_g) := LT(g_i, ord)
+            
+            divisible := true
+            for j := 1 to len(lm_p) do:
+                if lm_p[j] < lm_g[j] then:
+                    divisible := false
+                    break
+                end if
+            end for
+
+            if divisible then:
+                q_mon := array of (lm_p[j] - lm_g[j]) for all j
+                q_coef := lc_p / lc_g
+
+                q[i][q_mon] := q[i][q_mon] + q_coef
+
+                for each (mon_g, coef_g) in g_i do:
+                    new_mon := array of (q_mon[j] + mon_g[j]) for all j
+                    p[new_mon] := p[new_mon] - (coef_g * q_coef)
+                    
+                    if p[new_mon] == 0 then erase new_mon from p
+                end for
+
+                divided := true
+                break
+            end if
+        end for
+
+        if not divided then:
+            r[lm_p] := r[lm_p] + lc_p
+            erase lm_p from p
+        end if
+    end while
+
+    return (q, r)
+\end{lstlisting}
+
+\subsection{Syzygium}
+
+Algorytm wyznaczania Syzygium służy do eliminacji wiodących wyrazów pary wielomianów $f_i$ oraz $f_j$. 
+Algorytm przyjmuje na wejściu dwa wielomiany $f_i, f_j$, 
+ich najmniejszą wspólną wielokrotność wiodących jednomianów $\text{LCM}(LM(f_i), LM(f_j))$ 
+oraz porządek jednomianów \textit{ord}. 
+Wynikiem działania jest wielomian $S(f_i, f_j)$ zdefiniowany jako:
+
+\begin{align*}
+    S(f_i, f_j) = \frac{\text{LCM}(LM(f_i), LM(f_j))}{LT(f_i)} \cdot f_i \cdot LC(f_j) - \frac{\text{LCM}(LM(f_i), LM(f_j))}{LT(f_j)} \cdot f_j \cdot LC(f_i)
+\end{align*}
+
+Algorytm działa w następujących krokach:
+
+\begin{enumerate}
+    \item Wyznacz wiodące składniki składnika pierwszego: $LT(f_i) = (lm_i, lc_i)$ oraz składnika drugiego: $LT(f_j) = (lm_j, lc_j)$.
+    \item Dla każdego jednomianu $mon$ ze współczynnikiem $coeff$ w wielomianie $f_i$:
+    \begin{enumerate}
+        \item Oblicz nowy jednomian: $target\_mon := lcm + (mon - lm_i)$ poprzez odpowiednie operacje na wykładnikach.
+        \item Dodaj do wynikowego wielomianu wartość $coeff \cdot lc_j$ pod kluczem $target\_mon$.
+    \end{enumerate}
+    \item Dla każdego jednomianu $mon$ ze współczynnikiem $coeff$ w wielomianie $f_j$:
+    \begin{enumerate}
+        \item Oblicz nowy jednomian: $target\_mon := lcm + (mon - lm_j)$ poprzez odpowiednie operacje na wykładnikach.
+        \item Odejmij od wynikowego wielomianu wartość $coeff \cdot lc_i$ pod kluczem $target\_mon$.
+        \item Jeśli współczynnik przy $target\_mon$ wynosi 0, usuń go z wynikowego wielomianu.
+    \end{enumerate}
+\end{enumerate}
+
+\begin{lstlisting}
+Input:  Polynomials fi, fj, Monomial lcm, Monomial order ord
+Output: S-polynomial (syzygy)
+
+procedure Syzygy(fi, fj, lcm, ord):
+    syzygy := empty polynomial
+    (lm_i, lc_i) := LT(fi, ord)
+    (lm_j, lc_j) := LT(fj, ord)
+
+    // (LCM / LT(fi)) * fi * lc_j
+    for each (mon, coeff) in fi do:
+        target_mon := array of (lcm[k] + mon[k] - lm_i[k]) for all k
+        syzygy[target_mon] := syzygy[target_mon] + (coeff * lc_j)
+    end for
+
+    // (LCM / LT(fj)) * fj * lc_i
+    for each (mon, coeff) in fj do:
+        target_mon := array of (lcm[k] + mon[k] - lm_j[k]) for all k
+        syzygy[target_mon] := syzygy[target_mon] - (coeff * lc_i)
+        
+        if syzygy[target_mon] == 0 then:
+            erase target_mon from syzygy
+        end if
+    end for
+
+    return syzygy
+\end{lstlisting}
+
+\subsection{Algorytm Buchbergera}
+
+Służy do wyznaczania zredukowanej bazy Grobnera dla zadanego ideału generowanego przez skończony zbiór wielomianów $F$.
+Algorytm pobiera na wejściu ciąg wielomianów $F$ oraz porządek jednomianów \textit{ord},
+ a zwraca zredukowaną bazę Grobnera w postaci ciągu wielomianów $G_{reduced}$.
+
+\begin{enumerate}
+    \item Skopiuj wielomiany do bazy $G\gets F$.
+    \item Dla wszystkich par $(i,j)$ z $G$ oblicz najmniejszą wspólną wielokrotność wiodących jednomianów i dodaj pary do kolejki.
+    \item Wyznacz Syzygium $S_{ij}$ dla każdej pary $(i,j)$ w kolejce.
+    \item Zredukuj $S_{ij}$ względem aktualnego zbioru $G$.
+    \item Jeśli reszta jest niezerowa, rozszerz zbiór $G$ i dodaj nowe pary do kolejki.
+    \item Po sprawdzeniu wszystkich elementów w kolejce, zredukuj $G$ - to wynikowa baza Grobnera.
+\end{enumerate}
+
+\begin{lstlisting}
+Input:  Sequence of polynomials F, Monomial order ord
+Output: Reduced Groebner basis G_reduced
+
+procedure Buchberger(F, ord):
+    G := empty sequence
+    for each f in F do:
+        if f is not empty then append f to G
+    end for
+
+    pairs := empty queue
+    n := len(G)
+    for i := 1 to n do:
+        for j := i + 1 to n do:
+            push (i, j) to pairs
+        end for
+    end for
+
+    while pairs is not empty do:
+        (i, j) := pop front from pairs
+        
+        (lm_i, lc_i) := LT(G[i], ord)
+        (lm_j, lc_j) := LT(G[j], ord)
+        lcm := MonomialLCM(lm_i, lm_j)
+
+        syzygy := SPolynomial(G[i], G[j], lcm, ord)
+
+        if syzygy is empty then continue
+
+        (quotients, remainder) := PolynomialReduce(syzygy, G, ord)
+
+        if remainder is not empty then:
+            new_index := len(G)
+            for k := 1 to new_index do:
+                push (k, new_index) to pairs
+            end for
+            append remainder to G
+        end if
+    end while
+
+    reduced_G := empty sequence
+    for i := 1 to len(G) do:
+        if G[i] is empty then continue
+
+        others := empty sequence
+        for j := 1 to len(G) do:
+            if i != j and G[j] is not empty then append G[j] to others
+        end for
+
+        (quotients, remainder) := PolynomialReduce(G[i], others, ord)
+
+        if remainder is not empty then:
+            (lm, lc) := LT(remainder, ord)
+            if lc != 1 then:
+                monic_remainder := empty polynomial
+                for each (mon, coeff) in remainder do:
+                    monic_remainder[mon] := coeff / lc
+                end for
+                remainder := monic_remainder
+            end if
+
+            if remainder not in reduced_G then:
+                append remainder to reduced_G
+            end if
+        end if
+    end for
+
+    return reduced_G
+\end{lstlisting}
+
+\section{(c) Układy Równań Krzywych Stożkowych}
 
 \subsection{Układ Pierwszy}
 
 \begin{figure}[H]
-\begin{minipage}[b]{0.74\textwidth}  
+\begin{minipage}[b]{0.49\textwidth}  
 Baza Grobnera dla następującego układu równań:
 \begin{align*}
 \begin{cases}
@@ -69,19 +304,24 @@ z
 \implies
 \mathcal{I}_f = x^2 + y^2
 \end{align*}
-Drugie równanie $10z=0$ wymusza $z=0$, więc jedynym rozwiązaniem jest punkt.
-
+Drugie równanie $10z=0$ wymusza $z=0$.
+Przekrajamy dwustronnie nieskończony stożek z płaszczyzną przechodzącą idealnie przez
+wierzchołek stożka. Jedynym rozwiązaniem jest więc jeden punkt - wierzchołek.
 \end{minipage}
-\begin{minipage}{0.24\textwidth}  
+\begin{minipage}[t]{0.24\textwidth} 
     \includegraphics[width=0.99\linewidth]{ex-c-1.png}
-    \captionof{figure}{$\mathcal{V}(x^2+y^2)$}
+    \captionof*{figure}{$\mathcal{V}(x^2+y^2)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-1-3d.png}
+    \captionof*{figure}{Wykres 3D (1)}
 \end{minipage}
 \end{figure}
 
 \subsection{Układ Drugi}
 
 \begin{figure}[H]
-\begin{minipage}[b]{0.74\textwidth}  
+\begin{minipage}[b]{0.49\textwidth}  
 Baza Grobnera dla następującego układu równań:
 \begin{align*}
 \begin{cases}
@@ -97,19 +337,25 @@ z + 8
 \implies
 \mathcal{I}_f = x^2 + y^2 - 64
 \end{align*}
-Drugie równanie $z=-8$ sprawia, że zbiór rozwiązań jest równaniem okręgu.
+Drugie równanie $z=-8$. Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą powyżej jego wierzchołka równolegle do osi XY. 
+Zbiór rozwiązań jest zatem równaniem okręgu.
 
 \end{minipage}
-\begin{minipage}{0.24\textwidth}  
+\begin{minipage}[t]{0.24\textwidth} 
     \includegraphics[width=0.99\linewidth]{ex-c-2.png}
-    \captionof{figure}{$\mathcal{V}(x^2+y^2 - 64)$}
+    \captionof*{figure}{$\mathcal{V}(x^2+y^2 - 64)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-2-3d.png}
+    \captionof*{figure}{Wykres 3D (2)}
 \end{minipage}
 \end{figure}
 
 \subsection{Układ Trzeci}
 
 \begin{figure}[H]
-\begin{minipage}[b]{0.74\textwidth}  
+\begin{minipage}[b]{0.49\textwidth}  
 Baza Grobnera dla następującego układu równań:
 \begin{align*}
 \begin{cases}
@@ -119,71 +365,89 @@ x + z + 5 = 0
 \xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
 \begin{cases}
 x + z + 5 \\
-y^2 + 10z + 25
+y^2 - 10x + 25
 \end{cases}
 \\
 \implies
-\mathcal{I}_f = y^2 + 10 (-x -5) + 25 = y^2 - 10x - 25
+\mathcal{I}_f = y^2 - 10x - 25
 \end{align*}
+Drugie równanie $x+z+5=0$. Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą pod kątem prostopadłym do jego ściany, otrzymując
+kolejną krzywą stożkową - parabolę.
 \end{minipage}
-\begin{minipage}{0.24\textwidth}  
+\begin{minipage}[t]{0.24\textwidth} 
     \includegraphics[width=0.99\linewidth]{ex-c-3.png}
-    \captionof{figure}{$\mathcal{V}(y^2 - 10x - 25)$}
+    \captionof*{figure}{$\mathcal{V}(y^2 - 10x - 25)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-3-3d.png}
+    \captionof*{figure}{Wykres 3D (3)}
 \end{minipage}
 \end{figure}
 
 \subsection{Układ Czwarty}
 
 \begin{figure}[H]
-\begin{minipage}[b]{0.74\textwidth}  
+\begin{minipage}[b]{0.49\textwidth}  
 Baza Grobnera dla następującego układu równań:
 \begin{align*}
 \begin{cases}
 x^2 + y^2 = z^2 \\
 x + y + z + 3 = 0
 \end{cases}
-\xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
+\\\xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
 \begin{cases}
 x + y + z + 3 \\
-y^2 + yz + 3y + 3z + 4.5
-\end{cases}
-\\
+xy + 3x + 3y + 4.5
+\end{cases}\\
 \implies
-\mathcal{I}_f = y^2 + z (y + 3) + 3y + 4.5 =\\
-= y^2 + (-3-y-x) (y + 3) + 3y + 4.5 =\\
-= -4.5 -3x -3y - xy
+\mathcal{I}_f = xy + 3x + 3y + 4.5
 \end{align*}
+Drugie równanie $x+y+z+3=0$. Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą pod kątem większym niż 45 stopni do XY, otrzymując
+kolejną krzywą stożkową - hiperbolę.
 \end{minipage}
-\begin{minipage}{0.24\textwidth}  
+\begin{minipage}[t]{0.24\textwidth} 
     \includegraphics[width=0.99\linewidth]{ex-c-4.png}
-    \captionof{figure}{$\mathcal{V}(-4.5 -3x -3y - xy)$}
+    \captionof*{figure}{$\mathcal{V}(xy + 3x + 3y + 4.5)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-4-3d.png}
+    \captionof*{figure}{Wykres 3D (4)}
 \end{minipage}
 \end{figure}
 
 \subsection{Układ Piąty}
 
 \begin{figure}[H]
-\begin{minipage}[b]{0.74\textwidth}  
+\begin{minipage}[b]{0.49\textwidth}  
 Baza Grobnera dla następującego układu równań:
 \begin{align*}
 \begin{cases}
 x^2 + y^2 = z^2 \\
 y + 2z + 2
 \end{cases}
+\\
 \xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
 \begin{cases}
-x^2 + 3z^2 + 8z + 4
 y + 2z + 2
+4 x^2 + 3 y^2 - 4 y - 4
 \end{cases}
 \\
 \implies
-\mathcal{I}_f = x^2 + 3(-2-y)^2 + 8(-2-y) + 4 =\\
-= x^2 + 3 y^2 + 4 y
+\mathcal{I}_f = 4 x^2 + 3 y^2 - 4 y - 4
 \end{align*}
+Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą pod kątem mniejszym niż 45 stopni XY, otrzymując
+kolejną krzywą stożkową - elipsę.
 \end{minipage}
-\begin{minipage}{0.24\textwidth}  
+\begin{minipage}[t]{0.24\textwidth} 
     \includegraphics[width=0.99\linewidth]{ex-c-5.png}
-    \captionof{figure}{$\mathcal{V}(x^2 + 3 y^2 + 4 y)$}
+    \captionof*{figure}{$\mathcal{V}(4 x^2 + 3 y^2 - 4 y - 4)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-5-3d.png}
+    \captionof*{figure}{Wykres 3D (5)}
 \end{minipage}
 \end{figure}
 
@@ -196,7 +460,7 @@ Dla zadanego układu wyznaczam Bazę Grobnera przy użyciu mojej implementacji a
         x+2y+3z = 0
     \end{cases}
 \end{align*}
-Koduję wejście - wielomiany wielu zmiennych:
+Koduję wejście - wielomiany wielu zmiennych (rozszerzam $(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca$)):
 \begin{figure}[h]
 \begin{minipage}[t]{0.49\textwidth}   
 \begin{lstlisting}{c++}
@@ -247,7 +511,8 @@ W tym podpunkcie należy również porównać wynik z podstawieniem $z=a$ do pie
     (*) \quad (x^2+y^2-ax)^2 = a^2(x^2+y^2) 
 \end{align*}
 Kolorem czerwonym oznaczona jest krzywa policzona za pomocą bazy Grobnera.
-Kolorem niebieskim oznaczone jest równianie $(*)$, dla $a=2$.
+Kolorem niebieskim oznaczone jest równianie $(*)$, dla $a=2$ - jest to kardioida - często spotykana
+np. w muzyce - stanowi profil zbierania dźwięku mikrofonów pojemnościowych.
 \begin{figure}[H]
     \includegraphics[width=0.99\linewidth]{ex-d.png}
 \end{figure}
