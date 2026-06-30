@@ -173,19 +173,19 @@ Na wejściu znajduja się dwa wielomiany $f_i, f_j$, ich $LCM=\text{LCM}(LM(f_i)
 (najmniejsza wspólna wielokrotność) porządek jednomianów \textit{ord}. 
 Wynikiem działania jest wielomian $S(f_i, f_j)$ zdefiniowany jako:
 \begin{align*}
-    S(f_i, f_j) = \frac{LCM}{LT(f_i)} \cdot f_i \cdot LC(f_j) - \frac{LCM}{LT(f_j)} \cdot f_j \cdot LC(f_i)
+    S(f_i, f_j) = \frac{LCM}{LT(f_i)} \cdot f_i - \frac{LCM}{LT(f_j)} \cdot f_j
 \end{align*}
 Algorytm działa w następujących krokach:
 \begin{enumerate}
     \item Wyznacz wiodące składniki $f_i$: $LT(f_i) = (lm_i, lc_i)$ oraz $f_j$: $LT(f_j) = (lm_j, lc_j)$.
     \item $\forall (m,c)\in f_i$ (para jednomian, współczynnik):
     \begin{enumerate}
-        \item Wyznacz $m\_new := lcm + (m - lm_i)$.
+        \item Wyznacz $m\_new := LCM + (m - lm_i)$.
         \item Dodaj do $S(f_i,f_j)$ wartość $c \cdot lc_j$ pod kluczem $m\_new$.
     \end{enumerate}
     \item $\forall (m,c)\in f_j$:
     \begin{enumerate}
-        \item Wyznacz $m\_new := lcm + (m - lm_j)$.
+        \item Wyznacz $m\_new := LCM + (m - lm_j)$.
         \item Odejmij od $S(f_i,f_j)$ wartość $c \cdot lc_i$ pod kluczem $m\_new$.
         \item Usuń jednomian z $S(f_i,f_j)$ jeśli powyższa operacja ustaliła $c\_new=0$.
     \end{enumerate}
@@ -205,9 +205,7 @@ for (const auto &[m, c] : fi)
 {
     monomian_t m_new = lcm;
     for (size_t k = 0; k < m.size(); ++k)
-    {
         m_new[k] += (m[k] - lt_i->first[k]);
-    }
     syzygy[m_new] += c * lc_j;
 }
 
@@ -216,14 +214,9 @@ for (const auto &[m, c] : fj)
 {
     monomian_t m_new = lcm;
     for (size_t k = 0; k < m.size(); ++k)
-    {
         m_new[k] += (m[k] - lt_j->first[k]);
-    }
     syzygy[m_new] -= c * lc_i;
-    if (syzygy[m_new] == 0)
-    {
-        syzygy.erase(m_new);
-    }
+    if (syzygy[m_new] == 0) syzygy.erase(m_new);
 }
 \end{lstlisting}
 
@@ -430,7 +423,7 @@ y + 2z + 2
 \\
 \xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
 \begin{cases}
-y + 2z + 2
+y + 2z + 2 \\
 4 x^2 + 3 y^2 - 4 y - 4
 \end{cases}
 \\
