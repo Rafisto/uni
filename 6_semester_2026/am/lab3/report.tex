@@ -1,0 +1,189 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=-5cm, right=2cm, bottom=2cm, includeheadfoot, headheight=130pt, a4paper]{geometry}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{tabularx}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\title{Algorytmy Metaheurystyczne\\Lista 3 - TSP - Algorytmy Genetyczne}
+\author{Rafał Włodarczyk}
+\date{02.06.2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Model}
+
+Model TSP zakłada graf pełny $G=(V,E)$ z wagami.
+
+\section{Źródło dla danych}
+
+Dane do programu są wzięte ze strony internetowej:
+\begin{center}
+\texttt{https://www.math.uwaterloo.ca/tsp/world/countries.html}
+\end{center}
+oraz są dostępne do pobrania w formacie \texttt{.tsp} za pomocą skryptu \texttt{get\_data.sh}.
+
+\section{Idea Algorytmu Genetycznego}
+
+Algorytm Genetyczny zgodnie z opisem na liście składa się z pięciu kroków
+\begin{enumerate}
+    \item Populacja Początkowa. Wykorzystałem permutację powstałą za pomocą MST.
+    \item Ewaluacja i Selekcja. Selekcja odbywa się za pomocą przyspieszonej metody turniejowej.
+    Wybierane są dwa dowolne elementy populacji (część losowa), a następnie brany jest większy z nich (część turniejowa).
+    \item Krzyżowanie. Wykorzystane zostaną dwa algorytmy \texttt{PMX Crossover} oraz \texttt{OX Crossover}.
+    \item Mutacja. Odbywa się za pomocą wybrania dwóch indeksów $x,y$, a następnie odwrócenia podpermutacji - 
+    wykonanie inwersji.
+    \item Warunek Końca. Ustalony na sztywną liczbę generacji. Zwracamy najlepszy z wyników
+\end{enumerate}
+
+Ponadto rozwinięty zostanie o dwa dodatkowe elementy
+
+\begin{enumerate}
+    \item Memetyka - Przyspieszenie \textit{dojrzewania} nowych elementów populacji. Zastosowany jest skrócony algorytm Tabu Search,
+    z ustaloną niską maksymalną liczbą iteracji.
+    \item Wyspowość - Podzielenie populacji na mniejsze niezależne podpopulacje, które po ustalonej liczbie generacji wymieniają się informacjami
+    za pomocą specjalnej funkcji.
+\end{enumerate}
+
+\section{Zadanie 1 - Metody krzyżowania}
+
+Wybrałem dwie metody krzyżowania:
+\begin{enumerate}
+    \item PMX (Partially Mapped Crossover) - Goldberg / Lingle, 1985. 
+    \item OX (Order Crossover) - Davis, 1985
+\end{enumerate}
+
+\subsection{Metoda PMX}
+
+Metoda PMX (Partially Mapped Crossover) to algorytm krzyżowania permutacji 
+stworzony z myślą o TSP. Bierzemy dwie permutacje $p_1,p_2$, będziemy tworzyć dziecko $c$. Bierzemy dwa dowolne punkty $0\leq x\leq y \leq n$, następnie dzielimy zbiór na trzy części:
+lewy (indeksy $0\dots x - 1$), środkowy (indeksy $x \dots y$), oraz prawy (indeksy $y+1 \dots n$). 
+\begin{enumerate}
+    \item Segment środkowy $(x,y)$ zostaje powielony z $p_1$ do $c$
+    \item Znajdujemy konflikty - przenosimy elementy z permutacji $p_2$ do $c$, o ile już w $c$ ich nie ma.
+    Musimy znaleźć mapowania elementów $k_1,\dots, k_l$ do $c$ spoza segmentu środkowego. Niech $k=k_i$ (dowolny brakujący element).
+    Szukamy indeksu $i : p_2(i) = k$, znajdujemy wartość $m=p_1(i)$, a następnie szukamy dla jakiego $j$ $p_2(j)=m$.
+    Gdy $j \notin (x,y)$ możemy umieścić element $c(j)=k$.
+    Osiągamy dzięki temu zestaw mapowania, który pozwala nam umieścić $k$ w wolne miejsce $c$.
+\end{enumerate}
+
+\subsection{Metoda OX}
+
+Metoda OX (Order Crossover) to algorytm krzyżowania permutacji dla TSP. Bierzemy dwie permutacje $p_1,p_2$, będziemy tworzyć dziecko $c$. Bierzemy dwa dowolne punkty $0\leq x\leq y \leq n$, następnie dzielimy zbiór na trzy części:
+lewy (indeksy $0\dots x - 1$), środkowy (indeksy $x \dots y$), oraz prawy (indeksy $y+1 \dots n$). 
+\begin{enumerate}
+    \item Segment środkowy $(x,y)$ zostaje powielony z $p_1$ do $c$
+    \item Dokonujemy cyklicznego wypełnienia zaczynając od indeksu $i=y+1$, sprawdzamy czy element $p_2(i)$ jest już w $c$,
+    jeśli jest to dodajemy indeks i przechodzimy dalej. Jeśli nie ma to wpisujemy $c(i)=p_2(i)$ i przesuwamy $i$ na następne wolne miejsce.
+\end{enumerate}
+
+\subsection{Wyniki porównania metod PXM i OX}
+
+Dla zadanych danych OX jest lepszy od PMX. Zostanie zatem wykorzystany w zmodyfikowanych algorytmach.
+
+\section{Zadanie 2 - Algorytm Wyspowy}
+
+Algorytm wyspowy otrzymuje dodając dwa dodatkowe parametry
+\begin{enumerate}
+    \item \texttt{icount} - Ilość wysp, na które zostanie podzielony zbiór populacji.
+    \item \texttt{interval} - Ilość iteracji po których zachodzi wymiana informacji pomiędzy wyspami.
+    Niech $I$ to będzie nasz interwał. Wtedy do wymiany informacji dojdzie w iteracjach $k\cdot I, k\in\mathbb{N}_{\geq 0}$
+\end{enumerate}
+
+\section{Zadanie 3 - Wykorzystanie OpenMP w celu przyspieszenia obliczeń}
+
+Wykorzystam bibliotekę OpenMP \texttt{<omp.h>} która pozwala na zrównoleglenie obliczeń - wykorzystuję 
+rozdzielając część pętli na wiele rdzeni. Dzięki ustaleniu generatora liczb losowych per wątek mogę
+uzyskiwać różne wyniki symulując konsekwentne wykonywanie kolejnych iteracji algorytmów.  
+
+Wykorzystane elementy to m.in. zrównoleglenie podziału wysp oraz operacji niezależnych wysp oraz zrównoleglenie wykonania
+algorytmu memetycznego (tabu search).
+
+\subsection{Zrównoleglenie przy wyspach}
+
+\texttt{\#pragma omp parallel for collapse(2)} - zrównoleglamy podwójne zagnieżdżenie pętli.
+
+\begin{verbatim}
+#pragma omp parallel for collapse(2)
+for i in 1..n {
+    for j in 1..m {
+
+    }
+}
+\end{verbatim}
+
+Zostaje ewaluowany do pojedynczego egzemplarza, a następnie wykonuje każdą operacje równolegle
+
+\begin{verbatim}
+for (i,j) in (1..n, 1..m) {
+
+}
+\end{verbatim}
+
+\subsection{Zrównoleglenie Tabu w wariancie Memetycznym}
+
+\begin{verbatim}
+#pragma omp declare reduction(min_move : BestMove : \
+    omp_out = (omp_in.delta < omp_out.delta) ? omp_in : omp_out) \
+    initializer(omp_priv = {std::numeric_limits<int64_t>::max(), 0, 0, false})
+
+#pragma omp parallel for reduction(min\_move\:local\_best) schedule(guided)
+\end{verbatim}
+
+Każdy wątek dostaje kopie zmiennej \texttt{local\_best}, która następnie przy łączeniu wątków
+zostaje poddana operacji redukcji \texttt{min\_move} - która z dwóch lokalnych wartości wybiera mniejszy z nich (lepsze rozwiązanie). 
+
+\section{Zadanie 4 - Algorytm Memetyczny}
+
+Moja realizacja algorytmu memetycznego opiera się o dodanie Tabu Search po mutacji dzieci poprzedniej populacji.
+Dzięki temu zdecydowanie szybciej (w obrębie jednej generacji) będziemy optymalizować
+do kolejnego minimum lokalnego po mutacji - czyli po potencjalnym wyskoczeniu z minimum lokalnego.
+
+\section{Porównanie Algorytmów z Listy 3}
+
+\input{_parameters.tex}
+
+\input{_results.tex}
+
+Zarówno \texttt{pmx} oraz \texttt{ox} są przy małej liczbie generacji niezbyt interesujące, natomiast widać że \texttt{ox} jest lepszy.
+Dodanie przy tej samej liczbie generacji wysp oraz algorytmu memetycznego pozwala osiągnąć lepsze wyniki.
+Algorytm memetyczny w postaci skróconego Tabu Searcha pozwala na uzyskanie wyników optymalnych dla małych problemów,
+i w granicach $10\%-20\%$ od wyniku optymalnego dla większych problemów.
+
+Algorytm Memetyczny w Oparciu o Tabu Search radzi sobie zdecydowanie najlepiej, co jest tożsame z wnioskami z poprzedniej listy - Tabu Search
+oraz jego elementy to dobre algorytmy Metaheurystyczne.
+
+\section{Wykresy najlepszych rozwiązań}
+
+\input{_plots.tex}
+
+\section{Finalne zestawienie wszystkich algorytmów}
+
+\input{_comparison.tex}
+
+\end{document}

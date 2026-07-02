@@ -1,0 +1,6 @@
+*.ali
+ada_library
+c_static
+c_dynamic
+rust_static
+rust_dynamic

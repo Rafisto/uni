@@ -1,0 +1,1 @@
+clang++ task1.cpp -O3 --std=c++23 -march=native -ftree-vectorize -funroll-loops -fopenmp 

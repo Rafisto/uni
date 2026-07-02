@@ -1,0 +1,43 @@
+Stworzyłem cztery zestawy mające obrazować każdy z poszczególnych algorytmów:
+\begin{enumerate}
+    \item \texttt{pmx} - Zestaw dla krzyżowania PMX 
+    \begin{itemize}
+        \item \texttt{population size} $= 20$
+        \item \texttt{generations} $= 100$
+        \item \texttt{icount} $= 1$ (brak niezależnych wysp)
+        \item \texttt{interval} $= 0$ (nie dotyczy, jw.)
+        \item \texttt{crossover} $=$ \texttt{pmx}
+        \item \texttt{enable mutation} $= 1$ (pozwalamy na mutacje)
+        \item \texttt{enable ts} $= 0$ (wyłączamy memetyczny Tabu Search)
+    \end{itemize}
+    \item \texttt{ox} - Zestaw dla krzyżowania OX
+    \begin{itemize}
+        \item \texttt{population size} $= 20$
+        \item \texttt{generations} $= 100$
+        \item \texttt{icount} $= 1$ (brak niezależnych wysp)
+        \item \texttt{interval} $= 0$ (nie dotyczy, jw.)
+        \item \texttt{crossover} $=$ \texttt{ox}
+        \item \texttt{enable mutation} $= 1$ (pozwalamy na mutacje)
+        \item \texttt{enable ts} $= 0$ (wyłączamy memetyczny Tabu Search)
+    \end{itemize}
+    \item \texttt{memetic} - Algorytm Memetyczny
+    \begin{itemize}
+        \item \texttt{population size} $= 20$
+        \item \texttt{generations} $= 100$
+        \item \texttt{icount} $= 1$ (brak niezależnych wysp)
+        \item \texttt{interval} $= 0$ (nie dotyczy, jw.)
+        \item \texttt{crossover} $=$ \texttt{ox} (lepszy od \texttt{pmx})
+        \item \texttt{enable mutation} $= 1$ (pozwalamy na mutacje)
+        \item \texttt{enable ts} $= 1$ (włączamy moduł Memetyczny - krótki Tabu Search)
+    \end{itemize}
+    \item \texttt{island} -  Algorytm Wyspowy
+    \begin{itemize}
+        \item \texttt{population size} $= 20$
+        \item \texttt{generations} $= 100$
+        \item \texttt{icount} $= 10$ (10 niezależnych wysp)
+        \item \texttt{interval} $= 20$ (wymiana informacji co $20$ iteracji)
+        \item \texttt{crossover} $=$ \texttt{ox} (lepszy od \texttt{pmx})
+        \item \texttt{enable mutation} $= 1$ (pozwalamy na mutacje)
+        \item \texttt{enable ts} $= 1$ (włączamy moduł Memetyczny - krótki Tabu Search)
+    \end{itemize}
+\end{enumerate}

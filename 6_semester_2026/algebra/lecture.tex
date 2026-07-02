@@ -1,0 +1,416 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+ 
+\usepackage[margin=1.5in]{geometry} 
+
+\usepackage{color} 
+\usepackage{amsmath}
+\numberwithin{equation}{subsection}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}                                                                   
+\usepackage{graphicx}                                                             
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{tikz}
+
+\makeatletter
+\newenvironment{definition}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Definition. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{fact}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Fact. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{theorem}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Theorem. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{information}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Information. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\newenvironment{identities}[1]{%
+    \trivlist
+    \item[\hskip\labelsep\textbf{Identities. #1.}]
+    \ignorespaces
+}{%
+    \endtrivlist
+}
+\makeatother
+
+\title{Wybrane Zagadnienia Algebry}  
+\author{Rafał Włodarczyk}
+\date{INA 6, 2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Lecture I}
+
+\subsection{Grupa}
+
+Magmą nazywamy parę $(X,+)$, gdzie $+: X\times X \to X$.
+\begin{itemize}
+    \item Magma + łączność $=$ półgrupa
+    \item Półgrupa + el. neutralny $0$ $=$ monoid
+    \item Monoid + elementy odwrotne $=$ grupa
+    \item Grupa + przemienność $=$ grupa abelowa
+\end{itemize}
+
+\subsection{Pierścień}
+
+Pierścieniem nazywamy $R=(X,+,\cdot,0)$, gdy:
+\begin{itemize}
+    \item $(X,+,0)$ jest grupą abelową
+    \item $(X,\cdot)$ jest półgrupą
+    \item $(\forall a,b,c\in X) \quad a\cdot(b+c) = a\cdot b + a\cdot c$
+    \item $(\forall a,b,c\in X) \quad (a+b)\cdot c = a\cdot c + b\cdot c$
+\end{itemize}
+Jeśli $(X,\cdot)$ jest przemienne, to pierścień $R$ nazywamy przemiennym.\\
+Jeśli $1\in X : (X,\cdot,1)$ jest monoidem, to $R$ nazywamy pierścieniem z jedynką.\\\\
+\textbf{Operacje na pierścieniach}
+$R=(X,+,\cdot,0)$ - pierścień, $\alpha,\beta \in X$ to:
+\begin{align*}
+    \alpha A + \beta B = \{\alpha \cdot a + \beta \cdot b : a\in A, b \in B\}
+\end{align*}
+Przykład $(2\mathbb{Z},+,\cdot,0)$ - pierścień przemienny bez 1.\\
+Przykład $(M_{2 \times 2}, +,\cdot,0,1_2)$ - pierścień macierzy rzeczywistych $2\times 2$ odwracalne - pierścień z jedynką, ale nie przemienny.\\
+
+\subsection{Ciało}
+
+\noindent
+Jeśli $(X-\{0\},\cdot, 1)$ jest grupą abelową to nazywamy to \textbf{ciałem}.
+
+\noindent
+Jeśli $p$-pierwsza to $(\mathbb{Z}_p, +_p, \cdot_p,0,1)$ jest ciałem.
+
+\noindent
+Jeśli $R=(X,+,\cdot,0)$ oraz $A$ niepusty taki, że $A\cap X = \emptyset$. Określamy rozszerzenie $R$ o $A$:
+\begin{align*}
+    R[A] \text{ - najmniejszy pierścień który zawiera } R\cup A
+\end{align*}
+Jeśli $|A|=n\in \mathbb{N}$ to dla $A=\{a_1,a_2,\dots, a_n\}$:
+\begin{align*}
+    R[A] = R[a_1,a_2,\dots,a_n]
+\end{align*}
+Pierścień Gaussa $(\mathbb{Z}[i], +,\cdot,0,1)$, $\mathbb{Z}[i] = \{a+bi : a,b \in \mathbb{Z}\}$\\
+Liczby Dualne $\mathbb{R}[\varepsilon] = (D, +,\cdot,0,1)$, $D=\{a+b\varepsilon : a,b\in\mathbb{R}\}, \varepsilon \notin \mathbb{R}, \varepsilon^2=0$\\ 
+Liczby Podwójne $(P,+,\cdot, 0,1), P=\{a+bj : a,b\in\mathbb{R}\}, j\notin\mathbb{R}, j^2=1$\\
+Liczby Zespolone $\mathbf{C} = \mathbf{R}[i] = (\mathbf{C}, +, \cdot, 0,1)$\\
+Pierścień wielomianów o zm. x : $x\notin K$, $K[x] = \{\sum_{i=0}^{n} a_i x^i : n\in\mathbb{N} \left(\forall i=0,1\dots n\right), a_i \in K\}$\\
+Pierścień wielomianów w zm. zm. x, y $K[x,y] = \{\sum_{i=0}^{n}\sum_{j=0}^{m} a_{ij} x^i y^j : a_{ij} \in K\}$\\\\
+
+Def. $R=(X,+,\cdot)$ - pierścień. $A\subseteq X$. Określamy ideał:
+\begin{align*}
+    \left\langle  A\right\rangle = \{\sum_{i=1}^{n\in \mathbb{N}} r_i \cdot a_i : r_i \in X, a_i \in A\}
+\end{align*}
+$A$ - może być nieskończony. Jeśli $A = \{a_1,\dots a_k\}$ to $\langle A \rangle = \{\sum_{i=1}^{k} r_i \cdot a_i : r_i \in X\}$\\
+$\langle 2 \rangle$ w $\mathbb{Z}$ : $\langle 2 \rangle = 2\mathbb{Z}$\\
+$\langle x - 1 \rangle$ w $\mathbb{R}[x]$ : $\langle x - 1 \rangle = \{(x-1)w(x) : w(x) \in \mathbb{R}[x]\}$\\
+$R = (X,+,\cdot,0)$ - pierścień. $d|a \equiv \left(\exists b \in X\right) d\cdot b = a$\\
+$d \in \text{NWD}(a,b) \equiv (d | a \land d | b) \land \left(\forall x\right) \left((x | a \land x | b) \implies x | d\right)$\\
+$d \in \text{NWW}(a,b)$ ćwiczenia\\
+$a,b\in \mathbb{Z}[i] \langle a,b \rangle = \langle c \rangle \equiv c \in \text{NWD}(a,b)$\\
+$\langle a \rangle \cap \langle b \rangle = \langle c \rangle \equiv c \in \text{NWW}(a,b)$
+
+\subsection{Ideał}
+
+$R = (X,+,\cdot, 0)$ - pierścień przemienny. $\emptyset \neq I \subseteq X$. $I$ nazywamy ideałem w $R$, gdy:
+\begin{enumerate}
+    \item $\left(\forall a,b\in I \right)$ $a-b \in I$
+    \item $\left(\forall r \in X \right)\left(\forall a \in I\right) r\cdot a \in I$
+\end{enumerate}
+$I=\{0\}$ - ideał trywialny, $I=X$ - ideał niewłaściwy.\\
+$\langle A\rangle$ - najmniejszy ideał w $R$ zawierający $A$.\\
+
+\subsection{Relacja Równoważności}
+
+Niech $R$ - pierścień, a $I \in \text{ID}(R)$, $a,b\in R$
+\begin{align*}
+    a \equiv b \iff (a-b) \in I
+\end{align*}
+Gdzie $\equiv$ jest relacją równoważności.
+
+\subsection{Pierścień Ilorazowy}
+
+$R/_{\equiv}$ nazywamy pierścieniem ilorazowym z działaniami i el neutralnym określonymi naturalnie.
+
+\subsection{Dziedzina Całkowitości}
+
+Pierścień $R$ to dziedzina całkowitości gdy $\left(\forall u,v \in R \right) u\cdot v = 0 \implies (u=0 \lor v=0)$\\
+$\mathbb{Z}_7[x] \implies w(x) = x^7-x$ (MTF) $\left(\forall x \in \mathbb{Z}_7\right) w(x) = 0$
+
+\subsection{Dziedzina Euklidesowa}
+
+Nazywamy dziedzinę całkowitości $(X,+,\cdot, 0)$, że $\exists N : X\to \mathbb{N}$, $N(0) = 0$, takie, że 
+\begin{enumerate}
+    \item $\left(\forall a,b\in X\right)(b\neq 0) \implies [(\exists q,r \in X) a = q\cdot b + r \land (r=0 \lor N(r) < N(b))]$
+    \item $\left(\forall a,b \in X\right)(b \neq 0) \implies N(a) \leq N(a\cdot b)$
+\end{enumerate}
+Uwaga. Jeśli istnieje $n$ które spełnia $1$ to istnieje $\tilde{N}$, które spełnia 1,2.\\
+Uwaga. N, $N$ które spełnia 1, 2 nazywamy normą dziedziny euklidesowej $R\in \text{EUCL}$ \\
+
+\noindent
+Przykład: w $\mathbb{Z}$: $N(k) = |k|$ \\
+Przykład: w $\mathbb{Z}[i]: N(a + bi) = a^2 + b^2$
+
+\section{Wykład II}
+
+\textit{by Michał Waluś} \\
+
+\noindent
+\textbf{Fakt:} 
+
+\begin{equation*}
+    \mathbb{C} \backsimeq \left\{ 
+    \begin{bmatrix}
+        a & -b \\
+        b & a
+    \end{bmatrix} : a,b \in \mathbb{R} \right\} 
+\end{equation*}
+
+\noindent
+Przykład: $<a + bi>$ w $\mathbb{Z}[i]$ 
+\[ <a + bi> = \{ (a+bi)(x + yi): x,y \in \mathbb{Z} \} = \left\{ (a+bi) \sqrt{N(x+y)} \cdot O_{\varphi} : x,y \in \mathbb{Z} \right\} \]
+gdzie $O_{\varphi}$ to obrót o jakiś kąt $\varphi$, $\tan \varphi = \frac{y}{x}$. \\
+
+\subsection{Wielomiany}
+
+\noindent
+Przykład. $K[x]$, $K$ - ciało. $f \in K[x] \implies N(f) = deg(f)$. \\
+
+\noindent
+Jak sprawdzić kiedy $f \in K[x]$ spełnia $f \equiv 0$? \\
+
+\noindent
+\textbf{Fakt:} $f \equiv 0 \iff (\exists A \in K)( |A| > deg(f) \land (\forall x \in A) f(x) = 0)$ \\
+
+\noindent
+\textbf{Def.} Jeśli $f\in K[x]$, $f = \sum_{i=0}^{n} a_i x^i$, $a_n \neq 0$, to określamy wiodący jednomian $LT(f) = a_nx^n$. ($LT(0) = 0$) \\
+
+\subsection{Ideały}
+
+\noindent
+\textbf{Def.} Dziedzinę całkowitości $\mathcal{R}$ nazywamy dziedziną ideałów głównym (\textit{PID - Perfect Ideal Domain}), jeśli
+
+\[ (\forall \mathcal{I} \in ID(\mathcal{R}))(\exists a) \mathcal{I} = <a> \]
+
+\noindent
+\textbf{Fakt:} W dziedzinach euklidesowych $<a,b> = <c> \equiv c \in NWD(a, b)$ \\
+
+\noindent
+\textbf{Fakt:} $d | a \iff <a> \subseteq <d>$ \\
+\textbf{Wniosek:} $(d|a \land d |b) \iff <a,b> \subseteq <d>$ \\
+
+\noindent
+\textbf{Fakt:} w $\mathcal{R} \in EUCL$, dla $b \neq 0$, $a = b \cdot q + r$ mamy $<a,b> = <b,r>$ \\
+
+\subsection{Algorytm Euklidesa}
+
+\noindent
+\textbf{Tw. (Euklides)} Jeśli $NWD(n,m) = d$, to 
+\[ (\exists a,b \in \mathbb{Z}) d = an + bm  \textit{ (tożsamość Bézouta)}\] \\
+
+\noindent
+$<a, b> = <d> \equiv d = X \cdot b + Y \cdot r \equiv d = X \cdot b + Y \cdot ( a - b \cdot q) = a \cdot Y + b(X - q \cdot Y)$ \\
+
+\noindent
+Roszerzony algorytm Euklidesa: 
+\begin{verbatim}
+EXT_NWD(a, b) {
+    if (b = 0) { return (a, 1, 0)}
+    else {
+        (q, r) = div(a b)
+        (d, X, Y) = EXT_NWD(b, r)
+        return (d, Y, b * (X - q * Y)
+    }
+}   
+div(f, q) {
+    q = 0, p = f
+    while (p != 0 && LT(g) | LT(f)) {
+        q += LT(f)/LT(g)
+        p -= g * (LT(f) / LT(g))
+    }
+    return (q, p)
+}
+\end{verbatim}
+
+\subsection{Częściowy porządek}
+
+\textbf{Def.} w $\mathbb{N}^k$ 
+
+\[ (x_1, \dots, x_k) \leq (y_1, \dots, y_k) \equiv \bigwedge_{i=1}^k x_i \leq y_i \]
+
+\noindent
+\textbf{Lemat Dicksona} \\
+Niech $\overline{x_n} = (x_1^{(n)}, \dots, x_k^{(n)}) \in \mathbb{N}^k$. Wtedy istnieje podciąg $i_1, i_2, \dots$ taki, że $(\overline{x_{i_j}})_{j \in \mathbb{N}}$ jest niemalejący. \\
+
+\noindent
+\textbf{D-d} \\
+$A_n = \overline{x}[\mathbb{N}]$.
+
+\begin{enumerate}
+    \item Jeśli $|A_0| < \aleph_0$, to istnieje $\overline{z} \in \mathbb{N}^k$, taki że $| \overline{x}^{-1}[\overline{z}]| = \aleph_0$. Wystarczy wziąć podciąg składający się z samych $\overline{z}$.
+    \item Indukcja ze względu na $k$.
+    \begin{enumerate}
+        \item ($k = 1$) Kładziemy $\overline{x_{i_1}} = \min A_0$, $i_1 \in \{n \in \mathbb{N} : x_n = \min A_0 \}$. $A_1 = A_0 \backslash \{\overline{x_{i_1}}\}$. Dalej $\overline{x_{i_2}} = \min A_1$, $A_j = A_j \backslash \{\overline{x_{i_j}}\}$. \\
+        Oczywiście $(\overline{x_n})_{n \in \mathbb{N}}$ ma podciąg niemalejący.
+        \item ($k \implies k + 1$) $\overline{x_k} = (x_1^{(n)}, \dots, x_k^{(n)})$. Ciąg $(x_{k+1}^{(n)})_n$ ma podciąg niemalejący $(x_k^{(n_j)})_j$. \\
+        Z założenia indukcyjnego $y_j = (x_1^{(i_j)}, \dots, x_k^{(i_j)})$, istnieje $(y_{j_l})_l$ - niemalejący w $\mathbb{N}^k$. \\
+        Zatem $(x_1^{(i_{j_l})}, \dots)$ jest niemalejący.
+    \end{enumerate}
+\end{enumerate}
+
+\section{Wykład III}
+
+\textit{again by Rafał Włodarczyk}\\
+
+\subsection{Multiindeksy}
+\textbf{Multiindeksem} nazywamy $\alpha = (\alpha_1, \alpha_2, \dots, \alpha_n) \in \mathbf{N}^n$. \\
+Długość multiindeksu $\alpha$ to $|\alpha| = \sum_{i=1}^{n} \alpha_i$. \\
+
+\begin{align*}
+    \alpha + \beta = (\alpha_1 + \beta_1, \alpha_2 + \beta_2, \dots, \alpha_n + \beta_n)\\
+    \alpha \leq \beta \iff \land_{i=1}^{n} \alpha_i \leq \beta_i\\
+    \alpha! = \prod_{i=1}^{n} (\alpha_i)!\\
+\end{align*}
+Gdy $k=|\alpha|$, to określamy $\binom{k}{\alpha} = \frac{k!}{\alpha!}$. Rozważamy $K[x_1, x_2, \dots, x_n]$,
+ozn. $x=(x_1, x_2, \dots, x_n)$:
+\begin{align*}
+    x^{\alpha} = \prod_{i=1}^{n} x_i^{\alpha_i}
+\end{align*}
+P. $x^3yz^2$ - $\bar{x} = (x,y,z)$, $\bar{x}^{(3,1,2)} = x^3yz^2$\\
+$\alpha=(3,1,2)\quad |\alpha| = 3+1+2=6, \beta=(1,1,0) \quad \beta\leq \alpha$\\
+\subsection{Współczynniki multimianowe}
+\textbf{Twierdzenie} o współczynnikach multimianowych.
+\begin{align*}
+\left(\sum_{i=0}^{n} x_i\right)^k = \sum_{|\alpha|=k} \binom{k}{\alpha} x^{\alpha}
+\end{align*}
+P. $(x+y+z)^3 = \binom{3}{(3,0,0)} x^3y^0z^0 + \binom{3}{(2,1,0)} x^2yz^0 + \binom{3}{(2,0,1)} x^2y^0z + \binom{3}{(1,2,0)} xy^2z^0 + \binom{3}{(1,1,1)} xyz + \binom{3}{(1,0,2)} xy^0z^2 + \binom{3}{(0,3,0)} x^0y^3z^0 + \binom{3}{(0,2,1)} x^0y^2z + \binom{3}{(0,1,2)} x^0y z^2 + \binom{3}{(0,0,3)} x^0y^0z^3=x^3+y^3+z^3+\dots+6xyz$\\
+\textbf{Def.} Stopień całkowity jednomianu $ax^{\alpha}$ w $K[x_1,x_2,\dots, x_n]$, gdzie $a\in K$, $x=(x_1,x_2,\dots,x_n)$,
+$\alpha=(\alpha_1,\alpha_2,\dots,\alpha_n)$ określamy jako $|\alpha|$ i piszemy $\text{tdeg}(ax^{\alpha}) = |\alpha|$.\\
+Dla wielomianu $f(x) = \sum_{\alpha \in A_f} a_\alpha \cdot x^\alpha$, gdzie $A_f = \{\alpha \in \mathbb{N}^n : a_\alpha \neq 0\}$.
+Określamy $\text{tdeg}(f)= \max_\alpha \{|\alpha|\}$.\\
+P. $f(x,y,z) = x^3z + 3y^2z^3 + y + 2 \to A_f=\{(3,0,1),(0,2,3),(0,1,0),(0,0,0)\}, a_{(0,2,3)}=3, \text{tdeg}(f)=5$\\
+\textbf{Fakt} $\text{tdeg}(f\cdot g) = \text{tdeg}(f) + \text{tdeg}(g),\quad f,g\in K[\bar{x}]-\{0\}$  
+P. $K[x,y]$, $\langle x,y \rangle = \{a(x,y)\cdot x + b(x,y)\cdot y : a,b\in K[x,y]\} = $\\
+$=\{f\in K[x,y] : f(0,0)=0\}$. $\langle x,y \rangle$ - nie jest ideałem głównym
+$\langle f \rangle = \langle x,y \rangle$ wtedy $x=af$,
+$\text{tdeg}(x) = 1 = \text{tdeg}(a) + \text{tdeg}(f)$.\\
+Jeśli $\text{tdeg}(a)=1$ to $f=\text{const.}$, czy $c \in \langle x,y \rangle$ - tylko jeśli $c=0$, a to nie może wygenerować nam przestrzeni.\\
+Jeśli $\text{tdeg}(f)=1$ to $\text{tdeg}(a)=0$, $f=c'x$ - nie da się wygenerować $y=a'f$.\\
+\textbf{Fakt} Jeśli $d=\text{deg}(f)$, dla $f\in K[x]$ oraz $\left(\exists A\right) |A|>d \land \left(\forall a\in A\right) f(a)=0, to f\equiv 0$.\\
+\textbf{Tw.} Niech $d=\text{tdeg}(f)$, $f\in K[x_1,\dots, x_n]$ oraz $\left(\exists A \subseteq K\right) |A| > d \land \left(\forall \bar{a} \in A^n\right) f(\bar{a}) = 0$, to $f\equiv 0$\\
+P. $f(x,y) = x^2+y^2-1, \text{tdeg}(f) = 2, K=\mathbb{R}$\\
+D-d. $n=1$ KO
+Zał, że $f\i K[x_1,\dots,x_n,x_{n+1}]$
+\begin{align*}
+    f&=\sum_{i=0}^{k} g_i(x_1,\dots,x_n) \cdot x_{n+1}\\
+    f(a_1,a_2,\dots,a_n,x_{n+1}) &= \sum_{i=0}^{k} g_i (a_1,\dots,a_k)\cdot x_{n+1}\\
+    a_i\in A, |A|&> \text{tdeg}(f) \to |A| > \text{tdeg}(g_i)\\
+    \text{Przypuśćmy, że} g_i(a_1,\dots, a_n) &\equiv 0 \text{ dla wszystkich } i=0,1,\dots k\\
+    \text{Wtedy} f(\bar(a),x_{n+1})&=0
+\end{align*}
+P. $f(x,y)=x^2+y^2+2xy$, $\varepsilon(x,y)=(x+y)^2$ Czy $f-g\equiv 0$. Wystarczy sprawdzić w 9 punktach czy zgadza się wynik.
+\textbf{Rozmaitość Algebraiczna.} Niech $F\subseteq K[x_1,\dots,x_n]$.
+Rozmaitość $V$ nazywamy:
+\begin{align*}
+    V(F) = \{\bar{a} \in K^n : (\forall f \in F) f(\bar{a}) = 0\}
+\end{align*}
+P. $V(\{x^2+y^2-2, x^2-y^2\})=\{(-1,-1),(1,-1),(-1,1),(1,1)\}$\\
+P. $F,G\subseteq K[x_1,\dots,x_n]$.\\
+P. $V(F\cup G) = V(F) \cap V(G)$.\\
+P. $V(F) \cup V(G) = V(\{f \cdot g: f\in F, g\in G\}$)\\
+P. $V(F) = V(\langle F \rangle)$\\
+P. $V(\{x^2+y^2-2,x^2-y\})
+ = V(\langle x^2+y^2-2,x^2-y\rangle)
+ = V(\langle 2x^2-2,x^2-y^2\rangle) 
+ = V(\langle x^2-1, x^2-y^2 \rangle) 
+ = V(\langle x^2-1 \rangle) \cap V(\langle x^2-y^2 \rangle)
+ = [V(\langle x-1 \rangle) \cup V(\langle x+2)] \cap [V(\langle x-y \rangle) \cup V(\langle x+y \rangle)]$
+
+\section{Wykład IV}
+
+\textbf{Rozmaitością algebraiczną} rodziny $\mathcal{F} \subseteq \mathcal{K}[x_1,\dots,x_n]$
+to zbiór:
+
+\begin{align}
+    V(\mathcal{F}) = \{(a_1,a_2,\dots,a_n) \in \mathcal{K}^n : \left(\forall f\in\mathcal{F}\right) f(\bar{a})=0\}
+\end{align}
+P. $V(\{0\}) = \mathcal{K}^n$\\
+P. $V(F) \cup V(G) = V(\{fg : f\in F, g \in G\})$\\
+P. $V(F) \cap V(G) = V(F\cup G)$\\
+P. $V(x^2+y^2-1)$
+\begin{align*}
+    x(t) &= \frac{1-t^2}{1+t^2} \land y(t) = \frac{2t}{1+t^2}\\
+    x(1+t^2) + t^2 - 1 &= 0 \land y(1+t^2) - 2t = 0
+\end{align*}
+P. $V(x(1+t^2)+t^2-1, y(1+t^2)-2t)$\\
+P. $V(x^2-y^2-9, (u-x)^2+(v-y)^2-1)$ - Równanie ramienia robota, gdzie pierwszy segment ma długość $3$, a następny $1$. Ale super!!
+Ruch kamery przymocowanej do drona itd.
+
+\begin{definition}{Ideał Generowany}
+    Niech $A\subseteq \mathcal{K}^n$. Wtedy:
+    \begin{align*}
+        I(A) = \{f \in K[x_1,\dots,x_k] : \left(\forall \bar{a} in A\right) f(\bar{a}) = 0\}
+    \end{align*}
+    Fakt. $I(A)$ - ideał
+    Fakt. $I\subseteq I(V(I))$ - rozmaitość na ideale to ideał.
+\end{definition}
+
+Przykład $V(\langle x^2, y^2 \rangle) = \{(0,0)\}$, $I(V(\langle x^2, y^2 \rangle)) = \{\alpha(x,y) x + \beta(x,y) y : a,b \in K[x,y]\} = \langle x,y \rangle$
+
+Def. Dobry porządek $\leq$ na $\mathbb{N}^n$ (obcinamy do długości $n$) nazywamy porządkiem jednomianowym (Monomial Order), jeśli 
+$\left(\forall \alpha, \beta, \gamma \in \mathbb{N}^n\right) \alpha < \beta \to \alpha + \gamma < \beta + \gamma$,
+gdzie $a < b \iff (a\leq b \land a \neq b)$. P $\leq_\text{lex}$ na $\mathbb{N}^n$ jest MO.
+
+Def. Przy pomocy porządku MO można wprowadzić dobry porządek na jednomianach $\mathbb{K}[x_1,\dots,x_n]$ następująco:
+\begin{align*}
+    \bar{x}^\alpha \leq \bar{x}^\beta \iff \alpha \leq \beta
+\end{align*}
+
+P. Dla $\leq_{\text{lex}}$ na $\mathbb{N}^2$, $y<x$
+\begin{align*}
+    1 < y < y^2 < \dots < x < xy < xy^2 < \dots < x^2 < x^2y < \dots
+\end{align*}
+
+Def \textbf{Graded Lex.} na $\mathbb{N}^n$
+\begin{align*}
+    \alpha \leq_{\text{GL}} \beta \to (|\alpha| < |\beta| \lor (|\alpha|=|\beta| ^ \alpha \leq_{\text{lext}} \beta))
+\end{align*}
+
+Polynomial Quotient Reduce $f_1,g_1,g_2,\dots,g_n \in \mathcal{K}[x_1,\dots,x_n]$\\
+$\text{PQR}(f,\{g_1,\dots,g_k\})$ $f(\bar(x))=\sum_{i=1}^{k} g_i(\bar{x}) \cdot q_i(\bar{x}) + r(\bar{x})$\\
+P $\text{PQR}(1,\{x^2,x^2+1\}) = ((0,0),1)$\\
+P $\text{PQR}(1,\{x^2,x^2+1\}) = ((-1,1,0))$\\
+
+
+
+\end{document}

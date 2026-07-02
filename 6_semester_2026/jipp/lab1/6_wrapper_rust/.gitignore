@@ -1,0 +1,7 @@
+Cargo.lock
+target/
+ada_dynamic
+ada_static
+c_dynamic
+c_static
+rust_library

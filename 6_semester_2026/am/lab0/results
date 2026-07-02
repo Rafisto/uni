@@ -1,0 +1,18 @@
+Random:
+(western_sahara.tsp) min=77764.47533482156, mean_min10=91586.1619689455, mean_min50=82601.13997973023
+(djibouti.tsp) min=20883.87808840445, mean_min10=23528.2186920941, mean_min50=21334.57772199434
+(qatar.tsp) min=81614.47926474018, mean_min10=86906.60459240573, mean_min50=81237.34149802363
+(uruguay.tsp) min=1555856.4262920737, mean_min10=1581005.8225911364, mean_min50=1495132.2549331032
+(zimbabwe.tsp) min=2243300.018785932, mean_min10=2283066.6164987767, mean_min50=2160077.59642039
+MST 2-approx:
+(western_sahara.tsp) total_weight=35008.90657028173, mst_weight=21750.587380556433, ratio=1.61
+(djibouti.tsp) total_weight=8739.289031415929, mst_weight=5830.858023435, ratio=1.50
+(qatar.tsp) total_weight=12510.481335434866, mst_weight=8028.0137422378375, ratio=1.56
+(uruguay.tsp) total_weight=107339.79359396115, mst_weight=69876.46751850787, ratio=1.54
+(zimbabwe.tsp) total_weight=131827.97250692153, mst_weight=82872.57663554917, ratio=1.59
+OPT:
+(western_sahara.tsp) 27603 
+(djibouti.tsp) 6656
+(qatar.tsp) 9352
+(uruguay.tsp) 79114
+(zimbabwe.tsp) 95345

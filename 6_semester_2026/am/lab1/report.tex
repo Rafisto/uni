@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=-5cm, right=2cm, bottom=2cm, includeheadfoot, headheight=130pt, a4paper]{geometry}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{longtable}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\title{Algorytmy Metaheurystyczne\\Lista 1 - TSP Local Search}
+\author{Rafał Włodarczyk}
+\date{31.03.2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Model}
+
+Model TSP zakłada graf pełny $G=(V,E)$ z wagami.
+
+\section{Źródło dla danych}
+
+Dane do programu są wzięte ze strony internetowej:
+\begin{center}
+\texttt{https://www.math.uwaterloo.ca/tsp/world/countries.html}
+\end{center}
+oraz są dostępne do pobrania w formacie \texttt{.tsp} za pomocą skryptu \texttt{get\_data.sh}.
+
+\section{Głębokość Local Search}
+
+Średnia liczba kroków poprawy szacuje czynnik stały złożoności czasowej algorytmu Local Search.
+
+\section{Zadanie 1 - Wybór najlepszej Inwersji}
+
+Funkcja \texttt{invert(pi,i,j)} odwraca fragment permutacji \texttt{pi} od indeksu \texttt{i} do indeksu \texttt{j}.
+Wszystkich takich funkcji (rozmiar otoczenia) dla $|\pi| = n$ jest $\frac{n(n-1)}{2}$, ponieważ możemy wybrać dowolne dwa indeksy $i$ i $j$ takie, że $0 \leq i < j < n$.
+
+Wobec tego przeszukanie wszystkich możliwych inwersji i wybór najlepszej ma złożoność czasową $\mathcal{O}(n^2)$, ponieważ musimy rozważyć każdą parę indeksów $i$ i $j$.
+Ponadto powtórzenie testu $n$ - razy sprawia, iż całkowita złożoność czasowa tego algorytmu wynosi $\mathcal{O}(n^3)$.
+
+\input{_task1_table.tex}
+
+\section{Zadanie 2 - Wybór najlepszej Inwersji z n losowych}
+
+Modyfikujemy Local Search o wybrane losowo $n$ par $(i,j)$, gdzie $0 \leq i < j < n$, i dla każdej z tych par wykonujemy inwersję na permutacji $\pi$.
+Rozważamy $\mathcal{O}(n)$ par indeksów, a powtórzenie testu $n$ - razy sprawia, że całkowita złożoność czasowa tego algorytmu wynosi $\mathcal{O}(n^2)$.
+
+\input{_task2_table.tex}
+
+\section{Zadanie 3 - MST + Local Search}
+
+Modyfikujemy Local Search, rozpoczynając od wyznaczenia MST za pomocą algorytmu Kruskala, opisanego w poprzedniej liście w $\mathcal{O}(|E| \log |E|)$,
+a następnie $\sqrt{n}$ razy wykonujemy DFS z losowo wybranego wierzchołka w MST, aby uzyskać permutację wierzchołków następnie przekazywanych do pełnego Local Search.
+Pomimo, że tworzymy nakład pracy $\mathcal{O}(n^2 \log n)$ na początku, to jednak złożoność czasowa całego algorytmu jest $\mathcal{O}(n^3)$, ponieważ wykonujemy pełny Local Search, który ma złożoność $\mathcal{O}(n^3)$.
+
+\input{_task3_table.tex}
+\section{Wykresy dla najlepszego rozwiązania każdej metody}
+
+\input{_task_plots.tex}
+
+\section{Wnioski}
+
+Wyniki pokazują, że algorytm wyboru najlepszej inwersji jest najdokładniejszy, obarczony jest jednak
+największą złożonością. Algorytm wyboru najlepszej inwersji z $n$ losowych jest mniej dokładny, ale ma mniejszą złożoność,
+dzięki czemu wykonuje się szybciej.
+Algorytm MST + Local Search jest najbardziej złożony, ale tylko z pozoru ponieważ początkowe wytworzenie MST i rozwiązania
+2-optymalnego pozwala na znaczące zredukowanie liczby kroków poprawy, dzięki czemu algorytm wykonuje się szybciej niż
+pełny Local Search, jednocześnie pozostając bardziej dokładnym niż wybór najlepszej inwersji z $n$ losowych. 
+
+\end{document}

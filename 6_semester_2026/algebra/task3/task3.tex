@@ -1,0 +1,554 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx} 
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=-5cm, right=2cm, bottom=2cm, includeheadfoot, headheight=130pt, a4paper]{geometry}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{hyperref}
+
+\BeforeBeginEnvironment{verbatim}{\small}
+\lstset{language=c++,
+                basicstyle=\ttfamily\footnotesize,
+                keywordstyle=\color{blue}\ttfamily\footnotesize,
+                stringstyle=\color{red}\ttfamily\footnotesize,
+                commentstyle=\color{green}\ttfamily\footnotesize,
+                morecomment=[l][\color{magenta}]{\#},
+                extendedchars=true,
+                literate={ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ź}{{\'z}}1 {ż}{{\.z}}1
+                         {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ź}{{\'Z}}1 {Ż}{{\.Z}}1
+}
+
+\definecolor{darkyellow}{rgb}{0.8, 0.6, 0.0}
+
+\title{Wybrane Zagadnienia Algebry\\Sprawozdanie 3}
+\author{Rafał Włodarczyk 279762}
+\date{Czerwiec 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{(a) Pierścień Wielomianów Wielu Zmiennych}
+
+Strukturę danych dla pierścieni wielomianów wielu zmiennych $\mathbb{R}[x_1,\dots,x_n]$ implementuję 
+jako mapę \textit{klucz} $\to$ \textit{wartość}, w której kluczem jest wektor wykładników (jednomian bez współczynnika), 
+a wartością jest współczynnik zadanego jednomianu. Nieobecne w strukturze klucze (jednomiany) są interpretowane jako mające współczynnik równy zero.
+Przykład. Funkcja $f$ (Ćw. 37.) dana wzorem $f=x^3 - x^2\cdot y - x^2 \cdot z$ będzie reprezentowana jako trzy elementy w mapie:
+\begin{align*}
+\{({\color{red}3}, {\color{green}0}, {\color{blue}0}) \to {\color{darkyellow}1}\}  & \quad (\text{odpowiada } {\color{darkyellow}1} \cdot x^{{\color{red}3}}), \\
+\{({\color{red}2}, {\color{green}1}, {\color{blue}0}) \to {\color{darkyellow}-1}\} & \quad (\text{odpowiada } {\color{darkyellow}-1} \cdot x^{{\color{red}2}} \cdot y^{{\color{green}1}}), \\
+\{({\color{red}2}, {\color{green}0}, {\color{blue}1}) \to {\color{darkyellow}-1}\} & \quad (\text{odpowiada } {\color{darkyellow}-1} \cdot x^{{\color{red}2}} \cdot z^{{\color{blue}1}}).
+\end{align*}
+Wielomiany jednej zmiennej można przechowywać w prostszej postaci zwykłej tablicy.
+Operacje pierścieniowe ulegają zmianie - część wymaga porządku na jednomianach, który nie jest
+potrzebny w przypadku wielomianów jednej zmiennej.
+
+\section{(b) PolynomialReduce, Syzygium, algorytm Buchbergera}
+
+\subsection{PolynomialReduce}
+
+Algorytm \texttt{PolynomialReduce} jest tożsamy z poprzednim sprawozdaniem. 
+Jest to algorytm pobierający na wejściu wielomian $f$ oraz ciąg wielomianów $\mathcal{G}=(g_1,\dots,g_n)$. 
+Algorytm zwraca ciąg współczynników $(a_1,\dots,a_n)$ oraz wielomian $r$ taki, że:
+\begin{align*}
+    f = \sum_{i=1}^{n} \alpha_i \cdot g_i + r
+\end{align*}
+Wykorzystując jeden ze wcześniej zdefiniowanych porządków na jednomianach dokonujemy redukcji wielomianu $f$ względem ciągu $\mathcal{G}$
+\begin{enumerate}
+    \item Dopóki $f \neq 0$. Znajdź $m=\texttt{LT(f, ord)}$ - największy jednomian $m$ w $f$ według porządku \textit{ord}. \\ Ustal $LC(m)=a$ oraz $LM(m)=M$. (Leading cicient oraz Leading Monomial odpowiednio).
+    \item Dla każdego $g_i$ w $\mathcal{G}$ znajdź $m_i=\texttt{LT(g\_i, ord)}$, czyli największy jednomian $m_i$ w $g_i$ według \textit{ord}. \\ Ustal $LC(m_i)=b$ oraz $LM(m_i)=N$.
+    \item Sprawdź czy $LM(m_i)$ dzieli $LM(m)$. Spełniony musi zostać warunek: $\left(\forall j: LM(m)[j] \geq LM(m_i)[j]\right)$.
+    \item Jeśli tak:
+    \begin{enumerate}
+        \item Wykonaj redukcję: $f := f - \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)} \cdot g_i$
+        \item Zaktualizuj współczynnik $\alpha_i := \alpha_i + \frac{LC(m)}{LC(m_i)} \cdot \frac{LM(m)}{LM(m_i)}$.
+        \item Wróć do kroku 1.
+    \end{enumerate}
+    \item Jeśli nie, dodaj $LM(m)$ do $r$(eszty) ze współczynnikiem $LC(m)$ i usuń $m$ z $f$. Wróć do kroku 1.
+\end{enumerate}
+
+\begin{lstlisting}[language=c++]
+inline std::tuple<std::vector<poly_t>, poly_t> 
+poly_reduce(
+    // Wielomian f
+    const poly_t& f, 
+    // Ciąg wielomianów G = (g_1, ..., g_n) 
+    const std::vector<poly_t>& G, 
+    // ord na jednomianach
+    bool (*compare)(const monomian_t&, const monomian_t&) 
+)
+{
+    size_t n = G.size();
+    std::vector<poly_t> q(n); 
+    poly_t r;
+    poly_t p = f; 
+
+    // (1) Dopóki p != 0
+    while (!p.empty()) {
+        // LT(f) = aM, LM(f) = M, LC(f) = a
+        auto lt_p_it = get_lt(p, compare);
+        const monomian_t lm_p = lt_p_it->first; 
+        int64_t lc_p = lt_p_it->second; 
+        
+        // Dla każdego g_i w G
+        bool divided = false;
+        for (size_t i = 0; i < n; ++i) {
+            if (G[i].empty()) continue;
+            
+            // (2) Znajdź LT(g_i) = bN, LM(g_i) = N, LC(g_i) = b
+            auto lt_g_it = get_lt(G[i], compare);
+            const auto& lm_g = lt_g_it->first; 
+            int64_t lc_g = lt_g_it->second; 
+            
+            // (3) Sprawdz czy LM(g_i) dzieli LM(f) (iteruj po wykładnikach)
+            bool divisible = true;
+            for (size_t j = 0; j < lm_p.size(); ++j) {
+                if (lm_p[j] < lm_g[j]) {
+                    divisible = false;
+                    break;
+                }
+            }
+            
+            // (4) Jeśli tak, wykonaj redukcję 
+            if (divisible) {
+                // Oblicz q = LM(f) / LM(g_i) (iteruj po wykładnikach)
+                monomian_t q_mon;
+                for (size_t j = 0; j < lm_p.size(); ++j) {
+                    q_mon.push_back(lm_p[j] - lm_g[j]);
+                }
+
+                // Oblicz q_coef = LC(f) / LC(g_i)
+                int64_t q_coef = lc_p / lc_g;
+                q[i][q_mon] += q_coef;
+                
+                // Zaktualizuj p := p - q_coef * q_mon * g_i
+                for (const auto& [mon_g, coef_g] : G[i]) {
+                    monomian_t new_mon;
+                    for (size_t j = 0; j < mon_g.size(); ++j) {
+                        new_mon.push_back(q_mon[j] + mon_g[j]);
+                    }
+                    p[new_mon] -= coef_g * q_coef;
+                    if (p[new_mon] == 0) p.erase(new_mon);
+                }
+                
+                divided = true;
+                break;
+            }
+        }
+        
+        // (5) Jeśli nie, dodaj LM(f) do r ze współczynnikiem LC(f) i usuń LT(f) z p
+        if (!divided) {
+            r[lm_p] += lc_p;
+            p.erase(lm_p); 
+        }
+    }
+
+    // Zwracamy krotkę ({q_1, ... q_n}, r)
+    return {q, r}; 
+}
+\end{lstlisting}
+
+\subsection{Syzygium}
+
+Służy do eliminacji wiodących wyrazów pary wielomianów $f_i$ oraz $f_j$. 
+Na wejściu znajduja się dwa wielomiany $f_i, f_j$, ich $LCM=\text{LCM}(LM(f_i), LM(f_j))$ 
+(najmniejsza wspólna wielokrotność) porządek jednomianów \textit{ord}. 
+Wynikiem działania jest wielomian $S(f_i, f_j)$ zdefiniowany jako:
+\begin{align*}
+    S(f_i, f_j) = \frac{LCM}{LT(f_i)} \cdot f_i - \frac{LCM}{LT(f_j)} \cdot f_j
+\end{align*}
+Algorytm działa w następujących krokach:
+\begin{enumerate}
+    \item Wyznacz wiodące składniki $f_i$: $LT(f_i) = (lm_i, lc_i)$ oraz $f_j$: $LT(f_j) = (lm_j, lc_j)$.
+    \item $\forall (m,c)\in f_i$ (para jednomian, współczynnik):
+    \begin{enumerate}
+        \item Wyznacz $m\_new := LCM + (m - lm_i)$.
+        \item Dodaj do $S(f_i,f_j)$ wartość $c \cdot lc_j$ pod kluczem $m\_new$.
+    \end{enumerate}
+    \item $\forall (m,c)\in f_j$:
+    \begin{enumerate}
+        \item Wyznacz $m\_new := LCM + (m - lm_j)$.
+        \item Odejmij od $S(f_i,f_j)$ wartość $c \cdot lc_i$ pod kluczem $m\_new$.
+        \item Usuń jednomian z $S(f_i,f_j)$ jeśli powyższa operacja ustaliła $c\_new=0$.
+    \end{enumerate}
+\end{enumerate}
+
+\begin{lstlisting}[language=c++]
+poly_t fi = G[i]; poly_t fj = G[j];
+auto lt_i = get_lt(fi, order); auto lt_j = get_lt(fj, order);
+monomian_t lcm = monomial_lcm(lt_i->first, lt_j->first);
+double_t lc_i = lt_i->second; double_t lc_j = lt_j->second;
+
+// 3. Syzygy over all terms
+poly_t syzygy;
+
+// (+) (LCM / LT(f_i)) * f_i * lc_j
+for (const auto &[m, c] : fi)
+{
+    monomian_t m_new = lcm;
+    for (size_t k = 0; k < m.size(); ++k)
+        m_new[k] += (m[k] - lt_i->first[k]);
+    syzygy[m_new] += c * lc_j;
+}
+
+// (-) (LCM / LT(f_j)) * f_j * lc_i
+for (const auto &[m, c] : fj)
+{
+    monomian_t m_new = lcm;
+    for (size_t k = 0; k < m.size(); ++k)
+        m_new[k] += (m[k] - lt_j->first[k]);
+    syzygy[m_new] -= c * lc_i;
+    if (syzygy[m_new] == 0) syzygy.erase(m_new);
+}
+\end{lstlisting}
+
+\subsection{Algorytm Buchbergera}
+
+Służy do wyznaczania bazy Grobnera dla ciągu wielomianów $F$ oraz zadanego ideału $\mathcal{G}=\{g_1,\dots,g_n\}$.
+Algorytm pobiera ciąg wielomianow $F$ oraz porządek jednomianów \textit{ord},
+ a zwraca zredukowaną bazę Grobnera w postaci ciągu wielomianów $G_{reduced}$.
+
+\begin{enumerate}
+    \item Skopiuj wielomiany do bazy $G\gets F$.
+    \item Dla wszystkich par $(i,j)$ z $G$ oblicz najmniejszą wspólną wielokrotność wiodących jednomianów i dodaj pary do kolejki.
+    \item Wyznacz Syzygium $S_{ij}$ dla każdej pary $(i,j)$ w kolejce.
+    \item Zredukuj $S_{ij}$ względem aktualnego zbioru $G$.
+    \item Jeśli reszta jest niezerowa, rozszerz zbiór $G$ i dodaj nowe pary do kolejki.
+    \item Po sprawdzeniu wszystkich elementów w kolejce, zredukuj $G$ - to wynikowa baza Grobnera.
+\end{enumerate}
+
+\begin{lstlisting}
+// 1. G <- F
+std::vector<poly_t> G;
+for (const auto &f : F) if (!f.empty()) G.push_back(f);
+
+using index_pair_t = std::pair<size_t, size_t>;
+std::queue<index_pair_t> pairs;
+// 2. Dla wszystkich par (i,j) stwórz kolejkę Q
+for (size_t i = 0; i < G.size(); ++i)
+    for (size_t j = i + 1; j < G.size(); ++j)
+        pairs.push({i, j});
+
+// Sprawdzaj kolejne pary z kolejki
+while (!pairs.empty())
+{
+    auto [i, j] = pairs.front(); pairs.pop();
+    poly_t fi = G[i]; poly_t fj = G[j];
+    auto lt_i = get_lt(fi, order); auto lt_j = get_lt(fj, order);
+    monomian_t lcm = monomial_lcm(lt_i->first, lt_j->first);
+    double_t lc_i = lt_i->second; double_t lc_j = lt_j->second;
+
+    // 3. Wyznacz syzygium f_i, f_j, opisane w poprzednim algorytmie
+    poly_t syzygy = Syzygy... ( see previous )
+    if (syzygy.empty()) continue;
+
+    // 4. Redukuj S(f_i,f-J) po aktualnym G
+    auto [quotients, remainder] = poly_reduce(syzygy, G, order);
+
+    // 5. Jeśli reszta jest niezerowa dodaj ją do G i nowo stworzone pary do Q
+    if (!remainder.empty())
+    {
+        size_t new_index = G.size();
+        for (size_t k = 0; k < new_index; ++k)
+        {
+            pairs.push({k, new_index});
+        }
+        G.push_back(remainder);
+    }
+}
+\end{lstlisting}
+
+\section{(c) Układy Równań Krzywych Stożkowych}
+
+\subsection{Układ Pierwszy}
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.49\textwidth}  
+Baza Grobnera dla następującego układu równań:
+\begin{align*}
+\begin{cases}
+x^2+y^2=z^2 \\
+(c+1)z = 0
+\end{cases}
+\xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
+\begin{cases}
+x^2 + y^2 \\
+z
+\end{cases}
+\\
+\implies
+\mathcal{I}_f = x^2 + y^2
+\end{align*}
+Drugie równanie $10z=0$ wymusza $z=0$.
+Przekrajamy dwustronnie nieskończony stożek z płaszczyzną przechodzącą idealnie przez
+wierzchołek stożka. Jedynym rozwiązaniem jest więc jeden punkt - wierzchołek.
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth} 
+    \includegraphics[width=0.99\linewidth]{ex-c-1.png}
+    \captionof*{figure}{$\mathcal{V}(x^2+y^2)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-1-3d.png}
+    \captionof*{figure}{Wykres 3D (1)}
+\end{minipage}
+\end{figure}
+
+\subsection{Układ Drugi}
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.49\textwidth}  
+Baza Grobnera dla następującego układu równań:
+\begin{align*}
+\begin{cases}
+x^2 + y^2 = z^2 \\
+z + 8 = 0
+\end{cases}
+\xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
+\begin{cases}
+x^2 + y^2 - 64 \\
+z + 8
+\end{cases}
+\\
+\implies
+\mathcal{I}_f = x^2 + y^2 - 64
+\end{align*}
+Drugie równanie $z=-8$. Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą powyżej jego wierzchołka równolegle do osi XY. 
+Zbiór rozwiązań jest zatem równaniem okręgu.
+
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth} 
+    \includegraphics[width=0.99\linewidth]{ex-c-2.png}
+    \captionof*{figure}{$\mathcal{V}(x^2+y^2 - 64)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-2-3d.png}
+    \captionof*{figure}{Wykres 3D (2)}
+\end{minipage}
+\end{figure}
+
+\subsection{Układ Trzeci}
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.49\textwidth}  
+Baza Grobnera dla następującego układu równań:
+\begin{align*}
+\begin{cases}
+x^2 + y^2 = z^2 \\
+x + z + 5 = 0
+\end{cases}
+\xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
+\begin{cases}
+x + z + 5 \\
+y^2 - 10x + 25
+\end{cases}
+\\
+\implies
+\mathcal{I}_f = y^2 - 10x - 25
+\end{align*}
+Drugie równanie $x+z+5=0$. Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą pod kątem prostopadłym do jego ściany, otrzymując
+kolejną krzywą stożkową - parabolę.
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth} 
+    \includegraphics[width=0.99\linewidth]{ex-c-3.png}
+    \captionof*{figure}{$\mathcal{V}(y^2 - 10x - 25)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-3-3d.png}
+    \captionof*{figure}{Wykres 3D (3)}
+\end{minipage}
+\end{figure}
+
+\subsection{Układ Czwarty}
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.49\textwidth}  
+Baza Grobnera dla następującego układu równań:
+\begin{align*}
+\begin{cases}
+x^2 + y^2 = z^2 \\
+x + y + z + 3 = 0
+\end{cases}
+\\\xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
+\begin{cases}
+x + y + z + 3 \\
+xy + 3x + 3y + 4.5
+\end{cases}\\
+\implies
+\mathcal{I}_f = xy + 3x + 3y + 4.5
+\end{align*}
+Drugie równanie $x+y+z+3=0$. Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą pod kątem większym niż 45 stopni do XY, otrzymując
+kolejną krzywą stożkową - hiperbolę.
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth} 
+    \includegraphics[width=0.99\linewidth]{ex-c-4.png}
+    \captionof*{figure}{$\mathcal{V}(xy + 3x + 3y + 4.5)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-4-3d.png}
+    \captionof*{figure}{Wykres 3D (4)}
+\end{minipage}
+\end{figure}
+
+\subsection{Układ Piąty}
+
+\begin{figure}[H]
+\begin{minipage}[b]{0.49\textwidth}  
+Baza Grobnera dla następującego układu równań:
+\begin{align*}
+\begin{cases}
+x^2 + y^2 = z^2 \\
+y + 2z + 2
+\end{cases}
+\\
+\xRightarrow[\text{z > x > y}]{\text{GrobnerBasis}}
+\begin{cases}
+y + 2z + 2 \\
+4 x^2 + 3 y^2 - 4 y - 4
+\end{cases}
+\\
+\implies
+\mathcal{I}_f = 4 x^2 + 3 y^2 - 4 y - 4
+\end{align*}
+Przekrajamy dwustronnie nieskończony stożek 
+z płaszczyzną przechodzącą pod kątem mniejszym niż 45 stopni XY, otrzymując
+kolejną krzywą stożkową - elipsę.
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth} 
+    \includegraphics[width=0.99\linewidth]{ex-c-5.png}
+    \captionof*{figure}{$\mathcal{V}(4 x^2 + 3 y^2 - 4 y - 4)$}
+\end{minipage}
+\begin{minipage}[t]{0.24\textwidth}
+    \includegraphics[width=0.99\linewidth]{ex-c-5-3d.png}
+    \captionof*{figure}{Wykres 3D (5)}
+\end{minipage}
+\end{figure}
+
+\section{(d) Baza oraz Eliminacja zmiennej}
+
+Dla zadanego układu wyznaczam Bazę Grobnera przy użyciu mojej implementacji algorytmu Buchbergera. 
+\begin{align*}
+    \begin{cases}
+        (x^2+y^2-ax)^2 = z^2(x^2+y^2)\\
+        x+2y+3z = 0
+    \end{cases}
+\end{align*}
+Koduję wejście - wielomiany wielu zmiennych (rozszerzam $(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca$)):
+\begin{figure}[h]
+\begin{minipage}[t]{0.49\textwidth}   
+\begin{lstlisting}{c++}
+const poly_t D1 = {
+    {{2, 0, 0}, a * a},
+    {{3, 0, 0}, -2 * a},
+    {{1, 2, 0}, -2 * a},
+    {{4, 0, 0}, 1},
+    {{2, 2, 0}, 2},
+    {{0, 4, 0}, 1},
+    {{2, 0, 2}, -1},
+    {{0, 2, 2}, -1}
+};
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.49\textwidth}   
+\begin{lstlisting}{c++}
+const poly_t D2 = {
+    {{1, 0, 0}, 1},
+    {{0, 1, 0}, 2},
+    {{0, 0, 1}, 3}
+};
+\end{lstlisting}
+\end{minipage}
+\end{figure}\\
+Wynik działania programu:
+\begin{verbatim}
+Grobner basis von
+(x^4) - 4(x^3) + 2(x^2)(y^2) 
+- (x^2)(z^2) + 4(x^2) - 4(x)(y^2) 
++ (y^4) - (y^2)(z^2) 
+und
+(x) + 2(y) + 3(z)
+Computed Groebner basis:
+1. (x) + 2(y) + 3(z)
+2. (y^4) + 4.80(y^3)(z) + 1.60(y^3) + 9.160(y^2)(z^2) 
+   + 6.240(y^2)(z) + 0.640(y^2) + 8.160(y)(z^3) 
+   + 8.640(y)(z^2) + 1.920(y)(z) + 2.880(z^4) + 4.320(z^3) + 1.440(z^2)
+\end{verbatim}
+Wybieramy drugie wyrażenie, nieposiadające zmiennej $x$. W celu wykonania wykresu tego równania $w(y,z)=0$
+wprowadzamy podstawienie $x \gets y, y \gets z$ i rysujemy w układzie kartezjańskim $(x,y)$.
+\begin{align*}
+    0.64x^{2}+1.6x^{3}+1x^{4}+1.92xy+6.24x^{2}y+4.8x^{3}y+1.44y^{2}+8.64xy^{2}+9.16x^{2}y^{2}+4.32y^{3}+8.16xy^{3}+2.88y^{4}=0
+\end{align*}
+\noindent
+W tym podpunkcie należy również porównać wynik z podstawieniem $z=a$ do pierwszego z równań, zachodzi:
+\begin{align*}
+    (*) \quad (x^2+y^2-ax)^2 = a^2(x^2+y^2) 
+\end{align*}
+Kolorem czerwonym oznaczona jest krzywa policzona za pomocą bazy Grobnera.
+Kolorem niebieskim oznaczone jest równianie $(*)$, dla $a=2$ - jest to kardioida - często spotykana
+np. w muzyce - stanowi profil zbierania dźwięku mikrofonów pojemnościowych.
+\begin{figure}[H]
+    \includegraphics[width=0.99\linewidth]{ex-d.png}
+\end{figure}
+
+\section{(e) Baza Grobnera oraz Trysektrysa}
+
+Dla zadanej funkcji w układzie biegunowym wprowadzamy podstawienie
+ $\cos (\theta) = \frac{x}{r}$, tak jak na poprzedniej liście w celu przejścia do układu kartezjańskiego.
+\begin{align*}
+    r = b \left(4 \cos (\theta) + \frac{1}{\cos (\theta)}\right)
+    &= b \left(4 \frac{x}{r} + \frac{r}{x}\right)\\
+    b \left(\frac{4x^2 + r^2}{rx}\right) - r &= 0 \\
+    b (4x^2 + r^2) - r^2 x &= 0 \\
+    b r^2 + 4bx^2 - r^2 x &= 0
+\end{align*}
+Mamy następujący układ równań:
+\begin{align*}
+    \begin{cases}
+        x^2 + y^2 - r^2 = 0 \\
+        b r^2 + 4b x^2 - r^2 x = 0
+    \end{cases}
+\end{align*}
+Wyciągnijmy z pomocą Bazy Grobnera wyrażenia zawierające jedynie $x,y$. Wynik działania programu:
+
+\begin{verbatim}
+Grobner basis von -(r^2) + (y^2) + (x^2) und -(r^2)(x) + 7(r^2) + 28(x^2)
+Computed Groebner basis:
+1. (r^2) - (y^2) - (x^2)
+2. (y^2)(x) - 7(y^2) + (x^3) - 35(x^2)
+\end{verbatim}
+Zauważmy, że drugi element bazy składa się tylko z $x,y$. Jest on zatem naszym rozwiązaniem:
+\begin{align*}
+    f(x,y) = y^2\cdot x -7y^2 + x^3 - 35x^2 = 0
+\end{align*}
+
+\subsection{Wykresy Podanego Równania}
+
+Po lewej stronie narysowałem krzywą w Geogebrze za pomocą wyjściowego równania $r(\theta)$ w układzie biegunowym. Po prawej stronie
+narysowałem te samą krzywą za pomocą równania dwóch zmiennych $f(x,y)=0$
+
+\begin{figure}[H]
+    \includegraphics[width=0.49\linewidth]{ex-e-rcurve.png}
+    \includegraphics[width=0.49\linewidth]{ex-e-poly.png}
+\end{figure}
+
+\end{document}

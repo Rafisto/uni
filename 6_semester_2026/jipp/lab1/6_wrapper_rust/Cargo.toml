@@ -1,0 +1,10 @@
+[package]
+name = "jpp_test"
+version = "0.1.0"
+edition = "2021"
+
+build = "build.rs"
+
+[[bin]]
+name = "rust_bin"
+path = "test.rs"

@@ -1,0 +1,11 @@
+[package]
+name = "jpp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[lib]
+name = "jpp"
+path = "libjpp.rs"
+crate-type = ["staticlib", "cdylib"]

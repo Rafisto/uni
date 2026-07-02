@@ -1,0 +1,168 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}                                                                   
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=-5cm, right=2cm, bottom=2cm, includeheadfoot, headheight=130pt, a4paper]{geometry}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{longtable}
+
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+
+\title{Algorytmy Metaheurystyczne\\Lista 2 - TSP Simulated Annealing and Tabu Search}
+\author{Rafał Włodarczyk}
+\date{12.05.2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Model}
+
+Model TSP zakłada graf pełny $G=(V,E)$ z wagami.
+
+\section{Źródło dla danych}
+
+Dane do programu są wzięte ze strony internetowej:
+\begin{center}
+\texttt{https://www.math.uwaterloo.ca/tsp/world/countries.html}
+\end{center}
+oraz są dostępne do pobrania w formacie \texttt{.tsp} za pomocą skryptu \texttt{get\_data.sh}.
+
+\section{Zadanie 1 - Simulated Annealing}
+
+Symulowane wyżarzanie (\textit{Simulated Annealing}) to algorytm metaheurystyczny inspirowany
+fizycznym procesem wyżarzania metali - startujemy z temperaturą $T$, którą następnie w każdym
+kroku (epoch) obniżamy o współczynnik $\alpha$ (0 < $\alpha$ < 1) zgodnie ze wzorem
+\begin{align*}
+    T_{new} = \alpha \cdot T_{old}.
+\end{align*}
+Następnie w każdym kroku ($n$ - liczba kroków)
+przeprowadzamy kilka prób ($k$ - liczba prób w kroku) i wybieramy 
+najlepszą z nich.
+
+\subsection{Wyznaczenie współczynników}
+Wyznaczenie współczynników $T, \alpha, n, k$ zostanie zgodnie z wymaganiami
+wykonane na jednym z mniejszych problemów TSP, a następnie współczynniki te zostaną wykorzystane 
+do policzenia wyników dla reszty zestawów danych.
+
+\noindent
+Zbiór testowy $\text{TEST}=T\times \alpha \times n \times k$ to iloczyn kartezjański następujących zbiorów:
+\begin{enumerate}
+    \item $T=\{10.0, 50.0, 100.0, 250.0, 500.0, 1000.0, 2000.0\}$
+    \item $\alpha=\{0.90, 0.95, 0.97, 0.99, 0.995, 0.997\}$
+    \item $n=\{100, 250, 500, 1000\}$
+    \item $k=\{5, 10, 25, 50\}$
+\end{enumerate}
+Następnie dla każdego egzemplarza $t$ ze zbioru testowego $t\in\text{TEST}$ wyznaczana jest najlepszy wynik
+z $l=10$ prób. Najmniejszy z nich decyduje o najlepszym egzemplarzu.
+
+\begin{verbatim}
+Temperature     : 1000
+Alpha           : 0.995
+Epochs          : 1000
+Tries per epoch : 50
+\end{verbatim}
+
+Widzimy, że wzrost $T,\alpha$ nie zawsze powoduje usprawnienie wyniku. Wzrost $n,k$ zwiększa szanse
+na uzyskanie lepszego wyniku, ale tylko do pewnego momentu - po którym również zmiany nie są na tyle istotne
+aby go poprawić - dla dużego $n$ mamy bardzo małe $T$, więc niewielką szanse na przeskok z minimum lokalnego na globalnie
+niższą wartość.
+
+\noindent
+Wyniki prezentują się następująco:
+
+\input{_task1_table.tex}
+
+\noindent
+Warto zauważyć że moglibyśmy dalej optymalizować wybierając dobry przypadek startowy - np. wariant \text{2\-OPT}
+oraz zwiększając $n, k$ w celu uzyskania większej dokładności
+
+\section{Zadanie 2 - Tabu Search}
+
+Tabu search to algorytm metaheurystyczny, który zakłada stworzenie listy Tabu,
+która zawiera reprezentacje poprzednich rozwiązań - tak aby docelowo nie dało się 
+zostać w minimum lokalnym, a zamiast tego wyjść z niego w poszukiwaniu lepszego rozwiązania.
+
+\noindent
+Kluczowym dla tabu search jest maksymalna długość listy $L$, najlepiej rozumiana jako
+zależna od długości danych wejściowych (liczby miast $n$). Algorytm
+potrzebuje również sposobu wyboru kolejnego rozwiązania oraz dobrego warunku stopu,
+który pozwala ocenić kiedy rozwiązanie jest wystarczające.
+W tym przypadku będzie to maksymalna liczba iteracji $I$,
+
+\noindent
+\noindent
+Zbiór testowy $\text{TEST}=I\times L$ to iloczyn kartezjański następujących zbiorów:
+
+%  ;
+%   std::vector<std::size_t> tabu_size = {g.n / 10, g.n / 4, g.n / 2, g.n * 3 / 4, g.n};
+\begin{enumerate}
+    \item $I=\{10, 20, 50, 100, 200, 500, 1000, 2000\}$
+    \item $L=\left\{\frac{n}{20}, \frac{n}{10},\frac{n}{4},\frac{n}{2},\frac{3n}{4},n\right\}$
+\end{enumerate}
+Następnie dla każdego egzemplarza $t$ ze zbioru testowego $t\in\text{TEST}$ wyznaczana jest najlepszy wynik
+z $l=5$ prób. Najmniejszy z nich decyduje o najlepszym egzemplarzu.
+
+\begin{verbatim}
+Max Iterations : 2000
+Tabu Size      : n/10
+\end{verbatim}
+
+Im większa liczba maksymalnych iteracji $i\in I$ tym dokładniejszy wynik,
+przy czym rozmiar listy tabu jest odpowiedni do $\frac{n}{10}$. Większa lista nie powoduje znalezienia lepszego rozwiązania.
+Mając na względzie że jest to rozmiar bardzo duży należy przemyśleć ekstrapolowanie tej wartości na większe problemy.
+Bezpiecznie założyć będzie istotnie dużą wartość, niebędącą jednak stricte zależną od danych, a raczej od możliwości komputera.
+
+\noindent
+Do algorytmu należało dołożyć lepsze wybieranie sąsiada, w celu osiągnięcia zadowalających wyników.
+Sposób wyboru sąsiada opiera się o zamianie 2 krawędzi z najbliższym pod względem dystansu kartezjańskiego miastem w danej turze,
+tak aby \textit{rozplątać} ścieżkę. Wyniki prezentują się następująco:
+
+\input{_task2_table.tex}
+
+Tabu search wykazuje mniejsze względne zbliżenie do wartości optymalnych, ale zachowuje swoją przewagę
+dla większych egzemplarzy, tam gdzie symulowane wyżarzanie zostaje w minimum lokalnym, tabu search znajduje
+lepsze rozwiązania, choć nadal dalekie od optymalnych.
+
+\section{Wykresy}
+
+\input{_task_plots.tex}
+
+\section{Wnioski}
+
+Zgodnie z \texttt{No Free Lunch Theorem} nie istnieje uniwersalna metoda, która będzie najlepsza dla wszystkich problemów optymalizacyjnych.
+Wyniki pokazują, że dla mniejszych problemów TSP (do około 100 miast) Symulowanie Wyżarzanie pozwala 
+znaleźć wyniki bliskie wartościom optymalnym, podczas gdy wyniki dla większych miast znacząco odbiegają od optymalnych.
+Wynika to z faktu, iż dostosowanie parametrów algorytmu nie przenosi się dobrze na większe problemy.
+
+\noindent
+Dla dobranych wcześniej parametrów i znanych danych oba algorytmy w oczekiwany sposób dochodzą do rozwiązań,
+która są podobne do tych z poprzedniej listy. Dla większych problemów algorytm symulowanego wyżarzania zostaje w minimum lokalnym,
+podczas gdy tabu search znajduje nieco lepsze rozwiązania. 
+
+\noindent
+Dostrojenie parametrów obu algorytmow nie jest proste, ale dostatecznie szczegółowe powinno pozwolić na osiągnięcie zbliżonych wyników 
+dla obu algorytmów. Wysoką przewagą tych algorytmów nad poprzednimi jest szybki czas wykonania oraz
+możliwość wyskoczenia z minimum lokalnego.
+
+
+\end{document}

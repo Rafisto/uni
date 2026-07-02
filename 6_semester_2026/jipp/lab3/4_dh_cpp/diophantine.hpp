@@ -1,0 +1,89 @@
+#ifndef DIOPHANTINE_HPP
+#define DIOPHANTINE_HPP
+
+#include <cstdint>
+
+typedef struct {
+  uint64_t x;
+  uint64_t y;
+  bool err;
+} diophantine_result64_t;
+
+diophantine_result64_t diophantine(uint64_t m, uint64_t n, uint64_t z);
+uint64_t gcd(uint64_t x, uint64_t y);
+
+inline diophantine_result64_t diophantine(uint64_t m, uint64_t n, uint64_t z) {
+  diophantine_result64_t result = {.x = 0, .y = 0, .err = true};
+  if (m == 0 && n == 0) {
+    result.err = (z != 0);
+    return result;
+  }
+
+  if (n == 0) {
+    if (z % m != 0) return result;
+    result.x = z / m;
+    result.err = false;
+    return result;
+  }
+ 
+  if (m == 0) {
+    result.err = true;
+    return result;
+  }
+
+  if (gcd(m, n) != z) return result;
+  uint64_t a = m, b = n, x = 1, y = 0, r = n, s = m - 1;
+  uint64_t rr, ss, rem, quot, tmp;
+
+  while (b > 0) {
+    rem = a % b;
+    quot = a / b;
+    a = b;
+    b = rem;
+    rr = r;
+    tmp = quot * r;
+    if (x < tmp)
+      r = n * quot;
+    else
+      r = 0;
+
+    r = r + x;
+    r = r - tmp;
+    ss = s;
+    tmp = quot * s;
+    if (y < tmp)
+      s = m * quot;
+    else
+      s = 0;
+    s = s + y;
+    s = s - tmp;
+    x = rr;
+    y = ss;
+  }
+  
+  result.x = x;
+  result.y = y;
+  result.err = false;
+  return result;
+}
+
+inline uint64_t gcd(uint64_t x, uint64_t y) {
+  if (y == 0)
+    return x;
+  if (x == 0)
+    return y;
+  if (x == y)
+    return x;
+  if (x < y)
+    return gcd(y, x);
+
+  while (y != 0) {
+    uint64_t t = y;
+    y = x % y;
+    x = t;
+  }
+
+  return x;
+}
+
+#endif
