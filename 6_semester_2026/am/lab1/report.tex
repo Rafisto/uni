@@ -59,14 +59,14 @@ Wszystkich takich funkcji (rozmiar otoczenia) dla $|\pi| = n$ jest $\frac{n(n-1)
 Wobec tego przeszukanie wszystkich możliwych inwersji i wybór najlepszej ma złożoność czasową $\mathcal{O}(n^2)$, ponieważ musimy rozważyć każdą parę indeksów $i$ i $j$.
 Ponadto powtórzenie testu $n$ - razy sprawia, iż całkowita złożoność czasowa tego algorytmu wynosi $\mathcal{O}(n^3)$.
 
-\input{task1_table.tex}
+\input{_task1_table.tex}
 
 \section{Zadanie 2 - Wybór najlepszej Inwersji z n losowych}
 
 Modyfikujemy Local Search o wybrane losowo $n$ par $(i,j)$, gdzie $0 \leq i < j < n$, i dla każdej z tych par wykonujemy inwersję na permutacji $\pi$.
 Rozważamy $\mathcal{O}(n)$ par indeksów, a powtórzenie testu $n$ - razy sprawia, że całkowita złożoność czasowa tego algorytmu wynosi $\mathcal{O}(n^2)$.
 
-\input{task2_table.tex}
+\input{_task2_table.tex}
 
 \section{Zadanie 3 - MST + Local Search}
 
@@ -74,11 +74,10 @@ Modyfikujemy Local Search, rozpoczynając od wyznaczenia MST za pomocą algorytm
 a następnie $\sqrt{n}$ razy wykonujemy DFS z losowo wybranego wierzchołka w MST, aby uzyskać permutację wierzchołków następnie przekazywanych do pełnego Local Search.
 Pomimo, że tworzymy nakład pracy $\mathcal{O}(n^2 \log n)$ na początku, to jednak złożoność czasowa całego algorytmu jest $\mathcal{O}(n^3)$, ponieważ wykonujemy pełny Local Search, który ma złożoność $\mathcal{O}(n^3)$.
 
-\input{task3_table.tex}
-
+\input{_task3_table.tex}
 \section{Wykresy dla najlepszego rozwiązania każdej metody}
 
-\input{task_plots.tex}
+\input{_task_plots.tex}
 
 \section{Wnioski}
 
