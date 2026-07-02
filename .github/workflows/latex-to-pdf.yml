@@ -27,18 +27,21 @@ jobs:
           OUTPUT_DIR=$(realpath output)
 
           find . -name "*.tex" ! -name "_*" | xargs -I {} -P 8 bash -c '
-              file="$1"
-              jobname=$(echo "${file%.tex}" | sed "s|^\./||; s|/|-|g")
-              dir=$(dirname "$file")
-              base=$(basename "$file")
+            file="$1"
+            out_dir="$2"
+            
+            jobname=$(echo "${file%.tex}" | sed "s|^\./||; s|/|-|g")
+            dir=$(dirname "$file")
+            base=$(basename "$file")
 
-              cd "$dir" || exit
-              echo "Compiling $file..."
-              latexmk -pdf \
-                  -output-directory="$OUTPUT_DIR" \
-                  -jobname="$jobname" \
-                  "$base" > /dev/null 2>&1
-          ' _ {}
+            cd "$dir" || exit 1
+            echo "Compiling $file..."
+            latexmk -pdf \
+                -interaction=nonstopmode \
+                -output-directory="$out_dir" \
+                -jobname="$jobname" \
+                "$base" > /dev/null 2>&1
+          ' _ {} "$OUTPUT_DIR"
 
           find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\|fls\|fdb_latexmk\|vrb\)$' -delete
 
@@ -56,7 +59,8 @@ jobs:
 
           printf "</ul>\n</body>\n</html>\n" >> "$OUTPUT_DIR/index.html"
 
-          echo "Done! index.html generated in $OUTPUT_DIR"
+          length=$(wc -c < "$OUTPUT_DIR/index.html")
+          echo "Done! index.html generated in $OUTPUT_DIR (length=$length chars)"
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
         with:
