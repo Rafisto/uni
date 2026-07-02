@@ -26,25 +26,22 @@ jobs:
           mkdir -p output
           OUTPUT_DIR=$(realpath output)
 
-          # build tex
-          for file in $(find . -name "*.tex" ! -name "_*"); do
-              jobname=$(echo "${file%.tex}" | sed 's|^\./||; s|/|-|g')
+          find . -name "*.tex" ! -name "_*" | xargs -I {} -P 8 bash -c '
+              file="$1"
+              jobname=$(echo "${file%.tex}" | sed "s|^\./||; s|/|-|g")
               dir=$(dirname "$file")
               base=$(basename "$file")
-              (
-                  cd "$dir" || exit
-                  echo "Compiling $file..."
-                  latexmk -pdf \
-                      -output-directory="$OUTPUT_DIR" \
-                      -jobname="$jobname" \
-                      "$base" > /dev/null 2>&1
-              )
-          done
 
-          # clean aux
+              cd "$dir" || exit
+              echo "Compiling $file..."
+              latexmk -pdf \
+                  -output-directory="$OUTPUT_DIR" \
+                  -jobname="$jobname" \
+                  "$base" > /dev/null 2>&1
+          ' _ {}
+
           find output -type f -regex '.*\.\(aux\|log\|out\|toc\|nav\|snm\|pyg\|fls\|fdb_latexmk\|vrb\)$' -delete
 
-          # html index
           printf "<!DOCTYPE html>\n<html>\n<head><title>rafisto/uni pdf repository</title></head>\n<body>\n" > "$OUTPUT_DIR/index.html"
           printf "<h2><a href=\"https://github.com/Rafisto/uni\">rafisto/uni</a> PDF index</h2>\n" >> "$OUTPUT_DIR/index.html"
           printf "<p>Last updated: %s</p>\n" "$(date -u)" >> "$OUTPUT_DIR/index.html"
