@@ -27,7 +27,7 @@ jobs:
           OUTPUT_DIR=$(realpath output)
 
           # build tex
-          for file in $(find . -name "*.tex"); do
+          for file in $(find . -name "*.tex" ! -name "_*"); do
               jobname=$(echo "${file%.tex}" | sed 's|^\./||; s|/|-|g')
               dir=$(dirname "$file")
               base=$(basename "$file")
